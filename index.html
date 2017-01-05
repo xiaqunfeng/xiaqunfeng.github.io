@@ -6,16 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Hexo</title>
+  <title>夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
+  <meta name="description" content="关注云存储、大数据、机器学习">
+<meta property="og:type" content="website">
+<meta property="og:title" content="夏天的风的博客">
 <meta property="og:url" content="http://yoursite.com/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="夏天的风的博客">
+<meta property="og:description" content="关注云存储、大数据、机器学习">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="夏天的风的博客">
+<meta name="twitter:description" content="关注云存储、大数据、机器学习">
   
-    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -45,8 +48,10 @@
 			<img src="null" class="js-avatar">
 		</a>
 		<hgroup>
-		  <h1 class="header-author"><a href="/">John Doe</a></h1>
+		  <h1 class="header-author"><a href="/">夏天的风</a></h1>
 		</hgroup>
+		
+		<p class="header-subtitle">好记性不如烂笔头😝</p>
 		
 
 		<nav class="header-menu">
@@ -103,8 +108,10 @@
 				<img src="null" class="js-avatar">
 			</div>
 			<hgroup>
-			  <h1 class="header-author js-header-author">John Doe</h1>
+			  <h1 class="header-author js-header-author">夏天的风</h1>
 			</hgroup>
+			
+			<p class="header-subtitle"><i class="icon icon-quo-left"></i>好记性不如烂笔头😝<i class="icon icon-quo-right"></i></p>
 			
 			
 			
@@ -151,27 +158,84 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-我的第一篇hexo博客" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-hexo的搭建" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/05/我的第一篇hexo博客/">我的第一篇hexo博客</a>
-    </h1>
-  
-
-        
-        <a href="/2017/01/05/我的第一篇hexo博客/" class="archive-article-date">
-  	<time datetime="2017-01-05T07:21:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-05</time>
-</a>
-        
-      </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h1 id="Mac上hexo博客的搭建"><a href="#Mac上hexo博客的搭建" class="headerlink" title="Mac上hexo博客的搭建"></a>Mac上hexo博客的搭建</h1><p>[TOC]</p>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><ol>
+<li><strong>github</strong></li>
+<li><strong>homebrew</strong></li>
+<li><strong>node.js 和 npm</strong></li>
+<li><strong>hexo</strong></li>
+</ol>
+<h3 id="github"><a href="#github" class="headerlink" title="github"></a>github</h3><p>1、github账号</p>
+<p>​    这部分略过，没有的话自己注册一个。然后将mac上的公钥添加到github上去。</p>
+<p>2、建立仓库</p>
+<p>​    严格按照 <code>git用户名</code>.<code>github</code>.<code>io</code> 来命名。我这里就叫：<code>xiaqunfeng.github.io</code> 。</p>
+<h3 id="homebrew"><a href="#homebrew" class="headerlink" title="homebrew"></a>homebrew</h3><p>homebrew 是MAC OSX 上面用来安装 或者 卸载软件用的非常方面的一个软件。在终端上执行如下命令即可安装，参考<a href="http://brew.sh/index_zh-cn.html" target="_blank" rel="external">官网</a>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo /usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</div></pre></td></tr></table></figure>
+<h3 id="node-js"><a href="#node-js" class="headerlink" title="node.js"></a>node.js</h3><p>不推荐使用 brew 安装node， 直接从<a href="https://nodejs.org/en/" target="_blank" rel="external">官网</a>下载，然后双击安装。我这里选择的版本是：v6.9.3 LTS。node.js 集成带有npm。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ node -v</div><div class="line">v6.9.3</div><div class="line"></div><div class="line">$ npm -v</div><div class="line">3.10.10</div></pre></td></tr></table></figure>
+<h3 id="hexo"><a href="#hexo" class="headerlink" title="hexo"></a>hexo</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo npm install hexo-cli -g</div></pre></td></tr></table></figure>
+<p>安装完后</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">$ hexo -v</div><div class="line">hexo: 3.2.2</div><div class="line">hexo-cli: 1.0.2</div><div class="line">os: Darwin 16.1.0 darwin x64</div><div class="line">http_parser: 2.7.0</div><div class="line">node: 6.9.3</div><div class="line">v8: 5.1.281.89</div><div class="line">uv: 1.9.1</div><div class="line">zlib: 1.2.8</div><div class="line">ares: 1.10.1-DEV</div><div class="line">icu: 57.1</div><div class="line">modules: 48</div><div class="line">openssl: 1.0.2j</div></pre></td></tr></table></figure>
+<h2 id="hexo命令行使用"><a href="#hexo命令行使用" class="headerlink" title="hexo命令行使用"></a>hexo命令行使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">常用命令：</div><div class="line">hexo help 					#查看帮助</div><div class="line">hexo init 					#初始化一个目录</div><div class="line">hexo new &quot;postName&quot; 		#新建文章</div><div class="line">hexo new page &quot;pageName&quot; 	#新建页面</div><div class="line">hexo generate 				#生成网页，可以在 public 目录查看整个网站的文件</div><div class="line">hexo server 				#本地预览，&apos;Ctrl+C&apos;关闭</div><div class="line">hexo deploy 				#部署.deploy目录</div><div class="line">hexo clean 					#清除缓存，强烈建议每次执行命令前先清理缓存，每次部署前先删除 .deploy 文件夹</div><div class="line"></div><div class="line">简写：</div><div class="line">hexo n == hexo new</div><div class="line">hexo g == hexo generate</div><div class="line">hexo s == hexo server</div><div class="line">hexo d == hexo deploy</div></pre></td></tr></table></figure>
+<h2 id="建立本地站点"><a href="#建立本地站点" class="headerlink" title="建立本地站点"></a>建立本地站点</h2><p>执行下列命令，Hexo 将会在指定文件夹中新建所需要的文件。（文件夹不需要提前建好，会自行创建）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ hexo init &lt;folder&gt;</div><div class="line">$ cd &lt;folder&gt;</div><div class="line">$ npm install</div></pre></td></tr></table></figure>
+<p>新建文件夹目录如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">.</div><div class="line">├── .deploy 		#需要部署的文件</div><div class="line">├── node_modules 	#Hexo插件</div><div class="line">├── public 			#生成的静态网页文件</div><div class="line">├── scaffolds 		#模板</div><div class="line">├── source 			#博客正文和其他源文件</div><div class="line">| ├── _drafts 		#草稿(刚开始没有)</div><div class="line">| └── _posts 		#文章</div><div class="line">├── themes 			#主题</div><div class="line">├── _config.yml 	#全局配置文件</div><div class="line">└── package.json</div></pre></td></tr></table></figure>
+<h2 id="启动站点"><a href="#启动站点" class="headerlink" title="启动站点"></a>启动站点</h2><p>执行 hexo server 启动站点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ hexo s</div><div class="line">INFO  Start processing</div><div class="line">INFO  Hexo is running at http://localhost:4000/. Press Ctrl+C to stop.</div></pre></td></tr></table></figure>
+<p>在浏览器中输入：<a href="http://localhost:4000" target="_blank" rel="external">http://localhost:4000</a> 就可以看到站点了。</p>
+<h2 id="部署站点"><a href="#部署站点" class="headerlink" title="部署站点"></a>部署站点</h2><p>编辑文件 <code>_config.yml</code> ，修改如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">deploy:</div><div class="line">   type: git</div><div class="line">   repository: https://github.com/xiaqunfeng/xiaqunfeng.github.io.git</div><div class="line">   branch: master</div></pre></td></tr></table></figure>
+<p><strong>注意</strong>：冒号后面要留 <strong>空格</strong>！！</p>
+<h2 id="创建新文章"><a href="#创建新文章" class="headerlink" title="创建新文章"></a>创建新文章</h2><p><strong>方法1</strong>、<code>hexo n</code>创建新文章</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ hexo n &quot;我的第一篇hexo博客&quot;</div><div class="line">INFO  Created: ~/hexo-blog/source/_posts/我的第一篇hexo博客.md</div></pre></td></tr></table></figure>
+<p>然后用编辑器打开编辑即可。</p>
+<p><strong>方法2</strong>、直接在 <code>source/_posts</code> 中新建一个md文件，然后将这个文件通过git推到服务器上</p>
+<p>在hexo-blog文件夹下执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hexo g</div><div class="line">hexo s</div></pre></td></tr></table></figure>
+<p>然后在浏览器中输入<code>http://localhost:4000</code>就可以看到新加的文章了。</p>
+<h2 id="发布"><a href="#发布" class="headerlink" title="发布"></a>发布</h2><p>执行 <code>hexo d</code> ，发现如下问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ hexo d</div><div class="line">ERROR Deployer not found: git</div></pre></td></tr></table></figure>
+<p>解决方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ npm install hexo-deployer-git --save</div><div class="line">hexo-site@0.0.0 /Users/xiaqunfeng/hexo-blog</div><div class="line">└── hexo-deployer-git@0.2.0</div></pre></td></tr></table></figure>
+<p>再执行 <code>hexo d</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">$ hexo d</div><div class="line">INFO  Deploying: git</div><div class="line">INFO  Clearing .deploy_git folder...</div><div class="line">INFO  Copying files from public folder...</div><div class="line">On branch master</div><div class="line">nothing to commit, working tree clean</div><div class="line">Username for &apos;https://github.com&apos;: xiaqunfeng</div><div class="line">Password for &apos;https://xiaqunfeng@github.com&apos;: </div><div class="line">To https://github.com/xiaqunfeng/xiaqunfeng.github.io.git</div><div class="line"> * [new branch]      HEAD -&gt; master</div><div class="line">Branch master set up to track remote branch master from https://github.com/xiaqunfeng/xiaqunfeng.github.io.git.</div><div class="line">INFO  Deploy done: git</div></pre></td></tr></table></figure>
+<p>输入github的用户名和密码即可。此时，博客已经完全搭建起来了。</p>
+<p>在浏览器中输入：<a href="https://xiaqunfeng.github.io/" target="_blank" rel="external">https://xiaqunfeng.github.io/</a> 即可访问。</p>
+<p>预览如下： <img src="/Users/xiaqunfeng/hexo-blog/source/images/hexo.tiff" alt="hexo"></p>
+<h2 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h2><p>自己google一下hexo主题，选一个自己喜欢的，然后git clone下来。比如 Next 主题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git clone https://github.com/iissnan/hexo-theme-next.git</div></pre></td></tr></table></figure>
+<p>然后打开_config.yml文件，替换其中的 <code>theme</code> 属性，默认为 <code>landscape</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">theme: next</div></pre></td></tr></table></figure>
+<h3 id="本地调试"><a href="#本地调试" class="headerlink" title="本地调试"></a>本地调试</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ hexo g #生成静态页面，生成的内容在public文件夹下</div><div class="line">$ hexo s #启动本地服务，进行文章预览调试。hexo s --debug 命令可以用来调试</div></pre></td></tr></table></figure>
+<h3 id="发布到github"><a href="#发布到github" class="headerlink" title="发布到github"></a>发布到github</h3><p>1、清理之前生成的内容，即public文件。</p>
+<p><strong>注意</strong>：这一步必须要，不然有时因为缓存问题，服务器更新不了主题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo clean</div></pre></td></tr></table></figure>
+<p>2、生成静态文件并部署到github</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ hexo g #生成静态文件</div><div class="line">$ hexo d #部署到github</div></pre></td></tr></table></figure>
+<p>更快捷的方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo d -g #在部署前先生成</div></pre></td></tr></table></figure>
+<h2 id="绑定域名"><a href="#绑定域名" class="headerlink" title="绑定域名"></a>绑定域名</h2><blockquote>
+<p>我暂时还没购买和绑定域名，就暂时先简单介绍一下，后续再来补充完善。</p>
+</blockquote>
+<p>1、购买域名</p>
+<p>某乎<a href="https://www.zhihu.com/question/19551906" target="_blank" rel="external">这里</a>有各种推荐，自己可以参考的看看。</p>
+<p>godaddy地址: <a href="https://www.godaddy.com/" target="_blank" rel="external">https://www.godaddy.com</a></p>
+<p>阿里云域名地址: <a href="http://wanwang.aliyun.com/" target="_blank" rel="external">http://wanwang.aliyun.com</a></p>
+<p>2、到自己的gitHubPages的ip地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ping http://xiaqunfeng.github.io</div><div class="line">PING github.map.fastly.net (151.101.192.133): 56 data bytes</div><div class="line">64 bytes from 151.101.192.133: icmp_seq=0 ttl=49 time=62.670 ms</div><div class="line">64 bytes from 151.101.192.133: icmp_seq=1 ttl=49 time=65.062 ms</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>这里IP地址为：<code>151.101.192.133</code></p>
+<p>3、域名绑定IP地址</p>
+<p>登录自己购买域名的地方，找到域名相关选项</p>
+<p>添加域名</p>
+<p>添加记录：一个主机记录 <code>@</code>， 一个为<code>www</code>，记录值都是博客主页对应的ip。 </p>
+<p>等待生效，最迟72小时生效，然后就可通过域名浏览你的博客主页了。</p>
+
       
 
       
@@ -183,7 +247,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/01/05/我的第一篇hexo博客/">展开全文 >></a>
+          <a class="article-more-a" href="/2017/01/05/hexo的搭建/">展开全文 >></a>
         </p>
       
 
@@ -270,7 +334,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2017 John Doe
+    		&copy; 2017 夏天的风
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
