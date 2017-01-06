@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="C/C++">
+<html lang="zh-Hans">
 <head>
 
     <!--[if lt IE 9]>
@@ -15,53 +15,17 @@
 
 
 
-<meta name="description" content="Mac上hexo博客的搭建[TOC]
-&amp;lt;!— toc —&amp;gt;
-toc: true
-准备工作
-github
-homebrew
-node.js 和 npm
-hexo
-
-github1、github账号
-​    这部分略过，没有的话自己注册一个。然后将mac上的公钥添加到github上去。
-2、建立仓库
-​    严格按照 git用户名.github.io 来命名。我这里就叫：xiaqunf">
+<meta name="description" content="​    第一篇hexo博客，介绍了在mac上搭建hexo博客的全过程。包括：准备工作、本地站点的建立、启动和部署站点、创建新文章、发布到github、更换主题 和 绑定域名。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="夏天的风的博客">
-<meta property="og:url" content="http://yoursite.com/2017/01/05/hexo的搭建/index.html">
+<meta property="og:title" content="Mac上hexo博客的搭建">
+<meta property="og:url" content="http://yoursite.com/2017/01/06/hexo的搭建/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="Mac上hexo博客的搭建[TOC]
-&amp;lt;!— toc —&amp;gt;
-toc: true
-准备工作
-github
-homebrew
-node.js 和 npm
-hexo
-
-github1、github账号
-​    这部分略过，没有的话自己注册一个。然后将mac上的公钥添加到github上去。
-2、建立仓库
-​    严格按照 git用户名.github.io 来命名。我这里就叫：xiaqunf">
+<meta property="og:description" content="​    第一篇hexo博客，介绍了在mac上搭建hexo博客的全过程。包括：准备工作、本地站点的建立、启动和部署站点、创建新文章、发布到github、更换主题 和 绑定域名。">
 <meta property="og:image" content="http://yoursite.com/Users/xiaqunfeng/hexo-blog/source/images/hexo.tiff">
-<meta property="og:updated_time" content="2017-01-06T09:34:31.000Z">
+<meta property="og:updated_time" content="2017-01-06T12:42:47.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="夏天的风的博客">
-<meta name="twitter:description" content="Mac上hexo博客的搭建[TOC]
-&amp;lt;!— toc —&amp;gt;
-toc: true
-准备工作
-github
-homebrew
-node.js 和 npm
-hexo
-
-github1、github账号
-​    这部分略过，没有的话自己注册一个。然后将mac上的公钥添加到github上去。
-2、建立仓库
-​    严格按照 git用户名.github.io 来命名。我这里就叫：xiaqunf">
+<meta name="twitter:title" content="Mac上hexo博客的搭建">
+<meta name="twitter:description" content="​    第一篇hexo博客，介绍了在mac上搭建hexo博客的全过程。包括：准备工作、本地站点的建立、启动和部署站点、创建新文章、发布到github、更换主题 和 绑定域名。">
 <meta name="twitter:image" content="http://yoursite.com/Users/xiaqunfeng/hexo-blog/source/images/hexo.tiff">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
@@ -71,7 +35,7 @@ github1、github账号
 
 
 
-    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="shortcut icon" href="/qiniu.ico">
 
 
 
@@ -94,7 +58,7 @@ github1、github账号
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>夏天的风的博客</title>
+<title>Mac上hexo博客的搭建 | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -110,12 +74,14 @@ github1、github账号
         isCategory: false,
         fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
         scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
-        search: undefined
+        search: true
     }
 </script>
 
 
-    <script> yiliaConfig.jquery_ui = [false]; </script>
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
 
 
 
@@ -134,7 +100,7 @@ github1、github账号
 <div class="intrude-less">
     <header id="header" class="inner">
         <a href="/" class="profilepic">
-            <img src="/img/avatar.png" class="animated zoomIn">
+            <img src="/img/junjie.jpg" class="animated zoomIn">
         </a>
         <hgroup>
           <h1 class="header-author"><a href="/">夏天的风</a></h1>
@@ -144,6 +110,13 @@ github1、github账号
         <p class="header-subtitle">好记性不如烂笔头😝</p>
         
 
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
         
 
 
@@ -208,11 +181,13 @@ github1、github账号
                     <nav class="header-nav">
                         <ul class="social">
                             
-                                <a class="fa Email" href="mailto:123@123.com" title="Email"></a>
+                                <a class="fa Email" href="/xiaqunfeng123@126.com" title="Email"></a>
                             
                                 <a class="fa GitHub" href="#" title="GitHub"></a>
                             
                                 <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa CSDN" href="http://blog.csdn.net/xiaqunfeng123" title="CSDN"></a>
                             
                         </ul>
                     </nav>
@@ -244,7 +219,7 @@ github1、github账号
                 
                 <section class="switch-part switch-part4">
                 
-                    <div id="js-aboutme">专注于前端</div>
+                    <div id="js-aboutme">关注云存储、大数据、机器学习</div>
                 </section>
                 
             </div>
@@ -261,7 +236,7 @@ github1、github账号
     <div class="intrude-less">
         <header id="header" class="inner">
             <a href="/" class="profilepic">
-                <img src="/img/avatar.png" class="animated zoomIn">
+                <img src="/img/junjie.jpg" class="animated zoomIn">
             </a>
             <hgroup>
               <h1 class="header-author"><a href="/" title="回到主页">夏天的风</a></h1>
@@ -286,11 +261,13 @@ github1、github账号
             <nav class="header-nav">
                         <ul class="social">
                             
-                                <a class="fa Email" target="_blank" href="mailto:123@123.com" title="Email"></a>
+                                <a class="fa Email" target="_blank" href="/xiaqunfeng123@126.com" title="Email"></a>
                             
                                 <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
                             
                                 <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://blog.csdn.net/xiaqunfeng123" title="CSDN"></a>
                             
                         </ul>
             </nav>
@@ -301,8 +278,8 @@ github1、github账号
       <div class="body-wrap"><article id="post-hexo的搭建" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/01/05/hexo的搭建/" class="article-date">
-      <time datetime="2017-01-05T13:07:16.000Z" itemprop="datePublished">2017-01-05</time>
+      <a href="/2017/01/06/hexo的搭建/" class="article-date">
+      <time datetime="2017-01-06T12:39:32.000Z" itemprop="datePublished">2017-01-06</time>
 </a>
 
 
@@ -313,12 +290,28 @@ github1、github账号
       <input type="hidden" class="isFancy" />
     
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Mac上hexo博客的搭建
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
     <div class="article-entry" itemprop="articleBody">
       
           
-        <h1 id="Mac上hexo博客的搭建"><a href="#Mac上hexo博客的搭建" class="headerlink" title="Mac上hexo博客的搭建"></a>Mac上hexo博客的搭建</h1><p>[TOC]</p>
-<p>&lt;!— toc —&gt;</p>
-<p>toc: true</p>
+        <p>​    第一篇hexo博客，介绍了在mac上搭建hexo博客的全过程。包括：准备工作、本地站点的建立、启动和部署站点、创建新文章、发布到github、更换主题 和 绑定域名。<br><a id="more"></a></p>
 <h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><ol>
 <li><strong>github</strong></li>
 <li><strong>homebrew</strong></li>
@@ -336,11 +329,11 @@ github1、github账号
 <h3 id="hexo"><a href="#hexo" class="headerlink" title="hexo"></a>hexo</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo npm install hexo-cli -g</div></pre></td></tr></table></figure>
 <p>安装完后</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">$ hexo -v</div><div class="line">hexo: 3.2.2</div><div class="line">hexo-cli: 1.0.2</div><div class="line">os: Darwin 16.1.0 darwin x64</div><div class="line">http_parser: 2.7.0</div><div class="line">node: 6.9.3</div><div class="line">v8: 5.1.281.89</div><div class="line">uv: 1.9.1</div><div class="line">zlib: 1.2.8</div><div class="line">ares: 1.10.1-DEV</div><div class="line">icu: 57.1</div><div class="line">modules: 48</div><div class="line">openssl: 1.0.2j</div></pre></td></tr></table></figure>
-<h2 id="hexo命令行使用"><a href="#hexo命令行使用" class="headerlink" title="hexo命令行使用"></a>hexo命令行使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">常用命令：</div><div class="line">hexo help 					#查看帮助</div><div class="line">hexo init 					#初始化一个目录</div><div class="line">hexo new &quot;postName&quot; 		#新建文章</div><div class="line">hexo new page &quot;pageName&quot; 	#新建页面</div><div class="line">hexo generate 				#生成网页，可以在 public 目录查看整个网站的文件</div><div class="line">hexo server 				#本地预览，&apos;Ctrl+C&apos;关闭</div><div class="line">hexo deploy 				#部署.deploy目录</div><div class="line">hexo clean 					#清除缓存，强烈建议每次执行命令前先清理缓存，每次部署前先删除 .deploy 文件夹</div><div class="line"></div><div class="line">简写：</div><div class="line">hexo n == hexo new</div><div class="line">hexo g == hexo generate</div><div class="line">hexo s == hexo server</div><div class="line">hexo d == hexo deploy</div></pre></td></tr></table></figure>
+<h2 id="hexo命令行使用"><a href="#hexo命令行使用" class="headerlink" title="hexo命令行使用"></a>hexo命令行使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">常用命令：</div><div class="line">hexo help			#查看帮助</div><div class="line">hexo init 			#初始化一个目录</div><div class="line">hexo new &quot;postName&quot; 		#新建文章</div><div class="line">hexo new page &quot;pageName&quot; 	#新建页面</div><div class="line">hexo generate 			#生成网页，可以在 public 目录查看整个网站的文件</div><div class="line">hexo server 			#本地预览，&apos;Ctrl+C&apos;关闭</div><div class="line">hexo deploy 			#部署.deploy目录</div><div class="line">hexo clean 			#清除缓存，强烈建议每次执行命令前先清理缓存，每次部署前先删除 .deploy 文件夹</div><div class="line"></div><div class="line">简写：</div><div class="line">hexo n == hexo new</div><div class="line">hexo g == hexo generate</div><div class="line">hexo s == hexo server</div><div class="line">hexo d == hexo deploy</div></pre></td></tr></table></figure>
 <h2 id="建立本地站点"><a href="#建立本地站点" class="headerlink" title="建立本地站点"></a>建立本地站点</h2><p>执行下列命令，Hexo 将会在指定文件夹中新建所需要的文件。（文件夹不需要提前建好，会自行创建）</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ hexo init &lt;folder&gt;</div><div class="line">$ cd &lt;folder&gt;</div><div class="line">$ npm install</div></pre></td></tr></table></figure>
 <p>新建文件夹目录如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">.</div><div class="line">├── .deploy 		#需要部署的文件</div><div class="line">├── node_modules 	#Hexo插件</div><div class="line">├── public 			#生成的静态网页文件</div><div class="line">├── scaffolds 		#模板</div><div class="line">├── source 			#博客正文和其他源文件</div><div class="line">| ├── _drafts 		#草稿(刚开始没有)</div><div class="line">| └── _posts 		#文章</div><div class="line">├── themes 			#主题</div><div class="line">├── _config.yml 	#全局配置文件</div><div class="line">└── package.json</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">.</div><div class="line">├── .deploy 		#需要部署的文件</div><div class="line">├── node_modules 	#Hexo插件</div><div class="line">├── public 		#生成的静态网页文件</div><div class="line">├── scaffolds 		#模板</div><div class="line">├── source 		#博客正文和其他源文件</div><div class="line">| ├── _drafts 		#草稿(刚开始没有)</div><div class="line">| └── _posts 		#文章</div><div class="line">├── themes 		#主题</div><div class="line">├── _config.yml 	#全局配置文件</div><div class="line">└── package.json</div></pre></td></tr></table></figure>
 <h2 id="启动站点"><a href="#启动站点" class="headerlink" title="启动站点"></a>启动站点</h2><p>执行 hexo server 启动站点</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ hexo s</div><div class="line">INFO  Start processing</div><div class="line">INFO  Hexo is running at http://localhost:4000/. Press Ctrl+C to stop.</div></pre></td></tr></table></figure>
 <p>在浏览器中输入：<a href="http://localhost:4000" target="_blank" rel="external">http://localhost:4000</a> 就可以看到站点了。</p>
@@ -350,7 +343,7 @@ github1、github账号
 <h2 id="创建新文章"><a href="#创建新文章" class="headerlink" title="创建新文章"></a>创建新文章</h2><p><strong>方法1</strong>、<code>hexo n</code>创建新文章</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ hexo n &quot;我的第一篇hexo博客&quot;</div><div class="line">INFO  Created: ~/hexo-blog/source/_posts/我的第一篇hexo博客.md</div></pre></td></tr></table></figure>
 <p>然后用编辑器打开编辑即可。</p>
-<p><strong>方法2</strong>、直接在 <code>source/_posts</code> 中新建一个md文件，然后将这个文件通过git推到服务器上</p>
+<p><strong>方法2</strong>、直接在 <code>source/_posts</code> 中新建一个md文件，进行编辑</p>
 <p>在hexo-blog文件夹下执行：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hexo g</div><div class="line">hexo s</div></pre></td></tr></table></figure>
 <p>然后在浏览器中输入<code>http://localhost:4000</code>就可以看到新加的文章了。</p>
@@ -373,7 +366,7 @@ github1、github账号
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo clean</div></pre></td></tr></table></figure>
 <p>2、生成静态文件并部署到github</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ hexo g #生成静态文件</div><div class="line">$ hexo d #部署到github</div></pre></td></tr></table></figure>
-<p>更快捷的方式</p>
+<p>上面两个命令可以合并为一个：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo d -g #在部署前先生成</div></pre></td></tr></table></figure>
 <h2 id="绑定域名"><a href="#绑定域名" class="headerlink" title="绑定域名"></a>绑定域名</h2><blockquote>
 <p>我暂时还没购买和绑定域名，就暂时先简单介绍一下，后续再来补充完善。</p>
@@ -398,13 +391,13 @@ github1、github账号
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/01/05/hexo的搭建/"></a></p>
+        <p><span>本文标题:</span><a href="/2017/01/06/hexo的搭建/">Mac上hexo博客的搭建</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-01-05, 21:07:16</p>
-        <p><span>最后更新:</span>2017-01-06, 17:34:31</p>
+        <p><span>发布时间:</span>2017-01-06, 20:39:32</p>
+        <p><span>最后更新:</span>2017-01-06, 20:42:47</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/01/05/hexo的搭建/" title="">http://yoursite.com/2017/01/05/hexo的搭建/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/01/05/hexo的搭建/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/01/06/hexo的搭建/" title="Mac上hexo博客的搭建">http://yoursite.com/2017/01/06/hexo的搭建/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/01/06/hexo的搭建/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -414,24 +407,13 @@ github1、github账号
 
 
 
-    <nav id="article-nav">
-        
-        
-            <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/01/05/hello-world/">
-                    Hello World
-                </a>
-            </div>
-        
-    </nav>
-
   
 </article>
 
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Mac上hexo博客的搭建"><span class="toc-number">1.</span> <span class="toc-text">Mac上hexo博客的搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#准备工作"><span class="toc-number">1.1.</span> <span class="toc-text">准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#github"><span class="toc-number">1.1.1.</span> <span class="toc-text">github</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#homebrew"><span class="toc-number">1.1.2.</span> <span class="toc-text">homebrew</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#node-js"><span class="toc-number">1.1.3.</span> <span class="toc-text">node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hexo"><span class="toc-number">1.1.4.</span> <span class="toc-text">hexo</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo命令行使用"><span class="toc-number">1.2.</span> <span class="toc-text">hexo命令行使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建立本地站点"><span class="toc-number">1.3.</span> <span class="toc-text">建立本地站点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#启动站点"><span class="toc-number">1.4.</span> <span class="toc-text">启动站点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#部署站点"><span class="toc-number">1.5.</span> <span class="toc-text">部署站点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建新文章"><span class="toc-number">1.6.</span> <span class="toc-text">创建新文章</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#发布"><span class="toc-number">1.7.</span> <span class="toc-text">发布</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更换主题"><span class="toc-number">1.8.</span> <span class="toc-text">更换主题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#本地调试"><span class="toc-number">1.8.1.</span> <span class="toc-text">本地调试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#发布到github"><span class="toc-number">1.8.2.</span> <span class="toc-text">发布到github</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#绑定域名"><span class="toc-number">1.9.</span> <span class="toc-text">绑定域名</span></a></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#准备工作"><span class="toc-number">1.</span> <span class="toc-text">准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#github"><span class="toc-number">1.1.</span> <span class="toc-text">github</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#homebrew"><span class="toc-number">1.2.</span> <span class="toc-text">homebrew</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#node-js"><span class="toc-number">1.3.</span> <span class="toc-text">node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hexo"><span class="toc-number">1.4.</span> <span class="toc-text">hexo</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo命令行使用"><span class="toc-number">2.</span> <span class="toc-text">hexo命令行使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建立本地站点"><span class="toc-number">3.</span> <span class="toc-text">建立本地站点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#启动站点"><span class="toc-number">4.</span> <span class="toc-text">启动站点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#部署站点"><span class="toc-number">5.</span> <span class="toc-text">部署站点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建新文章"><span class="toc-number">6.</span> <span class="toc-text">创建新文章</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#发布"><span class="toc-number">7.</span> <span class="toc-text">发布</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更换主题"><span class="toc-number">8.</span> <span class="toc-text">更换主题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#本地调试"><span class="toc-number">8.1.</span> <span class="toc-text">本地调试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#发布到github"><span class="toc-number">8.2.</span> <span class="toc-text">发布到github</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#绑定域名"><span class="toc-number">9.</span> <span class="toc-text">绑定域名</span></a></li></ol>
         
     </div>
     <style>
@@ -467,7 +449,7 @@ github1、github账号
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"Mac上hexo博客的搭建　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -478,6 +460,28 @@ github1、github账号
 
 
 
+
+
+    
+        <section id="comments">
+    <style> aside.comment-bar { margin: auto 30px; }</style>
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function(){
+            this.page.url = 'http://yoursite.com/2017/01/06/hexo的搭建/';
+            this.page.identifier = '2017/01/06/hexo的搭建/';
+        };
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = '//null.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+</section>
 
 
     
@@ -493,13 +497,11 @@ github1、github账号
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/01/05/hello-world/" title="下一篇: Hello World">
-                <i class="fa fa-angle-right"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
     </div>
 
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/01/05/hexo的搭建/">hexo的搭建</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/05/hello-world/">Hello World</a></li></ul>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/01/06/hexo的搭建/">Mac上hexo博客的搭建</a></li></ul>
 
 
 
@@ -513,7 +515,7 @@ github1、github账号
         <div id="footer-info">
             <div class="footer-left">
                 <i class="fa fa-copyright"></i> 
-                2016-2017 夏天的风
+                2017 夏天的风
             </div>
             <div class="footer-right">
                 <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
@@ -553,7 +555,7 @@ github1、github账号
                 $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
             }
             else {
-                var backgroundnum = 5;
+                var backgroundnum = 3;
                 var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
                 $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
             }
