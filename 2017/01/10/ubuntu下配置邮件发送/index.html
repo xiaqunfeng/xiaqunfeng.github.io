@@ -15,16 +15,16 @@
 
 
 
-<meta name="description" content="介绍在ubuntu下利用remastersys工具给系统打包成 iso 镜像的方法，在其他系统（centos、windows等）下方法类似，不在赘述。">
+<meta name="description" content="Linux下发送email有很多种方式，包括sendmail、mailx、mutt、uuencode等等。这里介绍ubuntu下使用mutt和msmtp发送邮件的配置方法。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ubuntu下系统打包">
-<meta property="og:url" content="http://xiaqunfeng.github.io/2017/01/09/ubuntu下系统打包/index.html">
+<meta property="og:title" content="ubuntu下配置邮件发送">
+<meta property="og:url" content="http://xiaqunfeng.github.io/2017/01/10/ubuntu下配置邮件发送/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="介绍在ubuntu下利用remastersys工具给系统打包成 iso 镜像的方法，在其他系统（centos、windows等）下方法类似，不在赘述。">
-<meta property="og:updated_time" content="2017-01-09T05:44:21.000Z">
+<meta property="og:description" content="Linux下发送email有很多种方式，包括sendmail、mailx、mutt、uuencode等等。这里介绍ubuntu下使用mutt和msmtp发送邮件的配置方法。">
+<meta property="og:updated_time" content="2017-01-09T16:18:08.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ubuntu下系统打包">
-<meta name="twitter:description" content="介绍在ubuntu下利用remastersys工具给系统打包成 iso 镜像的方法，在其他系统（centos、windows等）下方法类似，不在赘述。">
+<meta name="twitter:title" content="ubuntu下配置邮件发送">
+<meta name="twitter:description" content="Linux下发送email有很多种方式，包括sendmail、mailx、mutt、uuencode等等。这里介绍ubuntu下使用mutt和msmtp发送邮件的配置方法。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -56,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>ubuntu下系统打包 | 夏天的风的博客</title>
+<title>ubuntu下配置邮件发送 | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -226,11 +226,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-ubuntu下系统打包" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-ubuntu下配置邮件发送" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/01/09/ubuntu下系统打包/" class="article-date">
-      <time datetime="2017-01-09T03:48:11.000Z" itemprop="datePublished">2017-01-09</time>
+      <a href="/2017/01/10/ubuntu下配置邮件发送/" class="article-date">
+      <time datetime="2017-01-09T16:18:08.000Z" itemprop="datePublished">2017-01-10</time>
 </a>
 
 
@@ -245,7 +245,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      ubuntu下系统打包
+      ubuntu下配置邮件发送
     </h1>
   
 
@@ -255,10 +255,6 @@
         
 
         
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
-    </div>
-
         <div class="clearfix"></div>
       </div>
       
@@ -266,30 +262,39 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>介绍在ubuntu下利用remastersys工具给系统打包成 iso 镜像的方法，在其他系统（centos、windows等）下方法类似，不在赘述。<br><a id="more"></a></p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>​    在初始环境下，经过多次反复安装和配置才组建完成的自己需要的环境，其中各种版本问题和依赖较多，安装过程繁杂，为了避免痛苦的安装过程轮回发生，需要给系统打个包，后续使用直接安装即可。</p>
-<p>使用工具：Remastersys</p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="1、依赖项的安装"><a href="#1、依赖项的安装" class="headerlink" title="1、依赖项的安装"></a>1、依赖项的安装</h3><p>依赖：<a href="ftp://ftp.gwdg.de/pub/linux/easyvdr/mirror/remastersys/ubuntu/remastersys/remastersys_3.0.4-2_all.deb" target="_blank" rel="external">remastersys_3.0.4-2_all.deb</a>，点击即可下载，也可以自己去去<a href="http://www.filewatcher.com/" target="_blank" rel="external">filewatcher</a>搜索下载。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install plymouth-x11 </div><div class="line">sudo dpkg -i remastersys_3.0.4-2_all.deb</div></pre></td></tr></table></figure>
-<h3 id="2、Remastersys安装"><a href="#2、Remastersys安装" class="headerlink" title="2、Remastersys安装"></a>2、Remastersys安装</h3><p>2.1、添加安装源</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo &quot;deb http://www.remastersys.com/ubuntu oneiric main&quot; &gt;&gt; /etc/apt/sources.list</div></pre></td></tr></table></figure>
-<p>2.2、更新安装</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo apt-get update</div><div class="line">sudo install remastersys</div><div class="line">sudo remastersys</div></pre></td></tr></table></figure>
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="语法格式"><a href="#语法格式" class="headerlink" title="语法格式"></a>语法格式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo remastersys  backup|clean|dist  [cdfs|iso]  [filename.iso]</div></pre></td></tr></table></figure>
-<p>两种打包方式：backup和dist</p>
-<p>backup 是对整个系统完全打包，包含个人文件</p>
-<p>dist 方式用做发行，不包含个人文件</p>
-<blockquote>
-<p>更多使用方法可以参考<a href="http://forum.ubuntu.org.cn/viewtopic.php?t=174719" target="_blank" rel="external">ubuntu论坛</a></p>
-</blockquote>
-<h3 id="系统打包"><a href="#系统打包" class="headerlink" title="系统打包"></a>系统打包</h3><p>3.1、产生一个只有档案系统的可发布的 livecd/dvd </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo remastersys dist cdfs</div></pre></td></tr></table></figure>
-<p>3.2、产生一个可发布其名叫 filename.iso的ISO文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo remastersys dist iso filename.iso</div></pre></td></tr></table></figure>
-<p>3.3、将产生的iso文件移动到安全的位置(如果不移动会被清除掉)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mv /home/remastersys/remastersys/filename.iso /root/</div></pre></td></tr></table></figure>
-<p>3.4、清除由 remastersys产生的临时文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo remastersys clean</div></pre></td></tr></table></figure>
+        <p>Linux下发送email有很多种方式，包括sendmail、mailx、mutt、uuencode等等。这里介绍ubuntu下使用mutt和msmtp发送邮件的配置方法。<br><a id="more"></a></p>
+<h2 id="软件包的安装"><a href="#软件包的安装" class="headerlink" title="软件包的安装"></a>软件包的安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install mutt</div><div class="line">sudo apt-get install msmtp</div></pre></td></tr></table></figure>
+<h2 id="文件的配置"><a href="#文件的配置" class="headerlink" title="文件的配置"></a>文件的配置</h2><h3 id="配置-mutt"><a href="#配置-mutt" class="headerlink" title="配置 mutt"></a>配置 mutt</h3><p>,系统全局设置配置文件在 /etc/Muttrc,如果使用某个系统用户，可以在~/.muttc中设置，没有该文件，就自己创建。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">vi .muttrc</div><div class="line"></div><div class="line">set sendmail=&quot;/usr/bin/msmtp&quot;</div><div class="line">set use_from=yes</div><div class="line">set realname=&quot;zhxia&quot;</div><div class="line">set from=zhenghon@ajk.com</div><div class="line">set envelope_from=yes</div></pre></td></tr></table></figure>
+<h3 id="配置msmtp"><a href="#配置msmtp" class="headerlink" title="配置msmtp"></a>配置msmtp</h3><p>创建 ~/.msmtprc 和 ~/.msmtp.log，分别为配置文件和日志文件。</p>
+<p>1、创建配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vi .msmtprc</div></pre></td></tr></table></figure>
+<p>添加以下内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">account default</div><div class="line">host smtp.126.com</div><div class="line">from youremailname@126.com</div><div class="line">auth plain</div><div class="line">user youremailname@126.com</div><div class="line">password xxxxxxx</div><div class="line">logfile ~/.msmtp.log</div></pre></td></tr></table></figure>
+<p>由于password是明文，所以需要修改此文件的访问权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chmod 600 .msmtprc</div></pre></td></tr></table></figure>
+<p>2、创建日志文件 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">touch ~/.msmtp.log</div></pre></td></tr></table></figure>
+<h2 id="邮件发送测试"><a href="#邮件发送测试" class="headerlink" title="邮件发送测试"></a>邮件发送测试</h2><p>查看SMTP服务器是否支持认证的TLS加密</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># msmtp --host=smtp.126.com --serverinfo</div><div class="line">SMTP server at smtp.126.com (m15-111.126.com [220.181.15.111]), port 25:</div><div class="line">    126.com Anti-spam GT for Coremail System (126com[20140526])</div><div class="line">Capabilities:</div><div class="line">    PIPELINING:</div><div class="line">        Support for command grouping for faster transmission</div><div class="line">    STARTTLS:</div><div class="line">        Support for TLS encryption via the STARTTLS command</div><div class="line">    AUTH:</div><div class="line">        Supported authentication methods:</div><div class="line">        PLAIN LOGIN </div><div class="line">This server might advertise more or other capabilities when TLS is active.</div></pre></td></tr></table></figure>
+<p>发送一个简单的邮件测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo &quot;hello world&quot; | mutt -s &quot;title&quot; 12456789@qq.com</div></pre></td></tr></table></figure>
+<p>登录QQ邮箱，可以正常收到邮件，成功！</p>
+<h2 id="四种发送方式"><a href="#四种发送方式" class="headerlink" title="四种发送方式"></a>四种发送方式</h2><p>1、<strong>带有主题，从文件中读取邮件的正文，并发送</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ mutt -s &quot;Testing from mutt&quot; user@example.com &lt; message.txt</div></pre></td></tr></table></figure>
+<p>2、<strong>通过管道获取 <code>echo</code>命令输出作为邮件内容发送</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ echo &quot;This is the body&quot; | mutt -s &quot;Testing mutt&quot; user@example.com</div></pre></td></tr></table></figure>
+<p>3、<strong>发送带附件的邮件</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ echo &quot;This is the body&quot; | mutt -s &quot;Testing mutt&quot; user@example.com -a test.tar.gz</div></pre></td></tr></table></figure>
+<p>多个附件的话在每个附件前加上 <code>-a</code> 即可。</p>
+<p>4、<strong>发送给多个收件人</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo &quot;hello&quot; | mutt -s &quot;title&quot; 111111@qq.com,222222@163.com -c 3333333@qq.com -b 44444444@126.com</div></pre></td></tr></table></figure>
+<p>多个收件人之间用逗号隔开</p>
+<p><strong>抄送</strong>，前面加参数 <code>-c</code> </p>
+<p><strong>密送</strong>，前面加参数 <code>-b</code></p>
+<p><strong>参考资料</strong></p>
+<p><a href="http://www.cnblogs.com/xiazh/archive/2011/04/15/2016966.html" target="_blank" rel="external">ubuntu下使用mutt和msmtp发送邮件的简单配置</a></p>
+<p><a href="https://linux.cn/article-5502-1.html" target="_blank" rel="external">4个可以发送电子邮件的命令行工具</a></p>
 
       
     </div>
@@ -298,13 +303,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/01/09/ubuntu下系统打包/">ubuntu下系统打包</a></p>
+        <p><span>本文标题:</span><a href="/2017/01/10/ubuntu下配置邮件发送/">ubuntu下配置邮件发送</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-01-09, 11:48:11</p>
-        <p><span>最后更新:</span>2017-01-09, 13:44:21</p>
+        <p><span>发布时间:</span>2017-01-10, 00:18:08</p>
+        <p><span>最后更新:</span>2017-01-10, 00:18:08</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/01/09/ubuntu下系统打包/" title="ubuntu下系统打包">http://xiaqunfeng.github.io/2017/01/09/ubuntu下系统打包/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/01/09/ubuntu下系统打包/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/01/10/ubuntu下配置邮件发送/" title="ubuntu下配置邮件发送">http://xiaqunfeng.github.io/2017/01/10/ubuntu下配置邮件发送/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/01/10/ubuntu下配置邮件发送/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -316,16 +321,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/01/10/ubuntu下配置邮件发送/">
-                    ubuntu下配置邮件发送
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/01/06/hexo的搭建/">
-                    Mac上hexo博客的搭建
+                <a href="/2017/01/09/ubuntu下系统打包/">
+                    ubuntu下系统打包
                 </a>
             </div>
         
@@ -337,7 +336,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装"><span class="toc-number">2.</span> <span class="toc-text">安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、依赖项的安装"><span class="toc-number">2.1.</span> <span class="toc-text">1、依赖项的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、Remastersys安装"><span class="toc-number">2.2.</span> <span class="toc-text">2、Remastersys安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用"><span class="toc-number">3.</span> <span class="toc-text">使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#语法格式"><span class="toc-number">3.1.</span> <span class="toc-text">语法格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#系统打包"><span class="toc-number">3.2.</span> <span class="toc-text">系统打包</span></a></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#软件包的安装"><span class="toc-number">1.</span> <span class="toc-text">软件包的安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文件的配置"><span class="toc-number">2.</span> <span class="toc-text">文件的配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#配置-mutt"><span class="toc-number">2.1.</span> <span class="toc-text">配置 mutt</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置msmtp"><span class="toc-number">2.2.</span> <span class="toc-text">配置msmtp</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#邮件发送测试"><span class="toc-number">3.</span> <span class="toc-text">邮件发送测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四种发送方式"><span class="toc-number">4.</span> <span class="toc-text">四种发送方式</span></a></li></ol>
         
     </div>
     <style>
@@ -373,7 +372,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"ubuntu下系统打包　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"ubuntu下配置邮件发送　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -392,8 +391,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.github.io/2017/01/09/ubuntu下系统打包/';
-            this.page.identifier = '2017/01/09/ubuntu下系统打包/';
+            this.page.url = 'http://xiaqunfeng.github.io/2017/01/10/ubuntu下配置邮件发送/';
+            this.page.identifier = '2017/01/10/ubuntu下配置邮件发送/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -415,15 +414,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/01/10/ubuntu下配置邮件发送/" title="上一篇: ubuntu下配置邮件发送">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/01/06/hexo的搭建/" title="下一篇: Mac上hexo博客的搭建">
+            <a href="/2017/01/09/ubuntu下系统打包/" title="下一篇: ubuntu下系统打包">
                 <i class="fa fa-angle-right"></i>
             </a>
         

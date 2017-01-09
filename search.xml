@@ -4,6 +4,45 @@
   
     
     <entry>
+      <title><![CDATA[ubuntu下配置邮件发送]]></title>
+      <url>http://xiaqunfeng.github.io/2017/01/10/ubuntu%E4%B8%8B%E9%85%8D%E7%BD%AE%E9%82%AE%E4%BB%B6%E5%8F%91%E9%80%81/</url>
+      <content type="html"><![CDATA[<p>Linux下发送email有很多种方式，包括sendmail、mailx、mutt、uuencode等等。这里介绍ubuntu下使用mutt和msmtp发送邮件的配置方法。<br><a id="more"></a></p>
+<h2 id="软件包的安装"><a href="#软件包的安装" class="headerlink" title="软件包的安装"></a>软件包的安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install mutt</div><div class="line">sudo apt-get install msmtp</div></pre></td></tr></table></figure>
+<h2 id="文件的配置"><a href="#文件的配置" class="headerlink" title="文件的配置"></a>文件的配置</h2><h3 id="配置-mutt"><a href="#配置-mutt" class="headerlink" title="配置 mutt"></a>配置 mutt</h3><p>,系统全局设置配置文件在 /etc/Muttrc,如果使用某个系统用户，可以在~/.muttc中设置，没有该文件，就自己创建。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">vi .muttrc</div><div class="line"></div><div class="line">set sendmail=&quot;/usr/bin/msmtp&quot;</div><div class="line">set use_from=yes</div><div class="line">set realname=&quot;zhxia&quot;</div><div class="line">set from=zhenghon@ajk.com</div><div class="line">set envelope_from=yes</div></pre></td></tr></table></figure>
+<h3 id="配置msmtp"><a href="#配置msmtp" class="headerlink" title="配置msmtp"></a>配置msmtp</h3><p>创建 ~/.msmtprc 和 ~/.msmtp.log，分别为配置文件和日志文件。</p>
+<p>1、创建配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vi .msmtprc</div></pre></td></tr></table></figure>
+<p>添加以下内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">account default</div><div class="line">host smtp.126.com</div><div class="line">from youremailname@126.com</div><div class="line">auth plain</div><div class="line">user youremailname@126.com</div><div class="line">password xxxxxxx</div><div class="line">logfile ~/.msmtp.log</div></pre></td></tr></table></figure>
+<p>由于password是明文，所以需要修改此文件的访问权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chmod 600 .msmtprc</div></pre></td></tr></table></figure>
+<p>2、创建日志文件 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">touch ~/.msmtp.log</div></pre></td></tr></table></figure>
+<h2 id="邮件发送测试"><a href="#邮件发送测试" class="headerlink" title="邮件发送测试"></a>邮件发送测试</h2><p>查看SMTP服务器是否支持认证的TLS加密</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># msmtp --host=smtp.126.com --serverinfo</div><div class="line">SMTP server at smtp.126.com (m15-111.126.com [220.181.15.111]), port 25:</div><div class="line">    126.com Anti-spam GT for Coremail System (126com[20140526])</div><div class="line">Capabilities:</div><div class="line">    PIPELINING:</div><div class="line">        Support for command grouping for faster transmission</div><div class="line">    STARTTLS:</div><div class="line">        Support for TLS encryption via the STARTTLS command</div><div class="line">    AUTH:</div><div class="line">        Supported authentication methods:</div><div class="line">        PLAIN LOGIN </div><div class="line">This server might advertise more or other capabilities when TLS is active.</div></pre></td></tr></table></figure>
+<p>发送一个简单的邮件测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo &quot;hello world&quot; | mutt -s &quot;title&quot; 12456789@qq.com</div></pre></td></tr></table></figure>
+<p>登录QQ邮箱，可以正常收到邮件，成功！</p>
+<h2 id="四种发送方式"><a href="#四种发送方式" class="headerlink" title="四种发送方式"></a>四种发送方式</h2><p>1、<strong>带有主题，从文件中读取邮件的正文，并发送</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ mutt -s &quot;Testing from mutt&quot; user@example.com &lt; message.txt</div></pre></td></tr></table></figure>
+<p>2、<strong>通过管道获取 <code>echo</code>命令输出作为邮件内容发送</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ echo &quot;This is the body&quot; | mutt -s &quot;Testing mutt&quot; user@example.com</div></pre></td></tr></table></figure>
+<p>3、<strong>发送带附件的邮件</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ echo &quot;This is the body&quot; | mutt -s &quot;Testing mutt&quot; user@example.com -a test.tar.gz</div></pre></td></tr></table></figure>
+<p>多个附件的话在每个附件前加上 <code>-a</code> 即可。</p>
+<p>4、<strong>发送给多个收件人</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo &quot;hello&quot; | mutt -s &quot;title&quot; 111111@qq.com,222222@163.com -c 3333333@qq.com -b 44444444@126.com</div></pre></td></tr></table></figure>
+<p>多个收件人之间用逗号隔开</p>
+<p><strong>抄送</strong>，前面加参数 <code>-c</code> </p>
+<p><strong>密送</strong>，前面加参数 <code>-b</code></p>
+<p><strong>参考资料</strong></p>
+<p><a href="http://www.cnblogs.com/xiazh/archive/2011/04/15/2016966.html" target="_blank" rel="external">ubuntu下使用mutt和msmtp发送邮件的简单配置</a></p>
+<p><a href="https://linux.cn/article-5502-1.html" target="_blank" rel="external">4个可以发送电子邮件的命令行工具</a></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[ubuntu下系统打包]]></title>
       <url>http://xiaqunfeng.github.io/2017/01/09/ubuntu%E4%B8%8B%E7%B3%BB%E7%BB%9F%E6%89%93%E5%8C%85/</url>
       <content type="html"><![CDATA[<p>介绍在ubuntu下利用remastersys工具给系统打包成 iso 镜像的方法，在其他系统（centos、windows等）下方法类似，不在赘述。<br><a id="more"></a></p>
