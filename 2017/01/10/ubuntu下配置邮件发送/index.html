@@ -21,7 +21,7 @@
 <meta property="og:url" content="http://xiaqunfeng.github.io/2017/01/10/ubuntu下配置邮件发送/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="Linux下发送email有很多种方式，包括sendmail、mailx、mutt、uuencode等等。这里介绍ubuntu下使用mutt和msmtp发送邮件的配置方法。">
-<meta property="og:updated_time" content="2017-01-10T01:41:17.000Z">
+<meta property="og:updated_time" content="2017-01-10T06:58:45.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ubuntu下配置邮件发送">
 <meta name="twitter:description" content="Linux下发送email有很多种方式，包括sendmail、mailx、mutt、uuencode等等。这里介绍ubuntu下使用mutt和msmtp发送邮件的配置方法。">
@@ -271,13 +271,17 @@
 <h2 id="文件的配置"><a href="#文件的配置" class="headerlink" title="文件的配置"></a>文件的配置</h2><h3 id="配置-mutt"><a href="#配置-mutt" class="headerlink" title="配置 mutt"></a>配置 mutt</h3><p>,系统全局设置配置文件在 /etc/Muttrc,如果使用某个系统用户，可以在~/.muttc中设置，没有该文件，就自己创建。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">vi .muttrc</div><div class="line"></div><div class="line">set sendmail=&quot;/usr/bin/msmtp&quot;</div><div class="line">set use_from=yes</div><div class="line">set realname=&quot;xia&quot;</div><div class="line">set from=abcdefg@126.com</div><div class="line">set envelope_from=yes</div></pre></td></tr></table></figure>
 <h3 id="配置msmtp"><a href="#配置msmtp" class="headerlink" title="配置msmtp"></a>配置msmtp</h3><p>创建 ~/.msmtprc 和 ~/.msmtp.log，分别为配置文件和日志文件。</p>
-<p>1、创建配置文件</p>
+<p><strong>1、创建配置文件</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vi .msmtprc</div></pre></td></tr></table></figure>
 <p>添加以下内容</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">account default</div><div class="line">host smtp.126.com</div><div class="line">from youremailname@126.com</div><div class="line">auth plain</div><div class="line">user youremailname@126.com</div><div class="line">password xxxxxxx</div><div class="line">logfile ~/.msmtp.log</div></pre></td></tr></table></figure>
 <p>由于password是明文，所以需要修改此文件的访问权限</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chmod 600 .msmtprc</div></pre></td></tr></table></figure>
-<p>2、创建日志文件 </p>
+<p><strong>特别注意</strong>：</p>
+<blockquote>
+<p>这里的密码填的是你的授权密码，不是登录密码!</p>
+</blockquote>
+<p><strong>2、创建日志文件 </strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">touch ~/.msmtp.log</div></pre></td></tr></table></figure>
 <h2 id="邮件发送测试"><a href="#邮件发送测试" class="headerlink" title="邮件发送测试"></a>邮件发送测试</h2><p>查看SMTP服务器是否支持认证的TLS加密</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># msmtp --host=smtp.126.com --serverinfo</div><div class="line">SMTP server at smtp.126.com (m15-111.126.com [220.181.15.111]), port 25:</div><div class="line">    126.com Anti-spam GT for Coremail System (126com[20140526])</div><div class="line">Capabilities:</div><div class="line">    PIPELINING:</div><div class="line">        Support for command grouping for faster transmission</div><div class="line">    STARTTLS:</div><div class="line">        Support for TLS encryption via the STARTTLS command</div><div class="line">    AUTH:</div><div class="line">        Supported authentication methods:</div><div class="line">        PLAIN LOGIN </div><div class="line">This server might advertise more or other capabilities when TLS is active.</div></pre></td></tr></table></figure>
@@ -296,6 +300,13 @@
 <p>多个收件人之间用逗号隔开</p>
 <p><strong>抄送</strong>，前面加参数 <code>-c</code> </p>
 <p><strong>密送</strong>，前面加参数 <code>-b</code></p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>1、出现如下错误</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">msmtp: authentication failed (method PLAIN)</div><div class="line">msmtp: server message: 530 Error: A secure connection is requiered(such as ssl). More information at http://service.mail.qq.com/cgi-bin/help?id=28</div><div class="line">msmtp: could not send mail (account default from /root/.msmtprc)</div><div class="line">Error sending message, child exited 77 (Insufficient permission.).</div><div class="line">Could not send the message.</div></pre></td></tr></table></figure>
+<p>原因，没有权限进行操作</p>
+<p>解决方法：</p>
+<blockquote>
+<p>登录网页邮箱，设置开启POP3/SMTP服务、IMAP/SMTP服务</p>
+</blockquote>
 <p><strong>参考资料</strong></p>
 <p><a href="http://www.cnblogs.com/xiazh/archive/2011/04/15/2016966.html" target="_blank" rel="external">ubuntu下使用mutt和msmtp发送邮件的简单配置</a></p>
 <p><a href="https://linux.cn/article-5502-1.html" target="_blank" rel="external">4个可以发送电子邮件的命令行工具</a></p>
@@ -310,7 +321,7 @@
         <p><span>本文标题:</span><a href="/2017/01/10/ubuntu下配置邮件发送/">ubuntu下配置邮件发送</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
         <p><span>发布时间:</span>2017-01-10, 09:41:17</p>
-        <p><span>最后更新:</span>2017-01-10, 09:41:17</p>
+        <p><span>最后更新:</span>2017-01-10, 14:58:45</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/01/10/ubuntu下配置邮件发送/" title="ubuntu下配置邮件发送">http://xiaqunfeng.github.io/2017/01/10/ubuntu下配置邮件发送/</a>
             <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/01/10/ubuntu下配置邮件发送/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -340,7 +351,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#软件包的安装"><span class="toc-number">1.</span> <span class="toc-text">软件包的安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文件的配置"><span class="toc-number">2.</span> <span class="toc-text">文件的配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#配置-mutt"><span class="toc-number">2.1.</span> <span class="toc-text">配置 mutt</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置msmtp"><span class="toc-number">2.2.</span> <span class="toc-text">配置msmtp</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#邮件发送测试"><span class="toc-number">3.</span> <span class="toc-text">邮件发送测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四种发送方式"><span class="toc-number">4.</span> <span class="toc-text">四种发送方式</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#软件包的安装"><span class="toc-number">1.</span> <span class="toc-text">软件包的安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文件的配置"><span class="toc-number">2.</span> <span class="toc-text">文件的配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#配置-mutt"><span class="toc-number">2.1.</span> <span class="toc-text">配置 mutt</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置msmtp"><span class="toc-number">2.2.</span> <span class="toc-text">配置msmtp</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#邮件发送测试"><span class="toc-number">3.</span> <span class="toc-text">邮件发送测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四种发送方式"><span class="toc-number">4.</span> <span class="toc-text">四种发送方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题"><span class="toc-number">5.</span> <span class="toc-text">问题</span></a></li></ol>
         
     </div>
     <style>
