@@ -21,7 +21,7 @@
 <meta property="og:url" content="http://xiaqunfeng.github.io/2017/01/10/ubuntu下配置邮件发送/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="Linux下发送email有很多种方式，包括sendmail、mailx、mutt、uuencode等等。这里介绍ubuntu下使用mutt和msmtp发送邮件的配置方法。">
-<meta property="og:updated_time" content="2017-01-09T16:20:45.000Z">
+<meta property="og:updated_time" content="2017-01-10T01:41:17.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ubuntu下配置邮件发送">
 <meta name="twitter:description" content="Linux下发送email有很多种方式，包括sendmail、mailx、mutt、uuencode等等。这里介绍ubuntu下使用mutt和msmtp发送邮件的配置方法。">
@@ -230,7 +230,7 @@
   
     <div class="article-meta">
       <a href="/2017/01/10/ubuntu下配置邮件发送/" class="article-date">
-      <time datetime="2017-01-09T16:20:45.000Z" itemprop="datePublished">2017-01-10</time>
+      <time datetime="2017-01-10T01:41:17.000Z" itemprop="datePublished">2017-01-10</time>
 </a>
 
 
@@ -269,7 +269,7 @@
         <p>Linux下发送email有很多种方式，包括sendmail、mailx、mutt、uuencode等等。这里介绍ubuntu下使用mutt和msmtp发送邮件的配置方法。<br><a id="more"></a></p>
 <h2 id="软件包的安装"><a href="#软件包的安装" class="headerlink" title="软件包的安装"></a>软件包的安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install mutt</div><div class="line">sudo apt-get install msmtp</div></pre></td></tr></table></figure>
 <h2 id="文件的配置"><a href="#文件的配置" class="headerlink" title="文件的配置"></a>文件的配置</h2><h3 id="配置-mutt"><a href="#配置-mutt" class="headerlink" title="配置 mutt"></a>配置 mutt</h3><p>,系统全局设置配置文件在 /etc/Muttrc,如果使用某个系统用户，可以在~/.muttc中设置，没有该文件，就自己创建。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">vi .muttrc</div><div class="line"></div><div class="line">set sendmail=&quot;/usr/bin/msmtp&quot;</div><div class="line">set use_from=yes</div><div class="line">set realname=&quot;zhxia&quot;</div><div class="line">set from=zhenghon@ajk.com</div><div class="line">set envelope_from=yes</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">vi .muttrc</div><div class="line"></div><div class="line">set sendmail=&quot;/usr/bin/msmtp&quot;</div><div class="line">set use_from=yes</div><div class="line">set realname=&quot;xia&quot;</div><div class="line">set from=abcdefg@126.com</div><div class="line">set envelope_from=yes</div></pre></td></tr></table></figure>
 <h3 id="配置msmtp"><a href="#配置msmtp" class="headerlink" title="配置msmtp"></a>配置msmtp</h3><p>创建 ~/.msmtprc 和 ~/.msmtp.log，分别为配置文件和日志文件。</p>
 <p>1、创建配置文件</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vi .msmtprc</div></pre></td></tr></table></figure>
@@ -285,14 +285,14 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo &quot;hello world&quot; | mutt -s &quot;title&quot; 12456789@qq.com</div></pre></td></tr></table></figure>
 <p>登录QQ邮箱，可以正常收到邮件，成功！</p>
 <h2 id="四种发送方式"><a href="#四种发送方式" class="headerlink" title="四种发送方式"></a>四种发送方式</h2><p>1、<strong>带有主题，从文件中读取邮件的正文，并发送</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ mutt -s &quot;Testing from mutt&quot; user@example.com &lt; message.txt</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ mutt -s &quot;hello mutt&quot; user@example.com &lt; message.txt</div></pre></td></tr></table></figure>
 <p>2、<strong>通过管道获取 <code>echo</code>命令输出作为邮件内容发送</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ echo &quot;This is the body&quot; | mutt -s &quot;Testing mutt&quot; user@example.com</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ echo &quot;hello mutt&quot; | mutt -s &quot;Testing mutt&quot; user@example.com</div></pre></td></tr></table></figure>
 <p>3、<strong>发送带附件的邮件</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ echo &quot;This is the body&quot; | mutt -s &quot;Testing mutt&quot; user@example.com -a test.tar.gz</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ echo &quot;hello mutt&quot; | mutt -s &quot;Testing mutt&quot; user@example.com -a test.tar.gz</div></pre></td></tr></table></figure>
 <p>多个附件的话在每个附件前加上 <code>-a</code> 即可。</p>
 <p>4、<strong>发送给多个收件人</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo &quot;hello&quot; | mutt -s &quot;title&quot; 111111@qq.com,222222@163.com -c 3333333@qq.com -b 44444444@126.com</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo &quot;hello mutt&quot; | mutt -s &quot;Testing muttt&quot; 111111@qq.com,222222@163.com -c 3333333@qq.com -b 44444444@126.com</div></pre></td></tr></table></figure>
 <p>多个收件人之间用逗号隔开</p>
 <p><strong>抄送</strong>，前面加参数 <code>-c</code> </p>
 <p><strong>密送</strong>，前面加参数 <code>-b</code></p>
@@ -309,8 +309,8 @@
     <div class="copyright">
         <p><span>本文标题:</span><a href="/2017/01/10/ubuntu下配置邮件发送/">ubuntu下配置邮件发送</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-01-10, 00:20:45</p>
-        <p><span>最后更新:</span>2017-01-10, 00:20:45</p>
+        <p><span>发布时间:</span>2017-01-10, 09:41:17</p>
+        <p><span>最后更新:</span>2017-01-10, 09:41:17</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/01/10/ubuntu下配置邮件发送/" title="ubuntu下配置邮件发送">http://xiaqunfeng.github.io/2017/01/10/ubuntu下配置邮件发送/</a>
             <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/01/10/ubuntu下配置邮件发送/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
