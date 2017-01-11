@@ -15,16 +15,16 @@
 
 
 
-<meta name="description" content="介绍在ubuntu下利用remastersys工具给系统打包成 iso 镜像的方法，在其他系统（centos、windows等）下方法类似，不在赘述。">
+<meta name="description" content="Linux本身是支持多终端并行处理的，但是某些时候我们可能需要两个人同时处理同一个终端，比如远程协助定位问题等。screen正好能满足这个需求。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ubuntu下系统打包">
-<meta property="og:url" content="http://xiaqunfeng.github.io/2017/01/09/ubuntu下系统打包/index.html">
+<meta property="og:title" content="Linux下利用screen进行屏幕协作">
+<meta property="og:url" content="http://xiaqunfeng.github.io/2017/01/11/Linux下利用screen进行屏幕协作/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="介绍在ubuntu下利用remastersys工具给系统打包成 iso 镜像的方法，在其他系统（centos、windows等）下方法类似，不在赘述。">
-<meta property="og:updated_time" content="2017-01-09T05:44:21.000Z">
+<meta property="og:description" content="Linux本身是支持多终端并行处理的，但是某些时候我们可能需要两个人同时处理同一个终端，比如远程协助定位问题等。screen正好能满足这个需求。">
+<meta property="og:updated_time" content="2017-01-11T03:30:52.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ubuntu下系统打包">
-<meta name="twitter:description" content="介绍在ubuntu下利用remastersys工具给系统打包成 iso 镜像的方法，在其他系统（centos、windows等）下方法类似，不在赘述。">
+<meta name="twitter:title" content="Linux下利用screen进行屏幕协作">
+<meta name="twitter:description" content="Linux本身是支持多终端并行处理的，但是某些时候我们可能需要两个人同时处理同一个终端，比如远程协助定位问题等。screen正好能满足这个需求。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -56,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>ubuntu下系统打包 | 夏天的风的博客</title>
+<title>Linux下利用screen进行屏幕协作 | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -226,11 +226,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-ubuntu下系统打包" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Linux下利用screen进行屏幕协作" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/01/09/ubuntu下系统打包/" class="article-date">
-      <time datetime="2017-01-09T03:48:11.000Z" itemprop="datePublished">2017-01-09</time>
+      <a href="/2017/01/11/Linux下利用screen进行屏幕协作/" class="article-date">
+      <time datetime="2017-01-11T03:30:52.000Z" itemprop="datePublished">2017-01-11</time>
 </a>
 
 
@@ -245,7 +245,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      ubuntu下系统打包
+      Linux下利用screen进行屏幕协作
     </h1>
   
 
@@ -256,7 +256,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -266,30 +266,23 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>介绍在ubuntu下利用remastersys工具给系统打包成 iso 镜像的方法，在其他系统（centos、windows等）下方法类似，不在赘述。<br><a id="more"></a></p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>​    在初始环境下，经过多次反复安装和配置才组建完成的自己需要的环境，其中各种版本问题和依赖较多，安装过程繁杂，为了避免痛苦的安装过程轮回发生，需要给系统打个包，后续使用直接安装即可。</p>
-<p>使用工具：Remastersys</p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="1、依赖项的安装"><a href="#1、依赖项的安装" class="headerlink" title="1、依赖项的安装"></a>1、依赖项的安装</h3><p>依赖：<a href="ftp://ftp.gwdg.de/pub/linux/easyvdr/mirror/remastersys/ubuntu/remastersys/remastersys_3.0.4-2_all.deb" target="_blank" rel="external">remastersys_3.0.4-2_all.deb</a>，点击即可下载，也可以自己去去<a href="http://www.filewatcher.com/" target="_blank" rel="external">filewatcher</a>搜索下载。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install plymouth-x11 </div><div class="line">sudo dpkg -i remastersys_3.0.4-2_all.deb</div></pre></td></tr></table></figure>
-<h3 id="2、Remastersys安装"><a href="#2、Remastersys安装" class="headerlink" title="2、Remastersys安装"></a>2、Remastersys安装</h3><p>2.1、添加安装源</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo &quot;deb http://www.remastersys.com/ubuntu oneiric main&quot; &gt;&gt; /etc/apt/sources.list</div></pre></td></tr></table></figure>
-<p>2.2、更新安装</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo apt-get update</div><div class="line">sudo install remastersys</div><div class="line">sudo remastersys</div></pre></td></tr></table></figure>
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="语法格式"><a href="#语法格式" class="headerlink" title="语法格式"></a>语法格式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo remastersys  backup|clean|dist  [cdfs|iso]  [filename.iso]</div></pre></td></tr></table></figure>
-<p>两种打包方式：backup和dist</p>
-<p>backup 是对整个系统完全打包，包含个人文件</p>
-<p>dist 方式用做发行，不包含个人文件</p>
+        <p>Linux本身是支持多终端并行处理的，但是某些时候我们可能需要两个人同时处理同一个终端，比如远程协助定位问题等。screen正好能满足这个需求。<br><a id="more"></a></p>
+<h2 id="screen的安装"><a href="#screen的安装" class="headerlink" title="screen的安装"></a>screen的安装</h2><p>debian和ubuntu下安装方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apt-get install screen</div></pre></td></tr></table></figure>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><p>假设现在有a和b需要进行屏幕协作。</p>
 <blockquote>
-<p>更多使用方法可以参考<a href="http://forum.ubuntu.org.cn/viewtopic.php?t=174719" target="_blank" rel="external">ubuntu论坛</a></p>
+<p>他们需要登录同一台服务器/机器</p>
+<p>必须使用相同的账户，不同账户之前不能屏幕协作</p>
 </blockquote>
-<h3 id="系统打包"><a href="#系统打包" class="headerlink" title="系统打包"></a>系统打包</h3><p>3.1、产生一个只有档案系统的可发布的 livecd/dvd </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo remastersys dist cdfs</div></pre></td></tr></table></figure>
-<p>3.2、产生一个可发布其名叫 filename.iso的ISO文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo remastersys dist iso filename.iso</div></pre></td></tr></table></figure>
-<p>3.3、将产生的iso文件移动到安全的位置(如果不移动会被清除掉)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mv /home/remastersys/remastersys/filename.iso /root/</div></pre></td></tr></table></figure>
-<p>3.4、清除由 remastersys产生的临时文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo remastersys clean</div></pre></td></tr></table></figure>
+<p>第一步：a 在终端上运行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">screen -S zp</div></pre></td></tr></table></figure>
+<p><strong>注意</strong>：<code>S</code> 是大写</p>
+<p>第二步：b 在终端上运行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">screen -x zp</div></pre></td></tr></table></figure>
+<p>这时两边的操作是实时而且同步的。</p>
+<h2 id="退出协作"><a href="#退出协作" class="headerlink" title="退出协作"></a>退出协作</h2><p>在任意一个终端上输入命令：<code>exit</code> ，输出如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[screen is terminating]</div></pre></td></tr></table></figure>
+<p>表示退出成功。</p>
 
       
     </div>
@@ -298,13 +291,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/01/09/ubuntu下系统打包/">ubuntu下系统打包</a></p>
+        <p><span>本文标题:</span><a href="/2017/01/11/Linux下利用screen进行屏幕协作/">Linux下利用screen进行屏幕协作</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-01-09, 11:48:11</p>
-        <p><span>最后更新:</span>2017-01-09, 13:44:21</p>
+        <p><span>发布时间:</span>2017-01-11, 11:30:52</p>
+        <p><span>最后更新:</span>2017-01-11, 11:30:52</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/01/09/ubuntu下系统打包/" title="ubuntu下系统打包">http://xiaqunfeng.github.io/2017/01/09/ubuntu下系统打包/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/01/09/ubuntu下系统打包/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/01/11/Linux下利用screen进行屏幕协作/" title="Linux下利用screen进行屏幕协作">http://xiaqunfeng.github.io/2017/01/11/Linux下利用screen进行屏幕协作/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/01/11/Linux下利用screen进行屏幕协作/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -316,16 +309,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/01/10/ubuntu下配置邮件发送/">
-                    ubuntu下配置邮件发送
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/01/06/hexo的搭建/">
-                    Mac上hexo博客的搭建
+                <a href="/2017/01/11/Linux命令——crontab/">
+                    Linux命令——crontab
                 </a>
             </div>
         
@@ -337,7 +324,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装"><span class="toc-number">2.</span> <span class="toc-text">安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、依赖项的安装"><span class="toc-number">2.1.</span> <span class="toc-text">1、依赖项的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、Remastersys安装"><span class="toc-number">2.2.</span> <span class="toc-text">2、Remastersys安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用"><span class="toc-number">3.</span> <span class="toc-text">使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#语法格式"><span class="toc-number">3.1.</span> <span class="toc-text">语法格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#系统打包"><span class="toc-number">3.2.</span> <span class="toc-text">系统打包</span></a></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#screen的安装"><span class="toc-number">1.</span> <span class="toc-text">screen的安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用方法"><span class="toc-number">2.</span> <span class="toc-text">使用方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#退出协作"><span class="toc-number">3.</span> <span class="toc-text">退出协作</span></a></li></ol>
         
     </div>
     <style>
@@ -373,7 +360,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"ubuntu下系统打包　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"Linux下利用screen进行屏幕协作　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -392,8 +379,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.github.io/2017/01/09/ubuntu下系统打包/';
-            this.page.identifier = '2017/01/09/ubuntu下系统打包/';
+            this.page.url = 'http://xiaqunfeng.github.io/2017/01/11/Linux下利用screen进行屏幕协作/';
+            this.page.identifier = '2017/01/11/Linux下利用screen进行屏幕协作/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -415,15 +402,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/01/10/ubuntu下配置邮件发送/" title="上一篇: ubuntu下配置邮件发送">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/01/06/hexo的搭建/" title="下一篇: Mac上hexo博客的搭建">
+            <a href="/2017/01/11/Linux命令——crontab/" title="下一篇: Linux命令——crontab">
                 <i class="fa fa-angle-right"></i>
             </a>
         
