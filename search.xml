@@ -4,6 +4,36 @@
   
     
     <entry>
+      <title><![CDATA[解决calamari无法获取集群hosts信息的BUG]]></title>
+      <url>http://xiaqunfeng.github.io/2017/01/12/%E8%A7%A3%E5%86%B3calamari%E6%97%A0%E6%B3%95%E8%8E%B7%E5%8F%96%E9%9B%86%E7%BE%A4hosts%E4%BF%A1%E6%81%AF%E7%9A%84BUG/</url>
+      <content type="html"><![CDATA[<p>如题，环境是ubuntu 14.04，解决过程和方法详见正文。<br><a id="more"></a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前在磨磨的文章中看到这个问题，他是在CentOS上，通过修改 <code>/usr/lib/python2.7/site-packages/salt/master.py</code> 文件，然后重启salt-master和salt-minion服务来解决的，链接在文末。原理类似，可ubuntu上并不能完全照搬。</p>
+<h2 id="折腾过程"><a href="#折腾过程" class="headerlink" title="折腾过程"></a>折腾过程</h2><blockquote>
+<p>这部分的内容为折腾求证的过程，想看解决方法的可以直接跳过！</p>
+</blockquote>
+<p>在ubuntu上并没有这个文件和路径，通过tab可以看到site开头的只有这几个：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root@calamari:~# vim /usr/lib/python2.7/site</div><div class="line">sitecustomize.py   sitecustomize.pyc  site.py            site.pyc</div></pre></td></tr></table></figure>
+<p>我以为可能是系统下包安装的位置不对而已，好，那我就查看一下ubuntu下salt-master的安装位置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">root@calamari:~# dpkg -L salt-master</div><div class="line">/.</div><div class="line">/usr</div><div class="line">/usr/share</div><div class="line">/usr/share/man</div><div class="line">/usr/share/man/man1</div><div class="line">/usr/share/man/man1/salt.1.gz</div><div class="line">/usr/share/man/man1/salt-run.1.gz</div><div class="line">/usr/share/man/man1/salt-master.1.gz</div><div class="line">/usr/share/man/man1/salt-key.1.gz</div><div class="line">/usr/share/man/man1/salt-cp.1.gz</div><div class="line">/usr/share/doc</div><div class="line">/usr/share/doc/salt-master</div><div class="line">/usr/share/doc/salt-master/changelog.Debian.gz</div><div class="line">/usr/share/doc/salt-master/NEWS.Debian.gz</div><div class="line">/usr/share/doc/salt-master/copyright</div><div class="line">/usr/bin</div><div class="line">/usr/bin/salt-run</div><div class="line">/usr/bin/salt-master</div><div class="line">/usr/bin/salt-key</div><div class="line">/usr/bin/salt-cp</div><div class="line">/usr/bin/salt</div><div class="line">/lib</div><div class="line">/lib/systemd</div><div class="line">/lib/systemd/system</div><div class="line">/lib/systemd/system/salt-master.service</div><div class="line">/etc</div><div class="line">/etc/init.d</div><div class="line">/etc/init.d/salt-master</div><div class="line">/etc/init</div><div class="line">/etc/init/salt-master.conf</div><div class="line">/etc/salt</div><div class="line">/etc/salt/master</div><div class="line">/etc/salt/master.d</div></pre></td></tr></table></figure>
+<p>然后通过 <code>find</code> 命令去 <code>/etc, /usr, /lib</code> 这几个目录下找 <code>master.py</code> ，结果真没有</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find: `master.py&apos;: No such file or directory</div></pre></td></tr></table></figure>
+<p>好吧，下面来看问题。</p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>在calamari的web界面下，查看 MANAGE -&gt; Cluster -&gt;HOSTS 信息，发现啥也没有，如下图所示：<img src="http://ojet8bprn.bkt.clouddn.com/calamari-1.png" alt="calamari-1"></p>
+<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>calamari的salt-master节点在读取</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/var/cache/salt/master/minions/&#123;minion-hostname&#125;/data.p</div></pre></td></tr></table></figure>
+<p>该文件的时候有权限问题，当前权限为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-rw------- 1 root root 3019 Jan 10 11:06 data.p</div></pre></td></tr></table></figure>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>修改权限为 644 即可，写了个脚本，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">for x in 0 1 2</div><div class="line">do</div><div class="line">    chmod 644 /var/cache/salt/master/minions/ceph$x/data.p</div><div class="line">done</div></pre></td></tr></table></figure>
+<p>修改完后，再次查看，可以看到hosts的详细信息了<img src="http://ojet8bprn.bkt.clouddn.com/calamari-2.png" alt="calamari-2"></p>
+<blockquote>
+<p>当然，重启 salt-minion 后又需要在 salt-master 机器上重新执行一遍，<del>~~(&gt;_&lt;)</del>~~，忧伤~</p>
+</blockquote>
+<p>磨磨的方法：<a href="http://www.zphj1987.com/2017/01/09/calamari-node-info/" target="_blank" rel="external">centos下该问题的解决方法</a></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[ubuntu下配置邮件发送]]></title>
       <url>http://xiaqunfeng.github.io/2017/01/11/ubuntu%E4%B8%8B%E9%85%8D%E7%BD%AE%E9%82%AE%E4%BB%B6%E5%8F%91%E9%80%81/</url>
       <content type="html"><![CDATA[<p>Linux下发送email有很多种方式，包括sendmail、mailx、mutt、uuencode等等。这里介绍ubuntu下使用mutt和msmtp发送邮件的配置方法。<br><a id="more"></a></p>
