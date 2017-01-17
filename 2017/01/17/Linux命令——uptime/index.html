@@ -15,16 +15,16 @@
 
 
 
-<meta name="description" content="dd是经常使用的命令了，方便快捷，这里闲来小总结一下，以及怎样测出最真实的写入速度。">
+<meta name="description" content="打印系统总共运行了多长时间和系统的平均负载。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="dd磁盘命令小记">
-<meta property="og:url" content="http://xiaqunfeng.github.io/2017/01/12/dd磁盘命令小记/index.html">
+<meta property="og:title" content="Linux命令——uptime">
+<meta property="og:url" content="http://xiaqunfeng.github.io/2017/01/17/Linux命令——uptime/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="dd是经常使用的命令了，方便快捷，这里闲来小总结一下，以及怎样测出最真实的写入速度。">
-<meta property="og:updated_time" content="2017-01-12T12:30:49.000Z">
+<meta property="og:description" content="打印系统总共运行了多长时间和系统的平均负载。">
+<meta property="og:updated_time" content="2017-01-17T10:05:16.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="dd磁盘命令小记">
-<meta name="twitter:description" content="dd是经常使用的命令了，方便快捷，这里闲来小总结一下，以及怎样测出最真实的写入速度。">
+<meta name="twitter:title" content="Linux命令——uptime">
+<meta name="twitter:description" content="打印系统总共运行了多长时间和系统的平均负载。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -56,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>dd磁盘命令小记 | 夏天的风的博客</title>
+<title>Linux命令——uptime | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -226,11 +226,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-dd磁盘命令小记" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Linux命令——uptime" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/01/12/dd磁盘命令小记/" class="article-date">
-      <time datetime="2017-01-12T12:30:49.000Z" itemprop="datePublished">2017-01-12</time>
+      <a href="/2017/01/17/Linux命令——uptime/" class="article-date">
+      <time datetime="2017-01-17T10:05:16.000Z" itemprop="datePublished">2017-01-17</time>
 </a>
 
 
@@ -245,7 +245,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      dd磁盘命令小记
+      Linux命令——uptime
     </h1>
   
 
@@ -266,90 +266,42 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>dd是经常使用的命令了，方便快捷，这里闲来小总结一下，以及怎样测出最真实的写入速度。<br><a id="more"></a></p>
-<h2 id="命令的使用"><a href="#命令的使用" class="headerlink" title="命令的使用"></a>命令的使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"># dd --help</div><div class="line">Usage: dd [OPERAND]...</div><div class="line">  or:  dd OPTION</div><div class="line">Copy a file, converting and formatting according to the operands.</div><div class="line"></div><div class="line">  bs=BYTES        read and write up to BYTES bytes at a time</div><div class="line">  cbs=BYTES       convert BYTES bytes at a time</div><div class="line">  conv=CONVS      convert the file as per the comma separated symbol list</div><div class="line">  count=N         copy only N input blocks</div><div class="line">  ibs=BYTES       read up to BYTES bytes at a time (default: 512)</div><div class="line">  if=FILE         read from FILE instead of stdin</div><div class="line">  iflag=FLAGS     read as per the comma separated symbol list</div><div class="line">  obs=BYTES       write BYTES bytes at a time (default: 512)</div><div class="line">  of=FILE         write to FILE instead of stdout</div><div class="line">  oflag=FLAGS     write as per the comma separated symbol list</div><div class="line">  seek=N          skip N obs-sized blocks at start of output</div><div class="line">  skip=N          skip N ibs-sized blocks at start of input</div><div class="line">  status=WHICH    WHICH info to suppress outputting to stderr;</div><div class="line">                  &apos;noxfer&apos; suppresses transfer stats, &apos;none&apos; suppresses all</div></pre></td></tr></table></figure>
-<p><strong>翻译</strong></p>
+        <p>打印系统总共运行了多长时间和系统的平均负载。<br><a id="more"></a></p>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Usage:</div><div class="line"> uptime [options]</div><div class="line"></div><div class="line">Options:</div><div class="line"> -p, --pretty   show uptime in pretty format</div><div class="line"> -h, --help     display this help and exit</div><div class="line"> -s, --since    system up since</div><div class="line"> -V, --version  output version information and exit</div><div class="line"></div><div class="line">For more details see uptime(1).</div></pre></td></tr></table></figure>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><h3 id="uptime"><a href="#uptime" class="headerlink" title="uptime"></a>uptime</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># uptime</div><div class="line"> 17:40:45 up 1 day,  6:37,  3 users,  load average: 0.27, 0.21, 0.31</div></pre></td></tr></table></figure>
 <table>
 <thead>
 <tr>
-<th>选项</th>
-<th>意义</th>
+<th>显示内容</th>
+<th>释义</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>bs</td>
-<td>同时设置读写块的大小为 bytes ，可代替 ibs 和 obs</td>
+<td>17:40:45</td>
+<td>系统当前时间</td>
 </tr>
 <tr>
-<td>cbs</td>
-<td>一次转换 bytes 个字节，即转换缓冲区大小</td>
+<td>up 1 day,  6:37</td>
+<td>主机已运行时间，时间越大，说明机器越稳定</td>
 </tr>
 <tr>
-<td>conv</td>
-<td>转换参数</td>
+<td>3 users</td>
+<td>用户连接数，是总连接数而不是用户数</td>
 </tr>
 <tr>
-<td>count</td>
-<td>复制的块数</td>
-</tr>
-<tr>
-<td>ibs</td>
-<td>一次读入 bytes 个字节(即一个块大小为 bytes 个字节)</td>
-</tr>
-<tr>
-<td>if</td>
-<td>输入文件 或 设备名称</td>
-</tr>
-<tr>
-<td>iflag</td>
-<td>按照逗号来分隔读参数</td>
-</tr>
-<tr>
-<td>obs</td>
-<td>一次写 bytes 个字节(即一个块大小为 bytes 个字节)</td>
-</tr>
-<tr>
-<td>of</td>
-<td>输出文件 或 设备名称</td>
-</tr>
-<tr>
-<td>oflag</td>
-<td>按照逗号来分隔写参数</td>
-</tr>
-<tr>
-<td>seek</td>
-<td>从输出文件开头跳过 blocks 个块后再开始复制</td>
-</tr>
-<tr>
-<td>skip</td>
-<td>从输入文件开头跳过 blocks 个块后再开始复制</td>
+<td>load average: 0.27, 0.21, 0.31</td>
+<td>最近1，5，15分钟的系统平均负载</td>
 </tr>
 </tbody>
 </table>
-<p>查看版本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dd --version</div></pre></td></tr></table></figure>
-<h2 id="磁盘读写"><a href="#磁盘读写" class="headerlink" title="磁盘读写"></a>磁盘读写</h2><p><strong>两个特殊的设备</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/dev/null：伪设备，相当于黑洞，of到该设备不会产生IO</div><div class="line">/dev/zero：伪设备，它只产生空字符流，对它不会产生IO</div></pre></td></tr></table></figure>
-<p><strong>1、测试磁盘写能力</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dd if=/dev/zero of=/test.a bs=8k count=10000</div></pre></td></tr></table></figure>
-<p>IO都集中在of文件中，of文件只用于写，相当于测试磁盘的写能力。</p>
-<p><strong>2、测试磁盘读能力</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dd if=/dev/sdb1 of=/dev/null bs=8k count=10000</div></pre></td></tr></table></figure>
-<p>IO只发生在/dev/sdb1上，相当于测试磁盘的读能力。</p>
-<p><strong>3、测试同时读写能力</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dd if=/dev/sdb1 of=/test.a bs=8k count=10000</div></pre></td></tr></table></figure>
-<p>一个是物理分区，一个是实际的文件，对它们的读写都会产生IO，如果它们都在一个磁盘中，该命令就相当于测试磁盘的同时读写能力。</p>
-<h2 id="几种测试写磁盘的区别"><a href="#几种测试写磁盘的区别" class="headerlink" title="几种测试写磁盘的区别"></a>几种测试写磁盘的区别</h2><p>先给出四种测试方式的结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"># dd if=/dev/zero of=test bs=1M count=128</div><div class="line">128+0 records in</div><div class="line">128+0 records out</div><div class="line">134217728 bytes (134 MB) copied, 0.116559 s, 1.2 GB/s</div><div class="line"></div><div class="line"># dd if=/dev/zero of=test bs=1M count=128 ; sync</div><div class="line">128+0 records in</div><div class="line">128+0 records out</div><div class="line">134217728 bytes (134 MB) copied, 0.125106 s, 1.1 GB/s</div><div class="line"></div><div class="line"># dd if=/dev/zero of=test bs=1M count=128 conv=fdatasync</div><div class="line">128+0 records in</div><div class="line">128+0 records out</div><div class="line">134217728 bytes (134 MB) copied, 1.76802 s, 75.9 MB/s</div><div class="line"></div><div class="line"># dd if=/dev/zero of=test bs=1M count=128 oflag=dsync</div><div class="line">128+0 records in</div><div class="line">128+0 records out</div><div class="line">134217728 bytes (134 MB) copied, 4.91353 s, 27.3 MB/s</div></pre></td></tr></table></figure>
-<p>1、<code>dd if=/dev/zero of=test bs=1M count=128</code></p>
-<p>没有加任何参数，命令只是单纯地把这128MB的数据读到内存缓冲当中，dd命令完成前并没有让系统真正把文件写到磁盘上。所以得到的是一个超级快的速度。直到dd完成后系统才开始真正往磁盘上写数据,但这个速度你是看不到了。</p>
-<p>2、<code>dd if=/dev/zero of=test bs=1M count=128 ; sync</code></p>
-<p>这事先后两个独立的命令。当sync命令准备开始往磁盘上真正写入数据的时候，前面dd命令已经把错误的“写入速度”值显示在屏幕上了。所以得到的不是真正的写入速度。</p>
-<p><strong>3、<code>dd if=/dev/zero of=test bs=1M count=128 conv=fdatasync</code></strong></p>
-<p>加入参数 <code>conv=fdatasync</code> 后，dd命令执行到最后会真正执行一次“同步(sync)”操作，所以这时候得到的是读取这128M数据到内存并写入到磁盘上所需的时间，这样算出来的时间才是<strong>比较符合实际</strong>的。这种方式最接近计算机实际操作，所以测出来的数据最有参考价值。</p>
-<p>4、<code>dd if=/dev/zero of=test bs=1M count=128 oflag=dsync</code></p>
-<p>加入参数 <code>oflag=dsync</code> 后，dd在执行时每次都会进行同步写入操作。这条命令每次读取1M后就要先把这1M写入磁盘，然后再读取下面这1M，一共重复128次。这是最慢的一种方式，因为基本上没有用到写缓存(write cache)。</p>
+<p><strong>系统平均负载</strong>：在特定时间间隔内运行队列中的平均进程数。</p>
+<p><strong>查看CPU内核数</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># cat /proc/cpuinfo |grep &quot;processor&quot;|wc -l</div><div class="line">4</div></pre></td></tr></table></figure>
+<p>如果每个CPU内核的当前活动进程数不大于3的话，那么系统的性能是良好的。如果每个CPU内核的任务数大于5，那么这台机器的性能有严重问题。</p>
+<h3 id="运行时间格式输出"><a href="#运行时间格式输出" class="headerlink" title="运行时间格式输出"></a>运行时间格式输出</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># uptime -p</div><div class="line">up 1 day, 6 hours, 56 minutes</div></pre></td></tr></table></figure>
+<h3 id="系统启动的时间"><a href="#系统启动的时间" class="headerlink" title="系统启动的时间"></a>系统启动的时间</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># uptime -s</div><div class="line">2017-01-16 11:03:35</div></pre></td></tr></table></figure>
+<h3 id="uptime版本"><a href="#uptime版本" class="headerlink" title="uptime版本"></a>uptime版本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># uptime -V</div><div class="line">uptime from procps-ng 3.3.9</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -358,13 +310,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/01/12/dd磁盘命令小记/">dd磁盘命令小记</a></p>
+        <p><span>本文标题:</span><a href="/2017/01/17/Linux命令——uptime/">Linux命令——uptime</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-01-12, 20:30:49</p>
-        <p><span>最后更新:</span>2017-01-12, 20:30:49</p>
+        <p><span>发布时间:</span>2017-01-17, 18:05:16</p>
+        <p><span>最后更新:</span>2017-01-17, 18:05:16</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/01/12/dd磁盘命令小记/" title="dd磁盘命令小记">http://xiaqunfeng.github.io/2017/01/12/dd磁盘命令小记/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/01/12/dd磁盘命令小记/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/01/17/Linux命令——uptime/" title="Linux命令——uptime">http://xiaqunfeng.github.io/2017/01/17/Linux命令——uptime/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/01/17/Linux命令——uptime/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -376,16 +328,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/01/17/Linux命令——uptime/">
-                    Linux命令——uptime
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/01/12/解决calamari无法获取集群hosts信息的BUG/">
-                    解决calamari无法获取集群hosts信息的BUG
+                <a href="/2017/01/12/dd磁盘命令小记/">
+                    dd磁盘命令小记
                 </a>
             </div>
         
@@ -397,7 +343,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#命令的使用"><span class="toc-number">1.</span> <span class="toc-text">命令的使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#磁盘读写"><span class="toc-number">2.</span> <span class="toc-text">磁盘读写</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#几种测试写磁盘的区别"><span class="toc-number">3.</span> <span class="toc-text">几种测试写磁盘的区别</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用方法"><span class="toc-number">1.</span> <span class="toc-text">使用方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实例"><span class="toc-number">2.</span> <span class="toc-text">实例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#uptime"><span class="toc-number">2.1.</span> <span class="toc-text">uptime</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运行时间格式输出"><span class="toc-number">2.2.</span> <span class="toc-text">运行时间格式输出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#系统启动的时间"><span class="toc-number">2.3.</span> <span class="toc-text">系统启动的时间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#uptime版本"><span class="toc-number">2.4.</span> <span class="toc-text">uptime版本</span></a></li></ol></li></ol>
         
     </div>
     <style>
@@ -433,7 +379,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"dd磁盘命令小记　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"Linux命令——uptime　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -452,8 +398,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.github.io/2017/01/12/dd磁盘命令小记/';
-            this.page.identifier = '2017/01/12/dd磁盘命令小记/';
+            this.page.url = 'http://xiaqunfeng.github.io/2017/01/17/Linux命令——uptime/';
+            this.page.identifier = '2017/01/17/Linux命令——uptime/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -475,15 +421,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/01/17/Linux命令——uptime/" title="上一篇: Linux命令——uptime">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/01/12/解决calamari无法获取集群hosts信息的BUG/" title="下一篇: 解决calamari无法获取集群hosts信息的BUG">
+            <a href="/2017/01/12/dd磁盘命令小记/" title="下一篇: dd磁盘命令小记">
                 <i class="fa fa-angle-right"></i>
             </a>
         
