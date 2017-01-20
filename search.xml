@@ -4,6 +4,122 @@
   
     
     <entry>
+      <title><![CDATA[Ceph中严重数据不一致性BUG]]></title>
+      <url>http://xiaqunfeng.github.io/2017/01/20/Ceph%E4%B8%AD%E4%B8%A5%E9%87%8D%E6%95%B0%E6%8D%AE%E4%B8%8D%E4%B8%80%E8%87%B4%E6%80%A7BUG/</url>
+      <content type="html"><![CDATA[<p>目前，块存储服务是Ceph存储中被使用的最普遍的服务之一，通过块存储服务，可以向客户端以使用块设备一样访问Ceph集群。然而，目前在使用块存储服务时，尤其是OpenStack与Ceph对接时，如果没有严格的控制Ceph端的对象大小（使用 &gt;= 8MB对象时），将有可能导致严重的数据不一致情况，该异常由于XFS文件系统本身对Fiemap的支持特性导致的。<br><a id="more"></a></p>
+<h2 id="触发场景"><a href="#触发场景" class="headerlink" title="触发场景"></a>触发场景</h2><p>XFS使用fiemap时，当extents数量大于1364时，通过ioctl的FS_IOC_FIEMAP接口，获取的extents数量上限为1364，导致超出部分extents数据获取不到。这将导致，在开启fiemap时，Ceph集群进行recovery与backfill之后，产生大量数据不一致的情况，也是迄今为止Ceph中影响最大的，最严重的数据不一致BUG。</p>
+<p>由于fiemap BUG，碎片化对象在recovery与backfill之后（fiemap 获取不正确的数据），从而使的恢复的对象数据与原对象数据不一致。而恢复后的副本若成为主副本，则可能发生静默读错误，并且如果使用Ceph策略自动修复对象（repair object之后），可能将错误数据覆盖至正确数据，数据将永远损毁。在某些情况下，还会触发对象永远处于inconsistent状态。</p>
+<h2 id="复现方式"><a href="#复现方式" class="headerlink" title="复现方式"></a>复现方式</h2><p>初始化大量extents碎片文件test，使其成为一个拥有3999个extents的碎片文件。<br><img src="https://www.ustack.com/wp-content/uploads/2016/11/1.png" alt="1"></p>
+<p>通过fiemap系统调用，获取这些extents<br><a href="https://www.ustack.com/wp-content/uploads/2016/11/2-1.jpg" target="_blank" rel="external"><img src="https://www.ustack.com/wp-content/uploads/2016/11/2-1.jpg" alt="2"></a><br>编译g++ do_fiemap.cc -o do_fiemap</p>
+<p>通过该程序可以打印出可以获取的到fiemap extents, do_fiemap test，通过xfs_bmap test 打印出真正的extents数量后，进行比较。<br><img src="https://www.ustack.com/wp-content/uploads/2016/11/3.jpg" alt="3"></p>
+<p>可以看到，我们最先写了2000个extents，并通过xfs_bmap获取到了 2000个有内容的extents，但是通过fiemap系统调用，只获取到了1364个有数据的extents，所以在ceph中使用fiemap系统调用在某些情况下导致数据一致性BUG。</p>
+<h2 id="修复方案"><a href="#修复方案" class="headerlink" title="修复方案"></a>修复方案</h2><p>1）目前，在使用块存储使用场景时，通常情况下，默认使用4MB对象。在无特殊情况下，不用使用大于4MB 对象的RBD 镜像。</p>
+<p>2）在I版以后，通过新的系统调用，seek_data, seek_hole，可以避免触发该BUG，防止extents过多时使用fiemap调用产生的问题<br><img src="https://www.ustack.com/wp-content/uploads/2016/11/4.png" alt="4"></p>
+<p>这组系统调用，可以让使用者通过while循环，反复的发现文件中的data 与 hole，从而组织出一个文件中真正存在的数据，能够避免产生与fiemap系统调用类似的BUG，又保证了recovery或者clone时候只复制有用数据，而反复的系统调，应该会带来一定性能上的影响，请读者们自行测试。</p>
+<p>目前，在I版本以后的ceph中，提供参数filestore_seek_data_hole，来启用该功能。当filestore_seek_data_hole 与 filestore_fiemap同时设置时，只用文件系统支持seek_data_hole，那么就会先通过seek_data_hole方式来获取文件的extents，所以在I版本以后的ceph中，应启用filestore_seek_data_hole功能来替代filestore_fiemap 功能。</p>
+<p>3）对于已经使用8MB，16MB 甚至更大对象大小的RBD镜像，请暂时设置禁用Fiemap功能，并等待后续版本修复。</p>
+<p>原文链接：<a href="https://www.ustack.com/blog/%E9%98%B2%E7%81%AB%E9%98%B2%E7%9B%97%E9%98%B2bug-%E6%9C%89%E4%BA%91%E5%AD%98%E5%82%A8%E5%9B%A2%E9%98%9F%E5%85%AC%E5%B8%83ceph%E4%B8%AD%E6%9C%80%E4%B8%A5%E9%87%8D%E6%95%B0%E6%8D%AE%E4%B8%8D%E4%B8%80/" target="_blank" rel="external">有云存储团队公布Ceph中最严重数据不一致BUG!</a></p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[块存储的世界]]></title>
+      <url>http://xiaqunfeng.github.io/2017/01/20/%E5%9D%97%E5%AD%98%E5%82%A8%E7%9A%84%E4%B8%96%E7%95%8C/</url>
+      <content type="html"><![CDATA[<p>在OpenStack中，存储是非常重要的一块，但是因为其提供方式的不同，即使是专业的工程师也会感到十分困惑。OpenStack的存储主要分为三大类，一是对象    存储服务，Swift解决的问题，二是块设备存储服务，在OpenStack里主要是提供给虚拟机的作为“硬盘”的存储，这里又分为本地块存储和分布式块存储，Cinder项目正    在解决相关的问题；第三类，数据库存储服务，Databases as a Service(DBaaS), 对应AWS里面的RDC，目前是一个正在孵化的项目，Trove，前身是Rackspace开源出&gt;    来的RedDwarf。本文重点介绍块存储服务。<br><a id="more"></a></p>
+<blockquote>
+<p>转载的文章，原文排版看的心累，链接见文末。</p>
+</blockquote>
+<p>​    UnitedStack OS的块存储是在OpenStack Cinder框架下开发的，开发过程中，我们对目前主流的块存储服务提供商和开源的块存储软件做了一个简要分析，希望能给从事块存储开发的工程师对于块存储一个全局的认识。        </p>
+<p>​    块存储，简单来说就是提供了块设备存储的接口。用户需要把块存储卷附加到虚拟机(或者裸机)上后才可以与其交互。这些卷都是持久的: 它们可以被从运行实例上解除或者重新附加而数据保持完整不变。下面会先介绍常见的单机块设备工具来建立对块存储的初步印象。</p>
+<h2 id="单机块存储"><a href="#单机块存储" class="headerlink" title="单机块存储"></a>单机块存储</h2><p>​    首先一个硬盘是一个块设备，内核检测到硬盘然后在/dev/下会看到/dev/sda/。因为我们需要利用一个硬盘来得到不同的分区来做不同的事，通过fdisk工具得到/dev/sda1, /dev/sda2等，这种通过直接写入分区表来规定和切分硬盘,是最死板的分区方式。</p>
+<h3 id="LVM-amp-Device-mapper"><a href="#LVM-amp-Device-mapper" class="headerlink" title="LVM &amp; Device-mapper"></a>LVM &amp; Device-mapper</h3><p>​    LVM是一种逻辑卷管理器，通过LVM来对硬盘创建逻辑卷组和得到逻辑卷来完成目的比fdisk方式更加弹性。LVM对于不太熟悉其机制的人看来可能会造成不小的开销，但是相对于LVM对来的易用性其映射机制的负载小的足以忽略(在snapshot的情况会有不小的负载)。</p>
+<p>​    LVM在大多数Linux使用者看来非常普通的工具，它同时也是OpenStack块存储项目的一种backend并且是默认的。通过LVM在每个主机创建Volume Group，通过Cinder(OpenStack块存储项目)的调度器可以在任何一个合适的主机(满足容量和其他要求)使用lvcreate创建一个块设备供Nova(OpenStack Computing项目)使用。</p>
+<p>​    Device-mapper是一种支持逻辑卷管理的通用设备映射机制，为存储资源管理的块设备驱动提供了一个高度模块化的内核架构。LVM是基于Device-mapper的用户程序实现。</p>
+<p>​    Device-mapper在内核中它通过一个模块化的Target Driver插件实现对IO请求的过滤或者重定向工作，当前已经实现的Target Driver插件包括软Raid、软加密、逻辑卷条带、多路径、镜像、快照等。整个 device mapper 机制由两部分组成–内核空间的 device mapper 驱动、用户空间的device mapper 库以及它提供的 dmsetup 工具。内核中主要提供完成这些策略所需要的机制。Device-mapper 用户空间相关部分主要负责配置具体的策略和控制逻辑，比如逻辑设备和哪些物理设备建立映射，怎么建立这些映射关系等等，而具体过滤和重定向 IO 请求的工作由内核中相关代码完成。</p>
+<h3 id="SAN-amp-iSCSI"><a href="#SAN-amp-iSCSI" class="headerlink" title="SAN &amp; iSCSI"></a>SAN &amp; iSCSI</h3><p>​    在接触了单机下的逻辑卷管理后，你需要了解<a href="http://zh.wikipedia.org/wiki/%E5%AD%98%E5%82%A8%E5%8C%BA%E5%9F%9F%E7%BD%91%E7%BB%9C" target="_blank" rel="external">SAN</a>，目前主流的企业级存储方式。</p>
+<p>​    大部分SAN使用<a href="http://en.wikipedia.org/wiki/SCSI" target="_blank" rel="external">SCSI</a>协议在服务器和存储设备之间传输和沟通，通过在SCSI之上建立不同镜像层，可以实现存储网络的连接。常见的有<a href="http://zh.wikipedia.org/wiki/ISCSI" target="_blank" rel="external">iSCSI</a>，<a href="http://en.wikipedia.org/wiki/Fibre_Channel_Protocol" target="_blank" rel="external">FCP</a>，<a href="http://en.wikipedia.org/wiki/Fibre_Channel_over_Ethernet" target="_blank" rel="external">Fibre Channel over Ethernet</a>等。</p>
+<p>​    SAN通常需要在专用存储设备中建立，而iSCSI是基于TCP/IP的SCSI映射，通过iSCSI协议和<a href="http://linux-iscsi.sourceforge.net/" target="_blank" rel="external">Linux iSCSI</a>项目我们可以在常见的PC机上建立SAN存储。。</p>
+<p>​    如何建立在PC机上的SAN可以参考<a href="http://linux.vbird.org/linux_server/0460iscsi.php" target="_blank" rel="external">iSCSI建立</a>，这篇文章的iSCSI target管理方式不太方便，通常利用<a href="http://linux-iscsi.org/wiki/Targetcli" target="_blank" rel="external">targetcli</a>管理target是及其方便的。targetcli可以直接建立和管理不同backstone类型的逻辑卷和不同的export方式，如建立ramdisk并且通过iSCSI export非常方便，操作方式见<a href="http://www.youtube.com/watch?v=mKjBsgOlYmE" target="_blank" rel="external">targetcli screencast Part 2 of 3: ISCSI – YouTube</a>。</p>
+<h2 id="分布式块存储服务"><a href="#分布式块存储服务" class="headerlink" title="分布式块存储服务"></a>分布式块存储服务</h2><p>​    以上都是我们经常解除的单机下块存储环境，接下来开始本文的正式分享内容，包括公共云技术服务提供的块存储服务，开源的块存储框架和OpenStack目前对块存储的定义和支持情况。</p>
+<h3 id="分布式块存储"><a href="#分布式块存储" class="headerlink" title="分布式块存储"></a>分布式块存储</h3><p>​    在面对极具弹性的存储需求和性能要求下，单机或者独立的SAN越来越不能满足企业的需要。如同数据库系统一样，块存储在scale up的瓶颈下也面临着scale out的需要。我们可以用以下几个特点来描述分布式块存储系统的概念:</p>
+<ul>
+<li>分布式块存储可以为任何物理机或者虚拟机提供持久化的块存储设备</li>
+<li>分布式块存储系统管理块设备的创建、删除和attach/deattach。</li>
+<li>分布式块存储支持强大的快照功能，快照可以用来恢复或者创建新的块设备</li>
+<li>分布式存储系统能够提供不同IO性能要求的块设备</li>
+</ul>
+<h3 id="Amazon-EBS-amp-阿里云磁盘"><a href="#Amazon-EBS-amp-阿里云磁盘" class="headerlink" title="Amazon EBS &amp; 阿里云磁盘"></a>Amazon EBS &amp; 阿里云磁盘</h3><p>​    Amazon作为领先的IAAS服务商，其API目前是IAAS的事实标准。Amazon EC2目前仍然一骑绝尘，在大多数方面远超其他IAAS服务商。通过Amazon EC2的<a href="http://aws.amazon.com/cn/ec2/" target="_blank" rel="external">产品介绍</a>是快速了解Amazon EC2的捷径。</p>
+<p>​    而<a href="http://aws.amazon.com/cn/ebs/" target="_blank" rel="external">EBS</a>是Amazon提供的块存储服务，通过EBS，用户可以随时增删迁移volume和快照操作。</p>
+<p>​    Amazon EC2实例可以将根设备数据存储在Amazon EBS或者本地实例存储上。使用 Amazon EBS时，根设备中的数据将独立于实例的生命周期保留下来，使得在停止实例后仍可以重新启动使用，与笔记本电脑关机并在再次需要时重新启动相似。另一方面，本地实例存储仅在实例的生命周期内保留。这是启动实例的一种经济方式，因为数据没有存储到根设备中。</p>
+<p>​    Amazon EBS提供两种类型的卷，即标准卷和预配置IOPS卷。它们的性能特点和价格不同，可以根据应用程序的要求和预算定制所需的存储性能。</p>
+<p>​    标准卷可为要求有适度或突发式I/O的应用程序提供存储。这些卷平均可以提供大约 100 IOPS，最多可突增至数百 IOPS。标准卷也非常适合用作引导卷，其突发能力可提供快速的实例启动时间(通常十几秒)。</p>
+<p>​    预配置 IOPS 卷旨在为数据库等 I/O 密集型随机读写工作负载提供可预计的高性能。创建一个卷时，利用预置 IOPS 为卷确定 IOPS 速率，随之 Amazon EBS 在该卷的生命周期内提供该速率。Amazon EBS 目前支持每预配置 IOPS 卷最多 4000 个IOPS。您可以将多个条带式卷组合在一起，为您的应程程序提供每个Amazon EC2数千IOPS的能力。</p>
+<p>​    EBS可以在卷连接和使用期间实时拍摄快照。不过，快照只能捕获已写入Amazon EBS 卷的数据，不包含应用程序或操作系统已在本地缓存的数据。如果需要确保能为实例连接的卷获得一致的快照，需要先彻底地断开卷连接，再发出快照命令，然后重新连接卷。</p>
+<p>​    EBS快照目前可以跨regions增量备份，意味着EBS快照时间会大大缩短，从另一面增加了EBS使用的安全性。</p>
+<p>​    总的来说，Amazon EBS是目前IAAS服务商最引入注目的服务之一，目前的OpenStack、CloudStack等等其他开源框架都无法提供Amazon EBS对于的如此弹性和强大的服务。了解和使用Amazon EBS是学习IAAS块存储的最好手段。</p>
+<h3 id="阿里云"><a href="#阿里云" class="headerlink" title="阿里云"></a>阿里云</h3><p>​    阿里云是国内的公共云计算服务商，不过这里阿里云目前的块存储服务较于Amazon EBS差的太远，阿里云磁盘目前仅支持在创建云主机的时候绑定云磁盘或者在升级云主机的进行云磁盘扩容，这从根本上就是传统的虚拟主机的特点而不是所谓的“云磁盘”。</p>
+<p>从目前的阿里云磁盘的限制:</p>
+<ul>
+<li>无法快速创建或删除volume，在进行扩容时需要升级云主机才能达到，而升级云主机只有在下月云主机套餐到期时才能生效(想起了中国移动套餐)</li>
+<li>一个云主机最多只能绑定3个云磁盘</li>
+</ul>
+<p>从阿里云磁盘目前的使用分析，阿里云磁盘系统目前还很不成熟，以下是我对阿里云磁盘实现的推测</p>
+<ul>
+<li>阿里云主机是跟磁盘绑定的，这意味着阿里云的云磁盘是local volume(因此性能还是挺可观的)。如果用户需要扩容、减少都是需要下个月更说明了这点，整个主机在扩容时去调度合适的有足够存储空间的host，然后进行扩容。</li>
+<li>阿里云磁盘是分布式块存储系统，但是由于其QoS无法保证和其他资源调度原因无法提供足够的块存储支持。</li>
+</ul>
+<p>从<a href="http://www.infoq.com/cn/news/2013/06/aliyun-nihao-storage" target="_blank" rel="external">演讲回顾：阿里云存储技术的演进，以及云服务用例最佳实践</a>中了解到阿里云是基于自家的“盘古”系统，那么从实际使用来说，远没达到一般的分布式块存储系统的要求。</p>
+<h3 id="Ceph-amp-Sheepdog"><a href="#Ceph-amp-Sheepdog" class="headerlink" title="Ceph &amp; Sheepdog"></a>Ceph &amp; Sheepdog</h3><p><a href="http://ceph.com/" target="_blank" rel="external">Ceph</a>是开源实现的PB级分布式文件系统，通过其分布式对象存储机制为上层提供了文件接口、块存储接口和对象存储接口。<a href="http://www.inktank.com/" target="_blank" rel="external">Inktank</a>是Ceph的主要支持商，也是目前Ceph开源社区的主要力量。</p>
+<p><img src="https://www.ustack.com/wp-content/themes/officalsite/uploads/2013/07/11.png" alt="1"></p>
+<p>​    Ceph目前是OpenStack支持的Backend中一个不错的开源块存储实现系统(即Cinder项目backend driver之一)，其实现分为三个部分: OSD, Monitor, MDS。OSD是底层对象存储系统，Monitor是集群管理系统，MDS是用来支持POSIX文件接口的Metadata Server。从Ceph的原始论文(<a href="http://ceph.newdream.net/papers/weil-thesis.pdf" target="_blank" rel="external">Ceph: Reliable, Scalable, and High-Performance Distributed Storage</a>)来看，Ceph专注于扩展性，高可用性和容错性。Ceph放弃了传统的Metadata查表方式(HDFS)而改用算法(CRUSH)去定位具体的block。</p>
+<p>​    利用Ceph提供的RULES可以弹性地制订存储策略和Pool选择，Monitor作为集群管理系统掌握了全部的Cluster Map，Client在没有Map的情况下需要先向Monitor请求得到，然后通过Object id计算相应的OSD Server。</p>
+<p>​    Ceph支持传统的POSIX文件接口，因此需要额外的MDS(Meatadata Server)支持文件元信息(Ceph的块存储和对象存储支持不需要MDS服务)。Ceph将Data和Metadata分离到两个服务上，跟传统的分布式系统如Lustre相比可以大大增强扩展性。在小文件读写上，Ceph读写文件会有[RTT*2]，在每次open时，会先去Metadata Server查询一次，然后再去Object Server。除了Open操作外，Ceph在Delete上也有问题，它需要到Metadata Server擦除对应的Metadata，是n(2)复杂度。Ceph在Metadata上并非只有坏处，通过Metadata Server，像目录列表等目录操作为非常快速，远超GlusterFS等其他分布式文件系统的目录或文件元操作。</p>
+<p>利用Ceph可以作两种不同类型的“共享存储”支持:</p>
+<ol>
+<li>利用CephFS作分布式系统，所有虚拟机的块设备直接使用CephFS的命名空间</li>
+<li>使用Ceph RBD块设备接口，从Ceph Cluster中导出Volume作为块设备Attach到虚拟机。</li>
+</ol>
+<p>关于Ceph作为块存储项目的几个问题需要考虑:</p>
+<ul>
+<li>Ceph在读写上不太稳定（有Btrfs的原因），目前Ceph官方推荐XFS作为底层文件系统</li>
+<li>Ceph的扩展性和架构较复杂，如果需要介入Ceph，需要较长时间深入了解</li>
+<li>Ceph的部署不够简易，目前Ceph的官方部署工具不太成熟，而对于的Pupet模块或者其他都没有公认的较好实现。</li>
+<li>Ceph的稳定性依赖高版本Linux的一些特性，并且Ceph的rbd.ko在高版本中更具稳定性。</li>
+</ul>
+<h3 id="Sheepdog"><a href="#Sheepdog" class="headerlink" title="Sheepdog"></a>Sheepdog</h3><p>​    <a href="http://www.osrg.net/sheepdog/" target="_blank" rel="external">Sheepdog</a>是另一个分布式块存储系统实现，它与Ceph相比，最大优势就是代码短小好维护和hack的成本很小。Sheepdog也有很多Ceph不支持的特性，比如说Multi-Disk, Cluster-wide Snapshot等。</p>
+<p>​    Sheepdog主要有两部分，一个是集群管理，另一个是存储服务。集群管理目前使用Corosync或者Zookper来完成，其存储服务的特点是在Client和存储Host有Cache的实现可以大大减小数据流量。</p>
+<p>​    目前Sheepdog只在QEMU端提供Drive，而缺少library支持，这是Sheepdog目前最主要的问题。但是社区已经有相关的Blueprint在讨论这个问题。</p>
+<p>了解Sheepdog通过以下链接:</p>
+<ul>
+<li><a href="http://www.slideshare.net/multics/overview-of-sheepdog" target="_blank" rel="external">Sheepdog Overview</a></li>
+<li><a href="http://rdc.taobao.com/blog/cs/?tag=sheepdog" target="_blank" rel="external">Sheepdog 淘宝核心系统团队</a></li>
+<li><a href="https://github.com/collie/sheepdog/wiki" target="_blank" rel="external">Sheepdog wiki</a>: Sheepdog的一系列Wiki如同它的代码一样简短出色</li>
+</ul>
+<p>目前Taobao是Sheepdog主要用户和社区贡献者，国内也有Startup参与Sheepdog的社区开发。</p>
+<h3 id="Cinder"><a href="#Cinder" class="headerlink" title="Cinder"></a>Cinder</h3><p>​    <a href="https://wiki.openstack.org/wiki/Main_Page" target="_blank" rel="external">OpenStack</a>是目前流行的IAAS框架，提供了AWS类似的服务并且兼容其API。OpenStack Nova是计算服务，Swift是对象存储服务，Quantum是网络服务，Glance是镜像服务，Cinder是块存储服务，Keystone是身份认证服务，Horizon是Dashboard，另外还有Heat、Oslo、Ceilometer、Ironic等等项目。</p>
+<p>​    <a href="https://wiki.openstack.org/wiki/Cinder" target="_blank" rel="external">Cinder</a>是OpenStack中提供类似于EBS块存储服务的API框架，它并没有实现对块设备的管理和实际服务提供，用来为后端不同的存储结构提供统一的接口与OpenStack进行整合，不同的块设备服务厂商在Cinder中实现其驱动支持。后端的存储可以是DAS，NAS，SAN，对象存储或者分布式文件系统。也就是说，Cinder的块存储数据完整性，可用性保障是由后端存储提供的。在<a href="https://wiki.openstack.org/wiki/CinderSupportMatrix" target="_blank" rel="external">CinderSupportMatrix</a>中可以看到众多存储厂商如NetAPP、IBM、SolidFire、EMC和众多开源块存储系统对Cinder的支持，在这里我们也可以看到OpenStack是非常受欢迎的。</p>
+<p><img src="https://www.ustack.com/wp-content/themes/officalsite/uploads/2013/07/2.png" alt="2"></p>
+<p>​    从上图我们也可以看到，Cinder只是提供了一层抽象，然后通过其后段支持的driver实现来发出命令来得到回应。关于块存储的分配信息以及选项配置等会被保存到OpenStack统一的DB中。</p>
+<p>​    目前Cinder项目支持的操作包括创建/删除Volume，创建/删除Snapshot，Clone Volume，将Volume制作成Image或者将Image导出到Volume，备份/恢复Volume和扩展Volume大小，不同的Backend会实现不同程度的操作，但基本的创建Volume和快照操作都是支持的。目前令人振奋的Amazon EBS的QoS机制已经在Cinder社区中得到广泛讨论，在经历近两个月的Patch Review之后，整个QoS机制即将正式进入Cinder项目。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>​    目前分布式块存储的实现仍然是由Amazon EBS领衔，其卓越稳定的读写性能、强大的增量快照和跨区域块设备迁移，以及令人惊叹的QoS控制都是目前开源或者其他商业实现无法比拟的。</p>
+<p>​    不过Amazon EBS始终不是公司私有存储的一部分，作为企业IT成本的重要部分，块存储正在发生改变。EMC在一个月前发布了其ViPR平台，并开放了其接口试图接纳其他厂商和开源实现。Nexenta在颠覆传统的的存储专有硬件，在其上软件实现原来只有专有SDN的能力，让企业客户完全摆脱存储与厂商的绑定。Inktank极力融合OpenStack并推动Ceph在OpenStack社区的影响力都说明了无论是目前的存储厂商还是开源社区都在极力推动整个分布式块存储的发展，存储专有设备的局限性正在进一步弱化了原有企业的存储架构。</p>
+<p>​    在分布式块存储和OpenStack之间我们可以打造更巩固的纽带，UnitedStack存储团队在开源存储的基础上，结合本地块存储和分布式块存储的优势，为UnitedStack OS提供一个通用的存储解决方案。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://www.ibm.com/developerworks/cn/linux/filesystem/lvm/lvm-1/" target="_blank" rel="external">通用线程: 学习 Linux LVM，第 1 部分</a></li>
+<li><a href="http://www.ibm.com/developerworks/cn/linux/filesystem/lvm/lvm-2/" target="_blank" rel="external">通用线程：学习 Linux LVM，第 2部分</a></li>
+<li><a href="http://www.ibm.com/developerworks/cn/linux/l-devmapper/" target="_blank" rel="external">Linux 内核中的 Device Mapper 机制</a></li>
+<li><a href="http://www.ibm.com/developerworks/cn/linux/l-ceph/" target="_blank" rel="external">Ceph：一个 Linux PB 级分布式文件系统</a></li>
+<li><a href="http://www.alidata.org/archives/1589" target="_blank" rel="external">分布式文件系统Ceph调研1 – RADOS</a></li>
+<li><a href="http://ceph.com/docs/next/architecture/" target="_blank" rel="external">Ceph Architecture</a></li>
+<li><a href="http://way4ever.com/?p=375" target="_blank" rel="external">Ceph的现状</a></li>
+<li><a href="http://way4ever.com/?p=122" target="_blank" rel="external">ceph的CRUSH数据分布算法介绍</a></li>
+<li><a href="http://ceph.com/docs/next/dev/" target="_blank" rel="external">Ceph INTERNAL DEVELOPER DOCUMENTATION</a></li>
+<li>原文链接：<a href="https://www.ustack.com/blog/block-storage-overview/" target="_blank" rel="external">块存储的世界</a></li>
+</ul>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Linux命令——uptime]]></title>
       <url>http://xiaqunfeng.github.io/2017/01/17/Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94uptime/</url>
       <content type="html"><![CDATA[<p>打印系统总共运行了多长时间和系统的平均负载。<br><a id="more"></a></p>
