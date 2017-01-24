@@ -18,11 +18,12 @@
 <meta name="description" content="介绍了ceph中crush的优点、原理及作用，同时dump出自己的crushmap内容，进行详细的分解学习。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Crushmap学习">
-<meta property="og:url" content="http://xiaqunfeng.github.io/2017/01/23/Crushmap学习/index.html">
+<meta property="og:url" content="http://xiaqunfeng.github.io/2017/01/24/Crushmap学习/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="介绍了ceph中crush的优点、原理及作用，同时dump出自己的crushmap内容，进行详细的分解学习。">
 <meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/osdmap.png">
-<meta property="og:updated_time" content="2017-01-23T09:11:57.000Z">
+<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
+<meta property="og:updated_time" content="2017-01-24T05:52:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Crushmap学习">
 <meta name="twitter:description" content="介绍了ceph中crush的优点、原理及作用，同时dump出自己的crushmap内容，进行详细的分解学习。">
@@ -231,8 +232,8 @@
       <div class="body-wrap"><article id="post-Crushmap学习" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/01/23/Crushmap学习/" class="article-date">
-      <time datetime="2017-01-23T09:11:57.000Z" itemprop="datePublished">2017-01-23</time>
+      <a href="/2017/01/24/Crushmap学习/" class="article-date">
+      <time datetime="2017-01-24T05:48:49.000Z" itemprop="datePublished">2017-01-24</time>
 </a>
 
 
@@ -334,6 +335,9 @@
 <li>Straw：这种类型让bucket所包含的所有item<strong>公平竞争</strong>(不像list和tree一样需要遍历)。这种算法就像抽签一样，所有的item都有机会被抽中(只有最长的签才能被抽中)。每个签的长度是由length = f(Wi)<em>hash(x, r, i) 决定的，f(Wi)和item的权重有关，i是item的id号。c(r, x) = MAXi(f(Wi) </em> hash(x, r, i))。</li>
 <li><strong>Straw2</strong>：它是改进的straw bucket。它会在项目A和B的<strong>权重都没有改变时避免任何数据移动</strong>。例如，增加或删除一个项目C，改变它的权重，数据只会移动到它上面或者从它上面移动到其他地方，而不会在bucket内的其他项目之间出现数据移动。因此，该算法减少了集群发生改变后的数据移动量。这是目前使用最广的bucket类型。（《ceph cookbook》）</li>
 </ul>
+<h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
+
+
 
       
     </div>
@@ -342,13 +346,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/01/23/Crushmap学习/">Crushmap学习</a></p>
+        <p><span>本文标题:</span><a href="/2017/01/24/Crushmap学习/">Crushmap学习</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-01-23, 17:11:57</p>
-        <p><span>最后更新:</span>2017-01-23, 17:11:57</p>
+        <p><span>发布时间:</span>2017-01-24, 13:48:49</p>
+        <p><span>最后更新:</span>2017-01-24, 13:52:34</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/01/23/Crushmap学习/" title="Crushmap学习">http://xiaqunfeng.github.io/2017/01/23/Crushmap学习/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/01/23/Crushmap学习/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/01/24/Crushmap学习/" title="Crushmap学习">http://xiaqunfeng.github.io/2017/01/24/Crushmap学习/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/01/24/Crushmap学习/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -375,7 +379,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-number">2.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#crush的作用"><span class="toc-number">3.</span> <span class="toc-text">crush的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#crush的工作形式"><span class="toc-number">4.</span> <span class="toc-text">crush的工作形式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实例讲解"><span class="toc-number">5.</span> <span class="toc-text">实例讲解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#集群详情"><span class="toc-number">5.1.</span> <span class="toc-text">集群详情</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#crushmap内容"><span class="toc-number">5.2.</span> <span class="toc-text">crushmap内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#begin-crush-map"><span class="toc-number">5.3.</span> <span class="toc-text">begin crush map</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#devices"><span class="toc-number">5.4.</span> <span class="toc-text">devices</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#types"><span class="toc-number">5.5.</span> <span class="toc-text">types</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Buckets"><span class="toc-number">5.6.</span> <span class="toc-text">Buckets</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rules"><span class="toc-number">5.7.</span> <span class="toc-text">rules</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bucket的类型"><span class="toc-number">6.</span> <span class="toc-text">Bucket的类型</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-number">2.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#crush的作用"><span class="toc-number">3.</span> <span class="toc-text">crush的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#crush的工作形式"><span class="toc-number">4.</span> <span class="toc-text">crush的工作形式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实例讲解"><span class="toc-number">5.</span> <span class="toc-text">实例讲解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#集群详情"><span class="toc-number">5.1.</span> <span class="toc-text">集群详情</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#crushmap内容"><span class="toc-number">5.2.</span> <span class="toc-text">crushmap内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#begin-crush-map"><span class="toc-number">5.3.</span> <span class="toc-text">begin crush map</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#devices"><span class="toc-number">5.4.</span> <span class="toc-text">devices</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#types"><span class="toc-number">5.5.</span> <span class="toc-text">types</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Buckets"><span class="toc-number">5.6.</span> <span class="toc-text">Buckets</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rules"><span class="toc-number">5.7.</span> <span class="toc-text">rules</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bucket的类型"><span class="toc-number">6.</span> <span class="toc-text">Bucket的类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#打赏通道"><span class="toc-number">7.</span> <span class="toc-text">打赏通道</span></a></li></ol>
         
     </div>
     <style>
@@ -430,8 +434,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.github.io/2017/01/23/Crushmap学习/';
-            this.page.identifier = '2017/01/23/Crushmap学习/';
+            this.page.url = 'http://xiaqunfeng.github.io/2017/01/24/Crushmap学习/';
+            this.page.identifier = '2017/01/24/Crushmap学习/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -465,7 +469,7 @@
         
     </div>
 
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/01/23/Crushmap学习/">Crushmap学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/Ceph中严重数据不一致性BUG/">Ceph中严重数据不一致性BUG</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/块存储的世界/">块存储的世界</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/17/Linux命令——uptime/">Linux命令——uptime</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/dd磁盘命令小记/">dd磁盘命令小记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/解决calamari无法获取集群hosts信息的BUG/">解决calamari无法获取集群hosts信息的BUG</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/ubuntu下配置邮件发送/">ubuntu下配置邮件发送</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/ubuntu下系统打包/">ubuntu下系统打包</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux命令——history及其优化/">Linux命令——history及其优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux下利用screen进行屏幕协作/">Linux下利用screen进行屏幕协作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux命令——crontab/">Linux命令——crontab</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/06/hexo的搭建/">Mac上hexo博客的搭建</a></li></ul>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/01/24/Crushmap学习/">Crushmap学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/Ceph中严重数据不一致性BUG/">Ceph中严重数据不一致性BUG</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/块存储的世界/">块存储的世界</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/17/Linux命令——uptime/">Linux命令——uptime</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/dd磁盘命令小记/">dd磁盘命令小记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/解决calamari无法获取集群hosts信息的BUG/">解决calamari无法获取集群hosts信息的BUG</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/ubuntu下配置邮件发送/">ubuntu下配置邮件发送</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/ubuntu下系统打包/">ubuntu下系统打包</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux命令——history及其优化/">Linux命令——history及其优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux下利用screen进行屏幕协作/">Linux下利用screen进行屏幕协作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux命令——crontab/">Linux命令——crontab</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/06/hexo的搭建/">Mac上hexo博客的搭建</a></li></ul>
 
 
 

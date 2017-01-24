@@ -5,7 +5,7 @@
     
     <entry>
       <title><![CDATA[Crushmap学习]]></title>
-      <url>http://xiaqunfeng.github.io/2017/01/23/Crushmap%E5%AD%A6%E4%B9%A0/</url>
+      <url>http://xiaqunfeng.github.io/2017/01/24/Crushmap%E5%AD%A6%E4%B9%A0/</url>
       <content type="html"><![CDATA[<p>介绍了ceph中crush的优点、原理及作用，同时dump出自己的crushmap内容，进行详细的分解学习。<br><a id="more"></a></p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>随着大规模分布式存储系统的出现。这些系统必须平衡的分布数据和负载，最大化系统的性能，并要处理系统的扩展和硬件失效。但是简单HASH分布不能有效处理设备数量的变化，导致大量数据迁移。ceph设计了CRUSH，用在分布式对象存储系统上，可以有效映射数据对象到存储设备上(不需要中心设备)。因为大型系统的结构式动态变化的，CRUSH能够处理存储设备的添加和移除，并最小化由于存储设备的的添加和移动而导致的数据迁移。</p>
 <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>CRUSH算法，全称 Controlled Replication Under Scalable Hashing。它是一种伪随机的算法，在相同的环境下，它能够在层级结构的存储集群中有效的分布对象的副本。</p>
@@ -72,6 +72,9 @@
 <li>Straw：这种类型让bucket所包含的所有item<strong>公平竞争</strong>(不像list和tree一样需要遍历)。这种算法就像抽签一样，所有的item都有机会被抽中(只有最长的签才能被抽中)。每个签的长度是由length = f(Wi)<em>hash(x, r, i) 决定的，f(Wi)和item的权重有关，i是item的id号。c(r, x) = MAXi(f(Wi) </em> hash(x, r, i))。</li>
 <li><strong>Straw2</strong>：它是改进的straw bucket。它会在项目A和B的<strong>权重都没有改变时避免任何数据移动</strong>。例如，增加或删除一个项目C，改变它的权重，数据只会移动到它上面或者从它上面移动到其他地方，而不会在bucket内的其他项目之间出现数据移动。因此，该算法减少了集群发生改变后的数据移动量。这是目前使用最广的bucket类型。（《ceph cookbook》）</li>
 </ul>
+<h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
+
+
 ]]></content>
     </entry>
     
