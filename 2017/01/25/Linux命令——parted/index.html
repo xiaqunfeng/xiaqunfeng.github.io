@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="夏天的风" />
+
+
+
+<meta name="description" content="一直用parted命令来进行磁盘分区，这里学习一下总结一下。顺带对比一下MBR和GPT两种分区表，以及parted命令和fdisk命令的区别。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux命令——parted">
+<meta property="og:url" content="http://xiaqunfeng.github.io/2017/01/25/Linux命令——parted/index.html">
+<meta property="og:site_name" content="夏天的风的博客">
+<meta property="og:description" content="一直用parted命令来进行磁盘分区，这里学习一下总结一下。顺带对比一下MBR和GPT两种分区表，以及parted命令和fdisk命令的区别。">
+<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
+<meta property="og:updated_time" content="2017-01-25T09:53:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux命令——parted">
+<meta name="twitter:description" content="一直用parted命令来进行磁盘分区，这里学习一下总结一下。顺带对比一下MBR和GPT两种分区表，以及parted命令和fdisk命令的区别。">
+<meta name="twitter:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/qiniu.ico">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>Linux命令——parted | 夏天的风的博客</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: false
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/stark.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">夏天的风</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">好记性不如烂笔头😝</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" href="https://github.com/xiaqunfeng" title="GitHub"></a>
+                            
+                                <a class="fa CSDN" href="http://blog.csdn.net/xiaqunfeng123" title="CSDN"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ceph/">ceph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/storage/">storage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">夏天的风</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/stark.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">夏天的风</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">好记性不如烂笔头😝</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/xiaqunfeng" title="GitHub"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://blog.csdn.net/xiaqunfeng123" title="CSDN"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-Linux命令——parted" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/01/25/Linux命令——parted/" class="article-date">
+      <time datetime="2017-01-25T09:53:02.000Z" itemprop="datePublished">2017-01-25</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Linux命令——parted
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>一直用parted命令来进行磁盘分区，这里学习一下总结一下。顺带对比一下MBR和GPT两种分区表，以及parted命令和fdisk命令的区别。<br><a id="more"></a></p>
+<h2 id="MBR和GPT"><a href="#MBR和GPT" class="headerlink" title="MBR和GPT"></a>MBR和GPT</h2><p>MBR：MBR分区表(即主引导记录)大家都很熟悉。所支持的最大卷：2T，而且对分区有限制：最多4个主分区或3个主分区加一个扩展分区（包含随意数目的逻辑分区）。</p>
+<p>GPT：GPT（即GUID分区表）。是源自EFI标准的一种较新的磁盘分区表结构的标准，是未来磁盘分区的主要形式。GPT的分区信息是在分区中，而MBR在主引导扇区。</p>
+<p>与MBR分区方式相比，具有如下优点：</p>
+<ul>
+<li>突破MBR 4个主分区限制，每个磁盘最多支持128个主分区。</li>
+<li>支持大于2T的分区，最大卷可达18EB。</li>
+</ul>
+<h2 id="主分区、扩展分区、逻辑分区"><a href="#主分区、扩展分区、逻辑分区" class="headerlink" title="主分区、扩展分区、逻辑分区"></a>主分区、扩展分区、逻辑分区</h2><ul>
+<li><strong>主分区</strong>又叫主磁盘分区，和扩展分区、逻辑分区一样，是一种分区类型。主分区中不能再划分其他类型的分区，因此每个主分区都相当于一个逻辑磁盘。一个硬盘的主分区也就是包含操作系统启动所必需的文件和数据的硬盘分区，要在硬盘上安装操作系统，则该硬盘必须得有一个主分区。</li>
+<li><strong>扩展分区</strong>不能直接使用，必须分成若干逻辑分区。所有的逻辑分区都是扩展分区的一部分。</li>
+<li><strong>逻辑分区</strong>也相当于一个逻辑磁盘，但主分区是直接在硬盘上划分的，逻辑分区则必须建立于扩展分区中。</li>
+</ul>
+<p>MBR模式分区只能划分四个分区，现在GPT分区至少可以划分128个主分区，未来很有可能将不存在扩展分区和逻辑分区的概念。</p>
+<h2 id="parted和fdisk"><a href="#parted和fdisk" class="headerlink" title="parted和fdisk"></a>parted和fdisk</h2><p>parted命令可以划分单个分区大于2T的GPT格式的分区，也可以划分普通的MBR分区，并且允许调整分区的大小。</p>
+<p>fdisk命令对于大于2T的分区无法划分，所以用fdisk无法看到parted划分的GPT格式的分区。</p>
+<p>parted是一个可以分区并进行分区调整的工具，他可以创建，破坏，移动，复制，调整ext2 linux-swap fat fat32 reiserfs类型的分区，可以创建，调整，移动Macintosh的HFS分区，检测jfs，ntfs，ufs，xfs分区。</p>
+<h2 id="parted命令"><a href="#parted命令" class="headerlink" title="parted命令"></a>parted命令</h2><p>Parted 命令分为两种模式：命令行模式和交互模式</p>
+<p> 1、命令行模式：<code>parted [option] device [command]</code> ，该模式可以直接在命令行下对磁盘进行分区操作，比较适合编程应用，比如利用脚本批量执行命令。</p>
+<p> 2、交互模式：<code>parted [option] device</code>类似于使用<code>fdisk /dev/xxx</code>，这种适合当个操作。</p>
+<h3 id="命令行模式"><a href="#命令行模式" class="headerlink" title="命令行模式"></a>命令行模式</h3><h4 id="1、初始状态"><a href="#1、初始状态" class="headerlink" title="1、初始状态"></a>1、初始状态</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># lsblk</div><div class="line">NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT</div><div class="line">sr0     11:0    1   436K  0 rom  </div><div class="line">vda    253:0    0    20G  0 disk </div><div class="line">├─vda1 253:1    0     2M  0 part </div><div class="line">├─vda2 253:2    0   476M  0 part /boot</div><div class="line">└─vda3 253:3    0  19.5G  0 part /</div><div class="line">vdb    253:16   0   100G  0 disk</div></pre></td></tr></table></figure>
+<p>parted有个不提示用户参数选项，就是通过这个选项来实现非交互</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">-s, --script</div><div class="line">              never prompts for user intervention</div></pre></td></tr></table></figure>
+<h4 id="2、添加分区"><a href="#2、添加分区" class="headerlink" title="2、添加分区"></a>2、添加分区</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"># parted -s /dev/vdb mklabel gpt			# 定义分区表格式</div><div class="line"># parted -s /dev/vdb mkpart primary ext4 1 10G		# 划分主分区</div><div class="line"># parted -s /dev/vdb mkpart logic 10G 20G		# 划分逻辑分区</div><div class="line"># parted -s /dev/vdb mkpart logic ext3 20G 40G</div><div class="line"></div><div class="line"># parted -s /dev/vdb p					# 查看分区详情</div><div class="line">Model: Virtio Block Device (virtblk)</div><div class="line">Disk /dev/vdb: 107GB</div><div class="line">Sector size (logical/physical): 512B/512B</div><div class="line">Partition Table: gpt</div><div class="line"></div><div class="line">Number  Start   End     Size    File system  Name     Flags</div><div class="line"> 1      1049kB  10.0GB  9999MB  ext4         primary</div><div class="line"> 2      10.0GB  20.0GB  9999MB  xfs          logic</div><div class="line"> 3      20.0GB  40.0GB  20.0GB  ext3         logic</div></pre></td></tr></table></figure>
+<p>查看分区后情况</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># lsblk</div><div class="line">NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT</div><div class="line">sr0     11:0    1   436K  0 rom  </div><div class="line">vda    253:0    0    20G  0 disk </div><div class="line">├─vda1 253:1    0     2M  0 part </div><div class="line">├─vda2 253:2    0   476M  0 part /boot</div><div class="line">└─vda3 253:3    0  19.5G  0 part /</div><div class="line">vdb    253:16   0   100G  0 disk </div><div class="line">├─vdb1 253:17   0   9.3G  0 part </div><div class="line">├─vdb2 253:18   0   9.3G  0 part </div><div class="line">└─vdb3 253:19   0  18.6G  0 part</div></pre></td></tr></table></figure>
+<h4 id="3、删除分区"><a href="#3、删除分区" class="headerlink" title="3、删除分区"></a>3、删除分区</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># parted -s /dev/vdb rm 2</div><div class="line"></div><div class="line"># parted -s /dev/vdb p</div><div class="line">Model: Virtio Block Device (virtblk)</div><div class="line">Disk /dev/vdb: 107GB</div><div class="line">Sector size (logical/physical): 512B/512B</div><div class="line">Partition Table: gpt</div><div class="line"></div><div class="line">Number  Start   End     Size    File system  Name     Flags</div><div class="line"> 1      1049kB  10.0GB  9999MB  ext4         primary</div><div class="line"> 3      20.0GB  40.0GB  20.0GB  ext3         logic</div></pre></td></tr></table></figure>
+<h3 id="交互模式"><a href="#交互模式" class="headerlink" title="交互模式"></a>交互模式</h3><h4 id="1、初始状态-1"><a href="#1、初始状态-1" class="headerlink" title="1、初始状态"></a>1、初始状态</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># lsblk</div><div class="line">NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT</div><div class="line">sr0     11:0    1   436K  0 rom  </div><div class="line">vda    253:0    0    20G  0 disk </div><div class="line">├─vda1 253:1    0     2M  0 part </div><div class="line">├─vda2 253:2    0   476M  0 part /boot</div><div class="line">└─vda3 253:3    0  19.5G  0 part /</div><div class="line">vdb    253:16   0   100G  0 disk</div></pre></td></tr></table></figure>
+<h4 id="2、添加分区-1"><a href="#2、添加分区-1" class="headerlink" title="2、添加分区"></a>2、添加分区</h4><p>针对盘 vdb 开始分区</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"># parted /dev/vdb</div><div class="line">GNU Parted 2.3</div><div class="line">Using /dev/vdb</div><div class="line">Welcome to GNU Parted! Type &apos;help&apos; to view a list of commands.</div><div class="line">(parted)mklabel gpt 				# 定义分区表格式</div><div class="line">...</div><div class="line">(parted) mkpart p1      			# 创建第一个分区，名称为p1                                                  </div><div class="line">File system type?  [ext2]? ext4     		# 定义分区格式                                      </div><div class="line">Start? 1 					# 定义分区的起始位置（单位支持K,M,G,T）                                                              </div><div class="line">End? 10G      					# 定义分区的结束为止(单位支持K,M,G,T)                                                            </div><div class="line">(parted) print     				# 查看当前分区情况                                                       </div><div class="line">Model: Virtio Block Device (virtblk)</div><div class="line">Disk /dev/vdb: 107GB</div><div class="line">Sector size (logical/physical): 512B/512B</div><div class="line">Partition Table: gpt</div><div class="line"></div><div class="line">Number  Start   End     Size    File system  Name  Flags</div><div class="line"> 1      1049kB  10.0GB  9999MB               p1</div><div class="line"></div><div class="line">(parted) mkpart part2                                                    </div><div class="line">File system type?  [ext2]? ext3                                           </div><div class="line">Start? 10G                                                                </div><div class="line">End? 20G                                                                  </div><div class="line">(parted) p					# print可以简写成“p“                                                            </div><div class="line">Model: Virtio Block Device (virtblk)</div><div class="line">Disk /dev/vdb: 107GB</div><div class="line">Sector size (logical/physical): 512B/512B</div><div class="line">Partition Table: gpt</div><div class="line"></div><div class="line">Number  Start   End     Size    File system  Name   Flags</div><div class="line"> 1      1049kB  10.0GB  9999MB               p1</div><div class="line"> 2      10.0GB  20.0GB  9999MB               part2</div><div class="line"></div><div class="line">(parted) quit					# 退出。quit可以简写为”q“ </div><div class="line">Information: You may need to update /etc/fstab.</div></pre></td></tr></table></figure>
+<h4 id="3、设置文件系统"><a href="#3、设置文件系统" class="headerlink" title="3、设置文件系统"></a>3、设置文件系统</h4><p>不知道为啥，print的时候不现实文件系统格式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># mkfs.ext4 /dev/vdb1</div><div class="line"># mkfs.xfs /dev/vdb2</div></pre></td></tr></table></figure>
+<p>再查看文件系统信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">(parted) print                                                            </div><div class="line">Model: Virtio Block Device (virtblk)</div><div class="line">Disk /dev/vdb: 107GB</div><div class="line">Sector size (logical/physical): 512B/512B</div><div class="line">Partition Table: gpt</div><div class="line"></div><div class="line">Number  Start   End     Size    File system  Name   Flags</div><div class="line"> 1      1049kB  10.0GB  9999MB  ext4         p1</div><div class="line"> 2      10.0GB  20.0GB  9999MB  xfs          part2</div></pre></td></tr></table></figure>
+<p>发现分区的 File system 变成了 ext4 和 xfs。所以，还是通过命令的方式来定义文件系统格式。</p>
+<p>查看一下分区后情况</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># lsblk</div><div class="line">NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT</div><div class="line">sr0     11:0    1   436K  0 rom  </div><div class="line">vda    253:0    0    20G  0 disk </div><div class="line">├─vda1 253:1    0     2M  0 part </div><div class="line">├─vda2 253:2    0   476M  0 part /boot</div><div class="line">└─vda3 253:3    0  19.5G  0 part /</div><div class="line">vdb    253:16   0   100G  0 disk </div><div class="line">├─vdb1 253:17   0   9.3G  0 part </div><div class="line">└─vdb2 253:18   0   9.3G  0 part</div></pre></td></tr></table></figure>
+<h4 id="4、删除分区"><a href="#4、删除分区" class="headerlink" title="4、删除分区"></a>4、删除分区</h4><p>删除分区 2</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">(parted) rm                                                             </div><div class="line">Partition number? 2  </div><div class="line"></div><div class="line"># 或者直接</div><div class="line">(parted) rm 2    </div><div class="line"></div><div class="line">(parted) print</div><div class="line">Model: Virtio Block Device (virtblk)</div><div class="line">Disk /dev/vdb: 107GB</div><div class="line">Sector size (logical/physical): 512B/512B</div><div class="line">Partition Table: gpt</div><div class="line"></div><div class="line">Number  Start   End     Size    File system  Name  Flags</div><div class="line"> 1      1049kB  10.0GB  9999MB  ext4         p1</div></pre></td></tr></table></figure>
+<h4 id="5、修改分区大小"><a href="#5、修改分区大小" class="headerlink" title="5、修改分区大小"></a>5、修改分区大小</h4><p>暂时不支持改变分区的大小（resize操作），针对有无文件系统报错如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># none</div><div class="line">Error: Could not detect file system.  </div><div class="line"></div><div class="line"># ext4，ext3</div><div class="line">Error: File system has an incompatible feature enabled.  Compatible       </div><div class="line">features are has_journal, dir_index, filetype, sparse_super and large_file.</div><div class="line">Use tune2fs or debugfs to remove features.</div><div class="line"></div><div class="line"># xfs</div><div class="line">No Implementation: Support for opening xfs file systems is not implemented</div><div class="line">yet.</div></pre></td></tr></table></figure>
+<h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/01/25/Linux命令——parted/">Linux命令——parted</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
+        <p><span>发布时间:</span>2017-01-25, 17:53:02</p>
+        <p><span>最后更新:</span>2017-01-25, 17:53:02</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/01/25/Linux命令——parted/" title="Linux命令——parted">http://xiaqunfeng.github.io/2017/01/25/Linux命令——parted/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/01/25/Linux命令——parted/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/01/25/认识SSD/">
+                    认识SSD
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MBR和GPT"><span class="toc-number">1.</span> <span class="toc-text">MBR和GPT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#主分区、扩展分区、逻辑分区"><span class="toc-number">2.</span> <span class="toc-text">主分区、扩展分区、逻辑分区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#parted和fdisk"><span class="toc-number">3.</span> <span class="toc-text">parted和fdisk</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#parted命令"><span class="toc-number">4.</span> <span class="toc-text">parted命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#命令行模式"><span class="toc-number">4.1.</span> <span class="toc-text">命令行模式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、初始状态"><span class="toc-number">4.1.1.</span> <span class="toc-text">1、初始状态</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、添加分区"><span class="toc-number">4.1.2.</span> <span class="toc-text">2、添加分区</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、删除分区"><span class="toc-number">4.1.3.</span> <span class="toc-text">3、删除分区</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#交互模式"><span class="toc-number">4.2.</span> <span class="toc-text">交互模式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、初始状态-1"><span class="toc-number">4.2.1.</span> <span class="toc-text">1、初始状态</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、添加分区-1"><span class="toc-number">4.2.2.</span> <span class="toc-text">2、添加分区</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、设置文件系统"><span class="toc-number">4.2.3.</span> <span class="toc-text">3、设置文件系统</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4、删除分区"><span class="toc-number">4.2.4.</span> <span class="toc-text">4、删除分区</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5、修改分区大小"><span class="toc-number">4.2.5.</span> <span class="toc-text">5、修改分区大小</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#打赏通道"><span class="toc-number">5.</span> <span class="toc-text">打赏通道</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Linux命令——parted　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section id="comments">
+    <style> aside.comment-bar { margin: auto 30px; }</style>
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function(){
+            this.page.url = 'http://xiaqunfeng.github.io/2017/01/25/Linux命令——parted/';
+            this.page.identifier = '2017/01/25/Linux命令——parted/';
+        };
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = '//null.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+</section>
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/01/25/认识SSD/" title="下一篇: 认识SSD">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/01/25/Linux命令——parted/">Linux命令——parted</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/25/认识SSD/">认识SSD</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/24/Ceph-KRAKEN(V11.2.0)/">Ceph — V11.2.0 KRAKEN(译)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/24/Crushmap学习/">Crushmap学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/Ceph中严重数据不一致性BUG/">Ceph中严重数据不一致性BUG</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/块存储的世界/">块存储的世界</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/17/Linux命令——uptime/">Linux命令——uptime</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/dd磁盘命令小记/">dd磁盘命令小记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/解决calamari无法获取集群hosts信息的BUG/">解决calamari无法获取集群hosts信息的BUG</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/ubuntu下配置邮件发送/">ubuntu下配置邮件发送</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/ubuntu下系统打包/">ubuntu下系统打包</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux命令——history及其优化/">Linux命令——history及其优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux下利用screen进行屏幕协作/">Linux下利用screen进行屏幕协作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux命令——crontab/">Linux命令——crontab</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/06/hexo的搭建/">Mac上hexo博客的搭建</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2017 夏天的风
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
