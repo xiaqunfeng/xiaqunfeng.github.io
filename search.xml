@@ -4,6 +4,131 @@
   
     
     <entry>
+      <title><![CDATA[认识SSD]]></title>
+      <url>http://xiaqunfeng.github.io/2017/01/25/%E8%AE%A4%E8%AF%86SSD/</url>
+      <content type="html"><![CDATA[<p>SSD越来越火，性能提升比较快，成本也有所下降，是未来的方向和主流，这里认识和学习一下SSD相关知识，以便更好的理解和应用SSD的特性。<br><a id="more"></a></p>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>固态硬盘（Solid State Disk）用固态电子存储芯片阵列而制成的硬盘，由控制单元和存储单元（FLASH芯片、DRAM芯片）组成。<br>一块SSD，<strong>核心部件</strong>是一颗控制器和多颗Flash颗粒，一般还会有一些内存和超级电容。</p>
+<pre><code>--&gt;控制器主要作用是提供高效的手段来访问这些Flash颗粒。
+--&gt;内存的作用主要是表项管理和读写CACHE。
+--&gt;超级电容的作用是在异常下电时保证关键数据不丢失。
+</code></pre><p>而<strong>Flash颗粒</strong>是SSD最重要的器件，其相关特性决定了SSD的实现方式。</p>
+<h2 id="FLASH颗粒"><a href="#FLASH颗粒" class="headerlink" title="FLASH颗粒"></a>FLASH颗粒</h2><h3 id="定义和分类"><a href="#定义和分类" class="headerlink" title="定义和分类"></a>定义和分类</h3><blockquote>
+<p>闪存是一种不挥发性（ Non-Volatile ）内存，在没有电流供应的条件下也能够长久地保持数据，其存储特性相当于硬盘，这项特性正是闪存得以成为各类便携型数字设备的存储介质的基础。</p>
+</blockquote>
+<p>Flash颗粒是SSD最重要的器件，其相关特性决定了SSD的实现方式。目前业界主要有两种类型的Flash技术：NOR（Intel开发）和NAND（东芝开发）。由于这两种技术在如下方面的一些差异：</p>
+<pre><code>--&gt;NOR的读取速度略快于NAND；
+--&gt;NOR的写入速度远低于NAND；
+--&gt;NOR的擦除速度远低于NAND；
+--&gt;的擦写次数约为NAND的1/10；
+--&gt;的单元尺寸约为NAND的2倍；
+</code></pre><p>导致1~16M的闪存市场主要采用NOR颗粒（主要用于保存嵌入式设备的程序），而<strong>更大容量的数据存储（例如SSD）则主要选择NAND颗粒</strong>。</p>
+<h3 id="SLC和MLC"><a href="#SLC和MLC" class="headerlink" title="SLC和MLC"></a>SLC和MLC</h3><p>NAND FLASH芯片，flash颗粒有两种类型：SLC和MLC</p>
+<p>SLC：Single Level Cell，每个存储单元均只能存储1个bit的数据。只包含0和1两个电压符。<br>MLC：Multi Level Cell，每个存储单元能够存储2个bit或者更多bit的数据。包含四个电压符（00,01,10,11）。</p>
+<p><strong>SLC和MLC的比较：</strong><br>MLC容量比SLC大，且价格便宜。<br>但在性能、使用寿命和稳定性上：<br>1、SLC更简单可靠；<br>2、SLC读取和写入的速度都比MLC更快；<br>3、SLC比MLC更耐用，MLC每单元可擦除1w次，而SLC可擦除10w次。</p>
+<p>一般而言，<strong>SLC主要用于企业级市场</strong>，MLC主要用于消费级市场。下表显示了SLC和MLC两种Flash颗粒的一些性能指标：</p>
+<table>
+<thead>
+<tr>
+<th>比较项</th>
+<th>SLC</th>
+<th>MLC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>随机读</td>
+<td>25us</td>
+<td>50us</td>
+</tr>
+<tr>
+<td>擦除</td>
+<td>2ms</td>
+<td>2ms</td>
+</tr>
+<tr>
+<td>编程</td>
+<td>250us</td>
+<td>900us</td>
+</tr>
+<tr>
+<td>擦除次数</td>
+<td>100k</td>
+<td>10k</td>
+</tr>
+</tbody>
+</table>
+<h2 id="SSD的内部逻辑划分"><a href="#SSD的内部逻辑划分" class="headerlink" title="SSD的内部逻辑划分"></a>SSD的内部逻辑划分</h2><p>一颗NAND Flash颗粒，其内部被划分为若干block，每个block又包含若干page。page的大小一般为2k/4k/8k（同一颗Flash颗粒内的page大小是固定且相同的）。</p>
+<p>Flash的一个特点是：不能对任意bit位进行0/1互转，只能按照一定的颗粒度进行擦除和编程操作；</p>
+<pre><code>--&gt;擦除 —— 颗粒度为block，是将指定block中所有的bit位全部设置为1；
+--&gt;编程 —— 颗粒度为page，是将指定page中指定的bit位设置为0；
+</code></pre><p>因此，对SSD进行写的操作实际上对需要写的Page所在的Block全部完成“擦除”(全部bit位置1)后，才能对指定的Page进行“编程”(部分bit位置0)。PS：实际上SSD硬盘在出厂时，厂商都会把所有Block完成擦除操作。</p>
+<h2 id="SSD的表项管理"><a href="#SSD的表项管理" class="headerlink" title="SSD的表项管理"></a>SSD的表项管理</h2><p>  每一个IO读写都是下发给一个地址，这个地址称为LBA(Logic Block Address)，其真正对应在磁盘上的地址称为PBA(Physical Block Address)，和传统机械硬盘中LBA到PBA的映射通过磁轨、磁道、扇区来进行唯一对应不同的是，<strong>SSD的LBA到PBA</strong>的映射通过一张<strong>映射表</strong>来记录。<br>&emsp;&emsp;LBA的粒度是扇区，而Flash颗粒的擦粒度是block，写粒度是page，均为扇区的若干倍，在这种条件下，如果仍以扇区为粒度进行映射，虽然理论上可行，但是显然是增加实现难度和性能的.<br>&emsp;&emsp;同时，如果强制以扇区为粒度进行映射，会导致所需要的映射表空间超过物理内存的限制，这就直接决定了不可能以扇区为粒度进行映射。<br>&emsp;&emsp;即使以page为粒度进行映射，也可能存在物理内存不够用的情况（现在正在使用的SSD盘即属于这种情况），所以需要以更大一些的粒度进行管理。<br>&emsp;&emsp;这个粒度成为”<strong>小块(Sub Block)</strong>“,是SSD进行擦除和编程的最小单位。每个block中，均包含多个sub block；每个sub block，由多个page组成；每个sub block，可能的状态包括：有效、垃圾、空白：</p>
+<pre><code>--&gt;有效：该小块中的数据正在被引用；
+--&gt;垃圾：该小块中的数据没有被引用；
+--&gt;空白：该小块可用于写入新的数据；
+</code></pre><h2 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h2><p>&emsp;&emsp;SSD的写要先进行整个Block的擦除，然后才能对指定的Sub Block进行编程。实际上，如果某一个写操作需要修改一个Sub Block的内容，是无法直接进行修改的，而是写到一个新的Sub Block中，把该LBA的映射指向新的这个Sub Block，同时把原来数据所在的Sub Block标记为“垃圾”。<br>  这样，随着SSD使用时间的越来越长，新的未被编程过的Sub Block越来越少，后面新的写请求则只能重新擦除所有Sub Block均为垃圾的Block才能再次写入，这样必然会造成写操作的性能降低，因此，在SSD内部引入了一个重要的机制——垃圾回收（Garbage Collection），用以提升SSD长期写入操作的性能。</p>
+<p><strong>垃圾回收的工作：</strong></p>
+<pre><code>--&gt;找出合适的block
+--&gt;将该block中的有效小块迁移到别的地方，同时更改映射表
+--&gt;将该block擦除，并放入空白块表
+</code></pre><p>&emsp;&emsp;所谓“最合适进行回收的block”，是指这个block的垃圾小块足够多、有效/空白小块足够少。<br>&emsp;&emsp;垃圾回收算法是否高效，与该SSD的性能有很强的联系。</p>
+<h2 id="SSD的磨损均衡"><a href="#SSD的磨损均衡" class="headerlink" title="SSD的磨损均衡"></a>SSD的磨损均衡</h2><p>  上面说过，每个Flash颗粒中Block的可擦除次数是有限制的，如果颗粒中的某些Block很快达到了擦除次数上限，而其他大部分都几乎没有被擦除过，则会很快的造成整个SSD失效。而磨损均衡（Wear Leveling）则是通过各种手段，保证整个SSD所有的block的擦除次数是相近的从而延长SSD的使用寿命。</p>
+<p>磨损均衡分为  <strong>动态磨损均衡</strong>  和  <strong>静态磨损均衡</strong>：</p>
+<blockquote>
+<p>动态磨损均衡，是指在外部力量的驱动下，自然完成磨损均衡。这里外部力量，包括写IO和垃圾回收。<br>静态磨损均衡，是指磨损均衡功能模块主动地查找那些长时间没有变化的数据，将这些数据搬移到其他位置，以便释放出擦除次数较少的block，使其投入到擦除/编程的循环之中。</p>
+</blockquote>
+<h2 id="SSD使用寿命计算举例"><a href="#SSD使用寿命计算举例" class="headerlink" title="SSD使用寿命计算举例"></a>SSD使用寿命计算举例</h2><p>&emsp;&emsp;虽然一个block擦写次数只有100k（SLC），但是因为动态映射、磨损均衡等机制的存在，使得SSD的寿命远不止写入100k个IO。<br>计算SSD寿命的方式，一般是先确认一个block在其生命周期内能够写入多少数据量，再乘以该SSD具有的block数量，再除以一个估计的写入带宽，最后得到寿命值。<br>&emsp;&emsp;以我司（<strong>你们猜o(^▽^)o</strong>）自研的100G SLC SSD为例，16片Flash颗粒，每片颗粒拥有32k个block，每个block拥有64个4k的page，每个block可以被擦除100k次：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">16 x (32 x 1024) x 64 x (4 x 1024) x 100000 = 12500 TB</div></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;12500 TB，这是当所有block同时达到擦除次数上限时，可以写入的数据总量。<br>按照用户平均每秒钟写入10MB的数据进行计算：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(12500 x 1024 x 1024) / (10 x 60 x 60 x 24 x 365.25) = 41.5 年</div></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;41.5年，这是在10MB/s的压力下、持续不断地向SSD写入数据的使用寿命。<br>&emsp;&emsp;考虑到其他一些因素的影响，一块SLC SSD的使用寿命，10年是可以保证的。</p>
+<h2 id="SSD和传统磁盘的对比"><a href="#SSD和传统磁盘的对比" class="headerlink" title="SSD和传统磁盘的对比"></a>SSD和传统磁盘的对比</h2><p>&emsp;&emsp;SSD与传统磁盘相比:<br>&emsp;&emsp;第一是没有机械装置;<br>&emsp;&emsp;第二是由磁介质改为了电介质。<br>&emsp;&emsp;在SSD内部有一个FTL(Flash Transalation Layer)，它相当于磁盘中的控制器，主要功能就是作地址映射，将flash memory的物理地址映射为磁盘的LBA逻辑地址，并提供给OS作透明访问。</p>
+<h3 id="读方面"><a href="#读方面" class="headerlink" title="读方面"></a>读方面</h3><p><strong>随机读</strong><br>  SSD没有传统磁盘的寻道时间和延迟时间，所以SSD可以提供非常高的随机读取能力。</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>参数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SLC类型的SSD</td>
+<td>超过35000的IOPS</td>
+</tr>
+<tr>
+<td>传统15k的SAS磁盘</td>
+<td>最高160个IOPS。</td>
+</tr>
+</tbody>
+</table>
+<p><strong>连续读</strong><br>  SSD连续读的能力相比普通磁盘优势并不明显。传统磁盘连续读，并不需要寻道时间：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>参数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SLC类型的SSD</td>
+<td>超过35000的IOPS</td>
+</tr>
+<tr>
+<td>传统15k的SAS磁盘</td>
+<td>最高160个IOPS。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="写方面"><a href="#写方面" class="headerlink" title="写方面"></a>写方面</h3><p>  Page为最小的读写单位，Block为最小的擦除/编程单位，其中1个Page为4KB，1个Block由256个Page组成，1个Plane由2048个Block组成，2个Plane组成1个Die，也就是最小的芯片(4GB)</p>
+<p>&emsp;&emsp;向一个空白的page写入信息时，可以直接写入而无需擦除，但是如果需要改写某个存储单元（page）的数据，必须首先将整个block读入缓存，然后修改数据，并擦除整个block的数据，最后将整个block写入。SSD改写数据的代价很高，SSD的这个特性，我们称之为erase-before-write。因为这个特性，引入<strong>“写放大”</strong>的概念。</p>
+<p>&emsp;&emsp;比如你想改写4K的数据，必须首先将整个擦除块（1024KB）中的数据读出到缓存中，改写后，将整个块一起写入，这时你实际写入了1024KB的数据，写入放大系数是256。写入放大最好的情况是1，就是不存在放大的情况。</p>
+<p>&emsp;&emsp;在<strong>长时间写入</strong>后，MLC随机写IO下降得非常厉害，而<strong>SLC表现则比较稳定</strong>，可以稳定在3000 IOPS，而MLC随机写IOPS甚至降低到300。</p>
+<p>&emsp;&emsp;当某个单元长时间被反复擦写时（比如Oracle redo），不仅会造成写入的性能问题，而且会大大缩短SSD的使用寿命。所以，引入磨损均衡算法（wear leveling）。</p>
+<h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力<br>！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Ceph — V11.2.0 KRAKEN(译)]]></title>
       <url>http://xiaqunfeng.github.io/2017/01/24/Ceph-KRAKEN(V11.2.0)/</url>
       <content type="html"><![CDATA[<p>ceph的版本出到K了，针对bluestore又有了新的优化，并进行了一定的压力和故障测试，当然还有其他的特性，针对Jewel版本有较多改动。当前还没有什么中文资料，<a href="http://docs.ceph.org.cn/" target="_blank" rel="external">ceph中文社区</a>中关于V11.2.0还没有更新进去，所以闲暇之余翻译了一下，也给大家节省时间。<br><a id="more"></a></p>
