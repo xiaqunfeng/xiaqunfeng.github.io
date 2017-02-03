@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="夏天的风" />
+
+
+
+<meta name="description" content="使用SSD作为缓存来提高性能有多种方法，文章前言里会介绍，主要有bcache、dm-cache、flashcache、cache tier等，本文比较两种在ceph中的常用方案：flashcache 和 cache tier。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flashcache vs Cache tier">
+<meta property="og:url" content="http://xiaqunfeng.github.io/2017/02/03/Flashcache-vs-Cache-tier/index.html">
+<meta property="og:site_name" content="夏天的风的博客">
+<meta property="og:description" content="使用SSD作为缓存来提高性能有多种方法，文章前言里会介绍，主要有bcache、dm-cache、flashcache、cache tier等，本文比较两种在ceph中的常用方案：flashcache 和 cache tier。">
+<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/flashcache.png">
+<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/cache%20tier.png">
+<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
+<meta property="og:updated_time" content="2017-02-03T09:32:11.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Flashcache vs Cache tier">
+<meta name="twitter:description" content="使用SSD作为缓存来提高性能有多种方法，文章前言里会介绍，主要有bcache、dm-cache、flashcache、cache tier等，本文比较两种在ceph中的常用方案：flashcache 和 cache tier。">
+<meta name="twitter:image" content="http://ojet8bprn.bkt.clouddn.com/flashcache.png">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/qiniu.ico">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>Flashcache vs Cache tier | 夏天的风的博客</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: false
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/stark.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">夏天的风</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">好记性不如烂笔头😝</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" href="https://github.com/xiaqunfeng" title="GitHub"></a>
+                            
+                                <a class="fa CSDN" href="http://blog.csdn.net/xiaqunfeng123" title="CSDN"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ceph/">ceph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/storage/">storage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">夏天的风</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/stark.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">夏天的风</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">好记性不如烂笔头😝</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/xiaqunfeng" title="GitHub"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://blog.csdn.net/xiaqunfeng123" title="CSDN"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-Flashcache-vs-Cache-tier" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/02/03/Flashcache-vs-Cache-tier/" class="article-date">
+      <time datetime="2017-02-03T09:15:15.000Z" itemprop="datePublished">2017-02-03</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Flashcache vs Cache tier
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/storage/">storage</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>使用SSD作为缓存来提高性能有多种方法，文章前言里会介绍，主要有bcache、dm-cache、flashcache、cache tier等，本文比较两种在ceph中的常用方案：flashcache 和 cache tier。<br><a id="more"></a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>传统的HDD具备大容量的优势，但是性能相对偏低，尤其是随机IO性能，经常成为系统的性能瓶颈，在虚拟机化环境下表现的更明显，因为虚拟化场景会加剧IO随机化。相比HDD，SSD具有高性能的优势，尤其在随机IO这方面，优势非常明显，但是SSD的硬件成本比较高。</p>
+<p>目前业界在结合HDD的大容量和SSD的高性能方面做了一些优化，基本思路是使用SSD作为HDD的cache。计算机领域，cache的思想无处不在，比如CPU的L1、L2 cache，raid card上的cache，TLB cache等。关于SSD作为HDD的cache的优化方案，主要有Linux bcache，Linux dm-cache，Facebook flashcache，btier，IBM flashcache等。</p>
+<h2 id="flashcache"><a href="#flashcache" class="headerlink" title="flashcache"></a>flashcache</h2><p>flashcache 是 facebook 开源的 ssd 存储产品，它基于内核的 devicemapper 机制，允许将 ssd 设备映射为机械存储设备的缓存，堆叠成为一个虚拟设备供用户读写，从而在一定程度上兼顾 ssd 的高速与机械存储设备的高容量，更加经济高效地支撑线上业务。</p>
+<p> <img src="http://ojet8bprn.bkt.clouddn.com/flashcache.png" alt="flashcache"></p>
+<h3 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h3><p>Device Mapper层，对外服务体现方式是块设备，无需修改应用。</p>
+<p>确保内核已启用 DeviceMapper，编译内核模块并安装之后：</p>
+<ul>
+<li>创建缓存设备: flashcache_wt_create /dev/cachedev /dev/sda1 /dev/hda1</li>
+<li>删除缓存设备: dmsetup remove cachedev </li>
+</ul>
+<p>使用者需要注意建立缓存设备之后，就不应该再对 /dev/sda1 和 /dev/hda1 两个设备直接读写了。</p>
+<p>用户操作接口是映射之后的虚拟设备，即/dev/mapper/*下面的设备，如cachedev，而不是基设备</p>
+<h3 id="缓存的组织"><a href="#缓存的组织" class="headerlink" title="缓存的组织"></a>缓存的组织</h3><p>flashcache是建立在Linux devicemapper之上的，由devicemapper在SSD和backing HDD之上创建了一个逻辑的mapped device，用户使用的就是这个mapped device。</p>
+<p>flashcache把cache（SSD）按照哈希的方式进行结构化管理，flashcache 中缓存的盘块的默认大小为 4kb，按照多路组相连的形式组织缓存块，每组含有 512 个缓存块，简单按照取模分组。缓存的查找，就是对后端设备块号取模得到组号，然后凭偏移遍历组中的缓存块。具体管理方式可以参考小结末参考资料。</p>
+<p>虽然数据会被写入 ssd 设备，但缓存的组织信息一律保存在内存中，即 cache_c 对象。它里面保存了基本的配置选项、统计信息、对两个设备的引用、每个缓存块的相关信息(cache, cache_state)、 以及缓存组中 FIFO 数组(虽然名字叫做 LRU)的下标。</p>
+<h3 id="缓存策略"><a href="#缓存策略" class="headerlink" title="缓存策略"></a>缓存策略</h3><p>flashcache 支持三种缓存策略：</p>
+<ul>
+<li>writethrough：disk write会在cache中保留一份，但同时也会把数据write到backing disk中，直到write backing disk完成才会返回。</li>
+<li>writearound：disk write会bypass cache，直接写到backing disk中，disk read会把从backing disk中读取的数据在cache中缓存。</li>
+<li>writeback：write首先会写到cache中，然后更新metadata中得dirty bit，数据并不会立即同步到backing disk中。</li>
+</ul>
+<p>针对writethrough和writearound，disk read首先根据目的sector找到对应的cache set，然后查找有没有相应的block，如果找到了，也就是cache hit，则直接从cache中读取，如果没有找到，就从backing disk中读取数据，同时也在cache中进行缓存。</p>
+<h3 id="数据调度"><a href="#数据调度" class="headerlink" title="数据调度"></a>数据调度</h3><p>DM层request送往flashcache，并将读写请求按照目标设备的blocksize进行划分，切割成blocksize大小的bio。</p>
+<p><strong>读</strong></p>
+<p>接收到bio，首先，根据bio-&gt;bi_sector，即硬盘的扇区号，得到SSD上的set；</p>
+<p>其次，在set内查找是否命中，如果命中，则将硬盘的扇区号转换为SSD的扇区号，然后将此bio向SSD提交，进行读取；</p>
+<p>如果未命中，则首先向硬盘驱动提交bio，从硬盘读数据，读取完成后，由回调函数启动回写SSD操作，将bio的扇区号转换为SSD的=扇区号，然后向SSD驱动程序提交，将硬盘读取的数据写入SSD。</p>
+<p><strong>写</strong></p>
+<p>同文件系统页缓冲，并不直接写入硬盘，而是写入SSD，同时，保持一个阀值，一般为20%，在脏块数目达到此数值时，写回磁盘。</p>
+<p>另外：如果<strong>IO size小于blocksize</strong>，flashcache则不会缓存该IO，而是先查找cache中有没有overlap的脏数据：</p>
+<p>如果有的话，就先刷脏数据，然后再把刚才从devicemapper传来的IO写到backing disk上</p>
+<p>如果没有脏数据，则直接写到backing disk上，这也就是为什么当使用fio测试小于4KB的随机IO时，flashcache几乎没有效果。</p>
+<p>部分参考资料：</p>
+<p><a href="http://mogu.io/Facebook_flashcache-81" target="_blank" rel="external">Facebook flashcache介绍与使用</a></p>
+<p><a href="https://www.ibm.com/developerworks/community/blogs/5144904d-5d75-45ed-9d2b-cf1754ee936a/entry/flashcache-introduction?lang=en" target="_blank" rel="external">flashcache 简介</a></p>
+<p><a href="http://blog.csdn.net/kidd_3/article/category/905673" target="_blank" rel="external">其他flashcache资料</a></p>
+<h2 id="cache-tier"><a href="#cache-tier" class="headerlink" title="cache tier"></a>cache tier</h2><p>缓存分层通过将一部分数据存到缓存层，给ceph客户端提供更好的IO性能。通常是在更快的磁盘上创建存储池，如SSD/NVMe。数据最终被透明的写入常规的存储池中，它们由副本或纠删码类型的存储池所构建。</p>
+<p><img src="http://ojet8bprn.bkt.clouddn.com/cache%20tier.png" alt="cache tier"></p>
+<p>缓存层代理自动处理缓存层和后端存储之间的数据迁移，对客户端透明，管理员可以配置迁移进行的方式。</p>
+<h3 id="两种模式"><a href="#两种模式" class="headerlink" title="两种模式"></a>两种模式</h3><p>缓存分层主要有两种模式：writeback 和 read-only。如果是write-back模式，那么该cache pool 既是read tier ，又是 write tier； 如果只是read only 模式，那么实际上，cache pool 只是 read tier，没有write tier。</p>
+<h3 id="writeback模式"><a href="#writeback模式" class="headerlink" title="writeback模式"></a>writeback模式</h3><p>客户端写数据到缓存层后立刻收到确认回复。基于配置的flush/evict策略，数据从缓存层迁移到存储层，最后缓存分层代理从缓存层中将数据删除。</p>
+<p>当读操作在缓存中miss的时候</p>
+<p>1、返回client结果为cache miss，重新向存储层发起读请求。</p>
+<p>2、cache层向存储层发起读请求，返回client的同时缓存一份在cache层</p>
+<p>写操作在缓存中miss的时候</p>
+<p>直接向存储层写，然后逐级返回，并不将数据缓存在cache层</p>
+<p>这种模式适合大量修改数据的场景。</p>
+<h3 id="read-only模式"><a href="#read-only模式" class="headerlink" title="read-only模式"></a>read-only模式</h3><p>缓存层只服务于客户端的读操作。当读请求在缓存层中miss的时候，从存储层中读上来，并设置一个expire时间，过期自动被删除。cache层可以设置为单副本，极大减少缓存空间占用率。写操作直接写到后端的存储层。</p>
+<p>这种模式适合一次写入多次读取的场景。</p>
+<h2 id="Flashcache-vs-Cache-tier"><a href="#Flashcache-vs-Cache-tier" class="headerlink" title="Flashcache vs Cache tier"></a>Flashcache vs Cache tier</h2><p>flashcache将缓存在块层的东西，而缓存池将缓存对象层的东西。 在每种情况下都有潜在的优点和缺点。 一些初始猜测：</p>
+<p><strong>flashcache</strong></p>
+<ul>
+<li>[x] 所有缓存对一个节点是本地的，更少的开销（包括网络）。</li>
+<li>[x] 在许多对象访问和大量热的inodes / dentries的情况下可以做得更好</li>
+<li>无法仅为高速缓存定义不同的 副本/ EC 策略。</li>
+<li>缓存写入是非原子的</li>
+</ul>
+<p><strong>Ceph cache tier</strong></p>
+<ul>
+<li>[x] 潜在可以做的事情，如副本缓存和EC存冷数据。</li>
+<li>[x] 更安全</li>
+<li>更多的网络开销，可能会有更多的CPU开销。</li>
+<li>需要更长的时间才能将内容缓存</li>
+</ul>
+<p>参考资料：<a href="http://lists.ceph.com/pipermail/ceph-users-ceph.com/2014-March/037861.html" target="_blank" rel="external"> OSD + FlashCache vs. Cache Pool for RBD</a></p>
+<p><strong>关于成本</strong></p>
+<p>高速缓存中的数据总是硬盘驱动器上的数据的第二个副本。 缓存的故障很少产生数据丢失，只是性能损失，因为一切都需要从机械驱动器提供，直到缓存可以被替换。</p>
+<p> SSD层可能是自动分层系统中唯一的数据副本，不能容忍SSD层的故障，因此这些系统必须通过使用类似RAID的数据保护方案在冗余配置中设置SSD层。 不得不购买额外的SSD来支持类似RAID的功能，使已经高价的技术更加昂贵。</p>
+<p><strong>关于读</strong></p>
+<p>在大多数情况下，两个选项之间的read 性能应该大致相同。 大多数情况下，read 性能的效率将取决于缓存设备提升数据的效率和可定制性。 目标应该是确保正确的数据在正确的时间存在缓存中。缓存和自动分层需要在关于他们缓存什么和什么时候缓存需要变得更加聪明。</p>
+<p><strong>终上所述</strong></p>
+<p>从用户的角度来看，如果适当的冗余存在，缓存或分层没有显着的优势，因此不应该单独选择基于闪存的存储系统。 IT规划人员可能想要调查其他因素，例如将某些数据集固定到闪存层或缓存区，以及与环境或应用程序集成的能力。</p>
+<p>参考资料：（这两篇文章是同一个作者）</p>
+<p><a href="http://www.networkcomputing.com/storage/ssd-options-tier-vs-cache/1267262167" target="_blank" rel="external">SSD Options: Tier Vs. Cache</a></p>
+<p><a href="http://searchsolidstatestorage.techtarget.com/tip/Tiering-vs-caching-in-flash-based-storage-systems" target="_blank" rel="external">Tiering vs. caching in flash-based storage systems</a></p>
+<h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
+
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/02/03/Flashcache-vs-Cache-tier/">Flashcache vs Cache tier</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
+        <p><span>发布时间:</span>2017-02-03, 17:15:15</p>
+        <p><span>最后更新:</span>2017-02-03, 17:32:11</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/02/03/Flashcache-vs-Cache-tier/" title="Flashcache vs Cache tier">http://xiaqunfeng.github.io/2017/02/03/Flashcache-vs-Cache-tier/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/02/03/Flashcache-vs-Cache-tier/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/02/03/Dm-cache-vs-Bcache/">
+                    Dm-cache vs Bcache
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/01/25/Linux命令——parted/">
+                    Linux命令——parted
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flashcache"><span class="toc-number">2.</span> <span class="toc-text">flashcache</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本使用"><span class="toc-number">2.1.</span> <span class="toc-text">基本使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缓存的组织"><span class="toc-number">2.2.</span> <span class="toc-text">缓存的组织</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缓存策略"><span class="toc-number">2.3.</span> <span class="toc-text">缓存策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据调度"><span class="toc-number">2.4.</span> <span class="toc-text">数据调度</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cache-tier"><span class="toc-number">3.</span> <span class="toc-text">cache tier</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#两种模式"><span class="toc-number">3.1.</span> <span class="toc-text">两种模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#writeback模式"><span class="toc-number">3.2.</span> <span class="toc-text">writeback模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#read-only模式"><span class="toc-number">3.3.</span> <span class="toc-text">read-only模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Flashcache-vs-Cache-tier"><span class="toc-number">4.</span> <span class="toc-text">Flashcache vs Cache tier</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#打赏通道"><span class="toc-number">5.</span> <span class="toc-text">打赏通道</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Flashcache vs Cache tier　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section id="comments">
+    <style> aside.comment-bar { margin: auto 30px; }</style>
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function(){
+            this.page.url = 'http://xiaqunfeng.github.io/2017/02/03/Flashcache-vs-Cache-tier/';
+            this.page.identifier = '2017/02/03/Flashcache-vs-Cache-tier/';
+        };
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = '//null.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+</section>
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/02/03/Dm-cache-vs-Bcache/" title="上一篇: Dm-cache vs Bcache">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/01/25/Linux命令——parted/" title="下一篇: Linux命令——parted">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/02/03/Dm-cache-vs-Bcache/">Dm-cache vs Bcache</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/03/Flashcache-vs-Cache-tier/">Flashcache vs Cache tier</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/25/Linux命令——parted/">Linux命令——parted</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/25/认识SSD/">认识SSD</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/24/Ceph-KRAKEN(V11.2.0)/">Ceph — V11.2.0 KRAKEN(译)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/24/Crushmap学习/">Crushmap学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/Ceph中严重数据不一致性BUG/">Ceph中严重数据不一致性BUG</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/块存储的世界/">块存储的世界</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/17/Linux命令——uptime/">Linux命令——uptime</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/dd磁盘命令小记/">dd磁盘命令小记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/解决calamari无法获取集群hosts信息的BUG/">解决calamari无法获取集群hosts信息的BUG</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/ubuntu下配置邮件发送/">ubuntu下配置邮件发送</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/ubuntu下系统打包/">ubuntu下系统打包</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux命令——history及其优化/">Linux命令——history及其优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux下利用screen进行屏幕协作/">Linux下利用screen进行屏幕协作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux命令——crontab/">Linux命令——crontab</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/06/hexo的搭建/">Mac上hexo博客的搭建</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2017 夏天的风
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

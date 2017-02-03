@@ -15,16 +15,20 @@
 
 
 
-<meta name="description" content="打印系统总共运行了多长时间和系统的平均负载。">
+<meta name="description" content="前面一篇文章介绍了flashcache和cache tier，并进行了对比，其实flashcache的原理和dm-cache是类似的。这里就介绍下dm-cache和bcache，这两种策略均已在linux内核中。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux命令——uptime">
-<meta property="og:url" content="http://xiaqunfeng.github.io/2017/01/17/Linux命令——uptime/index.html">
+<meta property="og:title" content="Dm-cache vs Bcache">
+<meta property="og:url" content="http://xiaqunfeng.github.io/2017/02/03/Dm-cache-vs-Bcache/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="打印系统总共运行了多长时间和系统的平均负载。">
-<meta property="og:updated_time" content="2017-01-17T10:05:16.000Z">
+<meta property="og:description" content="前面一篇文章介绍了flashcache和cache tier，并进行了对比，其实flashcache的原理和dm-cache是类似的。这里就介绍下dm-cache和bcache，这两种策略均已在linux内核中。">
+<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/dm-cache.png">
+<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/bcache.png">
+<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
+<meta property="og:updated_time" content="2017-02-03T09:46:46.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Linux命令——uptime">
-<meta name="twitter:description" content="打印系统总共运行了多长时间和系统的平均负载。">
+<meta name="twitter:title" content="Dm-cache vs Bcache">
+<meta name="twitter:description" content="前面一篇文章介绍了flashcache和cache tier，并进行了对比，其实flashcache的原理和dm-cache是类似的。这里就介绍下dm-cache和bcache，这两种策略均已在linux内核中。">
+<meta name="twitter:image" content="http://ojet8bprn.bkt.clouddn.com/dm-cache.png">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -56,7 +60,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Linux命令——uptime | 夏天的风的博客</title>
+<title>Dm-cache vs Bcache | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -226,11 +230,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-Linux命令——uptime" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Dm-cache-vs-Bcache" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/01/17/Linux命令——uptime/" class="article-date">
-      <time datetime="2017-01-17T10:05:16.000Z" itemprop="datePublished">2017-01-17</time>
+      <a href="/2017/02/03/Dm-cache-vs-Bcache/" class="article-date">
+      <time datetime="2017-02-03T09:37:45.000Z" itemprop="datePublished">2017-02-03</time>
 </a>
 
 
@@ -245,7 +249,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Linux命令——uptime
+      Dm-cache vs Bcache
     </h1>
   
 
@@ -256,7 +260,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/storage/">storage</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -266,42 +270,27 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>打印系统总共运行了多长时间和系统的平均负载。<br><a id="more"></a></p>
-<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Usage:</div><div class="line"> uptime [options]</div><div class="line"></div><div class="line">Options:</div><div class="line"> -p, --pretty   show uptime in pretty format</div><div class="line"> -h, --help     display this help and exit</div><div class="line"> -s, --since    system up since</div><div class="line"> -V, --version  output version information and exit</div><div class="line"></div><div class="line">For more details see uptime(1).</div></pre></td></tr></table></figure>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><h3 id="uptime"><a href="#uptime" class="headerlink" title="uptime"></a>uptime</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># uptime</div><div class="line"> 17:40:45 up 1 day,  6:37,  3 users,  load average: 0.27, 0.21, 0.31</div></pre></td></tr></table></figure>
-<table>
-<thead>
-<tr>
-<th>显示内容</th>
-<th>释义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>17:40:45</td>
-<td>系统当前时间</td>
-</tr>
-<tr>
-<td>up 1 day,  6:37</td>
-<td>主机已运行时间，时间越大，说明机器越稳定</td>
-</tr>
-<tr>
-<td>3 users</td>
-<td>用户连接数，是总连接数而不是用户数</td>
-</tr>
-<tr>
-<td>load average: 0.27, 0.21, 0.31</td>
-<td>最近1，5，15分钟的系统平均负载</td>
-</tr>
-</tbody>
-</table>
-<p><strong>系统平均负载</strong>：在特定时间间隔内运行队列中的平均进程数。</p>
-<p><strong>查看CPU内核数</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># cat /proc/cpuinfo |grep &quot;processor&quot;|wc -l</div><div class="line">4</div></pre></td></tr></table></figure>
-<p>如果每个CPU内核的当前活动进程数不大于3的话，那么系统的性能是良好的。如果每个CPU内核的任务数大于5，那么这台机器的性能有严重问题。</p>
-<h3 id="运行时间格式输出"><a href="#运行时间格式输出" class="headerlink" title="运行时间格式输出"></a>运行时间格式输出</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># uptime -p</div><div class="line">up 1 day, 6 hours, 56 minutes</div></pre></td></tr></table></figure>
-<h3 id="系统启动的时间"><a href="#系统启动的时间" class="headerlink" title="系统启动的时间"></a>系统启动的时间</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># uptime -s</div><div class="line">2017-01-16 11:03:35</div></pre></td></tr></table></figure>
-<h3 id="uptime版本"><a href="#uptime版本" class="headerlink" title="uptime版本"></a>uptime版本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># uptime -V</div><div class="line">uptime from procps-ng 3.3.9</div></pre></td></tr></table></figure>
+        <p>前面一篇文章介绍了flashcache和cache tier，并进行了对比，其实flashcache的原理和dm-cache是类似的。这里就介绍下dm-cache和bcache，这两种策略均已在linux内核中。<br><a id="more"></a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>现代硬盘驱动器（HDD）已经走了很长的路。他们旋转得越来越快;与过去的HDD相比具有更高的存储密度和更低的错误率，但是它们和其前身一样，仍然被视为性能瓶颈。随着时间的推移，我们已经看到了许多缓存方案来提高性能;有一些块缓存解决方案在磁盘驱动器（磁盘或存储控制器）或使用主机系统内存的文件系统级缓存解决方案附近使用某种类型的缓存。随着企业级的可接受性，大而经济的闪存存储技术的可用性，使用固态驱动器（SSD）的块缓存解决方案作为性能增强解决方案。使用基于SSD的块缓存，我们可以寻找SSD速度和HDD容量 - 快速，大而且实惠。</p>
+<p>在块缓存解决方案中，概念上，将逻辑设备呈现给文件系统（或多个应用），而不是实际目的地HDD（或其它目的地块设备，例如iSCSI LUN），其中数据意在被存储。因此呈现的逻辑设备与原始设备具有相同的大小物理设备，而用于高速缓存的SSD可以跨越逻辑设备映射。</p>
+<p>Linux开源社区有多个通用的块级缓存解决方案，其中包括bcache，dm-cache和flashcache。 Linux内核社区将内核3.9中的dm-cache上游和内核3.10中的bcache合并。虽然flashcache未在上游合并，但在某些生产环境中已经使用了一段时间。</p>
+<h2 id="dm-cache"><a href="#dm-cache" class="headerlink" title="dm-cache"></a>dm-cache</h2><p>又叫 Device Mapper Cache。dm-cache是设备映射器目标，首先提交到kernel-3.9。它使用针对基于闪存的SSD进行优化的I / O调度和缓存管理技术。设备映射程序目标（dmcache）重新使用精简资源调配库中使用的元数据库。write-back和writethrough都由dm-cache支持，write-back是默认模式。</p>
+<p>由dm-cache创建的虚拟缓存设备使用源设备（Origin device）、缓存设备（Cache device）和元数据设备（Metadata dev）这三个物理设备来构建。结构如下图所示：</p>
+<p> <img src="http://ojet8bprn.bkt.clouddn.com/dm-cache.png" alt="dm-cache"></p>
+<p>源设备是实际（较慢）目的存储设备。</p>
+<p>高速缓存设备是用于临时存储用户数据的较快设备。</p>
+<p>元数据设备记录块布局，它们的dirty flags和其他内部数据所需的策略。</p>
+<h2 id="bcache"><a href="#bcache" class="headerlink" title="bcache"></a>bcache</h2><p>bcache首先提交到kernel-3.10。它围绕基于闪存的SSD的独特特性设计，并使用混合btree/log结构来跟踪缓存的区域。它旨在不惜一切代价（at all cost）避免随机写。 bcache顺序填充一个擦除块，然后在重新使用之前发出一个丢弃（缓存数据可以是桶上的任意一个扇区。bcache最大程度上减少了随机写的代价，它按顺序填充一个桶，重新使用时只需将桶设置为无效）。支持write-through和write-back高速缓存。write-back默认关闭，但可以在运行时任意打开和关闭。</p>
+<p>通过后端设备（backing device）和缓存设备（caching device）来创建虚拟的bcache 设备，如下图所示：</p>
+<p> <img src="http://ojet8bprn.bkt.clouddn.com/bcache.png" alt="bcache"></p>
+<p>后端设备是实际（较慢）目的存储设备，而高速缓存设备是更快的设备。后备设备必须格式化为bcache 块设备；现有的格式化分区不能与bcache一起使用。（可以尝试 blocks to-bcache进行就地转换）。</p>
+<p>默认状态下bcache不缓存顺序IO，只缓存随机读写。为避免随机写，bcache将随机写转换为顺序写，首先写到SSD，然后回写缓存使用SSD缓存大量的写，最后将写有序写到磁盘或者阵列上。</p>
+<p>SSD的特点就是随机IO速度很快，而对于大块顺序IO的提升却并不大。bcache会检测顺序IO并忽略；还会对每一个任务记录动态的平均IO大小，当平均IO大小超过截止值时该任务后面的IO将会被忽略，这样就可以透传备份或者大文件拷贝。</p>
+<h2 id="Dm-cache-vs-Bcache"><a href="#Dm-cache-vs-Bcache" class="headerlink" title="Dm-cache vs Bcache"></a>Dm-cache vs Bcache</h2><p>与 dm-cache 实现的的分级存储不同，bcache 更像一个传统的缓存。它可以用来存储任何 extents，甚至是是一个扇区，而 dm-cache 只能对整块数据进行缓存。</p>
+<p>dm-cache方案假设缓存设备总是存在，bcache 并不要求 cache 设备一直都在。 </p>
+<p>bcache 已经在实际产品中使用了，所以它有机会去碰到这些疑难场景，并可以处理这些缓存设备无法工作的情形。</p>
+<p>dm-cache 确实还有很多事情要做。起初，它是进行 cache 和原始设备的并行 IO，但最终不得不回到顺序 IO。</p>
+<h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 
       
     </div>
@@ -310,13 +299,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/01/17/Linux命令——uptime/">Linux命令——uptime</a></p>
+        <p><span>本文标题:</span><a href="/2017/02/03/Dm-cache-vs-Bcache/">Dm-cache vs Bcache</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-01-17, 18:05:16</p>
-        <p><span>最后更新:</span>2017-01-17, 18:05:16</p>
+        <p><span>发布时间:</span>2017-02-03, 17:37:45</p>
+        <p><span>最后更新:</span>2017-02-03, 17:46:46</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/01/17/Linux命令——uptime/" title="Linux命令——uptime">http://xiaqunfeng.github.io/2017/01/17/Linux命令——uptime/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/01/17/Linux命令——uptime/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/02/03/Dm-cache-vs-Bcache/" title="Dm-cache vs Bcache">http://xiaqunfeng.github.io/2017/02/03/Dm-cache-vs-Bcache/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/02/03/Dm-cache-vs-Bcache/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -328,16 +317,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/01/20/块存储的世界/">
-                    块存储的世界
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/01/12/dd磁盘命令小记/">
-                    dd磁盘命令小记
+                <a href="/2017/02/03/Flashcache-vs-Cache-tier/">
+                    Flashcache vs Cache tier
                 </a>
             </div>
         
@@ -349,7 +332,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用方法"><span class="toc-number">1.</span> <span class="toc-text">使用方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实例"><span class="toc-number">2.</span> <span class="toc-text">实例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#uptime"><span class="toc-number">2.1.</span> <span class="toc-text">uptime</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运行时间格式输出"><span class="toc-number">2.2.</span> <span class="toc-text">运行时间格式输出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#系统启动的时间"><span class="toc-number">2.3.</span> <span class="toc-text">系统启动的时间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#uptime版本"><span class="toc-number">2.4.</span> <span class="toc-text">uptime版本</span></a></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dm-cache"><span class="toc-number">2.</span> <span class="toc-text">dm-cache</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bcache"><span class="toc-number">3.</span> <span class="toc-text">bcache</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dm-cache-vs-Bcache"><span class="toc-number">4.</span> <span class="toc-text">Dm-cache vs Bcache</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#打赏通道"><span class="toc-number">5.</span> <span class="toc-text">打赏通道</span></a></li></ol>
         
     </div>
     <style>
@@ -385,7 +368,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Linux命令——uptime　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"Dm-cache vs Bcache　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -404,8 +387,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.github.io/2017/01/17/Linux命令——uptime/';
-            this.page.identifier = '2017/01/17/Linux命令——uptime/';
+            this.page.url = 'http://xiaqunfeng.github.io/2017/02/03/Dm-cache-vs-Bcache/';
+            this.page.identifier = '2017/02/03/Dm-cache-vs-Bcache/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -427,15 +410,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/01/20/块存储的世界/" title="上一篇: 块存储的世界">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/01/12/dd磁盘命令小记/" title="下一篇: dd磁盘命令小记">
+            <a href="/2017/02/03/Flashcache-vs-Cache-tier/" title="下一篇: Flashcache vs Cache tier">
                 <i class="fa fa-angle-right"></i>
             </a>
         

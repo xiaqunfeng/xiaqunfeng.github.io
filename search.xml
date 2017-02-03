@@ -4,6 +4,117 @@
   
     
     <entry>
+      <title><![CDATA[Dm-cache vs Bcache]]></title>
+      <url>http://xiaqunfeng.github.io/2017/02/03/Dm-cache-vs-Bcache/</url>
+      <content type="html"><![CDATA[<p>前面一篇文章介绍了flashcache和cache tier，并进行了对比，其实flashcache的原理和dm-cache是类似的。这里就介绍下dm-cache和bcache，这两种策略均已在linux内核中。<br><a id="more"></a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>现代硬盘驱动器（HDD）已经走了很长的路。他们旋转得越来越快;与过去的HDD相比具有更高的存储密度和更低的错误率，但是它们和其前身一样，仍然被视为性能瓶颈。随着时间的推移，我们已经看到了许多缓存方案来提高性能;有一些块缓存解决方案在磁盘驱动器（磁盘或存储控制器）或使用主机系统内存的文件系统级缓存解决方案附近使用某种类型的缓存。随着企业级的可接受性，大而经济的闪存存储技术的可用性，使用固态驱动器（SSD）的块缓存解决方案作为性能增强解决方案。使用基于SSD的块缓存，我们可以寻找SSD速度和HDD容量 - 快速，大而且实惠。</p>
+<p>在块缓存解决方案中，概念上，将逻辑设备呈现给文件系统（或多个应用），而不是实际目的地HDD（或其它目的地块设备，例如iSCSI LUN），其中数据意在被存储。因此呈现的逻辑设备与原始设备具有相同的大小物理设备，而用于高速缓存的SSD可以跨越逻辑设备映射。</p>
+<p>Linux开源社区有多个通用的块级缓存解决方案，其中包括bcache，dm-cache和flashcache。 Linux内核社区将内核3.9中的dm-cache上游和内核3.10中的bcache合并。虽然flashcache未在上游合并，但在某些生产环境中已经使用了一段时间。</p>
+<h2 id="dm-cache"><a href="#dm-cache" class="headerlink" title="dm-cache"></a>dm-cache</h2><p>又叫 Device Mapper Cache。dm-cache是设备映射器目标，首先提交到kernel-3.9。它使用针对基于闪存的SSD进行优化的I / O调度和缓存管理技术。设备映射程序目标（dmcache）重新使用精简资源调配库中使用的元数据库。write-back和writethrough都由dm-cache支持，write-back是默认模式。</p>
+<p>由dm-cache创建的虚拟缓存设备使用源设备（Origin device）、缓存设备（Cache device）和元数据设备（Metadata dev）这三个物理设备来构建。结构如下图所示：</p>
+<p> <img src="http://ojet8bprn.bkt.clouddn.com/dm-cache.png" alt="dm-cache"></p>
+<p>源设备是实际（较慢）目的存储设备。</p>
+<p>高速缓存设备是用于临时存储用户数据的较快设备。</p>
+<p>元数据设备记录块布局，它们的dirty flags和其他内部数据所需的策略。</p>
+<h2 id="bcache"><a href="#bcache" class="headerlink" title="bcache"></a>bcache</h2><p>bcache首先提交到kernel-3.10。它围绕基于闪存的SSD的独特特性设计，并使用混合btree/log结构来跟踪缓存的区域。它旨在不惜一切代价（at all cost）避免随机写。 bcache顺序填充一个擦除块，然后在重新使用之前发出一个丢弃（缓存数据可以是桶上的任意一个扇区。bcache最大程度上减少了随机写的代价，它按顺序填充一个桶，重新使用时只需将桶设置为无效）。支持write-through和write-back高速缓存。write-back默认关闭，但可以在运行时任意打开和关闭。</p>
+<p>通过后端设备（backing device）和缓存设备（caching device）来创建虚拟的bcache 设备，如下图所示：</p>
+<p> <img src="http://ojet8bprn.bkt.clouddn.com/bcache.png" alt="bcache"></p>
+<p>后端设备是实际（较慢）目的存储设备，而高速缓存设备是更快的设备。后备设备必须格式化为bcache 块设备；现有的格式化分区不能与bcache一起使用。（可以尝试 blocks to-bcache进行就地转换）。</p>
+<p>默认状态下bcache不缓存顺序IO，只缓存随机读写。为避免随机写，bcache将随机写转换为顺序写，首先写到SSD，然后回写缓存使用SSD缓存大量的写，最后将写有序写到磁盘或者阵列上。</p>
+<p>SSD的特点就是随机IO速度很快，而对于大块顺序IO的提升却并不大。bcache会检测顺序IO并忽略；还会对每一个任务记录动态的平均IO大小，当平均IO大小超过截止值时该任务后面的IO将会被忽略，这样就可以透传备份或者大文件拷贝。</p>
+<h2 id="Dm-cache-vs-Bcache"><a href="#Dm-cache-vs-Bcache" class="headerlink" title="Dm-cache vs Bcache"></a>Dm-cache vs Bcache</h2><p>与 dm-cache 实现的的分级存储不同，bcache 更像一个传统的缓存。它可以用来存储任何 extents，甚至是是一个扇区，而 dm-cache 只能对整块数据进行缓存。</p>
+<p>dm-cache方案假设缓存设备总是存在，bcache 并不要求 cache 设备一直都在。 </p>
+<p>bcache 已经在实际产品中使用了，所以它有机会去碰到这些疑难场景，并可以处理这些缓存设备无法工作的情形。</p>
+<p>dm-cache 确实还有很多事情要做。起初，它是进行 cache 和原始设备的并行 IO，但最终不得不回到顺序 IO。</p>
+<h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Flashcache vs Cache tier]]></title>
+      <url>http://xiaqunfeng.github.io/2017/02/03/Flashcache-vs-Cache-tier/</url>
+      <content type="html"><![CDATA[<p>使用SSD作为缓存来提高性能有多种方法，文章前言里会介绍，主要有bcache、dm-cache、flashcache、cache tier等，本文比较两种在ceph中的常用方案：flashcache 和 cache tier。<br><a id="more"></a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>传统的HDD具备大容量的优势，但是性能相对偏低，尤其是随机IO性能，经常成为系统的性能瓶颈，在虚拟机化环境下表现的更明显，因为虚拟化场景会加剧IO随机化。相比HDD，SSD具有高性能的优势，尤其在随机IO这方面，优势非常明显，但是SSD的硬件成本比较高。</p>
+<p>目前业界在结合HDD的大容量和SSD的高性能方面做了一些优化，基本思路是使用SSD作为HDD的cache。计算机领域，cache的思想无处不在，比如CPU的L1、L2 cache，raid card上的cache，TLB cache等。关于SSD作为HDD的cache的优化方案，主要有Linux bcache，Linux dm-cache，Facebook flashcache，btier，IBM flashcache等。</p>
+<h2 id="flashcache"><a href="#flashcache" class="headerlink" title="flashcache"></a>flashcache</h2><p>flashcache 是 facebook 开源的 ssd 存储产品，它基于内核的 devicemapper 机制，允许将 ssd 设备映射为机械存储设备的缓存，堆叠成为一个虚拟设备供用户读写，从而在一定程度上兼顾 ssd 的高速与机械存储设备的高容量，更加经济高效地支撑线上业务。</p>
+<p> <img src="http://ojet8bprn.bkt.clouddn.com/flashcache.png" alt="flashcache"></p>
+<h3 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h3><p>Device Mapper层，对外服务体现方式是块设备，无需修改应用。</p>
+<p>确保内核已启用 DeviceMapper，编译内核模块并安装之后：</p>
+<ul>
+<li>创建缓存设备: flashcache_wt_create /dev/cachedev /dev/sda1 /dev/hda1</li>
+<li>删除缓存设备: dmsetup remove cachedev </li>
+</ul>
+<p>使用者需要注意建立缓存设备之后，就不应该再对 /dev/sda1 和 /dev/hda1 两个设备直接读写了。</p>
+<p>用户操作接口是映射之后的虚拟设备，即/dev/mapper/*下面的设备，如cachedev，而不是基设备</p>
+<h3 id="缓存的组织"><a href="#缓存的组织" class="headerlink" title="缓存的组织"></a>缓存的组织</h3><p>flashcache是建立在Linux devicemapper之上的，由devicemapper在SSD和backing HDD之上创建了一个逻辑的mapped device，用户使用的就是这个mapped device。</p>
+<p>flashcache把cache（SSD）按照哈希的方式进行结构化管理，flashcache 中缓存的盘块的默认大小为 4kb，按照多路组相连的形式组织缓存块，每组含有 512 个缓存块，简单按照取模分组。缓存的查找，就是对后端设备块号取模得到组号，然后凭偏移遍历组中的缓存块。具体管理方式可以参考小结末参考资料。</p>
+<p>虽然数据会被写入 ssd 设备，但缓存的组织信息一律保存在内存中，即 cache_c 对象。它里面保存了基本的配置选项、统计信息、对两个设备的引用、每个缓存块的相关信息(cache, cache_state)、 以及缓存组中 FIFO 数组(虽然名字叫做 LRU)的下标。</p>
+<h3 id="缓存策略"><a href="#缓存策略" class="headerlink" title="缓存策略"></a>缓存策略</h3><p>flashcache 支持三种缓存策略：</p>
+<ul>
+<li>writethrough：disk write会在cache中保留一份，但同时也会把数据write到backing disk中，直到write backing disk完成才会返回。</li>
+<li>writearound：disk write会bypass cache，直接写到backing disk中，disk read会把从backing disk中读取的数据在cache中缓存。</li>
+<li>writeback：write首先会写到cache中，然后更新metadata中得dirty bit，数据并不会立即同步到backing disk中。</li>
+</ul>
+<p>针对writethrough和writearound，disk read首先根据目的sector找到对应的cache set，然后查找有没有相应的block，如果找到了，也就是cache hit，则直接从cache中读取，如果没有找到，就从backing disk中读取数据，同时也在cache中进行缓存。</p>
+<h3 id="数据调度"><a href="#数据调度" class="headerlink" title="数据调度"></a>数据调度</h3><p>DM层request送往flashcache，并将读写请求按照目标设备的blocksize进行划分，切割成blocksize大小的bio。</p>
+<p><strong>读</strong></p>
+<p>接收到bio，首先，根据bio-&gt;bi_sector，即硬盘的扇区号，得到SSD上的set；</p>
+<p>其次，在set内查找是否命中，如果命中，则将硬盘的扇区号转换为SSD的扇区号，然后将此bio向SSD提交，进行读取；</p>
+<p>如果未命中，则首先向硬盘驱动提交bio，从硬盘读数据，读取完成后，由回调函数启动回写SSD操作，将bio的扇区号转换为SSD的=扇区号，然后向SSD驱动程序提交，将硬盘读取的数据写入SSD。</p>
+<p><strong>写</strong></p>
+<p>同文件系统页缓冲，并不直接写入硬盘，而是写入SSD，同时，保持一个阀值，一般为20%，在脏块数目达到此数值时，写回磁盘。</p>
+<p>另外：如果<strong>IO size小于blocksize</strong>，flashcache则不会缓存该IO，而是先查找cache中有没有overlap的脏数据：</p>
+<p>如果有的话，就先刷脏数据，然后再把刚才从devicemapper传来的IO写到backing disk上</p>
+<p>如果没有脏数据，则直接写到backing disk上，这也就是为什么当使用fio测试小于4KB的随机IO时，flashcache几乎没有效果。</p>
+<p>部分参考资料：</p>
+<p><a href="http://mogu.io/Facebook_flashcache-81" target="_blank" rel="external">Facebook flashcache介绍与使用</a></p>
+<p><a href="https://www.ibm.com/developerworks/community/blogs/5144904d-5d75-45ed-9d2b-cf1754ee936a/entry/flashcache-introduction?lang=en" target="_blank" rel="external">flashcache 简介</a></p>
+<p><a href="http://blog.csdn.net/kidd_3/article/category/905673" target="_blank" rel="external">其他flashcache资料</a></p>
+<h2 id="cache-tier"><a href="#cache-tier" class="headerlink" title="cache tier"></a>cache tier</h2><p>缓存分层通过将一部分数据存到缓存层，给ceph客户端提供更好的IO性能。通常是在更快的磁盘上创建存储池，如SSD/NVMe。数据最终被透明的写入常规的存储池中，它们由副本或纠删码类型的存储池所构建。</p>
+<p><img src="http://ojet8bprn.bkt.clouddn.com/cache%20tier.png" alt="cache tier"></p>
+<p>缓存层代理自动处理缓存层和后端存储之间的数据迁移，对客户端透明，管理员可以配置迁移进行的方式。</p>
+<h3 id="两种模式"><a href="#两种模式" class="headerlink" title="两种模式"></a>两种模式</h3><p>缓存分层主要有两种模式：writeback 和 read-only。如果是write-back模式，那么该cache pool 既是read tier ，又是 write tier； 如果只是read only 模式，那么实际上，cache pool 只是 read tier，没有write tier。</p>
+<h3 id="writeback模式"><a href="#writeback模式" class="headerlink" title="writeback模式"></a>writeback模式</h3><p>客户端写数据到缓存层后立刻收到确认回复。基于配置的flush/evict策略，数据从缓存层迁移到存储层，最后缓存分层代理从缓存层中将数据删除。</p>
+<p>当读操作在缓存中miss的时候</p>
+<p>1、返回client结果为cache miss，重新向存储层发起读请求。</p>
+<p>2、cache层向存储层发起读请求，返回client的同时缓存一份在cache层</p>
+<p>写操作在缓存中miss的时候</p>
+<p>直接向存储层写，然后逐级返回，并不将数据缓存在cache层</p>
+<p>这种模式适合大量修改数据的场景。</p>
+<h3 id="read-only模式"><a href="#read-only模式" class="headerlink" title="read-only模式"></a>read-only模式</h3><p>缓存层只服务于客户端的读操作。当读请求在缓存层中miss的时候，从存储层中读上来，并设置一个expire时间，过期自动被删除。cache层可以设置为单副本，极大减少缓存空间占用率。写操作直接写到后端的存储层。</p>
+<p>这种模式适合一次写入多次读取的场景。</p>
+<h2 id="Flashcache-vs-Cache-tier"><a href="#Flashcache-vs-Cache-tier" class="headerlink" title="Flashcache vs Cache tier"></a>Flashcache vs Cache tier</h2><p>flashcache将缓存在块层的东西，而缓存池将缓存对象层的东西。 在每种情况下都有潜在的优点和缺点。 一些初始猜测：</p>
+<p><strong>flashcache</strong></p>
+<ul>
+<li>[x] 所有缓存对一个节点是本地的，更少的开销（包括网络）。</li>
+<li>[x] 在许多对象访问和大量热的inodes / dentries的情况下可以做得更好</li>
+<li>无法仅为高速缓存定义不同的 副本/ EC 策略。</li>
+<li>缓存写入是非原子的</li>
+</ul>
+<p><strong>Ceph cache tier</strong></p>
+<ul>
+<li>[x] 潜在可以做的事情，如副本缓存和EC存冷数据。</li>
+<li>[x] 更安全</li>
+<li>更多的网络开销，可能会有更多的CPU开销。</li>
+<li>需要更长的时间才能将内容缓存</li>
+</ul>
+<p>参考资料：<a href="http://lists.ceph.com/pipermail/ceph-users-ceph.com/2014-March/037861.html" target="_blank" rel="external"> OSD + FlashCache vs. Cache Pool for RBD</a></p>
+<p><strong>关于成本</strong></p>
+<p>高速缓存中的数据总是硬盘驱动器上的数据的第二个副本。 缓存的故障很少产生数据丢失，只是性能损失，因为一切都需要从机械驱动器提供，直到缓存可以被替换。</p>
+<p> SSD层可能是自动分层系统中唯一的数据副本，不能容忍SSD层的故障，因此这些系统必须通过使用类似RAID的数据保护方案在冗余配置中设置SSD层。 不得不购买额外的SSD来支持类似RAID的功能，使已经高价的技术更加昂贵。</p>
+<p><strong>关于读</strong></p>
+<p>在大多数情况下，两个选项之间的read 性能应该大致相同。 大多数情况下，read 性能的效率将取决于缓存设备提升数据的效率和可定制性。 目标应该是确保正确的数据在正确的时间存在缓存中。缓存和自动分层需要在关于他们缓存什么和什么时候缓存需要变得更加聪明。</p>
+<p><strong>终上所述</strong></p>
+<p>从用户的角度来看，如果适当的冗余存在，缓存或分层没有显着的优势，因此不应该单独选择基于闪存的存储系统。 IT规划人员可能想要调查其他因素，例如将某些数据集固定到闪存层或缓存区，以及与环境或应用程序集成的能力。</p>
+<p>参考资料：（这两篇文章是同一个作者）</p>
+<p><a href="http://www.networkcomputing.com/storage/ssd-options-tier-vs-cache/1267262167" target="_blank" rel="external">SSD Options: Tier Vs. Cache</a></p>
+<p><a href="http://searchsolidstatestorage.techtarget.com/tip/Tiering-vs-caching-in-flash-based-storage-systems" target="_blank" rel="external">Tiering vs. caching in flash-based storage systems</a></p>
+<h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
+
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Linux命令——parted]]></title>
       <url>http://xiaqunfeng.github.io/2017/01/25/Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94parted/</url>
       <content type="html"><![CDATA[<p>一直用parted命令来进行磁盘分区，这里学习一下总结一下。顺带对比一下MBR和GPT两种分区表，以及parted命令和fdisk命令的区别。<br><a id="more"></a></p>
