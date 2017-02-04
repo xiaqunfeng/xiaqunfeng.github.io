@@ -15,17 +15,17 @@
 
 
 
-<meta name="description" content="ceph的版本出到K了，针对bluestore又有了新的优化，并进行了一定的压力和故障测试，当然还有其他的特性，针对Jewel版本有较多改动。当前还没有什么中文资料，ceph中文社区中关于V11.2.0还没有更新进去，所以闲暇之余翻译了一下，也给大家节省时间。">
+<meta name="description" content="记录从jewel版本升级到kraken版本的过程，其中重启mon和osd部分官网上的命令并不凑效，这里纠正并记录之。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Ceph — V11.2.0 KRAKEN(译)">
-<meta property="og:url" content="http://xiaqunfeng.github.io/2017/01/24/Ceph-KRAKEN(V11.2.0)/index.html">
+<meta property="og:title" content="ceph升级到kraken版本">
+<meta property="og:url" content="http://xiaqunfeng.github.io/2017/02/04/ceph升级到kraken版本/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="ceph的版本出到K了，针对bluestore又有了新的优化，并进行了一定的压力和故障测试，当然还有其他的特性，针对Jewel版本有较多改动。当前还没有什么中文资料，ceph中文社区中关于V11.2.0还没有更新进去，所以闲暇之余翻译了一下，也给大家节省时间。">
+<meta property="og:description" content="记录从jewel版本升级到kraken版本的过程，其中重启mon和osd部分官网上的命令并不凑效，这里纠正并记录之。">
 <meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
-<meta property="og:updated_time" content="2017-01-24T09:52:50.000Z">
+<meta property="og:updated_time" content="2017-02-04T11:15:30.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ceph — V11.2.0 KRAKEN(译)">
-<meta name="twitter:description" content="ceph的版本出到K了，针对bluestore又有了新的优化，并进行了一定的压力和故障测试，当然还有其他的特性，针对Jewel版本有较多改动。当前还没有什么中文资料，ceph中文社区中关于V11.2.0还没有更新进去，所以闲暇之余翻译了一下，也给大家节省时间。">
+<meta name="twitter:title" content="ceph升级到kraken版本">
+<meta name="twitter:description" content="记录从jewel版本升级到kraken版本的过程，其中重启mon和osd部分官网上的命令并不凑效，这里纠正并记录之。">
 <meta name="twitter:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
@@ -58,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Ceph — V11.2.0 KRAKEN(译) | 夏天的风的博客</title>
+<title>ceph升级到kraken版本 | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -228,11 +228,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-Ceph-KRAKEN(V11.2.0)" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-ceph升级到kraken版本" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/01/24/Ceph-KRAKEN(V11.2.0)/" class="article-date">
-      <time datetime="2017-01-24T09:48:51.000Z" itemprop="datePublished">2017-01-24</time>
+      <a href="/2017/02/04/ceph升级到kraken版本/" class="article-date">
+      <time datetime="2017-02-04T11:06:40.000Z" itemprop="datePublished">2017-02-04</time>
 </a>
 
 
@@ -247,7 +247,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Ceph — V11.2.0 KRAKEN(译)
+      ceph升级到kraken版本
     </h1>
   
 
@@ -268,59 +268,26 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>ceph的版本出到K了，针对bluestore又有了新的优化，并进行了一定的压力和故障测试，当然还有其他的特性，针对Jewel版本有较多改动。当前还没有什么中文资料，<a href="http://docs.ceph.org.cn/" target="_blank" rel="external">ceph中文社区</a>中关于V11.2.0还没有更新进去，所以闲暇之余翻译了一下，也给大家节省时间。<br><a id="more"></a></p>
-<p>英文原文链接：<a href="http://docs.ceph.com/docs/master/release-notes/#v11.2.0-kraken" target="_blank" rel="external">http://docs.ceph.com/docs/master/release-notes/#v11.2.0-kraken</a></p>
-<h2 id="V11-2-0-KRAKEN"><a href="#V11-2-0-KRAKEN" class="headerlink" title="V11.2.0 KRAKEN"></a>V11.2.0 KRAKEN</h2><p>这是Kraken系列的第一个release版本。它适用于生产部署，并将维护到下一个稳定的版本Luminous，将在2017年春季完成。</p>
-<h2 id="对比JEWEL版本的主要变化"><a href="#对比JEWEL版本的主要变化" class="headerlink" title="对比JEWEL版本的主要变化"></a>对比JEWEL版本的主要变化</h2><h3 id="RADOS"><a href="#RADOS" class="headerlink" title="RADOS"></a>RADOS</h3><ul>
-<li>新的BlueStore 后端现在有一个稳定的磁盘格式，并通过了我们的故障和压力测试。尽管该后端仍被标记为实验性的，但我们鼓励用户使用非生产集群和非关键数据集进行尝试。</li>
-<li>RADOS现在已经对EC-pool上的覆盖写（overwrites）进行了实验性支持。因为磁盘格式和实现尚未完成，所以必须启用特殊pool选项才能测试新功能。在群集上启用此选项将永久禁止该群集升级到将来的版本。</li>
-<li>我们现在默认使用AsyncMessenger（ms type = async）而不是传统的SimpleMessenger。最明显的区别是，我们现在使用固定大小的线程池用于网络连接（而不是使用SimpleMessenger的每个套接字两个线程）。</li>
-<li>现在一些OSD的故障几乎可以立即检测到，而先前心跳超时（默认为20秒）必须到期。这可以防止IO在主机保持启动但ceph-osd进程不再运行的故障情况下长时间阻塞。</li>
-<li>有一个新的ceph-mgr守护进程。它目前与默认监视器并置，并且尚未使用太多，但基本的基础设施现在已到位。</li>
-<li>减少了编码OSDMaps的大小。</li>
-<li>当恢复（recovery）或重新平衡（rebalanceing）正在进行时，OSD现在停止擦除（scrubbing）。</li>
-</ul>
-<h3 id="RGW"><a href="#RGW" class="headerlink" title="RGW"></a>RGW</h3><ul>
-<li>RGW现在支持一种新的区域类型，可用于通过ElasticSearch进行元数据索引。</li>
-<li>RGW现在支持S3复合对象复制部分API。</li>
-<li>现在可以重新分割现有的桶。注意，桶重新分片目前需要停止对特定桶的所有IO（特别是写）。</li>
-<li>RGW现在支持对象的数据压缩。</li>
-<li>Civetweb版本已经升级到1.8。</li>
-<li>现在支持Swift静态网站API（以前已经添加了S3支持）。</li>
-<li>S3桶生命周期API已添加。注意，目前它只支持对象到期。</li>
-<li>支持自定义搜索过滤器已添加到LDAP身份验证实现中。</li>
-<li>支持NFS版本3已添加到RGW NFS网关。</li>
-<li>为librgw创建了一个Python绑定。</li>
-</ul>
-<h3 id="RBD"><a href="#RBD" class="headerlink" title="RBD"></a>RBD</h3><ul>
-<li>RBD现在支持使用新的(实验)覆盖写(overwrite)支持在 EC RADOS pool 中存储images。必须使用新的rbd CLI <code>“-data-pool &lt;ec pool&gt;”</code> 选项来创建images，用以指定EC池存储后端数据对象。尝试在EC池上直接创建image不会成功，因为image的后端元数据仅在副本池上被支持。</li>
-<li>rbd-mirror守护进程现在支持从主image复制动态image特征更新和image元数据key/value对到非主image。</li>
-<li>image快照的数量可以选择性地限制为可配置的最大值。</li>
-<li>rbd Python API现在支持异步IO操作。</li>
-</ul>
-<h3 id="CephFS"><a href="#CephFS" class="headerlink" title="CephFS"></a>CephFS</h3><ul>
-<li>libcephfs函数的定义已更改为启用适当的uid / gid控制。库版本已增加以反映接口更改。</li>
-<li>备用的回放(replay)MDS守护程序现在在执行删除操作的工作负载上消耗更少的内存。</li>
-<li>Scrub现在修复backtrace，并用已发现的错误填充损坏ls。</li>
-<li>cephfs-data-scan的新的pg_files子命令可以识别受损坏或丢失的RADOS PG影响的文件。</li>
-<li>假阳性“未能响应缓存压力”警告已修复。</li>
-</ul>
-<h2 id="UPGRADING-FROM-JEWEL"><a href="#UPGRADING-FROM-JEWEL" class="headerlink" title="UPGRADING FROM JEWEL"></a>UPGRADING FROM JEWEL</h2><ul>
-<li>所有集群必须首先升级到 Jewel 10.2.z，然后升级到 Kraken 11.2.z（或者，最终，Luminous 12.2.z）。</li>
-<li>升级到Kraken之前，必须在Jewel集群上设置sortbitwise标志。如果未设置标志，则最新的Jewel（10.2.4+）版本会发出健康警告，因此可能已设置。如果不是，Kraken OSDs将拒绝启动，并将在其日志中打印和错误消息。</li>
-<li>您可以按任意顺序升级OSD，监视器和MDS。 RGW守护进程应该最后升级。</li>
-<li>升级时，新的ceph-mgr守护进程实例将自动被创建，与任何监视器一起。在Jewel到Kraken和Jewel到Luminous的升级中这将是事实，但在未来高于Luminous版本的升级中可能不是这样。如果你不与他们共置ceph-mon守护进程的话，你当然可以自由创建新的ceph-mgr守护进程实例，并销毁自动创建的实例。</li>
-</ul>
-<h2 id="BLUESTORE"><a href="#BLUESTORE" class="headerlink" title="BLUESTORE"></a>BLUESTORE</h2><p>BlueStore是一个新的后端，用于管理直接硬盘或SSD上每个OSD存储的数据。与现有的FileStore实现（它利用XFS文件系统将对象存储为文件）不同，BlueStore直接管理底层块设备。实现它自己的文件系统类磁盘结构，专为Ceph OSD工作负载而设计。 BlueStore的主要特点包括：</p>
-<ul>
-<li>默认情况下启用写入磁盘的所有数据的校验和，所有读取的校验和验证。</li>
-<li>内联压缩支持，可以分别通过池属性或客户端提示在每个池或每个对象的基础上启用。</li>
-<li>高效日记。与将所有数据写入其日志设备的FileStore不同，BlueStore仅记录元数据和（在某些情况下）小型写入，从而减少其日志的大小和吞吐量要求。与文件存储一样，日志可以与其他数据共存在同一设备上，或者分配在较小的高性能设备（例如，SSD或NVMe设备）上。 BlueStore日志默认只有512 MB。</li>
-</ul>
-<p>BlueStore磁盘格式预计将继续发展。但是，我们将在OSD中提供支持，以便在升级时迁移到新格式。</p>
-<p>为了启用BlueStore，将以下内容添加到ceph.conf：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">enable experimental unrecoverable data corrupting features = bluestore</div></pre></td></tr></table></figure>
-<p>要创建一个BlueStore OSD，在OSD创建期间将-bluestore选项传递给ceph-disk或ceph-deploy。</p>
+        <p>记录从jewel版本升级到kraken版本的过程，其中重启mon和osd部分官网上的命令并不凑效，这里纠正并记录之。<br><a id="more"></a></p>
+<h2 id="1、在Jewel集群上设置sortbitwise标志"><a href="#1、在Jewel集群上设置sortbitwise标志" class="headerlink" title="1、在Jewel集群上设置sortbitwise标志"></a>1、在Jewel集群上设置sortbitwise标志</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph osd set sortbitwise</div></pre></td></tr></table></figure>
+<h2 id="2、添加安装源"><a href="#2、添加安装源" class="headerlink" title="2、添加安装源"></a>2、添加安装源</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo deb https://download.ceph.com/debian-kraken/ $(lsb_release -sc) main | sudo tee /etc/apt/sources.list.d/ceph.list</div></pre></td></tr></table></figure>
+<p><strong>设置环境变量</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export CEPH_DEPLOY_REPO_URL=http://mirrors.163.com/ceph/debian-kraken</div></pre></td></tr></table></figure>
+<h2 id="3、升级软件包"><a href="#3、升级软件包" class="headerlink" title="3、升级软件包"></a>3、升级软件包</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph-deploy install --release kraken ceph-0 ceph-1 ceph-2</div></pre></td></tr></table></figure>
+<p>此时，ceph已升级到 11.2.0 版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph --version</div><div class="line">ceph version 11.2.0 (f223e27eeb35991352ebc1f67423d4ebc252adb7)</div></pre></td></tr></table></figure>
+<p>但是，osd和mon的版本还是 10.2.5</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># ceph tell mon.* version</div><div class="line">mon.ceph-0: ceph version 10.2.5 (c461ee19ecbc0c5c330aca20f7392c9a00730367)</div><div class="line">mon.ceph-1: ceph version 10.2.5 (c461ee19ecbc0c5c330aca20f7392c9a00730367)</div><div class="line">mon.ceph-2: ceph version 10.2.5 (c461ee19ecbc0c5c330aca20f7392c9a00730367)</div><div class="line"></div><div class="line"># ceph tell osd.* version</div><div class="line">osd.0: &#123;</div><div class="line">    &quot;version&quot;: &quot;ceph version 10.2.5 (c461ee19ecbc0c5c330aca20f7392c9a00730367)&quot;</div><div class="line">&#125;</div><div class="line">...省略</div></pre></td></tr></table></figure>
+<h2 id="4、在各节点上重启相关ceph守护进程"><a href="#4、在各节点上重启相关ceph守护进程" class="headerlink" title="4、在各节点上重启相关ceph守护进程"></a>4、在各节点上重启相关ceph守护进程</h2><p>安装官网上的命令操作是这样的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo /etc/init.d/ceph -a restart</div><div class="line">ssh ceph-1 sudo /etc/init.d/ceph -a restart</div><div class="line">ssh ceph-2 sudo /etc/init.d/ceph -a restart</div></pre></td></tr></table></figure>
+<p>然而，查看 mon 的进程号发现并没有重启，所以版本还是 10.2.5</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ps aux | grep ceph-osd</div><div class="line"># ps aux | grep ceph-mon</div></pre></td></tr></table></figure>
+<p><strong>正确的重启命令:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># 重启mon</div><div class="line">restart ceph-mon-all</div><div class="line">ssh ceph-1 restart ceph-mon-all</div><div class="line">ssh ceph-2 restart ceph-mon-all</div><div class="line"></div><div class="line"># 重启osd</div><div class="line">restart ceph-osd-all</div><div class="line">ssh ceph-1 restart ceph-osd-all</div><div class="line">ssh ceph-2 restart ceph-osd-all</div></pre></td></tr></table></figure>
+<p>也可以单独重启某一个</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># restart ceph-mon id=ceph-0</div><div class="line">ceph-mon (ceph/ceph-0) start/running, process 23629</div><div class="line"></div><div class="line"># restart ceph-osd id=0</div><div class="line">ceph-osd (ceph/0) start/running, process 23700</div></pre></td></tr></table></figure>
+<p>查看最新mon和osd版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># ceph tell mon.* version</div><div class="line">mon.ceph-0: ceph version 11.2.0 (f223e27eeb35991352ebc1f67423d4ebc252adb7)</div><div class="line">mon.ceph-1: ceph version 11.2.0 (f223e27eeb35991352ebc1f67423d4ebc252adb7)</div><div class="line">mon.ceph-2: ceph version 11.2.0 (f223e27eeb35991352ebc1f67423d4ebc252adb7)</div><div class="line"></div><div class="line"># ceph tell osd.* version</div><div class="line">osd.0: &#123;</div><div class="line">    &quot;version&quot;: &quot;ceph version 11.2.0 (f223e27eeb35991352ebc1f67423d4ebc252adb7)&quot;</div><div class="line">&#125;</div><div class="line">...省略</div></pre></td></tr></table></figure>
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 
       
@@ -330,13 +297,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/01/24/Ceph-KRAKEN(V11.2.0)/">Ceph — V11.2.0 KRAKEN(译)</a></p>
+        <p><span>本文标题:</span><a href="/2017/02/04/ceph升级到kraken版本/">ceph升级到kraken版本</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-01-24, 17:48:51</p>
-        <p><span>最后更新:</span>2017-01-24, 17:52:50</p>
+        <p><span>发布时间:</span>2017-02-04, 19:06:40</p>
+        <p><span>最后更新:</span>2017-02-04, 19:15:30</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/01/24/Ceph-KRAKEN(V11.2.0)/" title="Ceph — V11.2.0 KRAKEN(译)">http://xiaqunfeng.github.io/2017/01/24/Ceph-KRAKEN(V11.2.0)/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/01/24/Ceph-KRAKEN(V11.2.0)/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/02/04/ceph升级到kraken版本/" title="ceph升级到kraken版本">http://xiaqunfeng.github.io/2017/02/04/ceph升级到kraken版本/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/02/04/ceph升级到kraken版本/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -348,16 +315,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/01/25/认识SSD/">
-                    认识SSD
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/01/24/Crushmap学习/">
-                    Crushmap学习
+                <a href="/2017/02/03/Dm-cache-vs-Bcache/">
+                    Dm-cache vs Bcache
                 </a>
             </div>
         
@@ -369,7 +330,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#V11-2-0-KRAKEN"><span class="toc-number">1.</span> <span class="toc-text">V11.2.0 KRAKEN</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对比JEWEL版本的主要变化"><span class="toc-number">2.</span> <span class="toc-text">对比JEWEL版本的主要变化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RADOS"><span class="toc-number">2.1.</span> <span class="toc-text">RADOS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RGW"><span class="toc-number">2.2.</span> <span class="toc-text">RGW</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RBD"><span class="toc-number">2.3.</span> <span class="toc-text">RBD</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CephFS"><span class="toc-number">2.4.</span> <span class="toc-text">CephFS</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UPGRADING-FROM-JEWEL"><span class="toc-number">3.</span> <span class="toc-text">UPGRADING FROM JEWEL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BLUESTORE"><span class="toc-number">4.</span> <span class="toc-text">BLUESTORE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#打赏通道"><span class="toc-number">5.</span> <span class="toc-text">打赏通道</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、在Jewel集群上设置sortbitwise标志"><span class="toc-number">1.</span> <span class="toc-text">1、在Jewel集群上设置sortbitwise标志</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、添加安装源"><span class="toc-number">2.</span> <span class="toc-text">2、添加安装源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、升级软件包"><span class="toc-number">3.</span> <span class="toc-text">3、升级软件包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4、在各节点上重启相关ceph守护进程"><span class="toc-number">4.</span> <span class="toc-text">4、在各节点上重启相关ceph守护进程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#打赏通道"><span class="toc-number">5.</span> <span class="toc-text">打赏通道</span></a></li></ol>
         
     </div>
     <style>
@@ -405,7 +366,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Ceph — V11.2.0 KRAKEN(译)　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"ceph升级到kraken版本　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -424,8 +385,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.github.io/2017/01/24/Ceph-KRAKEN(V11.2.0)/';
-            this.page.identifier = '2017/01/24/Ceph-KRAKEN(V11.2.0)/';
+            this.page.url = 'http://xiaqunfeng.github.io/2017/02/04/ceph升级到kraken版本/';
+            this.page.identifier = '2017/02/04/ceph升级到kraken版本/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -447,15 +408,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/01/25/认识SSD/" title="上一篇: 认识SSD">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/01/24/Crushmap学习/" title="下一篇: Crushmap学习">
+            <a href="/2017/02/03/Dm-cache-vs-Bcache/" title="下一篇: Dm-cache vs Bcache">
                 <i class="fa fa-angle-right"></i>
             </a>
         
