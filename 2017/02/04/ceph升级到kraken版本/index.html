@@ -22,7 +22,7 @@
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="记录从jewel版本升级到kraken版本的过程，其中重启mon和osd部分官网上的命令并不凑效，这里纠正并记录之。">
 <meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
-<meta property="og:updated_time" content="2017-02-04T11:15:30.000Z">
+<meta property="og:updated_time" content="2017-02-06T01:51:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ceph升级到kraken版本">
 <meta name="twitter:description" content="记录从jewel版本升级到kraken版本的过程，其中重启mon和osd部分官网上的命令并不凑效，这里纠正并记录之。">
@@ -288,6 +288,11 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># restart ceph-mon id=ceph-0</div><div class="line">ceph-mon (ceph/ceph-0) start/running, process 23629</div><div class="line"></div><div class="line"># restart ceph-osd id=0</div><div class="line">ceph-osd (ceph/0) start/running, process 23700</div></pre></td></tr></table></figure>
 <p>查看最新mon和osd版本</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># ceph tell mon.* version</div><div class="line">mon.ceph-0: ceph version 11.2.0 (f223e27eeb35991352ebc1f67423d4ebc252adb7)</div><div class="line">mon.ceph-1: ceph version 11.2.0 (f223e27eeb35991352ebc1f67423d4ebc252adb7)</div><div class="line">mon.ceph-2: ceph version 11.2.0 (f223e27eeb35991352ebc1f67423d4ebc252adb7)</div><div class="line"></div><div class="line"># ceph tell osd.* version</div><div class="line">osd.0: &#123;</div><div class="line">    &quot;version&quot;: &quot;ceph version 11.2.0 (f223e27eeb35991352ebc1f67423d4ebc252adb7)&quot;</div><div class="line">&#125;</div><div class="line">...省略</div></pre></td></tr></table></figure>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>执行 <code>ceph -s</code> 的时候，出现如下问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># ceph -s</div><div class="line">    cluster 7251c881-bb25-4c36-9be1-653f66c69e1c</div><div class="line">     health HEALTH_WARN</div><div class="line">            all OSDs are running kraken or later but the &apos;require_kraken_osds&apos; osdmap flag is not set</div><div class="line">...省略</div></pre></td></tr></table></figure>
+<p><strong>解决方法</strong></p>
+<p>执行如下命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd set require_kraken_osds</div><div class="line">require_kraken_osds is set</div></pre></td></tr></table></figure>
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 
       
@@ -300,7 +305,7 @@
         <p><span>本文标题:</span><a href="/2017/02/04/ceph升级到kraken版本/">ceph升级到kraken版本</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
         <p><span>发布时间:</span>2017-02-04, 19:06:40</p>
-        <p><span>最后更新:</span>2017-02-04, 19:15:30</p>
+        <p><span>最后更新:</span>2017-02-06, 09:51:14</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/02/04/ceph升级到kraken版本/" title="ceph升级到kraken版本">http://xiaqunfeng.github.io/2017/02/04/ceph升级到kraken版本/</a>
             <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/02/04/ceph升级到kraken版本/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -336,7 +341,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、在Jewel集群上设置sortbitwise标志"><span class="toc-number">1.</span> <span class="toc-text">1、在Jewel集群上设置sortbitwise标志</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、添加安装源"><span class="toc-number">2.</span> <span class="toc-text">2、添加安装源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、升级软件包"><span class="toc-number">3.</span> <span class="toc-text">3、升级软件包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4、在各节点上重启相关ceph守护进程"><span class="toc-number">4.</span> <span class="toc-text">4、在各节点上重启相关ceph守护进程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#打赏通道"><span class="toc-number">5.</span> <span class="toc-text">打赏通道</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、在Jewel集群上设置sortbitwise标志"><span class="toc-number">1.</span> <span class="toc-text">1、在Jewel集群上设置sortbitwise标志</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、添加安装源"><span class="toc-number">2.</span> <span class="toc-text">2、添加安装源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、升级软件包"><span class="toc-number">3.</span> <span class="toc-text">3、升级软件包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4、在各节点上重启相关ceph守护进程"><span class="toc-number">4.</span> <span class="toc-text">4、在各节点上重启相关ceph守护进程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题"><span class="toc-number">5.</span> <span class="toc-text">问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#打赏通道"><span class="toc-number">6.</span> <span class="toc-text">打赏通道</span></a></li></ol>
         
     </div>
     <style>
