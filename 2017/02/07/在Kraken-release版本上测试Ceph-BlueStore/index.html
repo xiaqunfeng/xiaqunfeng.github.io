@@ -15,16 +15,18 @@
 
 
 
-<meta name="description" content="dd是经常使用的命令了，方便快捷，这里闲来小总结一下，以及怎样测出最真实的写入速度。">
+<meta name="description" content="前面写了一篇文章《ceph升级到kraken版本》，在升级后的集群上重新部署OSD遇到一些问题。这里在干净的kraken环境下部署bluestore，用来测试一下性能。本文记录部署过程及遇到的问题和解决方法。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="dd磁盘命令小记">
-<meta property="og:url" content="http://xiaqunfeng.github.io/2017/01/12/dd磁盘命令小记/index.html">
+<meta property="og:title" content="在Kraken release版本上测试Ceph BlueStore">
+<meta property="og:url" content="http://xiaqunfeng.github.io/2017/02/07/在Kraken-release版本上测试Ceph-BlueStore/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="dd是经常使用的命令了，方便快捷，这里闲来小总结一下，以及怎样测出最真实的写入速度。">
-<meta property="og:updated_time" content="2017-01-12T12:30:49.000Z">
+<meta property="og:description" content="前面写了一篇文章《ceph升级到kraken版本》，在升级后的集群上重新部署OSD遇到一些问题。这里在干净的kraken环境下部署bluestore，用来测试一下性能。本文记录部署过程及遇到的问题和解决方法。">
+<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
+<meta property="og:updated_time" content="2017-02-07T03:23:51.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="dd磁盘命令小记">
-<meta name="twitter:description" content="dd是经常使用的命令了，方便快捷，这里闲来小总结一下，以及怎样测出最真实的写入速度。">
+<meta name="twitter:title" content="在Kraken release版本上测试Ceph BlueStore">
+<meta name="twitter:description" content="前面写了一篇文章《ceph升级到kraken版本》，在升级后的集群上重新部署OSD遇到一些问题。这里在干净的kraken环境下部署bluestore，用来测试一下性能。本文记录部署过程及遇到的问题和解决方法。">
+<meta name="twitter:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -56,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>dd磁盘命令小记 | 夏天的风的博客</title>
+<title>在Kraken release版本上测试Ceph BlueStore | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -226,11 +228,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-dd磁盘命令小记" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-在Kraken-release版本上测试Ceph-BlueStore" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/01/12/dd磁盘命令小记/" class="article-date">
-      <time datetime="2017-01-12T12:30:49.000Z" itemprop="datePublished">2017-01-12</time>
+      <a href="/2017/02/07/在Kraken-release版本上测试Ceph-BlueStore/" class="article-date">
+      <time datetime="2017-02-07T03:13:16.000Z" itemprop="datePublished">2017-02-07</time>
 </a>
 
 
@@ -245,7 +247,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      dd磁盘命令小记
+      在Kraken release版本上测试Ceph BlueStore
     </h1>
   
 
@@ -256,7 +258,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -266,90 +268,44 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>dd是经常使用的命令了，方便快捷，这里闲来小总结一下，以及怎样测出最真实的写入速度。<br><a id="more"></a></p>
-<h2 id="命令的使用"><a href="#命令的使用" class="headerlink" title="命令的使用"></a>命令的使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"># dd --help</div><div class="line">Usage: dd [OPERAND]...</div><div class="line">  or:  dd OPTION</div><div class="line">Copy a file, converting and formatting according to the operands.</div><div class="line"></div><div class="line">  bs=BYTES        read and write up to BYTES bytes at a time</div><div class="line">  cbs=BYTES       convert BYTES bytes at a time</div><div class="line">  conv=CONVS      convert the file as per the comma separated symbol list</div><div class="line">  count=N         copy only N input blocks</div><div class="line">  ibs=BYTES       read up to BYTES bytes at a time (default: 512)</div><div class="line">  if=FILE         read from FILE instead of stdin</div><div class="line">  iflag=FLAGS     read as per the comma separated symbol list</div><div class="line">  obs=BYTES       write BYTES bytes at a time (default: 512)</div><div class="line">  of=FILE         write to FILE instead of stdout</div><div class="line">  oflag=FLAGS     write as per the comma separated symbol list</div><div class="line">  seek=N          skip N obs-sized blocks at start of output</div><div class="line">  skip=N          skip N ibs-sized blocks at start of input</div><div class="line">  status=WHICH    WHICH info to suppress outputting to stderr;</div><div class="line">                  &apos;noxfer&apos; suppresses transfer stats, &apos;none&apos; suppresses all</div></pre></td></tr></table></figure>
-<p><strong>翻译</strong></p>
-<table>
-<thead>
-<tr>
-<th>选项</th>
-<th>意义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>bs</td>
-<td>同时设置读写块的大小为 bytes ，可代替 ibs 和 obs</td>
-</tr>
-<tr>
-<td>cbs</td>
-<td>一次转换 bytes 个字节，即转换缓冲区大小</td>
-</tr>
-<tr>
-<td>conv</td>
-<td>转换参数</td>
-</tr>
-<tr>
-<td>count</td>
-<td>复制的块数</td>
-</tr>
-<tr>
-<td>ibs</td>
-<td>一次读入 bytes 个字节(即一个块大小为 bytes 个字节)</td>
-</tr>
-<tr>
-<td>if</td>
-<td>输入文件 或 设备名称</td>
-</tr>
-<tr>
-<td>iflag</td>
-<td>按照逗号来分隔读参数</td>
-</tr>
-<tr>
-<td>obs</td>
-<td>一次写 bytes 个字节(即一个块大小为 bytes 个字节)</td>
-</tr>
-<tr>
-<td>of</td>
-<td>输出文件 或 设备名称</td>
-</tr>
-<tr>
-<td>oflag</td>
-<td>按照逗号来分隔写参数</td>
-</tr>
-<tr>
-<td>seek</td>
-<td>从输出文件开头跳过 blocks 个块后再开始复制</td>
-</tr>
-<tr>
-<td>skip</td>
-<td>从输入文件开头跳过 blocks 个块后再开始复制</td>
-</tr>
-</tbody>
-</table>
-<p>查看版本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dd --version</div></pre></td></tr></table></figure>
-<h2 id="磁盘读写"><a href="#磁盘读写" class="headerlink" title="磁盘读写"></a>磁盘读写</h2><p><strong>两个特殊的设备</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/dev/null：伪设备，相当于黑洞，of到该设备不会产生IO</div><div class="line">/dev/zero：伪设备，它只产生空字符流，对它不会产生IO</div></pre></td></tr></table></figure>
-<p><strong>1、测试磁盘写能力</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dd if=/dev/zero of=/test.a bs=8k count=10000</div></pre></td></tr></table></figure>
-<p>IO都集中在of文件中，of文件只用于写，相当于测试磁盘的写能力。</p>
-<p><strong>2、测试磁盘读能力</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dd if=/dev/sdb1 of=/dev/null bs=8k count=10000</div></pre></td></tr></table></figure>
-<p>IO只发生在/dev/sdb1上，相当于测试磁盘的读能力。</p>
-<p><strong>3、测试同时读写能力</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dd if=/dev/sdb1 of=/test.a bs=8k count=10000</div></pre></td></tr></table></figure>
-<p>一个是物理分区，一个是实际的文件，对它们的读写都会产生IO，如果它们都在一个磁盘中，该命令就相当于测试磁盘的同时读写能力。</p>
-<h2 id="几种测试写磁盘的区别"><a href="#几种测试写磁盘的区别" class="headerlink" title="几种测试写磁盘的区别"></a>几种测试写磁盘的区别</h2><p>先给出四种测试方式的结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"># dd if=/dev/zero of=test bs=1M count=128</div><div class="line">128+0 records in</div><div class="line">128+0 records out</div><div class="line">134217728 bytes (134 MB) copied, 0.116559 s, 1.2 GB/s</div><div class="line"></div><div class="line"># dd if=/dev/zero of=test bs=1M count=128 ; sync</div><div class="line">128+0 records in</div><div class="line">128+0 records out</div><div class="line">134217728 bytes (134 MB) copied, 0.125106 s, 1.1 GB/s</div><div class="line"></div><div class="line"># dd if=/dev/zero of=test bs=1M count=128 conv=fdatasync</div><div class="line">128+0 records in</div><div class="line">128+0 records out</div><div class="line">134217728 bytes (134 MB) copied, 1.76802 s, 75.9 MB/s</div><div class="line"></div><div class="line"># dd if=/dev/zero of=test bs=1M count=128 oflag=dsync</div><div class="line">128+0 records in</div><div class="line">128+0 records out</div><div class="line">134217728 bytes (134 MB) copied, 4.91353 s, 27.3 MB/s</div></pre></td></tr></table></figure>
-<p>1、<code>dd if=/dev/zero of=test bs=1M count=128</code></p>
-<p>没有加任何参数，命令只是单纯地把这128MB的数据读到内存缓冲当中，dd命令完成前并没有让系统真正把文件写到磁盘上。所以得到的是一个超级快的速度。直到dd完成后系统才开始真正往磁盘上写数据,但这个速度你是看不到了。</p>
-<p>2、<code>dd if=/dev/zero of=test bs=1M count=128 ; sync</code></p>
-<p>这事先后两个独立的命令。当sync命令准备开始往磁盘上真正写入数据的时候，前面dd命令已经把错误的“写入速度”值显示在屏幕上了。所以得到的不是真正的写入速度。</p>
-<p><strong>3、<code>dd if=/dev/zero of=test bs=1M count=128 conv=fdatasync</code></strong></p>
-<p>加入参数 <code>conv=fdatasync</code> 后，dd命令执行到最后会真正执行一次“同步(sync)”操作，所以这时候得到的是读取这128M数据到内存并写入到磁盘上所需的时间，这样算出来的时间才是<strong>比较符合实际</strong>的。这种方式最接近计算机实际操作，所以测出来的数据最有参考价值。</p>
-<p>4、<code>dd if=/dev/zero of=test bs=1M count=128 oflag=dsync</code></p>
-<p>加入参数 <code>oflag=dsync</code> 后，dd在执行时每次都会进行同步写入操作。这条命令每次读取1M后就要先把这1M写入磁盘，然后再读取下面这1M，一共重复128次。这是最慢的一种方式，因为基本上没有用到写缓存(write cache)。</p>
+        <p>前面写了一篇文章《ceph升级到kraken版本》，在升级后的集群上重新部署OSD遇到一些问题。这里在干净的kraken环境下部署bluestore，用来测试一下性能。本文记录部署过程及遇到的问题和解决方法。<br><a id="more"></a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Ceph版本Kraken（11.2.0）已经发布，发行说明告诉我们，用于OSD的新的BlueStore后端现在可用。</p>
+<h2 id="bluestore"><a href="#bluestore" class="headerlink" title="bluestore"></a>bluestore</h2><p>OSD的当前后端是FileStore，它主要使用XFS文件系统来存储它的数据。 为了克服XFS和POSIX的一些限制，所以开发了BlueStore后端。</p>
+<p>由于校验和压缩它将提供更多的性能（主要是写）和数据安全。</p>
+<p>鼓励用户从Kraken发行版本开始，使用非生产和非关键数据集来测试BlueStore，并向社区报告。</p>
+<h2 id="部署BlueStore"><a href="#部署BlueStore" class="headerlink" title="部署BlueStore"></a>部署BlueStore</h2><p>要使用BlueStore部署OSD，您可以使用<code>-bluestore</code>标志来使用ceph-deploy。</p>
+<p>我创建了一个简单的测试集群，有三个机器：alpha，bravo和charlie。</p>
+<p>每个机器将运行一个ceph-mon和ceph-osd进程。</p>
+<p>这是我用来部署集群的ceph-deploy命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ceph-deploy new alpha bravo charlie</div><div class="line">ceph-deploy mon create alpha bravo charlie</div></pre></td></tr></table></figure>
+<p>现在，编辑当前目录中的ceph.conf文件，并添加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[osd]</div><div class="line">enable_experimental_unrecoverable_data_corrupting_features = bluestore</div></pre></td></tr></table></figure>
+<p>有了这个设置我们允许使用BlueStore，我们现在可以部署我们的OSD：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph-deploy --overwrite-conf osd create --bluestore alpha:sdb bravo:sdb charlie:sdb</div></pre></td></tr></table></figure>
+<h2 id="运行Bluestore"><a href="#运行Bluestore" class="headerlink" title="运行Bluestore"></a>运行Bluestore</h2><p>这个微小的集群如何使用BlueStore运行三个OSD：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">root@alpha:~# ceph -s</div><div class="line">    cluster c824e460-2f09-4994-8b2f-108aedc52d19</div><div class="line">     health HEALTH_OK</div><div class="line">     monmap e2: 3 mons at &#123;alpha=[2001:db8::100]:6789/0,bravo=[2001:db8::101]:6789/0,charlie=[2001:db8::102]:6789/0&#125;</div><div class="line">            election epoch 14, quorum 0,1,2 alpha,bravo,charlie</div><div class="line">        mgr active: charlie standbys: alpha, bravo</div><div class="line">     osdmap e14: 3 osds: 3 up, 3 in</div><div class="line">            flags sortbitwise,require_jewel_osds,require_kraken_osds</div><div class="line">      pgmap v24: 64 pgs, 1 pools, 0 bytes data, 0 objects</div><div class="line">            43356 kB used, 30374 MB / 30416 MB avail</div><div class="line">                  64 active+clean</div><div class="line">root@alpha:~#</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">root@alpha:~# ceph osd tree</div><div class="line">ID WEIGHT  TYPE NAME        UP/DOWN REWEIGHT PRIMARY-AFFINITY </div><div class="line">-1 0.02907 root default                                       </div><div class="line">-2 0.00969     host alpha                                     </div><div class="line"> 0 0.00969         osd.0         up  1.00000          1.00000 </div><div class="line">-3 0.00969     host bravo                                     </div><div class="line"> 1 0.00969         osd.1         up  1.00000          1.00000 </div><div class="line">-4 0.00969     host charlie                                   </div><div class="line"> 2 0.00969         osd.2         up  1.00000          1.00000 </div><div class="line">root@alpha:~#</div></pre></td></tr></table></figure>
+<p>在alpha我看到osd.0只有一个小分区的一点配置，其余的由BlueStore使用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">root@alpha:~# df -h /var/lib/ceph/osd/ceph-0</div><div class="line">Filesystem      Size  Used Avail Use% Mounted on</div><div class="line">/dev/sdb1        97M  5.4M   92M   6% /var/lib/ceph/osd/ceph-0</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">root@alpha:~# lsblk </div><div class="line">NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</div><div class="line">sda      8:0    0    8G  0 disk </div><div class="line">├─sda1   8:1    0  7.5G  0 part /</div><div class="line">├─sda2   8:2    0    1K  0 part </div><div class="line">└─sda5   8:5    0  510M  0 part [SWAP]</div><div class="line">sdb      8:16   0   10G  0 disk </div><div class="line">├─sdb1   8:17   0  100M  0 part /var/lib/ceph/osd/ceph-0</div><div class="line">└─sdb2   8:18   0  9.9G  0 part </div><div class="line">sdc      8:32   0   10G  0 disk</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root@alpha:~# cat /var/lib/ceph/osd/ceph-0/type</div><div class="line">bluestore</div></pre></td></tr></table></figure>
+<p>OSD应该像运行FileStore的OSD一样工作，但它们应该运行得更好。</p>
+<blockquote>
+<p>以上内容翻译自：<a href="https://blog.widodh.nl/2017/01/testing-ceph-bluestore-with-the-kraken-release/" target="_blank" rel="external">Testing Ceph BlueStore with the Kraken release</a>。亲测可以成功，觉得很好就不放自己的配置，直接翻译过来了。</p>
+</blockquote>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p><strong>问题1</strong>、<code>ceph -s</code>的时候出现告警：<code>WARNING: the following dangerous and experimental features are enabled: bluestore</code></p>
+<p>如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"># ceph -s</div><div class="line">2017-02-07 10:10:34.266900 7f06a82e0700 -1 WARNING: the following dangerous and experimental features are enabled: bluestore</div><div class="line">2017-02-07 10:10:34.271112 7f06a82e0700 -1 WARNING: the following dangerous and experimental features are enabled: bluestore</div><div class="line">    cluster 7e9423ea-95f8-42d1-ae2d-7a384d68dea7</div><div class="line">     health HEALTH_OK</div><div class="line">     monmap e2: 3 mons at &#123;blue0=172.20.1.151:6789/0,blue1=172.20.1.152:6789/0,blue2=172.20.1.153:6789/0&#125;</div><div class="line">            election epoch 6, quorum 0,1,2 blue0,blue1,blue2</div><div class="line">        mgr no daemons active </div><div class="line">     osdmap e15: 3 osds: 3 up, 3 in</div><div class="line">            flags sortbitwise,require_jewel_osds,require_kraken_osds</div><div class="line">      pgmap v34: 64 pgs, 1 pools, 0 bytes data, 0 objects</div><div class="line">            49092 kB used, 599 GB / 599 GB avail</div><div class="line">                  64 active+clean</div></pre></td></tr></table></figure>
+<p>查了资料，无果，有些认为是<a href="http://lists.ceph.com/pipermail/ceph-users-ceph.com/2016-April/009059.html" target="_blank" rel="external">内核版本的问题</a>，然而并不对。</p>
+<p>真正原因是在添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">enable_experimental_unrecoverable_data_corrupting_features = bluestore</div></pre></td></tr></table></figure>
+<p>的时候忘记在前面加上：<code>[osd]</code></p>
+<p><strong>问题2</strong>、从jewel版本上升级到kraken版本，然后再通过上述方法创建OSD并不成功</p>
+<p><strong>问题3</strong>、创建mon的时候出现error</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[ceph_deploy.mon][ERROR ] RuntimeError: config file /etc/ceph/ceph.conf exists with different content; use --overwrite-conf to overwrite</div></pre></td></tr></table></figure>
+<p>解决方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph-deploy --overwrite-conf mon create-initial</div></pre></td></tr></table></figure>
+<h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 
       
     </div>
@@ -358,13 +314,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/01/12/dd磁盘命令小记/">dd磁盘命令小记</a></p>
+        <p><span>本文标题:</span><a href="/2017/02/07/在Kraken-release版本上测试Ceph-BlueStore/">在Kraken release版本上测试Ceph BlueStore</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-01-12, 20:30:49</p>
-        <p><span>最后更新:</span>2017-01-12, 20:30:49</p>
+        <p><span>发布时间:</span>2017-02-07, 11:13:16</p>
+        <p><span>最后更新:</span>2017-02-07, 11:23:51</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/01/12/dd磁盘命令小记/" title="dd磁盘命令小记">http://xiaqunfeng.github.io/2017/01/12/dd磁盘命令小记/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/01/12/dd磁盘命令小记/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/02/07/在Kraken-release版本上测试Ceph-BlueStore/" title="在Kraken release版本上测试Ceph BlueStore">http://xiaqunfeng.github.io/2017/02/07/在Kraken-release版本上测试Ceph-BlueStore/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/02/07/在Kraken-release版本上测试Ceph-BlueStore/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -376,16 +332,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/01/17/Linux命令——uptime/">
-                    Linux命令——uptime
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/01/12/解决calamari无法获取集群hosts信息的BUG/">
-                    解决calamari无法获取集群hosts信息的BUG
+                <a href="/2017/02/04/用户态和内核态/">
+                    用户态和内核态
                 </a>
             </div>
         
@@ -397,7 +347,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#命令的使用"><span class="toc-number">1.</span> <span class="toc-text">命令的使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#磁盘读写"><span class="toc-number">2.</span> <span class="toc-text">磁盘读写</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#几种测试写磁盘的区别"><span class="toc-number">3.</span> <span class="toc-text">几种测试写磁盘的区别</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bluestore"><span class="toc-number">2.</span> <span class="toc-text">bluestore</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#部署BlueStore"><span class="toc-number">3.</span> <span class="toc-text">部署BlueStore</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#运行Bluestore"><span class="toc-number">4.</span> <span class="toc-text">运行Bluestore</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题"><span class="toc-number">5.</span> <span class="toc-text">问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#打赏通道"><span class="toc-number">6.</span> <span class="toc-text">打赏通道</span></a></li></ol>
         
     </div>
     <style>
@@ -433,7 +383,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"dd磁盘命令小记　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"在Kraken release版本上测试Ceph BlueStore　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -452,8 +402,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.github.io/2017/01/12/dd磁盘命令小记/';
-            this.page.identifier = '2017/01/12/dd磁盘命令小记/';
+            this.page.url = 'http://xiaqunfeng.github.io/2017/02/07/在Kraken-release版本上测试Ceph-BlueStore/';
+            this.page.identifier = '2017/02/07/在Kraken-release版本上测试Ceph-BlueStore/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -475,15 +425,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/01/17/Linux命令——uptime/" title="上一篇: Linux命令——uptime">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/01/12/解决calamari无法获取集群hosts信息的BUG/" title="下一篇: 解决calamari无法获取集群hosts信息的BUG">
+            <a href="/2017/02/04/用户态和内核态/" title="下一篇: 用户态和内核态">
                 <i class="fa fa-angle-right"></i>
             </a>
         
