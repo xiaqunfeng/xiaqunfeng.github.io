@@ -4,6 +4,69 @@
   
     
     <entry>
+      <title><![CDATA[RBD 相关操作]]></title>
+      <url>http://xiaqunfeng.github.io/2017/02/10/RBD-%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/</url>
+      <content type="html"><![CDATA[<p>本文主要有两点：一、创建RBD设备用于测试；二、RBD相关其他操作。<br><a id="more"></a></p>
+<p>查看系统和内核版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># lsb_release -a</div><div class="line">No LSB modules are available.</div><div class="line">Distributor ID:	Ubuntu</div><div class="line">Description:	Ubuntu 14.04.4 LTS</div><div class="line">Release:	14.04</div><div class="line">Codename:	trusty</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># uname -r</div><div class="line">4.2.0-27-generic</div></pre></td></tr></table></figure>
+<h2 id="创建RBD设备"><a href="#创建RBD设备" class="headerlink" title="创建RBD设备"></a>创建RBD设备</h2><h3 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h3><p>1、<code>--image-format format-id</code></p>
+<p>选择用哪个对象布局，默认为 2 。</p>
+<ul>
+<li>format 1 - 新建 rbd 映像时使用最初的格式。此格式兼容所有版本的 librbd 和内核模块，但是不支持较新的功能，像克隆。</li>
+<li>format 2 - 使用第二版 rbd 格式， librbd 和 3.11 版以上内核模块才支持（除非是分拆的模块）。此格式增加了克隆支持，使得扩展更容易，还允许以后增加新功能。</li>
+</ul>
+<p>注意： <code>--image-format 1</code> 已不被支持</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># rbd create rbd-f1 --size 10G --image-format 1 --image-feature layering </div><div class="line">rbd: image format 1 is deprecated</div><div class="line">rbd: features not allowed with format 1; use --image-format 2</div></pre></td></tr></table></figure>
+<p>2、<code>--image-feature   feature</code></p>
+<p>选项指定使用特性，不用全部开启。如果仅需要使用快照等特性，开启layering即可。</p>
+<ul>
+<li>layering: 支持分层</li>
+<li>striping: 支持条带化 v2</li>
+<li>exclusive-lock: 支持独占锁</li>
+<li>object-map: 支持对象映射（依赖 exclusive-lock ）</li>
+<li>fast-diff: 快速计算差异（依赖 object-map ）</li>
+<li>deep-flatten: 支持快照扁平化操作</li>
+<li>journaling: 支持记录 IO 操作（依赖独占锁）</li>
+</ul>
+<h3 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h3><p>这里 <code>--image-format 2</code> 可以省略掉（命令如下），因为默认值就是 2</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># rbd create rbd-blue --size 20G --image-feature layering</div></pre></td></tr></table></figure>
+<p>查看创建的RBD信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># rbd info rbd-blue</div><div class="line">rbd image &apos;rbd-blue&apos;:</div><div class="line">	size 20480 MB in 5120 objects</div><div class="line">	order 22 (4096 kB objects)</div><div class="line">	block_name_prefix: rbd_data.105774b0dc51</div><div class="line">	format: 2</div><div class="line">	features: layering</div><div class="line">	flags:</div></pre></td></tr></table></figure>
+<h2 id="映射块设备"><a href="#映射块设备" class="headerlink" title="映射块设备"></a>映射块设备</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># rbd map rbd/rbd-blue</div><div class="line">/dev/rbd0</div></pre></td></tr></table></figure>
+<p>查看映射后信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># rbd showmapped </div><div class="line">id pool image    snap device    </div><div class="line">0  rbd  rbd-blue -    /dev/rbd0 </div><div class="line">1  rbd  rbd-tmp  -    /dev/rbd1 </div><div class="line">2  rbd  rbd-tmp1 -    /dev/rbd2</div></pre></td></tr></table></figure>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><h3 id="创建文件系统"><a href="#创建文件系统" class="headerlink" title="创建文件系统"></a>创建文件系统</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># fdisk -l /dev/rbd0</div><div class="line"># mkfs.xfs /dev/rbd0</div></pre></td></tr></table></figure>
+<h3 id="创建文件夹并挂载"><a href="#创建文件夹并挂载" class="headerlink" title="创建文件夹并挂载"></a>创建文件夹并挂载</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># mkdir /mnt/ceph-disk1</div><div class="line"># mount /dev/rbd0 /mnt/ceph-disk1</div><div class="line"></div><div class="line"># df -h /mnt/ceph-disk1/</div><div class="line">Filesystem      Size  Used Avail Use% Mounted on</div><div class="line">/dev/rbd0        20G   33M   20G   1% /mnt/ceph-disk1</div></pre></td></tr></table></figure>
+<blockquote>
+<p>此时，RBD设备已准备就绪，可以对RBD块设备进行测试了。</p>
+</blockquote>
+<h2 id="块设备其他操作"><a href="#块设备其他操作" class="headerlink" title="块设备其他操作"></a>块设备其他操作</h2><h3 id="罗列块设备映像"><a href="#罗列块设备映像" class="headerlink" title="罗列块设备映像"></a>罗列块设备映像</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rbd ls &#123;poolname&#125;	# poolname默认是rbd，可省略</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># rbd ls</div><div class="line">rbd-blue</div><div class="line">rbd-tmp</div><div class="line">rbd-tmp1</div></pre></td></tr></table></figure>
+<h3 id="检索镜像信息"><a href="#检索镜像信息" class="headerlink" title="检索镜像信息"></a>检索镜像信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rbd info &#123;pool-name&#125;/&#123;image-name&#125;</div></pre></td></tr></table></figure>
+<p>如果没有创建其他rbd的话，可以将命令简化</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rbd info &#123;image-name&#125;</div></pre></td></tr></table></figure>
+<h3 id="调整块设备映像大小"><a href="#调整块设备映像大小" class="headerlink" title="调整块设备映像大小"></a>调整块设备映像大小</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">rbd resize --size 2048 rbd-blue (to increase)</div><div class="line">rbd resize --size 2048 rbd-blue --allow-shrink (to decrease)</div></pre></td></tr></table></figure>
+<h3 id="删除块设备映像"><a href="#删除块设备映像" class="headerlink" title="删除块设备映像"></a>删除块设备映像</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rbd rm &#123;pool-name&#125;/&#123;image-name&#125;	# 默认pool是rbd，可省略&#123;pool-name&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：在删除前需要umap映像</p>
+</blockquote>
+<h4 id="正确删除过程"><a href="#正确删除过程" class="headerlink" title="正确删除过程"></a><strong>正确删除过程</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># rbd showmapped</div><div class="line">id pool image    snap device    </div><div class="line">0  rbd  rbd-blue -    /dev/rbd0 </div><div class="line">1  rbd  rbd-tmp  -    /dev/rbd1 </div><div class="line">2  rbd  rbd-tmp1 -    /dev/rbd2</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># rbd unmap /dev/rbd2</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># rbd rm rbd-tmp1</div><div class="line">Removing image: 100% complete...done.</div></pre></td></tr></table></figure>
+<p>注意：命令 <code>service rbdmap stop</code> 并不管用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># service rbdmap stop</div><div class="line">stop: Job failed while stopping</div></pre></td></tr></table></figure>
+<h4 id="不unmap的删除"><a href="#不unmap的删除" class="headerlink" title="不unmap的删除"></a><strong>不unmap的删除</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># rbd rm rbd-tmp1</div><div class="line">2017-02-08 11:17:47.700190 7f4ba6977000 -1 librbd: image has watchers - not removing</div><div class="line">Removing image: 0% complete...failed.</div><div class="line">rbd: error: image still has watchers</div><div class="line">This means the image is still open or the client using it crashed. Try again after closing/unmapping it or waiting 30s for the crashed client to timeout.</div></pre></td></tr></table></figure>
+<p>提示image正在被使用。如果想查看谁正在使用的话，命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># rbd info rbd-tmp1</div><div class="line">rbd image &apos;rbd-tmp1&apos;:</div><div class="line">	size 10240 MB in 2560 objects</div><div class="line">	order 22 (4096 kB objects)</div><div class="line">	block_name_prefix: rbd_data.104c2ae8944a</div><div class="line">	format: 2</div><div class="line">	features: layering</div><div class="line">	flags: </div><div class="line"></div><div class="line"># rados -p rbd listwatchers rbd_header.104c2ae8944a</div><div class="line">watcher=172.20.1.151:0/1839598827 client.4186 cookie=3</div></pre></td></tr></table></figure>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>下面这种方式创建RBD在map的时候会失败</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># rbd create --size 10240 rbd-test</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># rbd map rbd/rbd-test</div><div class="line">rbd: sysfs write failed</div><div class="line">RBD image feature set mismatch. You can disable features unsupported by the kernel with &quot;rbd feature disable&quot;.</div><div class="line">In some cases useful info is found in syslog - try &quot;dmesg | tail&quot; or so.</div><div class="line">rbd: map failed: (6) No such device or address</div></pre></td></tr></table></figure>
+<h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[在Kraken release版本上测试Ceph BlueStore]]></title>
       <url>http://xiaqunfeng.github.io/2017/02/07/%E5%9C%A8Kraken-release%E7%89%88%E6%9C%AC%E4%B8%8A%E6%B5%8B%E8%AF%95Ceph-BlueStore/</url>
       <content type="html"><![CDATA[<p>前面写了一篇文章《ceph升级到kraken版本》，在升级后的集群上重新部署OSD遇到一些问题。这里在干净的kraken环境下部署bluestore，用来测试一下性能。本文记录部署过程及遇到的问题和解决方法。<br><a id="more"></a></p>
