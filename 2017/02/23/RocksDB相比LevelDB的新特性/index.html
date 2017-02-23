@@ -15,16 +15,16 @@
 
 
 
-<meta name="description" content="dd是经常使用的命令了，方便快捷，这里闲来小总结一下，以及怎样测出最真实的写入速度。">
+<meta name="description" content="如题，具体列举了RocksDB中相比LevelDB的一些新特性。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="dd磁盘命令小记">
-<meta property="og:url" content="http://xiaqunfeng.github.io/2017/01/12/dd磁盘命令小记/index.html">
+<meta property="og:title" content="RocksDB相比LevelDB的新特性">
+<meta property="og:url" content="http://xiaqunfeng.github.io/2017/02/23/RocksDB相比LevelDB的新特性/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="dd是经常使用的命令了，方便快捷，这里闲来小总结一下，以及怎样测出最真实的写入速度。">
-<meta property="og:updated_time" content="2017-01-12T12:30:49.000Z">
+<meta property="og:description" content="如题，具体列举了RocksDB中相比LevelDB的一些新特性。">
+<meta property="og:updated_time" content="2017-02-23T03:46:02.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="dd磁盘命令小记">
-<meta name="twitter:description" content="dd是经常使用的命令了，方便快捷，这里闲来小总结一下，以及怎样测出最真实的写入速度。">
+<meta name="twitter:title" content="RocksDB相比LevelDB的新特性">
+<meta name="twitter:description" content="如题，具体列举了RocksDB中相比LevelDB的一些新特性。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -56,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>dd磁盘命令小记 | 夏天的风的博客</title>
+<title>RocksDB相比LevelDB的新特性 | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -226,11 +226,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-dd磁盘命令小记" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-RocksDB相比LevelDB的新特性" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/01/12/dd磁盘命令小记/" class="article-date">
-      <time datetime="2017-01-12T12:30:49.000Z" itemprop="datePublished">2017-01-12</time>
+      <a href="/2017/02/23/RocksDB相比LevelDB的新特性/" class="article-date">
+      <time datetime="2017-02-23T03:22:32.000Z" itemprop="datePublished">2017-02-23</time>
 </a>
 
 
@@ -245,7 +245,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      dd磁盘命令小记
+      RocksDB相比LevelDB的新特性
     </h1>
   
 
@@ -256,7 +256,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rocksdb/">rocksdb</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -266,90 +266,67 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>dd是经常使用的命令了，方便快捷，这里闲来小总结一下，以及怎样测出最真实的写入速度。<br><a id="more"></a></p>
-<h2 id="命令的使用"><a href="#命令的使用" class="headerlink" title="命令的使用"></a>命令的使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"># dd --help</div><div class="line">Usage: dd [OPERAND]...</div><div class="line">  or:  dd OPTION</div><div class="line">Copy a file, converting and formatting according to the operands.</div><div class="line"></div><div class="line">  bs=BYTES        read and write up to BYTES bytes at a time</div><div class="line">  cbs=BYTES       convert BYTES bytes at a time</div><div class="line">  conv=CONVS      convert the file as per the comma separated symbol list</div><div class="line">  count=N         copy only N input blocks</div><div class="line">  ibs=BYTES       read up to BYTES bytes at a time (default: 512)</div><div class="line">  if=FILE         read from FILE instead of stdin</div><div class="line">  iflag=FLAGS     read as per the comma separated symbol list</div><div class="line">  obs=BYTES       write BYTES bytes at a time (default: 512)</div><div class="line">  of=FILE         write to FILE instead of stdout</div><div class="line">  oflag=FLAGS     write as per the comma separated symbol list</div><div class="line">  seek=N          skip N obs-sized blocks at start of output</div><div class="line">  skip=N          skip N ibs-sized blocks at start of input</div><div class="line">  status=WHICH    WHICH info to suppress outputting to stderr;</div><div class="line">                  &apos;noxfer&apos; suppresses transfer stats, &apos;none&apos; suppresses all</div></pre></td></tr></table></figure>
-<p><strong>翻译</strong></p>
-<table>
-<thead>
-<tr>
-<th>选项</th>
-<th>意义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>bs</td>
-<td>同时设置读写块的大小为 bytes ，可代替 ibs 和 obs</td>
-</tr>
-<tr>
-<td>cbs</td>
-<td>一次转换 bytes 个字节，即转换缓冲区大小</td>
-</tr>
-<tr>
-<td>conv</td>
-<td>转换参数</td>
-</tr>
-<tr>
-<td>count</td>
-<td>复制的块数</td>
-</tr>
-<tr>
-<td>ibs</td>
-<td>一次读入 bytes 个字节(即一个块大小为 bytes 个字节)</td>
-</tr>
-<tr>
-<td>if</td>
-<td>输入文件 或 设备名称</td>
-</tr>
-<tr>
-<td>iflag</td>
-<td>按照逗号来分隔读参数</td>
-</tr>
-<tr>
-<td>obs</td>
-<td>一次写 bytes 个字节(即一个块大小为 bytes 个字节)</td>
-</tr>
-<tr>
-<td>of</td>
-<td>输出文件 或 设备名称</td>
-</tr>
-<tr>
-<td>oflag</td>
-<td>按照逗号来分隔写参数</td>
-</tr>
-<tr>
-<td>seek</td>
-<td>从输出文件开头跳过 blocks 个块后再开始复制</td>
-</tr>
-<tr>
-<td>skip</td>
-<td>从输入文件开头跳过 blocks 个块后再开始复制</td>
-</tr>
-</tbody>
-</table>
-<p>查看版本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dd --version</div></pre></td></tr></table></figure>
-<h2 id="磁盘读写"><a href="#磁盘读写" class="headerlink" title="磁盘读写"></a>磁盘读写</h2><p><strong>两个特殊的设备</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/dev/null：伪设备，相当于黑洞，of到该设备不会产生IO</div><div class="line">/dev/zero：伪设备，它只产生空字符流，对它不会产生IO</div></pre></td></tr></table></figure>
-<p><strong>1、测试磁盘写能力</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dd if=/dev/zero of=/test.a bs=8k count=10000</div></pre></td></tr></table></figure>
-<p>IO都集中在of文件中，of文件只用于写，相当于测试磁盘的写能力。</p>
-<p><strong>2、测试磁盘读能力</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dd if=/dev/sdb1 of=/dev/null bs=8k count=10000</div></pre></td></tr></table></figure>
-<p>IO只发生在/dev/sdb1上，相当于测试磁盘的读能力。</p>
-<p><strong>3、测试同时读写能力</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dd if=/dev/sdb1 of=/test.a bs=8k count=10000</div></pre></td></tr></table></figure>
-<p>一个是物理分区，一个是实际的文件，对它们的读写都会产生IO，如果它们都在一个磁盘中，该命令就相当于测试磁盘的同时读写能力。</p>
-<h2 id="几种测试写磁盘的区别"><a href="#几种测试写磁盘的区别" class="headerlink" title="几种测试写磁盘的区别"></a>几种测试写磁盘的区别</h2><p>先给出四种测试方式的结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"># dd if=/dev/zero of=test bs=1M count=128</div><div class="line">128+0 records in</div><div class="line">128+0 records out</div><div class="line">134217728 bytes (134 MB) copied, 0.116559 s, 1.2 GB/s</div><div class="line"></div><div class="line"># dd if=/dev/zero of=test bs=1M count=128 ; sync</div><div class="line">128+0 records in</div><div class="line">128+0 records out</div><div class="line">134217728 bytes (134 MB) copied, 0.125106 s, 1.1 GB/s</div><div class="line"></div><div class="line"># dd if=/dev/zero of=test bs=1M count=128 conv=fdatasync</div><div class="line">128+0 records in</div><div class="line">128+0 records out</div><div class="line">134217728 bytes (134 MB) copied, 1.76802 s, 75.9 MB/s</div><div class="line"></div><div class="line"># dd if=/dev/zero of=test bs=1M count=128 oflag=dsync</div><div class="line">128+0 records in</div><div class="line">128+0 records out</div><div class="line">134217728 bytes (134 MB) copied, 4.91353 s, 27.3 MB/s</div></pre></td></tr></table></figure>
-<p>1、<code>dd if=/dev/zero of=test bs=1M count=128</code></p>
-<p>没有加任何参数，命令只是单纯地把这128MB的数据读到内存缓冲当中，dd命令完成前并没有让系统真正把文件写到磁盘上。所以得到的是一个超级快的速度。直到dd完成后系统才开始真正往磁盘上写数据,但这个速度你是看不到了。</p>
-<p>2、<code>dd if=/dev/zero of=test bs=1M count=128 ; sync</code></p>
-<p>这事先后两个独立的命令。当sync命令准备开始往磁盘上真正写入数据的时候，前面dd命令已经把错误的“写入速度”值显示在屏幕上了。所以得到的不是真正的写入速度。</p>
-<p><strong>3、<code>dd if=/dev/zero of=test bs=1M count=128 conv=fdatasync</code></strong></p>
-<p>加入参数 <code>conv=fdatasync</code> 后，dd命令执行到最后会真正执行一次“同步(sync)”操作，所以这时候得到的是读取这128M数据到内存并写入到磁盘上所需的时间，这样算出来的时间才是<strong>比较符合实际</strong>的。这种方式最接近计算机实际操作，所以测出来的数据最有参考价值。</p>
-<p>4、<code>dd if=/dev/zero of=test bs=1M count=128 oflag=dsync</code></p>
-<p>加入参数 <code>oflag=dsync</code> 后，dd在执行时每次都会进行同步写入操作。这条命令每次读取1M后就要先把这1M写入磁盘，然后再读取下面这1M，一共重复128次。这是最慢的一种方式，因为基本上没有用到写缓存(write cache)。</p>
+        <p>如题，具体列举了RocksDB中相比LevelDB的一些新特性。<br><a id="more"></a></p>
+<h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><ul>
+<li>多线程压缩</li>
+<li>多线程memtable插入</li>
+<li>减少DB互斥体保持</li>
+<li>优化的基于级别的压缩风格和通用压缩风格</li>
+<li>前缀bloom过滤器</li>
+<li>Memtable布隆过滤器</li>
+<li>覆盖整个SST文件的单个布过滤器</li>
+<li>写锁优化</li>
+<li>改进<code>Iter :: Prev（）</code>性能</li>
+<li>在SkipList搜索期间，较少的比较器调用</li>
+<li>使用巨大的页面分配memtable内存</li>
+</ul>
+<h2 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h2><ul>
+<li>列簇（column families）</li>
+<li>事务和WriteBatchWithIndex</li>
+<li>备份和检查点</li>
+<li>合并操作</li>
+<li>压缩过滤器</li>
+<li>RocksDB Java</li>
+<li>手动压缩与自动压缩并行运行</li>
+<li>持久化缓存</li>
+<li>批量加载</li>
+<li>前向迭代器/尾部迭代器</li>
+<li>单个删除</li>
+<li>范围删除文件</li>
+<li>引脚迭代器key/value</li>
+</ul>
+<h2 id="替换的数据结构和格式"><a href="#替换的数据结构和格式" class="headerlink" title="替换的数据结构和格式"></a>替换的数据结构和格式</h2><ul>
+<li>仅用于内存使用情况的纯表格式</li>
+<li>基于向量和基于哈希的memtable格式</li>
+<li>基于时钟的缓存（即将推出）</li>
+<li>可插拔信息日志</li>
+<li>使用blob注释事务日志写入（用于副本）</li>
+</ul>
+<h2 id="可调性"><a href="#可调性" class="headerlink" title="可调性"></a>可调性</h2><ul>
+<li>速率限制</li>
+<li>可调减速和停止阈值</li>
+<li>保持所有文件打开的选项</li>
+<li>将所有索引和bloom过滤器块保留在块缓存中的选项</li>
+<li>多种WAL恢复模式</li>
+<li>Fadvise提示用于预读和避免在OS页面缓存中缓存</li>
+<li>用于在内存中固定L0文件的索引和bloom过滤器的选项</li>
+<li>更多压缩类型：zlib，lz4，zstd</li>
+<li>压缩字典</li>
+<li>校验类型：xxhash</li>
+<li>每级的不同级别尺寸乘法器和压缩类型</li>
+</ul>
+<h2 id="可管理性"><a href="#可管理性" class="headerlink" title="可管理性"></a>可管理性</h2><ul>
+<li>统计</li>
+<li>Thread-local分析</li>
+<li>命令行工具中的更多命令</li>
+<li>用户定义的表属性</li>
+<li>事件侦听器</li>
+<li>更多数据库属性</li>
+<li>动态选项更改</li>
+<li>从字符串或映射获取选项</li>
+<li>选项文件的持久性选项</li>
+</ul>
+<p>英文原文链接：<a href="https://github.com/facebook/rocksdb/wiki/Features-Not-in-LevelDB" target="_blank" rel="external">Features Not in LevelDB</a></p>
 
       
     </div>
@@ -358,13 +335,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/01/12/dd磁盘命令小记/">dd磁盘命令小记</a></p>
+        <p><span>本文标题:</span><a href="/2017/02/23/RocksDB相比LevelDB的新特性/">RocksDB相比LevelDB的新特性</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-01-12, 20:30:49</p>
-        <p><span>最后更新:</span>2017-01-12, 20:30:49</p>
+        <p><span>发布时间:</span>2017-02-23, 11:22:32</p>
+        <p><span>最后更新:</span>2017-02-23, 11:46:02</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/01/12/dd磁盘命令小记/" title="dd磁盘命令小记">http://xiaqunfeng.github.io/2017/01/12/dd磁盘命令小记/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/01/12/dd磁盘命令小记/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/02/23/RocksDB相比LevelDB的新特性/" title="RocksDB相比LevelDB的新特性">http://xiaqunfeng.github.io/2017/02/23/RocksDB相比LevelDB的新特性/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/02/23/RocksDB相比LevelDB的新特性/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -376,16 +353,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/01/17/Linux命令——uptime/">
-                    Linux命令——uptime
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/01/12/解决calamari无法获取集群hosts信息的BUG/">
-                    解决calamari无法获取集群hosts信息的BUG
+                <a href="/2017/02/20/Kernel modules (简体中文)/">
+                    Kernel modules (简体中文)
                 </a>
             </div>
         
@@ -397,7 +368,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#命令的使用"><span class="toc-number">1.</span> <span class="toc-text">命令的使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#磁盘读写"><span class="toc-number">2.</span> <span class="toc-text">磁盘读写</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#几种测试写磁盘的区别"><span class="toc-number">3.</span> <span class="toc-text">几种测试写磁盘的区别</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#性能"><span class="toc-number">1.</span> <span class="toc-text">性能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#特性"><span class="toc-number">2.</span> <span class="toc-text">特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#替换的数据结构和格式"><span class="toc-number">3.</span> <span class="toc-text">替换的数据结构和格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#可调性"><span class="toc-number">4.</span> <span class="toc-text">可调性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#可管理性"><span class="toc-number">5.</span> <span class="toc-text">可管理性</span></a></li></ol>
         
     </div>
     <style>
@@ -433,7 +404,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"dd磁盘命令小记　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"RocksDB相比LevelDB的新特性　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -452,8 +423,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.github.io/2017/01/12/dd磁盘命令小记/';
-            this.page.identifier = '2017/01/12/dd磁盘命令小记/';
+            this.page.url = 'http://xiaqunfeng.github.io/2017/02/23/RocksDB相比LevelDB的新特性/';
+            this.page.identifier = '2017/02/23/RocksDB相比LevelDB的新特性/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -475,15 +446,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/01/17/Linux命令——uptime/" title="上一篇: Linux命令——uptime">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/01/12/解决calamari无法获取集群hosts信息的BUG/" title="下一篇: 解决calamari无法获取集群hosts信息的BUG">
+            <a href="/2017/02/20/Kernel modules (简体中文)/" title="下一篇: Kernel modules (简体中文)">
                 <i class="fa fa-angle-right"></i>
             </a>
         

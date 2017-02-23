@@ -4,6 +4,73 @@
   
     
     <entry>
+      <title><![CDATA[RocksDB相比LevelDB的新特性]]></title>
+      <url>http://xiaqunfeng.github.io/2017/02/23/RocksDB%E7%9B%B8%E6%AF%94LevelDB%E7%9A%84%E6%96%B0%E7%89%B9%E6%80%A7/</url>
+      <content type="html"><![CDATA[<p>如题，具体列举了RocksDB中相比LevelDB的一些新特性。<br><a id="more"></a></p>
+<h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><ul>
+<li>多线程压缩</li>
+<li>多线程memtable插入</li>
+<li>减少DB互斥体保持</li>
+<li>优化的基于级别的压缩风格和通用压缩风格</li>
+<li>前缀bloom过滤器</li>
+<li>Memtable布隆过滤器</li>
+<li>覆盖整个SST文件的单个布过滤器</li>
+<li>写锁优化</li>
+<li>改进<code>Iter :: Prev（）</code>性能</li>
+<li>在SkipList搜索期间，较少的比较器调用</li>
+<li>使用巨大的页面分配memtable内存</li>
+</ul>
+<h2 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h2><ul>
+<li>列簇（column families）</li>
+<li>事务和WriteBatchWithIndex</li>
+<li>备份和检查点</li>
+<li>合并操作</li>
+<li>压缩过滤器</li>
+<li>RocksDB Java</li>
+<li>手动压缩与自动压缩并行运行</li>
+<li>持久化缓存</li>
+<li>批量加载</li>
+<li>前向迭代器/尾部迭代器</li>
+<li>单个删除</li>
+<li>范围删除文件</li>
+<li>引脚迭代器key/value</li>
+</ul>
+<h2 id="替换的数据结构和格式"><a href="#替换的数据结构和格式" class="headerlink" title="替换的数据结构和格式"></a>替换的数据结构和格式</h2><ul>
+<li>仅用于内存使用情况的纯表格式</li>
+<li>基于向量和基于哈希的memtable格式</li>
+<li>基于时钟的缓存（即将推出）</li>
+<li>可插拔信息日志</li>
+<li>使用blob注释事务日志写入（用于副本）</li>
+</ul>
+<h2 id="可调性"><a href="#可调性" class="headerlink" title="可调性"></a>可调性</h2><ul>
+<li>速率限制</li>
+<li>可调减速和停止阈值</li>
+<li>保持所有文件打开的选项</li>
+<li>将所有索引和bloom过滤器块保留在块缓存中的选项</li>
+<li>多种WAL恢复模式</li>
+<li>Fadvise提示用于预读和避免在OS页面缓存中缓存</li>
+<li>用于在内存中固定L0文件的索引和bloom过滤器的选项</li>
+<li>更多压缩类型：zlib，lz4，zstd</li>
+<li>压缩字典</li>
+<li>校验类型：xxhash</li>
+<li>每级的不同级别尺寸乘法器和压缩类型</li>
+</ul>
+<h2 id="可管理性"><a href="#可管理性" class="headerlink" title="可管理性"></a>可管理性</h2><ul>
+<li>统计</li>
+<li>Thread-local分析</li>
+<li>命令行工具中的更多命令</li>
+<li>用户定义的表属性</li>
+<li>事件侦听器</li>
+<li>更多数据库属性</li>
+<li>动态选项更改</li>
+<li>从字符串或映射获取选项</li>
+<li>选项文件的持久性选项</li>
+</ul>
+<p>英文原文链接：<a href="https://github.com/facebook/rocksdb/wiki/Features-Not-in-LevelDB" target="_blank" rel="external">Features Not in LevelDB</a></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Kernel modules (简体中文)]]></title>
       <url>http://xiaqunfeng.github.io/2017/02/20/Kernel%20modules%20(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)/</url>
       <content type="html"><![CDATA[<p>介绍了内核模块的相关操作。加载、查看info、卸载、配置等……<br><a id="more"></a></p>
