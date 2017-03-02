@@ -4,6 +4,52 @@
   
     
     <entry>
+      <title><![CDATA[Machine Learning Yearning(开篇、1、2)]]></title>
+      <url>http://xiaqunfeng.github.io/2017/03/02/Machine-Learning-Yearning-%E5%BC%80%E7%AF%87%E3%80%811%E3%80%812/</url>
+      <content type="html"><![CDATA[<p>NG的机器学习教程，翻译过来，这里是开篇、第一章和第二章的内容。<br><a id="more"></a></p>
+<h2 id="开篇"><a href="#开篇" class="headerlink" title="开篇"></a>开篇</h2><p>网上搜了一下，发现已经有一些翻译后的资料了，我这里就是边学习边翻译记录，主要作为给自己的学习笔记吧，并不冲突。</p>
+<p>官网：<a href="http://www.mlyearning.org/" target="_blank" rel="external">http://www.mlyearning.org/</a></p>
+<p>这里可以留下你的邮箱，当有更新的时候会发到你的邮箱（好像我关注后就没发过）。</p>
+<h3 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h3><p>这本书的目的是教你如何做组织一个机器学习项目所需的大量的决定。 你将学习：</p>
+<ul>
+<li>如何建立你的开发和测试集</li>
+<li>基本错误分析</li>
+<li>如何使用偏差和方差来决定该做什么</li>
+<li>学习曲线</li>
+<li>将学习算法与人类水平的表现进行比较</li>
+<li>调试推理算法</li>
+<li>什么时候应该和不应该使用端到端的深度学习</li>
+<li>按部进行错误分析</li>
+</ul>
+<h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>当前更新了14章，下载如下：</p>
+<p><a href="https://gallery.mailchimp.com/dc3a7ef4d750c0abfc19202a3/files/Machine_Learning_Yearning_V0.5_01.pdf" target="_blank" rel="external">1-12章</a></p>
+<p><a href="https://gallery.mailchimp.com/dc3a7ef4d750c0abfc19202a3/files/Machine_Learning_Yearning_V0.5_02.pdf" target="_blank" rel="external">13章</a></p>
+<p><a href="https://gallery.mailchimp.com/dc3a7ef4d750c0abfc19202a3/files/Machine_Learning_Yearning_V0.5_03.pdf" target="_blank" rel="external">14章</a></p>
+<h3 id="章节名称"><a href="#章节名称" class="headerlink" title="章节名称"></a>章节名称</h3><p>Chapter 1、Why Machine Learning Strategy<br>Chapter 2、How to use this book to help your team<br>Chapter 4、Prerequisites and Notation<br>Chapter 5、Scale drives machine learning progress<br>Chapter 6、Your development and test sets<br>Chapter 7、Your dev and test sets should come from the same distribution<br>Chapter 8、How large do the dev/test sets need to be?<br>Chapter 9、Establish a single-number evaluation metric for your team to optimize<br>Chapter 10、Optimizingandsatisficingmetrics<br>Chapter 11、Having a dev set and metric speeds up iterations<br>Chapter 12、When to change dev/test sets and metrics<br>Chapter 13、Takeaways: Setting up development and test sets<br>Chapter 14、Build your first system quickly, then iterate<br>Chapter 15、Error analysis: Look at dev set examples to evaluate ideas<br>Chapter 16、Evaluate multiple ideas in parallel during error analysis </p>
+<p>（待添加）                </p>
+<h2 id="Chapter-1、Why-Machine-Learning-Strategy"><a href="#Chapter-1、Why-Machine-Learning-Strategy" class="headerlink" title="Chapter 1、Why Machine Learning Strategy"></a>Chapter 1、Why Machine Learning Strategy</h2><p>为什么是机器学习策略</p>
+<p>机器学习是无数重要应用程序的基础，包括网页搜索，电子邮件反垃圾邮件，语音识别，产品推荐等。我假设你或你的团队正在一个机器学习应用程序，并且你想要快速进步。那么这本书将帮助到你。</p>
+<p>示例：构建一个cat图片启动</p>
+<p>假设你正在建立一个创业公司，将为猫爱好者提供一个无尽的猫图片流。并使用神经网络建立一个计算机视觉系统，以检测图片中的猫。</p>
+<p><img src="http://img.blog.csdn.net/20161208213001211?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>但悲剧的是，你的学习算法的准确性还不够好。你面临着提高猫检测算法的巨大压力。你该怎么做？</p>
+<p>您的团队有很多想法，例如：</p>
+<p>•获取更多的数据：收集更多的猫的照片</p>
+<p>•收集更多样化的培训集。例如，猫在不寻常的位置的图片;猫不寻常的着色;各种相机设置下拍摄出的猫图; ….</p>
+<p>•通过运行更多的梯度下降迭代来增加算法的训练时间</p>
+<p>•尝试更大的神经网络，具有更多的层/隐藏单位/参数</p>
+<p>•尝试更小的神经网络。</p>
+<p>•尝试添加正则化（例如L2正则化）</p>
+<p>•改变神经网络架构（激活功能，隐藏单位数等）</p>
+<p>•…</p>
+<p>在这些可能的方向中，如果选择的好，你将会建立领先的猫图片平台，并带领公司走向成功。如果选择 不好，可能会浪费几个月的时间。你该怎么做？</p>
+<p>这本书会告诉你怎么做。大多数机器学习问题留下的线索告诉你什么是有用的的尝试，什么是没用的尝试。学会阅读这些线索会节省你几个月甚至几年的开发时间。</p>
+<h2 id="Chapter-2、How-to-use-this-book-to-help-your-team"><a href="#Chapter-2、How-to-use-this-book-to-help-your-team" class="headerlink" title="Chapter 2、How to use this book to help your team"></a>Chapter 2、How to use this book to help your team</h2><p>如何使用这本书来帮助你的团队<br>阅读完本书后，您将对如何设置机器学习项目的技术方向有深入的了解。<br>但是你的队友可能不明白你为什么要推荐一个特定的方向。 也许你希望你的团队定义一个单数评估指标，但他们不相信。 你如何说服他们？<br>这就是为什么我把章节短：所以，你可以打印出来，让你的队友只读你需要他们知道的那一两页。<br>优先级上的一些改变会对您的团队的生产力产生巨大的影响。 通过帮助您的团队进行一些这样的改变，我希望您可以成为您的团队的超级英雄！</p>
+<p><img src="http://img.blog.csdn.net/20161208232515575?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[异步IO]]></title>
       <url>http://xiaqunfeng.github.io/2017/03/01/%E5%BC%82%E6%AD%A5IO/</url>
       <content type="html"><![CDATA[<p>介绍了AIO，以及四种IO模型。<br><a id="more"></a></p>

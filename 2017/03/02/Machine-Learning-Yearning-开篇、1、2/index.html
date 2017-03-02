@@ -15,20 +15,19 @@
 
 
 
-<meta name="description" content="前面一篇文章介绍了flashcache和cache tier，并进行了对比，其实flashcache的原理和dm-cache是类似的。这里就介绍下dm-cache和bcache，这两种策略均已在linux内核中。">
+<meta name="description" content="NG的机器学习教程，翻译过来，这里是开篇、第一章和第二章的内容。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Dm-cache vs Bcache">
-<meta property="og:url" content="http://xiaqunfeng.github.io/2017/02/03/Dm-cache-vs-Bcache/index.html">
+<meta property="og:title" content="Machine Learning Yearning(开篇、1、2)">
+<meta property="og:url" content="http://xiaqunfeng.github.io/2017/03/02/Machine-Learning-Yearning-开篇、1、2/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="前面一篇文章介绍了flashcache和cache tier，并进行了对比，其实flashcache的原理和dm-cache是类似的。这里就介绍下dm-cache和bcache，这两种策略均已在linux内核中。">
-<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/dm-cache.png">
-<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/bcache.png">
-<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
-<meta property="og:updated_time" content="2017-02-03T09:46:46.000Z">
+<meta property="og:description" content="NG的机器学习教程，翻译过来，这里是开篇、第一章和第二章的内容。">
+<meta property="og:image" content="http://img.blog.csdn.net/20161208213001211?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20161208232515575?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:updated_time" content="2017-03-02T02:08:51.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Dm-cache vs Bcache">
-<meta name="twitter:description" content="前面一篇文章介绍了flashcache和cache tier，并进行了对比，其实flashcache的原理和dm-cache是类似的。这里就介绍下dm-cache和bcache，这两种策略均已在linux内核中。">
-<meta name="twitter:image" content="http://ojet8bprn.bkt.clouddn.com/dm-cache.png">
+<meta name="twitter:title" content="Machine Learning Yearning(开篇、1、2)">
+<meta name="twitter:description" content="NG的机器学习教程，翻译过来，这里是开篇、第一章和第二章的内容。">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20161208213001211?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -60,7 +59,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Dm-cache vs Bcache | 夏天的风的博客</title>
+<title>Machine Learning Yearning(开篇、1、2) | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -230,11 +229,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-Dm-cache-vs-Bcache" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Machine-Learning-Yearning-开篇、1、2" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/02/03/Dm-cache-vs-Bcache/" class="article-date">
-      <time datetime="2017-02-03T09:37:45.000Z" itemprop="datePublished">2017-02-03</time>
+      <a href="/2017/03/02/Machine-Learning-Yearning-开篇、1、2/" class="article-date">
+      <time datetime="2017-03-02T02:00:29.000Z" itemprop="datePublished">2017-03-02</time>
 </a>
 
 
@@ -249,7 +248,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Dm-cache vs Bcache
+      Machine Learning Yearning(开篇、1、2)
     </h1>
   
 
@@ -260,7 +259,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/storage/">storage</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -270,27 +269,46 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>前面一篇文章介绍了flashcache和cache tier，并进行了对比，其实flashcache的原理和dm-cache是类似的。这里就介绍下dm-cache和bcache，这两种策略均已在linux内核中。<br><a id="more"></a></p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>现代硬盘驱动器（HDD）已经走了很长的路。他们旋转得越来越快;与过去的HDD相比具有更高的存储密度和更低的错误率，但是它们和其前身一样，仍然被视为性能瓶颈。随着时间的推移，我们已经看到了许多缓存方案来提高性能;有一些块缓存解决方案在磁盘驱动器（磁盘或存储控制器）或使用主机系统内存的文件系统级缓存解决方案附近使用某种类型的缓存。随着企业级的可接受性，大而经济的闪存存储技术的可用性，使用固态驱动器（SSD）的块缓存解决方案作为性能增强解决方案。使用基于SSD的块缓存，我们可以寻找SSD速度和HDD容量 - 快速，大而且实惠。</p>
-<p>在块缓存解决方案中，概念上，将逻辑设备呈现给文件系统（或多个应用），而不是实际目的地HDD（或其它目的地块设备，例如iSCSI LUN），其中数据意在被存储。因此呈现的逻辑设备与原始设备具有相同的大小物理设备，而用于高速缓存的SSD可以跨越逻辑设备映射。</p>
-<p>Linux开源社区有多个通用的块级缓存解决方案，其中包括bcache，dm-cache和flashcache。 Linux内核社区将内核3.9中的dm-cache上游和内核3.10中的bcache合并。虽然flashcache未在上游合并，但在某些生产环境中已经使用了一段时间。</p>
-<h2 id="dm-cache"><a href="#dm-cache" class="headerlink" title="dm-cache"></a>dm-cache</h2><p>又叫 Device Mapper Cache。dm-cache是设备映射器目标，首先提交到kernel-3.9。它使用针对基于闪存的SSD进行优化的I / O调度和缓存管理技术。设备映射程序目标（dmcache）重新使用精简资源调配库中使用的元数据库。write-back和writethrough都由dm-cache支持，write-back是默认模式。</p>
-<p>由dm-cache创建的虚拟缓存设备使用源设备（Origin device）、缓存设备（Cache device）和元数据设备（Metadata dev）这三个物理设备来构建。结构如下图所示：</p>
-<p> <img src="http://ojet8bprn.bkt.clouddn.com/dm-cache.png" alt="dm-cache"></p>
-<p>源设备是实际（较慢）目的存储设备。</p>
-<p>高速缓存设备是用于临时存储用户数据的较快设备。</p>
-<p>元数据设备记录块布局，它们的dirty flags和其他内部数据所需的策略。</p>
-<h2 id="bcache"><a href="#bcache" class="headerlink" title="bcache"></a>bcache</h2><p>bcache首先提交到kernel-3.10。它围绕基于闪存的SSD的独特特性设计，并使用混合btree/log结构来跟踪缓存的区域。它旨在不惜一切代价（at all cost）避免随机写。 bcache顺序填充一个擦除块，然后在重新使用之前发出一个丢弃（缓存数据可以是桶上的任意一个扇区。bcache最大程度上减少了随机写的代价，它按顺序填充一个桶，重新使用时只需将桶设置为无效）。支持write-through和write-back高速缓存。write-back默认关闭，但可以在运行时任意打开和关闭。</p>
-<p>通过后端设备（backing device）和缓存设备（caching device）来创建虚拟的bcache 设备，如下图所示：</p>
-<p> <img src="http://ojet8bprn.bkt.clouddn.com/bcache.png" alt="bcache"></p>
-<p>后端设备是实际（较慢）目的存储设备，而高速缓存设备是更快的设备。后备设备必须格式化为bcache 块设备；现有的格式化分区不能与bcache一起使用。（可以尝试 blocks to-bcache进行就地转换）。</p>
-<p>默认状态下bcache不缓存顺序IO，只缓存随机读写。为避免随机写，bcache将随机写转换为顺序写，首先写到SSD，然后回写缓存使用SSD缓存大量的写，最后将写有序写到磁盘或者阵列上。</p>
-<p>SSD的特点就是随机IO速度很快，而对于大块顺序IO的提升却并不大。bcache会检测顺序IO并忽略；还会对每一个任务记录动态的平均IO大小，当平均IO大小超过截止值时该任务后面的IO将会被忽略，这样就可以透传备份或者大文件拷贝。</p>
-<h2 id="Dm-cache-vs-Bcache"><a href="#Dm-cache-vs-Bcache" class="headerlink" title="Dm-cache vs Bcache"></a>Dm-cache vs Bcache</h2><p>与 dm-cache 实现的的分级存储不同，bcache 更像一个传统的缓存。它可以用来存储任何 extents，甚至是是一个扇区，而 dm-cache 只能对整块数据进行缓存。</p>
-<p>dm-cache方案假设缓存设备总是存在，bcache 并不要求 cache 设备一直都在。 </p>
-<p>bcache 已经在实际产品中使用了，所以它有机会去碰到这些疑难场景，并可以处理这些缓存设备无法工作的情形。</p>
-<p>dm-cache 确实还有很多事情要做。起初，它是进行 cache 和原始设备的并行 IO，但最终不得不回到顺序 IO。</p>
-<h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
+        <p>NG的机器学习教程，翻译过来，这里是开篇、第一章和第二章的内容。<br><a id="more"></a></p>
+<h2 id="开篇"><a href="#开篇" class="headerlink" title="开篇"></a>开篇</h2><p>网上搜了一下，发现已经有一些翻译后的资料了，我这里就是边学习边翻译记录，主要作为给自己的学习笔记吧，并不冲突。</p>
+<p>官网：<a href="http://www.mlyearning.org/" target="_blank" rel="external">http://www.mlyearning.org/</a></p>
+<p>这里可以留下你的邮箱，当有更新的时候会发到你的邮箱（好像我关注后就没发过）。</p>
+<h3 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h3><p>这本书的目的是教你如何做组织一个机器学习项目所需的大量的决定。 你将学习：</p>
+<ul>
+<li>如何建立你的开发和测试集</li>
+<li>基本错误分析</li>
+<li>如何使用偏差和方差来决定该做什么</li>
+<li>学习曲线</li>
+<li>将学习算法与人类水平的表现进行比较</li>
+<li>调试推理算法</li>
+<li>什么时候应该和不应该使用端到端的深度学习</li>
+<li>按部进行错误分析</li>
+</ul>
+<h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>当前更新了14章，下载如下：</p>
+<p><a href="https://gallery.mailchimp.com/dc3a7ef4d750c0abfc19202a3/files/Machine_Learning_Yearning_V0.5_01.pdf" target="_blank" rel="external">1-12章</a></p>
+<p><a href="https://gallery.mailchimp.com/dc3a7ef4d750c0abfc19202a3/files/Machine_Learning_Yearning_V0.5_02.pdf" target="_blank" rel="external">13章</a></p>
+<p><a href="https://gallery.mailchimp.com/dc3a7ef4d750c0abfc19202a3/files/Machine_Learning_Yearning_V0.5_03.pdf" target="_blank" rel="external">14章</a></p>
+<h3 id="章节名称"><a href="#章节名称" class="headerlink" title="章节名称"></a>章节名称</h3><p>Chapter 1、Why Machine Learning Strategy<br>Chapter 2、How to use this book to help your team<br>Chapter 4、Prerequisites and Notation<br>Chapter 5、Scale drives machine learning progress<br>Chapter 6、Your development and test sets<br>Chapter 7、Your dev and test sets should come from the same distribution<br>Chapter 8、How large do the dev/test sets need to be?<br>Chapter 9、Establish a single-number evaluation metric for your team to optimize<br>Chapter 10、Optimizingandsatisficingmetrics<br>Chapter 11、Having a dev set and metric speeds up iterations<br>Chapter 12、When to change dev/test sets and metrics<br>Chapter 13、Takeaways: Setting up development and test sets<br>Chapter 14、Build your first system quickly, then iterate<br>Chapter 15、Error analysis: Look at dev set examples to evaluate ideas<br>Chapter 16、Evaluate multiple ideas in parallel during error analysis </p>
+<p>（待添加）                </p>
+<h2 id="Chapter-1、Why-Machine-Learning-Strategy"><a href="#Chapter-1、Why-Machine-Learning-Strategy" class="headerlink" title="Chapter 1、Why Machine Learning Strategy"></a>Chapter 1、Why Machine Learning Strategy</h2><p>为什么是机器学习策略</p>
+<p>机器学习是无数重要应用程序的基础，包括网页搜索，电子邮件反垃圾邮件，语音识别，产品推荐等。我假设你或你的团队正在一个机器学习应用程序，并且你想要快速进步。那么这本书将帮助到你。</p>
+<p>示例：构建一个cat图片启动</p>
+<p>假设你正在建立一个创业公司，将为猫爱好者提供一个无尽的猫图片流。并使用神经网络建立一个计算机视觉系统，以检测图片中的猫。</p>
+<p><img src="http://img.blog.csdn.net/20161208213001211?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>但悲剧的是，你的学习算法的准确性还不够好。你面临着提高猫检测算法的巨大压力。你该怎么做？</p>
+<p>您的团队有很多想法，例如：</p>
+<p>•获取更多的数据：收集更多的猫的照片</p>
+<p>•收集更多样化的培训集。例如，猫在不寻常的位置的图片;猫不寻常的着色;各种相机设置下拍摄出的猫图; ….</p>
+<p>•通过运行更多的梯度下降迭代来增加算法的训练时间</p>
+<p>•尝试更大的神经网络，具有更多的层/隐藏单位/参数</p>
+<p>•尝试更小的神经网络。</p>
+<p>•尝试添加正则化（例如L2正则化）</p>
+<p>•改变神经网络架构（激活功能，隐藏单位数等）</p>
+<p>•…</p>
+<p>在这些可能的方向中，如果选择的好，你将会建立领先的猫图片平台，并带领公司走向成功。如果选择 不好，可能会浪费几个月的时间。你该怎么做？</p>
+<p>这本书会告诉你怎么做。大多数机器学习问题留下的线索告诉你什么是有用的的尝试，什么是没用的尝试。学会阅读这些线索会节省你几个月甚至几年的开发时间。</p>
+<h2 id="Chapter-2、How-to-use-this-book-to-help-your-team"><a href="#Chapter-2、How-to-use-this-book-to-help-your-team" class="headerlink" title="Chapter 2、How to use this book to help your team"></a>Chapter 2、How to use this book to help your team</h2><p>如何使用这本书来帮助你的团队<br>阅读完本书后，您将对如何设置机器学习项目的技术方向有深入的了解。<br>但是你的队友可能不明白你为什么要推荐一个特定的方向。 也许你希望你的团队定义一个单数评估指标，但他们不相信。 你如何说服他们？<br>这就是为什么我把章节短：所以，你可以打印出来，让你的队友只读你需要他们知道的那一两页。<br>优先级上的一些改变会对您的团队的生产力产生巨大的影响。 通过帮助您的团队进行一些这样的改变，我希望您可以成为您的团队的超级英雄！</p>
+<p><img src="http://img.blog.csdn.net/20161208232515575?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
 
       
     </div>
@@ -299,13 +317,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/02/03/Dm-cache-vs-Bcache/">Dm-cache vs Bcache</a></p>
+        <p><span>本文标题:</span><a href="/2017/03/02/Machine-Learning-Yearning-开篇、1、2/">Machine Learning Yearning(开篇、1、2)</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-02-03, 17:37:45</p>
-        <p><span>最后更新:</span>2017-02-03, 17:46:46</p>
+        <p><span>发布时间:</span>2017-03-02, 10:00:29</p>
+        <p><span>最后更新:</span>2017-03-02, 10:08:51</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/02/03/Dm-cache-vs-Bcache/" title="Dm-cache vs Bcache">http://xiaqunfeng.github.io/2017/02/03/Dm-cache-vs-Bcache/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/02/03/Dm-cache-vs-Bcache/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/02/Machine-Learning-Yearning-开篇、1、2/" title="Machine Learning Yearning(开篇、1、2)">http://xiaqunfeng.github.io/2017/03/02/Machine-Learning-Yearning-开篇、1、2/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/03/02/Machine-Learning-Yearning-开篇、1、2/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -317,16 +335,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/02/04/ceph升级到kraken版本/">
-                    ceph升级到kraken版本
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/02/03/Flashcache-vs-Cache-tier/">
-                    Flashcache vs Cache tier
+                <a href="/2017/03/01/异步IO/">
+                    异步IO
                 </a>
             </div>
         
@@ -338,7 +350,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dm-cache"><span class="toc-number">2.</span> <span class="toc-text">dm-cache</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bcache"><span class="toc-number">3.</span> <span class="toc-text">bcache</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dm-cache-vs-Bcache"><span class="toc-number">4.</span> <span class="toc-text">Dm-cache vs Bcache</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#打赏通道"><span class="toc-number">5.</span> <span class="toc-text">打赏通道</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#开篇"><span class="toc-number">1.</span> <span class="toc-text">开篇</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#目的"><span class="toc-number">1.1.</span> <span class="toc-text">目的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#下载"><span class="toc-number">1.2.</span> <span class="toc-text">下载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#章节名称"><span class="toc-number">1.3.</span> <span class="toc-text">章节名称</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Chapter-1、Why-Machine-Learning-Strategy"><span class="toc-number">2.</span> <span class="toc-text">Chapter 1、Why Machine Learning Strategy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Chapter-2、How-to-use-this-book-to-help-your-team"><span class="toc-number">3.</span> <span class="toc-text">Chapter 2、How to use this book to help your team</span></a></li></ol>
         
     </div>
     <style>
@@ -374,7 +386,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Dm-cache vs Bcache　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"Machine Learning Yearning(开篇、1、2)　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -393,8 +405,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.github.io/2017/02/03/Dm-cache-vs-Bcache/';
-            this.page.identifier = '2017/02/03/Dm-cache-vs-Bcache/';
+            this.page.url = 'http://xiaqunfeng.github.io/2017/03/02/Machine-Learning-Yearning-开篇、1、2/';
+            this.page.identifier = '2017/03/02/Machine-Learning-Yearning-开篇、1、2/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -416,15 +428,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/02/04/ceph升级到kraken版本/" title="上一篇: ceph升级到kraken版本">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/02/03/Flashcache-vs-Cache-tier/" title="下一篇: Flashcache vs Cache tier">
+            <a href="/2017/03/01/异步IO/" title="下一篇: 异步IO">
                 <i class="fa fa-angle-right"></i>
             </a>
         
