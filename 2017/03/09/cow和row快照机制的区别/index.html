@@ -15,18 +15,19 @@
 
 
 
-<meta name="description" content="以前整理的小知识点，关于用户态和内核态的解释。">
+<meta name="description" content="很清晰的讲解快照两种模式cow和row的区别。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="用户态和内核态">
-<meta property="og:url" content="http://xiaqunfeng.github.io/2017/02/04/用户态和内核态/index.html">
+<meta property="og:title" content="cow和row快照机制的区别">
+<meta property="og:url" content="http://xiaqunfeng.github.io/2017/03/09/cow和row快照机制的区别/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="以前整理的小知识点，关于用户态和内核态的解释。">
-<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
-<meta property="og:updated_time" content="2017-02-04T12:09:58.000Z">
+<meta property="og:description" content="很清晰的讲解快照两种模式cow和row的区别。">
+<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/cow.jpg">
+<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/row.jpg">
+<meta property="og:updated_time" content="2017-03-09T03:51:26.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="用户态和内核态">
-<meta name="twitter:description" content="以前整理的小知识点，关于用户态和内核态的解释。">
-<meta name="twitter:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
+<meta name="twitter:title" content="cow和row快照机制的区别">
+<meta name="twitter:description" content="很清晰的讲解快照两种模式cow和row的区别。">
+<meta name="twitter:image" content="http://ojet8bprn.bkt.clouddn.com/cow.jpg">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +59,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>用户态和内核态 | 夏天的风的博客</title>
+<title>cow和row快照机制的区别 | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -228,11 +229,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-用户态和内核态" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-cow和row快照机制的区别" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/02/04/用户态和内核态/" class="article-date">
-      <time datetime="2017-02-04T12:09:58.000Z" itemprop="datePublished">2017-02-04</time>
+      <a href="/2017/03/09/cow和row快照机制的区别/" class="article-date">
+      <time datetime="2017-03-09T03:32:24.000Z" itemprop="datePublished">2017-03-09</time>
 </a>
 
 
@@ -247,7 +248,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      用户态和内核态
+      cow和row快照机制的区别
     </h1>
   
 
@@ -258,7 +259,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/storage/">storage</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -268,22 +269,39 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>以前整理的小知识点，关于用户态和内核态的解释。<br><a id="more"></a></p>
-<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>内核态与用户态是操作系统的两种运行级别，intel cpu提供Ring0-Ring3三种级别的运行模式。Ring0级别最高，Ring3最低。</p>
-<p>所以当CPU处于内核态，可以随意进入用户态。当CPU处于用户态，只能通过中断的方式进入内核态。一般程序一开始都是运行于用户态，当程序需要使用系统资源时，就必须通过调用软中断进入内核态。</p>
-<h2 id="cpu的四种状态"><a href="#cpu的四种状态" class="headerlink" title="cpu的四种状态"></a>cpu的四种状态</h2><p>在一台运行 Linux 的计算机中，CPU 在任何时候只会有如下四种状态：</p>
-<ol>
-<li>在处理一个硬中断。</li>
-<li>在处理一个软中断，如 softirq、tasklet 和 bh。</li>
-<li>运行于内核态，但有进程上下文，即与一个进程相关。</li>
-<li>运行一个用户态进程。</li>
-</ol>
-<p>其中，【1】、【2】和【3】是运行于内核空间的，而【4】是在用户空间。其中除了【4】，其他状态只可以被在其之上的状态抢占。比如，软中断只可以被硬中断抢占。</p>
-<h2 id="linux下详解"><a href="#linux下详解" class="headerlink" title="linux下详解"></a>linux下详解</h2><p>Linux使用了Ring3级别运行用户态，Ring0作为内核态，没有使用Ring1和Ring2。Ring3状态不能访问Ring0的地址空间，包括代码和数据。</p>
-<p>Linux进程的4GB地址空间，3G-4G部分大家是共享的，是内核态的地址空间，这里存放在整个内核的代码和所有的内核模块，以及内核所维护的数据。</p>
-<p>用户运行一个程序，该程序所创建的进程开始是运行在用户态的，如果要执行文件操作，网络数据发送等操作，必须通过write，send等系统调用，这些系统调用会调用内核中的代码来完成操作，这时，必须切换到Ring0，然后进入3GB-4GB中的内核地址空间去执行这些代码完成操作，完成后，切换回Ring3，回到用户态。</p>
-<p>这样，用户态的程序就不能随意操作内核地址空间，具有一定的安全保护作用。</p>
-<h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
+        <p>很清晰的讲解快照两种模式cow和row的区别。<br><a id="more"></a></p>
+<p>所谓快照，是指某数据集在某一时刻一个完全可用的拷贝。也叫即时拷贝。注意是一个完全可用的。如果是在window环境下，则要结合VSS 机制，把应用程序的buffer,文件系统的buffer,操作系统的buffer全部刷向磁盘后，再做快照。﻿</p>
+<p>当前快照有两种实现，分别是COW（Copy on first write） 和ROW(Redirect on first write).﻿﻿﻿</p>
+<h2 id="COW"><a href="#COW" class="headerlink" title="COW"></a>COW</h2><p>假如有一个卷8个物理块，分别为1~8， 在某一个时刻做了快照，这时候生成了一个快照卷，快照卷也有8个块，和原始卷一样指向相同的物理块。这时候有一个新的io，修改原始卷的第8个物理块，对COW 而言，会依次做如下几步﻿</p>
+<ul>
+<li>1、分配一个新的物理块。我们称为第9个物理块﻿</li>
+<li>2、读取第8个物理块﻿</li>
+<li>3、新读取的第8个物理块数据写入到第9个物理块。﻿</li>
+<li>4、更新快照卷map,指向第9个物理块﻿</li>
+<li>5、更新第8个物理块﻿</li>
+</ul>
+<p>﻿<img src="http://ojet8bprn.bkt.clouddn.com/cow.jpg" alt="COW"></p>
+<p>从上面可以看出，本来写一个物理块，变成了1读3写。﻿</p>
+<p>COW 优点：﻿</p>
+<p>1、原始卷物理块连续。没有碎片。﻿</p>
+<p>COW 缺点：﻿</p>
+<p>1、写放大，本来一个写，变成1读3写。﻿﻿﻿</p>
+<h2 id="ROW"><a href="#ROW" class="headerlink" title="ROW"></a>ROW</h2><p>对ROW 而言，会依次做如下几步﻿</p>
+<ul>
+<li>1、分配一个新的物理块。我们称为第9个物理块﻿</li>
+<li>2、数据写入到第9个物理块。﻿</li>
+<li>3、更新原始卷map,指向第9个物理块﻿﻿</li>
+</ul>
+<p>﻿<img src="http://ojet8bprn.bkt.clouddn.com/row.jpg" alt="ROW"></p>
+<p>从上面可以看出，本来写一个物理块，变成了2写。﻿</p>
+<p>ROW 优点：﻿</p>
+<p>1、性能比COW 好。﻿</p>
+<p>ROW 缺点：﻿</p>
+<p>1、写放大，本来一个写，变成2写。﻿</p>
+<p>2、原始卷物理块不连续。没、有碎片。</p>
+<blockquote>
+<p>本文为转载，原始链接未找到</p>
+</blockquote>
 
       
     </div>
@@ -292,13 +310,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/02/04/用户态和内核态/">用户态和内核态</a></p>
+        <p><span>本文标题:</span><a href="/2017/03/09/cow和row快照机制的区别/">cow和row快照机制的区别</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-02-04, 20:09:58</p>
-        <p><span>最后更新:</span>2017-02-04, 20:09:58</p>
+        <p><span>发布时间:</span>2017-03-09, 11:32:24</p>
+        <p><span>最后更新:</span>2017-03-09, 11:51:26</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/02/04/用户态和内核态/" title="用户态和内核态">http://xiaqunfeng.github.io/2017/02/04/用户态和内核态/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/02/04/用户态和内核态/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/09/cow和row快照机制的区别/" title="cow和row快照机制的区别">http://xiaqunfeng.github.io/2017/03/09/cow和row快照机制的区别/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/03/09/cow和row快照机制的区别/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -310,16 +328,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/02/07/在Kraken-release版本上测试Ceph-BlueStore/">
-                    在Kraken release版本上测试Ceph BlueStore
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/02/04/ceph升级到kraken版本/">
-                    ceph升级到kraken版本
+                <a href="/2017/03/09/Machine-Learning-Yearning-5、6/">
+                    Machine Learning Yearning(5、6、7)
                 </a>
             </div>
         
@@ -331,7 +343,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#定义"><span class="toc-number">1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cpu的四种状态"><span class="toc-number">2.</span> <span class="toc-text">cpu的四种状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#linux下详解"><span class="toc-number">3.</span> <span class="toc-text">linux下详解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#打赏通道"><span class="toc-number">4.</span> <span class="toc-text">打赏通道</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#COW"><span class="toc-number">1.</span> <span class="toc-text">COW</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ROW"><span class="toc-number">2.</span> <span class="toc-text">ROW</span></a></li></ol>
         
     </div>
     <style>
@@ -367,7 +379,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"用户态和内核态　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"cow和row快照机制的区别　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -386,8 +398,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.github.io/2017/02/04/用户态和内核态/';
-            this.page.identifier = '2017/02/04/用户态和内核态/';
+            this.page.url = 'http://xiaqunfeng.github.io/2017/03/09/cow和row快照机制的区别/';
+            this.page.identifier = '2017/03/09/cow和row快照机制的区别/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -409,15 +421,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/02/07/在Kraken-release版本上测试Ceph-BlueStore/" title="上一篇: 在Kraken release版本上测试Ceph BlueStore">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/02/04/ceph升级到kraken版本/" title="下一篇: ceph升级到kraken版本">
+            <a href="/2017/03/09/Machine-Learning-Yearning-5、6/" title="下一篇: Machine Learning Yearning(5、6、7)">
                 <i class="fa fa-angle-right"></i>
             </a>
         
