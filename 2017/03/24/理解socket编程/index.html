@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="夏天的风" />
+
+
+
+<meta name="description" content="理解socket编程的思想，介绍各个函数及其作用，文末有一个server和client的代码，可直接运行。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解socket编程">
+<meta property="og:url" content="http://xiaqunfeng.github.io/2017/03/24/理解socket编程/index.html">
+<meta property="og:site_name" content="夏天的风的博客">
+<meta property="og:description" content="理解socket编程的思想，介绍各个函数及其作用，文末有一个server和client的代码，可直接运行。">
+<meta property="og:updated_time" content="2017-03-24T02:34:51.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解socket编程">
+<meta name="twitter:description" content="理解socket编程的思想，介绍各个函数及其作用，文末有一个server和client的代码，可直接运行。">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/qiniu.ico">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>理解socket编程 | 夏天的风的博客</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: false
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/stark.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">夏天的风</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">好记性不如烂笔头😝</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" href="https://github.com/xiaqunfeng" title="GitHub"></a>
+                            
+                                <a class="fa CSDN" href="http://blog.csdn.net/xiaqunfeng123" title="CSDN"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ceph/">ceph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/">machine learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rocksdb/">rocksdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/storage/">storage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">夏天的风</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/stark.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">夏天的风</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">好记性不如烂笔头😝</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/xiaqunfeng" title="GitHub"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://blog.csdn.net/xiaqunfeng123" title="CSDN"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-理解socket编程" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/03/24/理解socket编程/" class="article-date">
+      <time datetime="2017-03-24T02:27:49.000Z" itemprop="datePublished">2017-03-24</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      理解socket编程
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/network/">network</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>理解socket编程的思想，介绍各个函数及其作用，文末有一个server和client的代码，可直接运行。<br><a id="more"></a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>本地进程通信</strong></p>
+<p>本地的进程间通信（IPC）有很多种方式，但可以总结为下面4类：</p>
+<ul>
+<li>消息传递（管道、FIFO、消息队列）</li>
+<li>同步（互斥量、条件变量、读写锁、文件和写记录锁、信号量）</li>
+<li>共享内存（匿名的和具名的）</li>
+<li>远程过程调用（Solaris门和Sun RPC）</li>
+</ul>
+<p><strong>网络进程通信</strong></p>
+<p>但是网络中进程之间如何通信？</p>
+<p>首要解决的问题是如何唯一标识一个进程，否则通信无从谈起！在本地可以通过进程PID来唯一标识一个进程，但是在网络中这是行不通的。</p>
+<p>TCP/IP协议族已经帮我们解决了这个问题：</p>
+<ul>
+<li>网络层的“<strong>ip地址</strong>”可以唯一标识网络中的主机</li>
+<li>传输层的“<strong>协议+端口</strong>”可以唯一标识主机中的应用程序（进程）。</li>
+</ul>
+<p>这样利用三元组<strong>（ip地址，协议，端口）</strong>就可以标识网络的进程了，网络中的进程通信就可以利用这个标志与其它进程进行交互。</p>
+<p>socket起源于Unix，而Unix/Linux基本哲学之一就是“一切皆文件”，都可以用“打开open –&gt; 读写write/read –&gt; 关闭close”模式来操作。Socket就是该模式的一个实现，socket即是一种特殊的文件，一些socket函数就是对其进行的操作（读/写IO、打开、关闭）。</p>
+<h2 id="socket基本操作"><a href="#socket基本操作" class="headerlink" title="socket基本操作"></a>socket基本操作</h2><h3 id="1、socket-函数"><a href="#1、socket-函数" class="headerlink" title="1、socket()函数"></a>1、socket()函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">int socket(int domain, int type, int protocol);</div></pre></td></tr></table></figure>
+<p>socket函数对应于普通文件的<strong>打开</strong>操作。普通文件的打开操作返回一个文件描述字，而<strong>socket()</strong>用于创建一个<strong>socket描述符</strong>（socket descriptor），它唯一标识一个socket。这个socket描述字跟文件描述字一样，后续的操作都有用到它，把它作为参数，通过它来进行一些读写操作。</p>
+<p>socket函数的三个参数分别为：</p>
+<ul>
+<li>domain：即协议域，又称为协议族（family）。常用的协议族有，<strong>AF_INET</strong>、AF_INET6、AF_LOCAL（或称AF_UNIX，Unix域socket）、AF_ROUTE等等。协议族决定了socket的地址类型，在通信中必须采用对应的地址，如AF_INET决定了要用ipv4地址（32位的）与端口号（16位的）的组合、AF_UNIX决定了要用一个绝对路径名作为地址。</li>
+<li>type：指定socket类型。常用的socket类型有，<strong>SOCK_STREAM</strong>、SOCK_DGRAM、SOCK_RAW、SOCK_PACKET、SOCK_SEQPACKET等等。</li>
+<li>protocol：故名思意，就是指定协议。常用的协议有，<strong>IPPROTO_TCP</strong>、IPPTOTO_UDP、IPPROTO_SCTP、IPPROTO_TIPC等，它们分别对应TCP传输协议、UDP传输协议、STCP传输协议、TIPC传输协议</li>
+</ul>
+<p>当我们调用<strong>socket()</strong>创建一个socket时，返回的socket描述字它存在于协议族（address family，AF_XXX）空间中，但没有一个具体的地址。如果想要给它赋值一个地址，就必须调用bind()函数，否则就当调用connect()、listen()时系统会自动随机分配一个端口。</p>
+<h3 id="2、bind-函数"><a href="#2、bind-函数" class="headerlink" title="2、bind()函数"></a>2、bind()函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);</div></pre></td></tr></table></figure>
+<p>三个参数分别为：</p>
+<ul>
+<li>sockfd：即socket描述字，它是通过socket()函数创建了，唯一标识一个socket。bind()函数就是将给这个描述字绑定一个名字。</li>
+<li>addr：一个const struct sockaddr *指针，指向要绑定给sockfd的协议地址。这个地址结构根据地址创建socket时的地址协议族的不同而不同，如ipv4对应的是：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"># ipv4</div><div class="line">struct sockaddr_in &#123;</div><div class="line">    sa_family_t    sin_family; /* address family: AF_INET */</div><div class="line">    in_port_t      sin_port;   /* port in network byte order */</div><div class="line">    struct in_addr sin_addr;   /* internet address */</div><div class="line">&#125;;</div><div class="line"></div><div class="line">struct in_addr &#123;</div><div class="line">    uint32_t       s_addr;     /* address in network byte order */</div><div class="line">&#125;;</div><div class="line"># ipv6对应的是： </div><div class="line">struct sockaddr_in6 &#123; </div><div class="line">    sa_family_t     sin6_family;   /* AF_INET6 */ </div><div class="line">    in_port_t       sin6_port;     /* port number */ </div><div class="line">    uint32_t        sin6_flowinfo; /* IPv6 flow information */ </div><div class="line">    struct in6_addr sin6_addr;     /* IPv6 address */ </div><div class="line">    uint32_t        sin6_scope_id; /* Scope ID (new in 2.4) */ </div><div class="line">&#125;;</div><div class="line"></div><div class="line">struct in6_addr &#123; </div><div class="line">    unsigned char   s6_addr[16];   /* IPv6 address */ </div><div class="line">&#125;;</div><div class="line"></div><div class="line"># Unix域对应的是： </div><div class="line">#define UNIX_PATH_MAX    108</div><div class="line">struct sockaddr_un &#123; </div><div class="line">    sa_family_t sun_family;               /* AF_UNIX */ </div><div class="line">    char        sun_path[UNIX_PATH_MAX];  /* pathname */ </div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<ul>
+<li>addrlen：对应的是地址的长度。</li>
+</ul>
+<blockquote>
+<p>通常服务器在启动的时候都会绑定一个众所周知的地址（如ip地址+端口号），用于提供服务，客户就可以通过它来接连服务器；而客户端就不用指定，有系统自动分配一个端口号和自身的ip地址组合。这就是为什么通常服务器端在listen之前会调用bind()，而客户端就不会调用，而是在connect()时由系统随机生成一个。</p>
+</blockquote>
+<h3 id="3、listen-函数"><a href="#3、listen-函数" class="headerlink" title="3、listen()函数"></a>3、listen()函数</h3><p>如果作为一个服务器，在调用socket()、bind()之后就会调用listen()来监听这个socket，如果客户端这时调用connect()发出连接请求，服务器端就会接收到这个请求。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">int listen(int sockfd, int backlog);</div></pre></td></tr></table></figure>
+<p>两个参数</p>
+<ul>
+<li>sockfd：要监听的socket描述字</li>
+<li>backlog：相应socket可以排队的最大连接个数</li>
+</ul>
+<p>socket()函数创建的socket默认是一个主动类型的，listen函数将socket变为被动类型的，等待客户的连接请求。</p>
+<h3 id="4、connect-函数"><a href="#4、connect-函数" class="headerlink" title="4、connect()函数"></a>4、connect()函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);</div></pre></td></tr></table></figure>
+<ul>
+<li>sockfd：要监听的socket描述字</li>
+<li>addr：服务器的socket地址</li>
+<li>addrlen：socket地址的长度</li>
+</ul>
+<p>客户端通过调用connect函数来建立与TCP服务器的连接。</p>
+<h3 id="5、accept-函数"><a href="#5、accept-函数" class="headerlink" title="5、accept()函数"></a>5、accept()函数</h3><p>TCP服务器端依次调用socket()、bind()、listen()之后，就会监听指定的socket地址了。</p>
+<p>TCP客户端依次调用socket()、connect()之后就想TCP服务器发送了一个连接请求。</p>
+<p>TCP服务器监听到这个请求之后，就会调用accept()函数取接收请求，这样连接就建立好了。之后就可以开始网络I/O操作了，即类同于普通文件的读写I/O操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);</div></pre></td></tr></table></figure>
+<ul>
+<li>sockfd：服务器的socket描述字</li>
+<li>addr：指向struct sockaddr *的指针，用于返回客户端的协议地址</li>
+<li>addrlen：socket地址的长度</li>
+</ul>
+<blockquote>
+<p>服务器开始调用socket()函数生成的，称为监听socket描述字；而accept函数返回的是已连接的socket描述字。<br>一个服务器通常通常仅仅只创建一个监听socket描述字，它在该服务器的生命周期内一直存在。内核为每个由服务器进程接受的客户连接创建了一个已连接socket描述字，当服务器完成了对某个客户的服务，相应的已连接socket描述字就被关闭。</p>
+</blockquote>
+<h3 id="6、网络I-O"><a href="#6、网络I-O" class="headerlink" title="6、网络I/O"></a>6、网络I/O</h3><p>服务端：socket、bind、listen、accept</p>
+<p>客户端：socket、connect</p>
+<p>至此服务器与客户已经建立好连接，可以调用网络I/O进行读写操作，即实现了网咯中不同进程之间的通信！网络I/O操作有下面几组：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">read()/write()</div><div class="line">recv()/send()</div><div class="line">readv()/writev()</div><div class="line">recvmsg()/sendmsg()</div><div class="line">recvfrom()/sendto()</div></pre></td></tr></table></figure>
+<p>recvmsg()/sendmsg()这两个函数是最通用的I/O函数。各函数需要对应的头文件如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">#include &lt;unistd.h&gt;</div><div class="line"></div><div class="line">ssize_t read(int fd, void *buf, size_t count);</div><div class="line">ssize_t write(int fd, const void *buf, size_t count);</div><div class="line"></div><div class="line">#include &lt;sys/types.h&gt;</div><div class="line">#include &lt;sys/socket.h&gt;</div><div class="line"></div><div class="line">ssize_t send(int sockfd, const void *buf, size_t len, int flags);</div><div class="line">ssize_t recv(int sockfd, void *buf, size_t len, int flags);</div><div class="line"></div><div class="line">ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,</div><div class="line">                      const struct sockaddr *dest_addr, socklen_t addrlen);</div><div class="line">ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,</div><div class="line">                        struct sockaddr *src_addr, socklen_t *addrlen);</div><div class="line"></div><div class="line">ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags);</div><div class="line">ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags);</div></pre></td></tr></table></figure>
+<h3 id="7、close-函数"><a href="#7、close-函数" class="headerlink" title="7、close()函数"></a>7、close()函数</h3><p>服务器与客户端建立连接之后，会进行一些读写操作，完成了读写操作就要关闭相应的socket描述字，好比操作完打开的文件要调用fclose关闭打开的文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">int close(int fd);</div></pre></td></tr></table></figure>
+<blockquote>
+<p>close操作只是使相应socket描述字的引用计数-1，只有当引用计数为0的时候，才会触发TCP客户端向服务器发送终止连接请求。</p>
+</blockquote>
+<p>以上参考了这篇文章：<a href="http://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html" target="_blank" rel="external">Linux Socket编程（不限Linux）</a>，写的很不错。</p>
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>服务端：socket() -&gt; bind() -&gt; listen() -&gt; accept() -&gt; I/O() -&gt; close()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div></pre></td><td class="code"><pre><div class="line">// server.c</div><div class="line">#include &lt;netinet/in.h&gt;    	// sockaddr_in</div><div class="line">#include &lt;sys/types.h&gt;    	// socket</div><div class="line">#include &lt;sys/socket.h&gt;    	// socket</div><div class="line">#include &lt;stdio.h&gt;        	// printf</div><div class="line">#include &lt;stdlib.h&gt;        	// exit</div><div class="line">#include &lt;string.h&gt;        	// bzero</div><div class="line"></div><div class="line">#define SERVER_PORT    	6666 </div><div class="line">#define BUFFER_SIZE 	1024</div><div class="line"></div><div class="line">int main(int argc, char **argv)</div><div class="line">&#123;</div><div class="line">    // server的socket地址结构server_addr,三元组(地址,协议,端口)</div><div class="line">    struct sockaddr_in server_addr;</div><div class="line">    bzero(&amp;server_addr,sizeof(server_addr)); //把一段内存区的内容全部设置为0</div><div class="line">    server_addr.sin_family = AF_INET;</div><div class="line">    server_addr.sin_addr.s_addr = htonl(INADDR_ANY);</div><div class="line">    server_addr.sin_port = htons(SERVER_PORT);</div><div class="line"></div><div class="line">    // socket描述符</div><div class="line">    int server_socket = socket(AF_INET,SOCK_STREAM,0);</div><div class="line">    if( server_socket &lt; 0)</div><div class="line">    &#123;</div><div class="line">        printf(&quot;Create Socket Failed!&quot;);</div><div class="line">        exit(1);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // 给socket 描述符绑定一个地址，地址是我们上面定义好的</div><div class="line">    if( bind(server_socket,(struct sockaddr*)&amp;server_addr,sizeof(server_addr)))</div><div class="line">    &#123;</div><div class="line">        printf(&quot;Server Bind Port : %d Failed!&quot;, SERVER_PORT); </div><div class="line">        exit(1);</div><div class="line">    &#125;   </div><div class="line"> </div><div class="line">    // 监听这个socket, 第二个参数是排队的最大连接数</div><div class="line">    if ( listen(server_socket, 10) )</div><div class="line">    &#123;   </div><div class="line">        printf(&quot;Server Listen Failed!&quot;); </div><div class="line">        exit(1);</div><div class="line">    &#125;   </div><div class="line"></div><div class="line">    while (1) </div><div class="line">    &#123;   </div><div class="line">        // 定义客户端的socket地址结构client_addr</div><div class="line">        struct sockaddr_in client_addr;</div><div class="line">        socklen_t len = sizeof(client_addr);</div><div class="line"></div><div class="line">        // 如果没有连接请求,就等待到有连接请求--这是accept函数的特性</div><div class="line">        // accept函数返回一个新的socket,这个socket(new_server_socket)用于同连接到的客户的通信，代表了服务器和客户端之间的一个通信通道</div><div class="line">        // accept函数把连接到的客户端信息填写到客户端的socket地址结构client_addr中</div><div class="line">        int new_server_socket = accept(server_socket,(struct sockaddr*)&amp;client_addr,&amp;len);</div><div class="line">        if ( new_server_socket &lt; 0)</div><div class="line">        &#123;</div><div class="line">            printf(&quot;Server Accept Failed!\n&quot;);</div><div class="line">            continue;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        char buffer[BUFFER_SIZE];</div><div class="line">        bzero(buffer, BUFFER_SIZE);</div><div class="line">        // 接收从客户端来的请求</div><div class="line">        len = recv(new_server_socket,buffer,BUFFER_SIZE,0);</div><div class="line">        if (len &lt; 0)</div><div class="line">        &#123;</div><div class="line">            printf(&quot;Server Recieve Data Failed!\n&quot;);</div><div class="line">            break;</div><div class="line">        &#125;</div><div class="line">        buffer[len] = &apos;\0&apos;;</div><div class="line">        printf(&quot;recv msg from client: %s\n&quot;, buffer);</div><div class="line">        close(new_server_socket);</div><div class="line">    &#125;</div><div class="line">    close(server_socket);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>客户端：socket() -&gt; connect() -&gt; I/O() -&gt; close()</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line">// client.c</div><div class="line">#include &lt;netinet/in.h&gt;    	// sockaddr_in</div><div class="line">#include &lt;sys/types.h&gt;    	// socket</div><div class="line">#include &lt;sys/socket.h&gt;    	// socket</div><div class="line">#include &lt;stdio.h&gt;        	// printf</div><div class="line">#include &lt;stdlib.h&gt;        	// exit</div><div class="line">#include &lt;string.h&gt;        	// bzero</div><div class="line"> </div><div class="line">#define SERVER_PORT 6666 </div><div class="line">#define BUFFER_SIZE 1024</div><div class="line"> </div><div class="line">int main(int argc, char **argv)</div><div class="line">&#123;</div><div class="line">    if (argc != 2)</div><div class="line">    &#123;   </div><div class="line">        printf(&quot;Usage: ./%s ServerIPAddress\n&quot;,argv[0]);</div><div class="line">        exit(1);</div><div class="line">    &#125;   </div><div class="line"> </div><div class="line">    //创建socket描述符</div><div class="line">    int client_socket = socket(AF_INET,SOCK_STREAM,0);</div><div class="line">    if( client_socket &lt; 0)</div><div class="line">    &#123;   </div><div class="line">        printf(&quot;Create Socket Failed!\n&quot;);</div><div class="line">        exit(1);</div><div class="line">    &#125;   </div><div class="line"> </div><div class="line">    //设置server的地址，三元组</div><div class="line">    struct sockaddr_in server_addr;</div><div class="line">    bzero(&amp;server_addr,sizeof(server_addr));</div><div class="line">    server_addr.sin_family = AF_INET;</div><div class="line">    server_addr.sin_port = htons(SERVER_PORT);</div><div class="line">    if(inet_aton(argv[1],&amp;server_addr.sin_addr) == 0) //服务器的IP地址来自程序的参数</div><div class="line">    &#123;   </div><div class="line">        printf(&quot;Server IP Address Error!\n&quot;);</div><div class="line">        exit(1);</div><div class="line">    &#125;   </div><div class="line"></div><div class="line">    //向服务器发起连接,连接成功后client_socket代表了客户机和服务器的一个socket连接</div><div class="line">    if(connect(client_socket,(struct sockaddr*)&amp;server_addr, sizeof(server_addr)) &lt; 0)</div><div class="line">    &#123;   </div><div class="line">        printf(&quot;Can Not Connect To %s!\n&quot;,argv[1]);</div><div class="line">        exit(1);</div><div class="line">    &#125;   </div><div class="line">    printf(&quot;send msg to server!\n&quot;);</div><div class="line">    char sendline[BUFFER_SIZE];</div><div class="line">    fgets(sendline, BUFFER_SIZE, stdin);</div><div class="line"></div><div class="line">	// 向服务器发送数据</div><div class="line">    if (send(client_socket, sendline, strlen(sendline), 0) &lt; 0)&#123;</div><div class="line">        printf(&quot;send msg error!\n&quot;);</div><div class="line">        exit(1);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    close(client_socket);</div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>编译运行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">gcc server.c -o s</div><div class="line">gcc client.c -o c</div><div class="line"></div><div class="line"># ./s</div><div class="line">recv msg from client: hello socket</div><div class="line"></div><div class="line"># ./c 127.0.0.1</div><div class="line">send msg to server!</div><div class="line">hello socket     		// 交互输入</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/03/24/理解socket编程/">理解socket编程</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
+        <p><span>发布时间:</span>2017-03-24, 10:27:49</p>
+        <p><span>最后更新:</span>2017-03-24, 10:34:51</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/24/理解socket编程/" title="理解socket编程">http://xiaqunfeng.github.io/2017/03/24/理解socket编程/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/03/24/理解socket编程/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/03/09/cow和row快照机制的区别/">
+                    cow和row快照机制的区别
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#socket基本操作"><span class="toc-number">2.</span> <span class="toc-text">socket基本操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、socket-函数"><span class="toc-number">2.1.</span> <span class="toc-text">1、socket()函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、bind-函数"><span class="toc-number">2.2.</span> <span class="toc-text">2、bind()函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、listen-函数"><span class="toc-number">2.3.</span> <span class="toc-text">3、listen()函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、connect-函数"><span class="toc-number">2.4.</span> <span class="toc-text">4、connect()函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、accept-函数"><span class="toc-number">2.5.</span> <span class="toc-text">5、accept()函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6、网络I-O"><span class="toc-number">2.6.</span> <span class="toc-text">6、网络I/O</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7、close-函数"><span class="toc-number">2.7.</span> <span class="toc-text">7、close()函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实例"><span class="toc-number">3.</span> <span class="toc-text">实例</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"理解socket编程　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section id="comments">
+    <style> aside.comment-bar { margin: auto 30px; }</style>
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function(){
+            this.page.url = 'http://xiaqunfeng.github.io/2017/03/24/理解socket编程/';
+            this.page.identifier = '2017/03/24/理解socket编程/';
+        };
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = '//null.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+</section>
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/03/09/cow和row快照机制的区别/" title="下一篇: cow和row快照机制的区别">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/理解socket编程/">理解socket编程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/cow和row快照机制的区别/">cow和row快照机制的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/Machine-Learning-Yearning-5、6/">Machine Learning Yearning(5、6、7)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/03/Machine-Learning-Yearning-3、4/">Machine Learning Yearning(3、4)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/02/Machine-Learning-Yearning-开篇、1、2/">Machine Learning Yearning(开篇、1、2)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/01/异步IO/">异步IO</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/23/Bluestore调研/">Bluestore调研</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/23/RocksDB相比LevelDB的新特性/">RocksDB相比LevelDB的新特性</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/20/Kernel modules (简体中文)/">Kernel modules (简体中文)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/Linux命令——pgrep和pkill/">Linux命令——pgrep和pkill</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/16/Linux命令——strace/">Linux命令——strace</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/10/获取每个osd的PG数/">获取每个osd的PG数</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/10/RBD-相关操作/">RBD 相关操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/07/在Kraken-release版本上测试Ceph-BlueStore/">在Kraken release版本上测试Ceph BlueStore</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/04/用户态和内核态/">用户态和内核态</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/04/ceph升级到kraken版本/">ceph升级到kraken版本</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/03/Dm-cache-vs-Bcache/">Dm-cache vs Bcache</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/03/Flashcache-vs-Cache-tier/">Flashcache vs Cache tier</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/25/Linux命令——parted/">Linux命令——parted</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/25/认识SSD/">认识SSD</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/24/Ceph-KRAKEN(V11.2.0)/">Ceph — V11.2.0 KRAKEN(译)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/24/Crushmap学习/">Crushmap学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/Ceph中严重数据不一致性BUG/">Ceph中严重数据不一致性BUG</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/块存储的世界/">块存储的世界</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/17/Linux命令——uptime/">Linux命令——uptime</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/dd磁盘命令小记/">dd磁盘命令小记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/解决calamari无法获取集群hosts信息的BUG/">解决calamari无法获取集群hosts信息的BUG</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/ubuntu下配置邮件发送/">ubuntu下配置邮件发送</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/ubuntu下系统打包/">ubuntu下系统打包</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux命令——history及其优化/">Linux命令——history及其优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux下利用screen进行屏幕协作/">Linux下利用screen进行屏幕协作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux命令——crontab/">Linux命令——crontab</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/06/hexo的搭建/">Mac上hexo博客的搭建</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2017 夏天的风
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
