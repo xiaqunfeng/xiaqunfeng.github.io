@@ -15,18 +15,18 @@
 
 
 
-<meta name="description" content="以前整理的小知识点，关于用户态和内核态的解释。">
+<meta name="description" content="本文介在已有ceph集群机器上部署VSM的过程，涵盖centos和ubuntu两种系统。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="用户态和内核态">
-<meta property="og:url" content="http://xiaqunfeng.github.io/2017/02/04/用户态和内核态/index.html">
+<meta property="og:title" content="VSM部署">
+<meta property="og:url" content="http://xiaqunfeng.github.io/2017/05/02/VSM部署/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="以前整理的小知识点，关于用户态和内核态的解释。">
-<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
-<meta property="og:updated_time" content="2017-02-04T12:09:58.000Z">
+<meta property="og:description" content="本文介在已有ceph集群机器上部署VSM的过程，涵盖centos和ubuntu两种系统。">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/vsm-architecture.png">
+<meta property="og:updated_time" content="2017-05-02T07:24:16.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="用户态和内核态">
-<meta name="twitter:description" content="以前整理的小知识点，关于用户态和内核态的解释。">
-<meta name="twitter:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
+<meta name="twitter:title" content="VSM部署">
+<meta name="twitter:description" content="本文介在已有ceph集群机器上部署VSM的过程，涵盖centos和ubuntu两种系统。">
+<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/vsm-architecture.png">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>用户态和内核态 | 夏天的风的博客</title>
+<title>VSM部署 | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -228,11 +228,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-用户态和内核态" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-VSM部署" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/02/04/用户态和内核态/" class="article-date">
-      <time datetime="2017-02-04T12:09:58.000Z" itemprop="datePublished">2017-02-04</time>
+      <a href="/2017/05/02/VSM部署/" class="article-date">
+      <time datetime="2017-05-02T06:16:59.000Z" itemprop="datePublished">2017-05-02</time>
 </a>
 
 
@@ -247,7 +247,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      用户态和内核态
+      VSM部署
     </h1>
   
 
@@ -258,7 +258,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -268,22 +268,59 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>以前整理的小知识点，关于用户态和内核态的解释。<br><a id="more"></a></p>
-<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>内核态与用户态是操作系统的两种运行级别，intel cpu提供Ring0-Ring3三种级别的运行模式。Ring0级别最高，Ring3最低。</p>
-<p>所以当CPU处于内核态，可以随意进入用户态。当CPU处于用户态，只能通过中断的方式进入内核态。一般程序一开始都是运行于用户态，当程序需要使用系统资源时，就必须通过调用软中断进入内核态。</p>
-<h2 id="cpu的四种状态"><a href="#cpu的四种状态" class="headerlink" title="cpu的四种状态"></a>cpu的四种状态</h2><p>在一台运行 Linux 的计算机中，CPU 在任何时候只会有如下四种状态：</p>
-<ol>
-<li>在处理一个硬中断。</li>
-<li>在处理一个软中断，如 softirq、tasklet 和 bh。</li>
-<li>运行于内核态，但有进程上下文，即与一个进程相关。</li>
-<li>运行一个用户态进程。</li>
-</ol>
-<p>其中，【1】、【2】和【3】是运行于内核空间的，而【4】是在用户空间。其中除了【4】，其他状态只可以被在其之上的状态抢占。比如，软中断只可以被硬中断抢占。</p>
-<h2 id="linux下详解"><a href="#linux下详解" class="headerlink" title="linux下详解"></a>linux下详解</h2><p>Linux使用了Ring3级别运行用户态，Ring0作为内核态，没有使用Ring1和Ring2。Ring3状态不能访问Ring0的地址空间，包括代码和数据。</p>
-<p>Linux进程的4GB地址空间，3G-4G部分大家是共享的，是内核态的地址空间，这里存放在整个内核的代码和所有的内核模块，以及内核所维护的数据。</p>
-<p>用户运行一个程序，该程序所创建的进程开始是运行在用户态的，如果要执行文件操作，网络数据发送等操作，必须通过write，send等系统调用，这些系统调用会调用内核中的代码来完成操作，这时，必须切换到Ring0，然后进入3GB-4GB中的内核地址空间去执行这些代码完成操作，完成后，切换回Ring3，回到用户态。</p>
-<p>这样，用户态的程序就不能随意操作内核地址空间，具有一定的安全保护作用。</p>
-<h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
+        <p>本文介在已有ceph集群机器上部署VSM的过程，涵盖centos和ubuntu两种系统。<br><a id="more"></a></p>
+<h2 id="VSM-Virtual-Storage-Manager"><a href="#VSM-Virtual-Storage-Manager" class="headerlink" title="VSM - Virtual Storage Manager"></a>VSM - Virtual Storage Manager</h2><p>最新发布的release版本为2.1，pre-release版本为2.2，已不再更新和维护（因为负责人<a href="mailto:yaguang.wang@intel.com" target="_blank" rel="external">yaguang.wang@intel.com</a> or <a href="mailto:ferber.dan@intel.com" target="_blank" rel="external">ferber.dan@intel.com</a>已经从intel离职了）。</p>
+<p>从2.1版本开始，VSM支持在已有ceph集群上部署，正是因为这个原因，才开始尝试部署VSM。</p>
+<p>VSM 2.1的代码组件分为四个：</p>
+<ul>
+<li>vsm-dashboard：VSM的管理与监控web界面</li>
+<li>python-vsmclient：调用restapi的client</li>
+<li>vsm：VSM的核心组件（包括api、scheduler、conductor、agent等）</li>
+<li>vsm-deploy：ceph部署工具</li>
+</ul>
+<p>代码基于Python语言，使用了wsgi、django等技术框架。</p>
+<p>Git主页：<br><a href="https://github.com/01org/virtual-storage-manager" target="_blank" rel="external">https://github.com/01org/virtual-storage-manager</a></p>
+<p>vsm-dependencies：<br><a href="https://github.com/01org/vsm-dependencies" target="_blank" rel="external">https://github.com/01org/vsm-dependencies</a></p>
+<p>架构图如下：<img src="http://oow6unnib.bkt.clouddn.com/vsm-architecture.png" alt="vsm-architecture"></p>
+<h2 id="centos上部署"><a href="#centos上部署" class="headerlink" title="centos上部署"></a>centos上部署</h2><p>OS：CentOS 7.2</p>
+<p>VSM：v2.1 released</p>
+<p>4台机器，一个作为controller，三台ceph集群</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">172.20.2.76     ceph0</div><div class="line">172.20.2.77     ceph1</div><div class="line">172.20.2.79     ceph2</div><div class="line">172.20.2.81     controller</div></pre></td></tr></table></figure>
+<p>1、从controller机器上设置到ceph集群机器和自己的免密登录</p>
+<p>2、关闭防火墙</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># systemctl disable firewalld</div><div class="line"># systemctl stop firewalld</div></pre></td></tr></table></figure>
+<p>3、关闭selinux</p>
+<p>临时</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">setenforce 0</div></pre></td></tr></table></figure>
+<p>永久</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># cat /etc/selinux/config | grep -v &quot;#&quot;</div><div class="line"></div><div class="line">SELINUX=disabled</div><div class="line">SELINUXTYPE=targeted</div></pre></td></tr></table></figure>
+<h3 id="下载VSM："><a href="#下载VSM：" class="headerlink" title="下载VSM："></a>下载VSM：</h3><p>在controller机器上执行如下步骤：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># wget https://github.com/01org/virtual-storage-manager/releases/download/v2.1.0/2.1.0-336_centos7.tar.gz</div><div class="line"># tar -zxvf 2.1.0-336_centos7.tar.gz</div><div class="line"># cd 2.1.0-336</div><div class="line"># ls</div><div class="line">CHANGELOG.md   INSTALL.pdf  manifest      RELEASE       vsm-dep-repo</div><div class="line">CHANGELOG.pdf  installrc    NOTICE        rpms.lst      vsm-dep.repo</div><div class="line">get_pass.sh    install.sh   prov_node.sh  uninstall.sh  vsmrepo</div><div class="line">INSTALL.md     LICENSE      README.md     VERSION       vsm.repo</div></pre></td></tr></table></figure>
+<h3 id="配置文件installrc"><a href="#配置文件installrc" class="headerlink" title="配置文件installrc"></a>配置文件installrc</h3><p>设置控制节点和代理节点的地址，设置完如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># cat installrc | egrep -v &quot;#|^$&quot;</div><div class="line">AGENT_ADDRESS_LIST=&quot;172.20.2.76 172.20.2.77 172.20.2.79&quot;</div><div class="line">CONTROLLER_ADDRESS=&quot;172.20.2.81&quot;</div></pre></td></tr></table></figure>
+<h3 id="配置manifest"><a href="#配置manifest" class="headerlink" title="配置manifest"></a>配置manifest</h3><p>在文件夹manifest中，分别创建以管理IP地址命名的文件夹</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># ls manifest/</div><div class="line">172.20.2.76  172.20.2.79  cluster.manifest.sample</div><div class="line">172.20.2.77  172.20.2.81  server.manifest.sample</div></pre></td></tr></table></figure>
+<p>将cluster.manifest.sample 文件复制到 172.20.2.81/cluster.manifest，编辑改动如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[management_addr]</div><div class="line">172.20.2.0/24</div><div class="line"></div><div class="line">[100.64.0.22ceph_public_addr]</div><div class="line">172.20.2.0/24</div><div class="line"></div><div class="line">[ceph_cluster_addr]</div><div class="line">172.20.2.0/24</div></pre></td></tr></table></figure>
+<p>将server.manifest.sample 文件复制到 76、77、79文件夹下，重命名为server.manifest，改动如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[vsm_controller_ip]</div><div class="line">172.20.2.81</div></pre></td></tr></table></figure>
+<p>注：这里添加磁盘部分不用处理，因为是在已有ceph的集群上安装的。</p>
+<p>manifest文件夹目录结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># tree</div><div class="line">.</div><div class="line">├── 172.20.2.76</div><div class="line">│   └── server.manifest</div><div class="line">├── 172.20.2.77</div><div class="line">│   └── server.manifest</div><div class="line">├── 172.20.2.79</div><div class="line">│   └── server.manifest</div><div class="line">├── 172.20.2.81</div><div class="line">│   └── cluster.manifest</div><div class="line">├── cluster.manifest.sample</div><div class="line">└── server.manifest.sample</div></pre></td></tr></table></figure>
+<h3 id="添加epel源"><a href="#添加epel源" class="headerlink" title="添加epel源"></a>添加epel源</h3><p>在ceph集群机器上添加epel源，一般在安装ceph集群的时候就应该已经添加了，如果没有添加的话这里加一下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm</div></pre></td></tr></table></figure>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./install.sh -u cephuser -v 2.1 --check-dependence-package</div></pre></td></tr></table></figure>
+<p>安装完成后，调用get_pass.sh提取管理密码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ./get_pass.sh</div><div class="line">24195bcbce558aa7bd2c</div></pre></td></tr></table></figure>
+<h3 id="登录"><a href="#登录" class="headerlink" title="登录"></a>登录</h3><p>登录VSM仪表盘，地址：<a href="http://172.20.2.81:dashboard/vsm" target="_blank" rel="external">http://172.20.2.81:dashboard/vsm</a></p>
+<p>用户名：admin</p>
+<p>密码：24195bcbce558aa7bd2c</p>
+<h2 id="ubuntu上部署"><a href="#ubuntu上部署" class="headerlink" title="ubuntu上部署"></a>ubuntu上部署</h2><p>OS：ubuntu 14.04</p>
+<p>安装方法和centos上基本类似，不一样的地方有：</p>
+<p>1、下载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget https://github.com/01org/virtual-storage-manager/releases/download/v2.1.0/2.1.0-336-ubuntu14.tar.gz</div></pre></td></tr></table></figure>
+<p>2、不需要添加epel源</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>关于在非ceph集群集群上安装并创建ceph集群后续有空补充。</p>
 
       
     </div>
@@ -292,13 +329,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/02/04/用户态和内核态/">用户态和内核态</a></p>
+        <p><span>本文标题:</span><a href="/2017/05/02/VSM部署/">VSM部署</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-02-04, 20:09:58</p>
-        <p><span>最后更新:</span>2017-02-04, 20:09:58</p>
+        <p><span>发布时间:</span>2017-05-02, 14:16:59</p>
+        <p><span>最后更新:</span>2017-05-02, 15:24:16</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/02/04/用户态和内核态/" title="用户态和内核态">http://xiaqunfeng.github.io/2017/02/04/用户态和内核态/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/02/04/用户态和内核态/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/05/02/VSM部署/" title="VSM部署">http://xiaqunfeng.github.io/2017/05/02/VSM部署/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/05/02/VSM部署/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -310,16 +347,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/02/07/在Kraken-release版本上测试Ceph-BlueStore/">
-                    在Kraken release版本上测试Ceph BlueStore
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/02/04/ceph升级到kraken版本/">
-                    ceph升级到kraken版本
+                <a href="/2017/03/24/常用git命令清单/">
+                    常用git命令清单
                 </a>
             </div>
         
@@ -331,7 +362,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#定义"><span class="toc-number">1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cpu的四种状态"><span class="toc-number">2.</span> <span class="toc-text">cpu的四种状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#linux下详解"><span class="toc-number">3.</span> <span class="toc-text">linux下详解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#打赏通道"><span class="toc-number">4.</span> <span class="toc-text">打赏通道</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#VSM-Virtual-Storage-Manager"><span class="toc-number">1.</span> <span class="toc-text">VSM - Virtual Storage Manager</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#centos上部署"><span class="toc-number">2.</span> <span class="toc-text">centos上部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#下载VSM："><span class="toc-number">2.1.</span> <span class="toc-text">下载VSM：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置文件installrc"><span class="toc-number">2.2.</span> <span class="toc-text">配置文件installrc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置manifest"><span class="toc-number">2.3.</span> <span class="toc-text">配置manifest</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加epel源"><span class="toc-number">2.4.</span> <span class="toc-text">添加epel源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装"><span class="toc-number">2.5.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#登录"><span class="toc-number">2.6.</span> <span class="toc-text">登录</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ubuntu上部署"><span class="toc-number">3.</span> <span class="toc-text">ubuntu上部署</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-number">4.</span> <span class="toc-text">其他</span></a></li></ol>
         
     </div>
     <style>
@@ -367,7 +398,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"用户态和内核态　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"VSM部署　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -386,8 +417,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.github.io/2017/02/04/用户态和内核态/';
-            this.page.identifier = '2017/02/04/用户态和内核态/';
+            this.page.url = 'http://xiaqunfeng.github.io/2017/05/02/VSM部署/';
+            this.page.identifier = '2017/05/02/VSM部署/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -409,15 +440,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/02/07/在Kraken-release版本上测试Ceph-BlueStore/" title="上一篇: 在Kraken release版本上测试Ceph BlueStore">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/02/04/ceph升级到kraken版本/" title="下一篇: ceph升级到kraken版本">
+            <a href="/2017/03/24/常用git命令清单/" title="下一篇: 常用git命令清单">
                 <i class="fa fa-angle-right"></i>
             </a>
         
