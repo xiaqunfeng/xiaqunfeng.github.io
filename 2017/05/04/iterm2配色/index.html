@@ -15,16 +15,16 @@
 
 
 
-<meta name="description" content="介绍在ubuntu下利用remastersys工具给系统打包成 iso 镜像的方法，在其他系统（centos、windows等）下方法类似，不在赘述。">
+<meta name="description" content="给iterm2进行配色，炫酷一点。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ubuntu下系统打包">
-<meta property="og:url" content="http://xiaqunfeng.github.io/2017/01/11/ubuntu下系统打包/index.html">
+<meta property="og:title" content="iterm2配色--zsh & oh-my-zsh">
+<meta property="og:url" content="http://xiaqunfeng.github.io/2017/05/04/iterm2配色/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="介绍在ubuntu下利用remastersys工具给系统打包成 iso 镜像的方法，在其他系统（centos、windows等）下方法类似，不在赘述。">
-<meta property="og:updated_time" content="2017-01-11T06:09:42.000Z">
+<meta property="og:description" content="给iterm2进行配色，炫酷一点。">
+<meta property="og:updated_time" content="2017-05-05T08:37:19.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ubuntu下系统打包">
-<meta name="twitter:description" content="介绍在ubuntu下利用remastersys工具给系统打包成 iso 镜像的方法，在其他系统（centos、windows等）下方法类似，不在赘述。">
+<meta name="twitter:title" content="iterm2配色--zsh & oh-my-zsh">
+<meta name="twitter:description" content="给iterm2进行配色，炫酷一点。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -56,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>ubuntu下系统打包 | 夏天的风的博客</title>
+<title>iterm2配色--zsh &amp; oh-my-zsh | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -226,11 +226,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-ubuntu下系统打包" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-iterm2配色" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/01/11/ubuntu下系统打包/" class="article-date">
-      <time datetime="2017-01-11T06:09:42.000Z" itemprop="datePublished">2017-01-11</time>
+      <a href="/2017/05/04/iterm2配色/" class="article-date">
+      <time datetime="2017-05-04T12:32:26.000Z" itemprop="datePublished">2017-05-04</time>
 </a>
 
 
@@ -245,7 +245,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      ubuntu下系统打包
+      iterm2配色--zsh &amp; oh-my-zsh
     </h1>
   
 
@@ -256,7 +256,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mac/">mac</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -266,30 +266,47 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>介绍在ubuntu下利用remastersys工具给系统打包成 iso 镜像的方法，在其他系统（centos、windows等）下方法类似，不在赘述。<br><a id="more"></a></p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>​    在初始环境下，经过多次反复安装和配置才组建完成的自己需要的环境，其中各种版本问题和依赖较多，安装过程繁杂，为了避免痛苦的安装过程轮回发生，需要给系统打个包，后续使用直接安装即可。</p>
-<p>使用工具：Remastersys</p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="1、依赖项的安装"><a href="#1、依赖项的安装" class="headerlink" title="1、依赖项的安装"></a>1、依赖项的安装</h3><p>依赖：<a href="ftp://ftp.gwdg.de/pub/linux/easyvdr/mirror/remastersys/ubuntu/remastersys/remastersys_3.0.4-2_all.deb" target="_blank" rel="external">remastersys_3.0.4-2_all.deb</a>，点击即可下载，也可以自己去去<a href="http://www.filewatcher.com/" target="_blank" rel="external">filewatcher</a>搜索下载。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install plymouth-x11 </div><div class="line">sudo dpkg -i remastersys_3.0.4-2_all.deb</div></pre></td></tr></table></figure>
-<h3 id="2、Remastersys安装"><a href="#2、Remastersys安装" class="headerlink" title="2、Remastersys安装"></a>2、Remastersys安装</h3><p>2.1、添加安装源</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo &quot;deb http://www.remastersys.com/ubuntu oneiric main&quot; &gt;&gt; /etc/apt/sources.list</div></pre></td></tr></table></figure>
-<p>2.2、更新安装</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo apt-get update</div><div class="line">sudo install remastersys</div><div class="line">sudo remastersys</div></pre></td></tr></table></figure>
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="语法格式"><a href="#语法格式" class="headerlink" title="语法格式"></a>语法格式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo remastersys  backup|clean|dist  [cdfs|iso]  [filename.iso]</div></pre></td></tr></table></figure>
-<p>两种打包方式：backup和dist</p>
-<p>backup 是对整个系统完全打包，包含个人文件</p>
-<p>dist 方式用做发行，不包含个人文件</p>
-<blockquote>
-<p>更多使用方法可以参考<a href="http://forum.ubuntu.org.cn/viewtopic.php?t=174719" target="_blank" rel="external">ubuntu论坛</a></p>
-</blockquote>
-<h3 id="系统打包"><a href="#系统打包" class="headerlink" title="系统打包"></a>系统打包</h3><p>3.1、产生一个只有档案系统的可发布的 livecd/dvd </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo remastersys dist cdfs</div></pre></td></tr></table></figure>
-<p>3.2、产生一个可发布其名叫 filename.iso的ISO文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo remastersys dist iso filename.iso</div></pre></td></tr></table></figure>
-<p>3.3、将产生的iso文件移动到安全的位置(如果不移动会被清除掉)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mv /home/remastersys/remastersys/filename.iso /root/</div></pre></td></tr></table></figure>
-<p>3.4、清除由 remastersys产生的临时文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo remastersys clean</div></pre></td></tr></table></figure>
+        <p>给iterm2进行配色，炫酷一点。<br><a id="more"></a></p>
+<h3 id="Solarized"><a href="#Solarized" class="headerlink" title="Solarized"></a>Solarized</h3><p>目前网络上最流行的配色解决方案：<a href="http://ethanschoonover.com/solarized" target="_blank" rel="external">Solarized</a></p>
+<p>Solarized Dark 官方网站: <a href="http://ethanschoonover.com/solarized" target="_blank" rel="external">http://ethanschoonover.com/solarized</a></p>
+<p>Solarized Dark github 地址: <a href="https://github.com/altercation/solarized" target="_blank" rel="external">https://github.com/altercation/solarized</a></p>
+<p>下载下来后会看到琳琅满目的配色解决方案，其中有一个目录 <code>iterm2-colors-solarized</code> 是为 iterm2 准备的解决方案。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># ls iterm2-colors-solarized/</div><div class="line">.md</div><div class="line">Solarized Dark.itermcolors</div><div class="line">Solarized Light.itermcolors</div></pre></td></tr></table></figure>
+<p>进入目录能看到 3个文件 (1个 md说明文件,2个配色文件) </p>
+<p>我们使用其中一个 Solarized Dark.itermcolors</p>
+<p>然后 preferences -&gt; colors -&gt; import 即可。</p>
+<h3 id="zsh"><a href="#zsh" class="headerlink" title="zsh"></a>zsh</h3><p>众所周知在Unix/Linux系统下是存在很多不同的shell，常见的就有bash, csh，ksh，zsh等等。在Linux和MAC OS系统中，默认使用的是bash。这里介绍功能更加强大的 <strong>zsh</strong>。</p>
+<p>1、通过homebrew安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install zsh</div></pre></td></tr></table></figure>
+<p>2、将zsh设置成系统默认shell，以代替bash</p>
+<p>用编辑器打开<code>/etc/shells</code>，在末尾添加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/bin/zsh</div></pre></td></tr></table></figure>
+<p> 在终端中执行以下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chsh -s /usr/local/bin/zsh</div></pre></td></tr></table></figure>
+<p>然后重新启动iTerm2，zsh就已经被配置成默认的shell了。</p>
+<h2 id="oh-my-zsh"><a href="#oh-my-zsh" class="headerlink" title="oh-my-zsh"></a>oh-my-zsh</h2><p>github：<a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank" rel="external">https://github.com/robbyrussell/oh-my-zsh</a></p>
+<p>1、安装</p>
+<p> <strong>on-my-zsh</strong>的安装支持自动和手动，为了省去麻烦，我建议优先使用自动，如果要使用手动安装，请查看安装说明。这里只说一下自动安装。 在终端里，如果你有<code>curl</code>，则在终端输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -L http://install.ohmyz.sh | sh</div></pre></td></tr></table></figure>
+<p>如果你使用<code>wget</code>,则在终端输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget --no-check-certificate http://install.ohmyz.sh -O - | sh</div></pre></td></tr></table></figure>
+<p>这样oh-my-zsh就安装完成了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">~/.oh-my-zsh  master ✔                                                              1d</div><div class="line">▶ ls</div><div class="line">CONTRIBUTING.md cache           log             templates</div><div class="line">LICENSE.txt     custom          oh-my-zsh.sh    themes</div><div class="line">README.md       lib             plugins         tools</div></pre></td></tr></table></figure>
+<p>2、配置</p>
+<p>zsh的配置在<code>~/.zshrc</code>下面这</p>
+<p>主题的配置</p>
+<p>在<code>~/.oh-my-zsh/themes</code>存在各式各样的主题文件，每个主题可以通过：<a href="https://github.com/robbyrussell/oh-my-zsh/wiki/Themes" target="_blank" rel="external">https://github.com/robbyrussell/oh-my-zsh/wiki/Themes</a> 进行查看。选好样式后，</p>
+<p>在<code>.zshrc</code>中的 <code>ZSH_THEME</code>设置成你所选用的主题，重启iTerm2，就可以看到相应的效果。我这里用的 <strong>avit</strong>。上面哪个oh-my-zsh 文件夹目录的列表就是用的这个主题。</p>
+<p>如果使用agnoster主题的话还需要装字体包，如下：</p>
+<p><a href="https://github.com/Lokaltog/vim-powerline/tree/develop/fontpatcher" target="_blank" rel="external">https://github.com/Lokaltog/vim-powerline/tree/develop/fontpatcher</a></p>
+<p><a href="https://github.com/powerline/fonts" target="_blank" rel="external">https://github.com/powerline/fonts</a></p>
+<h3 id="更多的配色方案"><a href="#更多的配色方案" class="headerlink" title="更多的配色方案"></a>更多的配色方案</h3><p><a href="https://github.com/mbadolato/iTerm2-Color-Schemes" target="_blank" rel="external">https://github.com/mbadolato/iTerm2-Color-Schemes</a></p>
+<p>可以根据自己的喜好来选择主题了。</p>
+<h2 id="高亮"><a href="#高亮" class="headerlink" title="高亮"></a>高亮</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/zsh-users/zsh-syntax-highlighting.git</div><div class="line">echo &quot;source $&#123;(q-)PWD&#125;/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh&quot; &gt;&gt; $&#123;ZDOTDIR:-$HOME&#125;/.zshrc</div><div class="line">source ./zsh-syntax-highlighting/zsh-syntax-highlighting.zsh</div></pre></td></tr></table></figure>
+<p>在 .zshrc 尾部添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">plugins=(zsh-syntax-highlighting)</div></pre></td></tr></table></figure>
+<p>然后</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source ~/.zshrc</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -298,13 +315,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/01/11/ubuntu下系统打包/">ubuntu下系统打包</a></p>
+        <p><span>本文标题:</span><a href="/2017/05/04/iterm2配色/">iterm2配色--zsh &amp; oh-my-zsh</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-01-11, 14:09:42</p>
-        <p><span>最后更新:</span>2017-01-11, 14:09:42</p>
+        <p><span>发布时间:</span>2017-05-04, 20:32:26</p>
+        <p><span>最后更新:</span>2017-05-05, 16:37:19</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/01/11/ubuntu下系统打包/" title="ubuntu下系统打包">http://xiaqunfeng.github.io/2017/01/11/ubuntu下系统打包/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/01/11/ubuntu下系统打包/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/05/04/iterm2配色/" title="iterm2配色--zsh &amp; oh-my-zsh">http://xiaqunfeng.github.io/2017/05/04/iterm2配色/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/05/04/iterm2配色/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -316,16 +333,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/01/11/ubuntu下配置邮件发送/">
-                    ubuntu下配置邮件发送
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/01/11/Linux命令——history及其优化/">
-                    Linux命令——history及其优化
+                <a href="/2017/05/03/nginx使用和配置/">
+                    nginx使用和配置
                 </a>
             </div>
         
@@ -337,7 +348,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装"><span class="toc-number">2.</span> <span class="toc-text">安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、依赖项的安装"><span class="toc-number">2.1.</span> <span class="toc-text">1、依赖项的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、Remastersys安装"><span class="toc-number">2.2.</span> <span class="toc-text">2、Remastersys安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用"><span class="toc-number">3.</span> <span class="toc-text">使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#语法格式"><span class="toc-number">3.1.</span> <span class="toc-text">语法格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#系统打包"><span class="toc-number">3.2.</span> <span class="toc-text">系统打包</span></a></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Solarized"><span class="toc-number">1.</span> <span class="toc-text">Solarized</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zsh"><span class="toc-number">2.</span> <span class="toc-text">zsh</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#oh-my-zsh"><span class="toc-number"></span> <span class="toc-text">oh-my-zsh</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#更多的配色方案"><span class="toc-number">1.</span> <span class="toc-text">更多的配色方案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#高亮"><span class="toc-number"></span> <span class="toc-text">高亮</span></a>
         
     </div>
     <style>
@@ -373,7 +384,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"ubuntu下系统打包　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"iterm2配色--zsh & oh-my-zsh　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -392,8 +403,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.github.io/2017/01/11/ubuntu下系统打包/';
-            this.page.identifier = '2017/01/11/ubuntu下系统打包/';
+            this.page.url = 'http://xiaqunfeng.github.io/2017/05/04/iterm2配色/';
+            this.page.identifier = '2017/05/04/iterm2配色/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -415,15 +426,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/01/11/ubuntu下配置邮件发送/" title="上一篇: ubuntu下配置邮件发送">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/01/11/Linux命令——history及其优化/" title="下一篇: Linux命令——history及其优化">
+            <a href="/2017/05/03/nginx使用和配置/" title="下一篇: nginx使用和配置">
                 <i class="fa fa-angle-right"></i>
             </a>
         

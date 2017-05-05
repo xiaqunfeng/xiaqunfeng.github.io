@@ -4,6 +4,213 @@
   
     
     <entry>
+      <title><![CDATA[iterm2配色--zsh & oh-my-zsh]]></title>
+      <url>http://xiaqunfeng.github.io/2017/05/04/iterm2%E9%85%8D%E8%89%B2/</url>
+      <content type="html"><![CDATA[<p>给iterm2进行配色，炫酷一点。<br><a id="more"></a></p>
+<h3 id="Solarized"><a href="#Solarized" class="headerlink" title="Solarized"></a>Solarized</h3><p>目前网络上最流行的配色解决方案：<a href="http://ethanschoonover.com/solarized" target="_blank" rel="external">Solarized</a></p>
+<p>Solarized Dark 官方网站: <a href="http://ethanschoonover.com/solarized" target="_blank" rel="external">http://ethanschoonover.com/solarized</a></p>
+<p>Solarized Dark github 地址: <a href="https://github.com/altercation/solarized" target="_blank" rel="external">https://github.com/altercation/solarized</a></p>
+<p>下载下来后会看到琳琅满目的配色解决方案，其中有一个目录 <code>iterm2-colors-solarized</code> 是为 iterm2 准备的解决方案。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># ls iterm2-colors-solarized/</div><div class="line">.md</div><div class="line">Solarized Dark.itermcolors</div><div class="line">Solarized Light.itermcolors</div></pre></td></tr></table></figure>
+<p>进入目录能看到 3个文件 (1个 md说明文件,2个配色文件) </p>
+<p>我们使用其中一个 Solarized Dark.itermcolors</p>
+<p>然后 preferences -&gt; colors -&gt; import 即可。</p>
+<h3 id="zsh"><a href="#zsh" class="headerlink" title="zsh"></a>zsh</h3><p>众所周知在Unix/Linux系统下是存在很多不同的shell，常见的就有bash, csh，ksh，zsh等等。在Linux和MAC OS系统中，默认使用的是bash。这里介绍功能更加强大的 <strong>zsh</strong>。</p>
+<p>1、通过homebrew安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install zsh</div></pre></td></tr></table></figure>
+<p>2、将zsh设置成系统默认shell，以代替bash</p>
+<p>用编辑器打开<code>/etc/shells</code>，在末尾添加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/bin/zsh</div></pre></td></tr></table></figure>
+<p> 在终端中执行以下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chsh -s /usr/local/bin/zsh</div></pre></td></tr></table></figure>
+<p>然后重新启动iTerm2，zsh就已经被配置成默认的shell了。</p>
+<h2 id="oh-my-zsh"><a href="#oh-my-zsh" class="headerlink" title="oh-my-zsh"></a>oh-my-zsh</h2><p>github：<a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank" rel="external">https://github.com/robbyrussell/oh-my-zsh</a></p>
+<p>1、安装</p>
+<p> <strong>on-my-zsh</strong>的安装支持自动和手动，为了省去麻烦，我建议优先使用自动，如果要使用手动安装，请查看安装说明。这里只说一下自动安装。 在终端里，如果你有<code>curl</code>，则在终端输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -L http://install.ohmyz.sh | sh</div></pre></td></tr></table></figure>
+<p>如果你使用<code>wget</code>,则在终端输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget --no-check-certificate http://install.ohmyz.sh -O - | sh</div></pre></td></tr></table></figure>
+<p>这样oh-my-zsh就安装完成了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">~/.oh-my-zsh  master ✔                                                              1d</div><div class="line">▶ ls</div><div class="line">CONTRIBUTING.md cache           log             templates</div><div class="line">LICENSE.txt     custom          oh-my-zsh.sh    themes</div><div class="line">README.md       lib             plugins         tools</div></pre></td></tr></table></figure>
+<p>2、配置</p>
+<p>zsh的配置在<code>~/.zshrc</code>下面这</p>
+<p>主题的配置</p>
+<p>在<code>~/.oh-my-zsh/themes</code>存在各式各样的主题文件，每个主题可以通过：<a href="https://github.com/robbyrussell/oh-my-zsh/wiki/Themes" target="_blank" rel="external">https://github.com/robbyrussell/oh-my-zsh/wiki/Themes</a> 进行查看。选好样式后，</p>
+<p>在<code>.zshrc</code>中的 <code>ZSH_THEME</code>设置成你所选用的主题，重启iTerm2，就可以看到相应的效果。我这里用的 <strong>avit</strong>。上面哪个oh-my-zsh 文件夹目录的列表就是用的这个主题。</p>
+<p>如果使用agnoster主题的话还需要装字体包，如下：</p>
+<p><a href="https://github.com/Lokaltog/vim-powerline/tree/develop/fontpatcher" target="_blank" rel="external">https://github.com/Lokaltog/vim-powerline/tree/develop/fontpatcher</a></p>
+<p><a href="https://github.com/powerline/fonts" target="_blank" rel="external">https://github.com/powerline/fonts</a></p>
+<h3 id="更多的配色方案"><a href="#更多的配色方案" class="headerlink" title="更多的配色方案"></a>更多的配色方案</h3><p><a href="https://github.com/mbadolato/iTerm2-Color-Schemes" target="_blank" rel="external">https://github.com/mbadolato/iTerm2-Color-Schemes</a></p>
+<p>可以根据自己的喜好来选择主题了。</p>
+<h2 id="高亮"><a href="#高亮" class="headerlink" title="高亮"></a>高亮</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/zsh-users/zsh-syntax-highlighting.git</div><div class="line">echo &quot;source $&#123;(q-)PWD&#125;/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh&quot; &gt;&gt; $&#123;ZDOTDIR:-$HOME&#125;/.zshrc</div><div class="line">source ./zsh-syntax-highlighting/zsh-syntax-highlighting.zsh</div></pre></td></tr></table></figure>
+<p>在 .zshrc 尾部添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">plugins=(zsh-syntax-highlighting)</div></pre></td></tr></table></figure>
+<p>然后</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source ~/.zshrc</div></pre></td></tr></table></figure>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[nginx使用和配置]]></title>
+      <url>http://xiaqunfeng.github.io/2017/05/03/nginx%E4%BD%BF%E7%94%A8%E5%92%8C%E9%85%8D%E7%BD%AE/</url>
+      <content type="html"><![CDATA[<p>简单介绍nginx，特别是反向代理和负载均衡部分，并用通过实战加深理解。<br><a id="more"></a></p>
+<h2 id="Nginx简介"><a href="#Nginx简介" class="headerlink" title="Nginx简介"></a>Nginx简介</h2><p>Nginx（发音同engine x）是一个网页服务器，它能反向代理HTTP, HTTPS, SMTP, POP3, IMAP的协议链接，以及一个负载均衡器和一个HTTP缓存。</p>
+<p>架设服务器均衡负载方式有多种，Nginx、LVS、HAProxy+Keepalived是目前使用最广泛的三种方案。其中Keepalived+HAProxy是一个高可用性方案。</p>
+<p>nginx在启动后，在unix系统中会以daemon的方式在后台运行，后台进程包含一个master进程和多个worker进程。</p>
+<ul>
+<li>master进程主要用来管理worker进程，包含：接收来自外界的信号，向各worker进程发送信号，监控worker进程的运行状态，当worker进程退出后(异常情况下)，会自动重新启动新的worker进程。</li>
+<li>多个worker进程之间是对等的，他们同等竞争来自客户端的请求，各进程互相之间是独立的。基本的网络事件，在worker进程中处理。</li>
+</ul>
+<p>nginx模块一般被分成三大类：handler、filter和upstream。</p>
+<p>使用<code>Nginx</code>的方法就是写配置文件，配置文件能完全控制<code>Nginx</code>，使<code>Nginx</code>按照我们的需求进行运行。</p>
+<blockquote>
+<p>关于nginx的配置文件，需要深入了解和使用的可以去学习一下。</p>
+</blockquote>
+<h2 id="安装与启动"><a href="#安装与启动" class="headerlink" title="安装与启动"></a>安装与启动</h2><p>OS: CentOS 7.3</p>
+<p>安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install nginx -y</div></pre></td></tr></table></figure>
+<p>关闭防火墙和selinux</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># systemctl stop firewalld</div><div class="line"># systemctl disable firewalld</div><div class="line"></div><div class="line"># setenforce 0</div><div class="line">setenforce: SELinux is disabled</div><div class="line"># getenforce</div><div class="line">Disabled</div></pre></td></tr></table></figure>
+<p>添加至服务列表，开机自动启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># chkconfig --add nginx</div><div class="line"># chkconfig nginx on </div><div class="line"># chkconfig nginx --list</div></pre></td></tr></table></figure>
+<p>启动nginx</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># service nginx start</div><div class="line">Redirecting to /bin/systemctl start  nginx.service</div></pre></td></tr></table></figure>
+<p>查看端口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># netstat -ntlp | grep :80</div><div class="line">tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      16858/nginx: master</div><div class="line">tcp6       0      0 :::80                   :::*                    LISTEN      16858/nginx: master</div></pre></td></tr></table></figure>
+<p>访问：<a href="http://localhost" target="_blank" rel="external">http://localhost</a></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/nginx-welcome.png" alt="nginx-welcome"></p>
+<p>重启nginx</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">nginx -s reload</div><div class="line">或者</div><div class="line">service nginx restart</div></pre></td></tr></table></figure>
+<h2 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a>反向代理</h2><h3 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h3><p>1、代理</p>
+<p>所谓代理，就是在客户端和服务端之间强行添加了一层，用来实现流量转发的功能。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">+----------------+         +---------------+        +--------------+</div><div class="line">|                |         |               |        |              |</div><div class="line">|                |         |               |        |              |</div><div class="line">|                |  http   |               | http   |              |</div><div class="line">|    client      &lt;---------&gt;    proxy      &lt;--------&gt;   server     |</div><div class="line">|                |  https  |               | https  |              |</div><div class="line">|                |         |               |        |              |</div><div class="line">|                |         |               |        |              |</div><div class="line">+----------------+         +---------------+        +--------------+</div></pre></td></tr></table></figure>
+<p>2、正向代理</p>
+<p>用于代理客户端。</p>
+<p>比如：我是一个用户，我访问不了某网站（例如google），但是我能访问一个代理服务器，这个代理服务器能访问google，于是我先连上代理服务器，告诉他我需要访问google的内容，代理服务器去取回来，然后返回给我。自此，一次正向代理顺利完成。</p>
+<p>3、反向代理</p>
+<p>用来代理服务端。</p>
+<p>依然拿google举例，网站每秒钟要处理很多请求，如果仅仅让一台单一的服务器处理，肯定应付不过来。所以采用多台服务器来处理这些请求，减少每台服务器的压力。但是多个服务器那就产生了多个Server，我的一个<code>google.com</code>就不能解析到这些服务器上，而且用多个二级域名比如<code>server1.google.com</code>，<code>server2.google.com</code>等等也给用户造成了使用上的不便，通过反向代理可以很好的解决这个问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">+-------------+                                             |      |                   |</div><div class="line">|             +----------+                                  |      |                   |</div><div class="line">|  client 1   |          |                                  |      +-------------------+</div><div class="line">|             |          |                                  |</div><div class="line">+-------------+          |                                  |</div><div class="line">                         |         +------------------+     |      +-------------------+</div><div class="line">                         |         |                  |     |      |                   |</div><div class="line">+-------------+          |         |                  |     |      |   server 2        |</div><div class="line">|             |          |         |                  +------------&gt;                   |</div><div class="line">|  clent 2    +--------------------&gt;  reverse proxy   |     |      |                   |</div><div class="line">|             |          |         |                  |     |      +-------------------+</div><div class="line">+-------------+          |         |                  |     |</div><div class="line">                         |         |                  |     |               .</div><div class="line">      .                  |         |                  |     |               .</div><div class="line">      .                  |         +------------------+     |               .</div><div class="line">      .                  |                                  |</div><div class="line">                         |                                  |      +--------------------+</div><div class="line">+-------------+          |                                  |      |                    |</div><div class="line">|             |          |                                  |      |   server m         |</div><div class="line">|  client n   +----------+                                  +------&gt;                    |</div><div class="line">|             |                                                    |                    |</div><div class="line">+-------------+                                                    +--------------------+</div></pre></td></tr></table></figure>
+<p> 结论就是，客户端向反向代理的命名空间(name-space)中的内容发送普通请求，接着反向代理将判断向何处(原始服务器)转交请求，并将获得的内容返回给客户端，就像这些内容原本就是它自己的一样。</p>
+<p>正向代理允许客户端通过它访问任意网站并且隐藏客户端自身，因此你必须采取安全措施以确保仅为经过授权的客户端提供服务。反向代理对外都是透明的，访问者并不知道自己访问的是一个代理。</p>
+<p>代理模块的指令有很多我这里只讲解重要的proxy_pass，这个模块可以转发请求到其他的服务器。</p>
+<h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h3><p>一台机器装有Nginx，两台测试机装httpd</p>
+<h4 id="测试机httpd配置"><a href="#测试机httpd配置" class="headerlink" title="测试机httpd配置"></a>测试机httpd配置</h4><p>1、安装httpd</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install httpd -y</div></pre></td></tr></table></figure>
+<p>2、提供页面测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># ceph0机器</div><div class="line">echo &quot;&lt;h1&gt;ceph0.test.com&lt;/h1&gt;&quot; &gt; /var/www/html/index.html</div><div class="line"># ceph1机器</div><div class="line">echo &quot;&lt;h1&gt;ceph1.test.com&lt;/h1&gt;&quot; &gt; /var/www/html/index.html</div></pre></td></tr></table></figure>
+<p>3、启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service httpd start</div></pre></td></tr></table></figure>
+<p>如果启动失败的话注意查看是否80端口被占用</p>
+<p>4、web上登录ceph0和ceph1机器IP查看</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/nginx-httpd-ceph0.png" alt="ceph0"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/nginx-httpd-ceph1.png" alt="ceph1"></p>
+<p>注意：Nginx和httpd都监听在80端口，https监听在443端口</p>
+<p>如果要修改httpd的监听端口的话</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">vim /etc/httpd/conf/httpd.conf</div><div class="line">...</div><div class="line">Listen 80		# 修改这一行</div><div class="line">...</div></pre></td></tr></table></figure>
+<h4 id="nginx配置和测试"><a href="#nginx配置和测试" class="headerlink" title="nginx配置和测试"></a>nginx配置和测试</h4><p>设置配置文件，设置完后如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># cat /etc/nginx/conf.d/test.conf</div><div class="line">server &#123;</div><div class="line">    listen 8000;</div><div class="line">    location / &#123;</div><div class="line">        proxy_pass http://123.59.204.185:80;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>重启nginx</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">nginx -t</div><div class="line">nginx -s reload</div><div class="line">service nginx restart</div></pre></td></tr></table></figure>
+<p>测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># curl 127.0.0.1:8000</div><div class="line">&lt;h1&gt;ceph0.test.com&lt;/h1&gt;</div></pre></td></tr></table></figure>
+<p>去ceph0机器上查看日志</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@ceph0 ~]# tail /var/log/httpd/access_log</div><div class="line">180.168.57.238 - - [03/May/2017:10:27:17 +0800] &quot;GET / HTTP/1.1&quot; 200 24 &quot;-&quot; &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36&quot;</div><div class="line">180.168.57.238 - - [03/May/2017:10:28:24 +0800] &quot;-&quot; 408 - &quot;-&quot; &quot;-&quot;</div><div class="line">180.168.57.238 - - [03/May/2017:10:28:24 +0800] &quot;-&quot; 408 - &quot;-&quot; &quot;-&quot;</div><div class="line">180.168.57.238 - - [03/May/2017:10:28:24 +0800] &quot;-&quot; 408 - &quot;-&quot; &quot;-&quot;</div><div class="line">123.59.185.23 - - [03/May/2017:11:25:30 +0800] &quot;GET / HTTP/1.1&quot; 200 24 &quot;-&quot; &quot;curl/7.29.0&quot;</div><div class="line">123.59.185.23 - - [03/May/2017:11:29:40 +0800] &quot;GET / HTTP/1.0&quot; 200 24 &quot;-&quot; &quot;curl/7.29.0&quot;</div></pre></td></tr></table></figure>
+<p>注意这里 HTTP/1.1和HTTP/1.0的区别</p>
+<p>proxy_pass模块可以转发请求到其他的服务器。nginx为浏览器发送HTTP/1.1，为后端服务器发送HTTP/1.0。</p>
+<p>HTTP/1.0无法使用keepalive（后端服务器将为每个请求创建并且删除连接），这样浏览器就可以为浏览器处理keepalive。</p>
+<h2 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h2><p>upstream是Nginx的HTTP Upstream模块，这个模块通过一个简单的调度算法来实现客户端IP到后端服务器的负载均衡。</p>
+<h3 id="调度算法"><a href="#调度算法" class="headerlink" title="调度算法"></a>调度算法</h3><p>Nginx的负载均衡模块目前支持4种调度算法，下面进行分别介绍，其中后两项属于第三方调度算法。  </p>
+<ul>
+<li>轮询（默认）。每个请求按时间顺序逐一分配到不同的后端服务器，如果后端某台服务器宕机，故障系统被自动剔除，使用户访问不受影响。Weight 指定轮询权值，Weight值越大，分配到的访问机率越高，主要用于后端每个服务器性能不均的情况下。</li>
+<li>ip_hash。每个请求按访问IP的hash结果分配，这样来自同一个IP的访客固定访问一个后端服务器，有效解决了动态网页存在的session共享问题。（一般电子商务网站用的比较多）</li>
+<li>fair。这是比上面两个更加智能的负载均衡算法。此种算法可以依据页面大小和加载时间长短智能地进行负载均衡，也就是根据后端服务器的响应时间来分配请求，响应时间短的优先分配。Nginx本身是不支持fair的，如果需要使用这种调度算法，必须下载Nginx的upstream_fair模块。</li>
+<li>url_hash。此方法按访问url的hash结果来分配请求，使每个url定向到同一个后端服务器，可以进一步提高后端缓存服务器的效率。Nginx本身是不支持url_hash的，如果需要使用这种调度算法，必须安装Nginx 的hash软件包。</li>
+</ul>
+<blockquote>
+<p>在 ip_hash 策略中，用于进行 hash 运算的 key，是 client 的 C 类 IP 地址（C 类 IP 地址就是范围在 192.0.0.0 到 223.255.255.255 之间，前三段号码表示子网，第四段号码为本地主机的 IP 地址类别）。这样的方式保证一个 client 每次请求都将到达同一个 backend。当然，如果所 hash 到的 backend 当前不可用，则请求会被转移到其他 backend。</p>
+</blockquote>
+<h3 id="upstream-支持的状态参数"><a href="#upstream-支持的状态参数" class="headerlink" title="upstream 支持的状态参数"></a>upstream 支持的状态参数</h3><p>在HTTP Upstream模块中，可以通过server指令指定后端服务器的IP地址和端口，同时还可以设定每个后端服务器在负载均衡调度中的状态。常用的状态有：      </p>
+<ul>
+<li>down，表示当前的server暂时不参与负载均衡。</li>
+<li>weight 默认为1。weight越大，负载的权重就越大。</li>
+<li>backup，预留的备份机器。当其他所有的非backup机器出现故障或者忙的时候，才会请求backup机器，因此这台机器的压力最轻。</li>
+<li>max_fails，允许请求失败的次数，默认为1。当超过最大次数时，返回proxy_next_upstream 模块定义的错误。</li>
+<li>fail_timeout，在经历了max_fails次失败后，暂停服务的时间。max_fails可以和fail_timeout一起使用。</li>
+</ul>
+<blockquote>
+<p>注，当负载调度算法为ip_hash时，后端服务器在负载均衡调度中的状态不能是weight和backup。</p>
+<p>如果负载均衡把请求分配到backup服务器上，就不能能访问到期望的页面了。</p>
+<p>weight和 ip_hash是不同的策略。</p>
+</blockquote>
+<p>一个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">upstream itest &#123;</div><div class="line">    server 123.59.204.185:80 weight=1 max_fails=2 fial_timeout=2;</div><div class="line">    server 123.59.204.193:80 down;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>server 185的权重为1，当请求失败的次数为2时，返回错误，并暂停服务2秒。</p>
+<p>Server 193 down了，不会被访问到。</p>
+<h3 id="配置负载均衡服务器"><a href="#配置负载均衡服务器" class="headerlink" title="配置负载均衡服务器"></a>配置负载均衡服务器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"># cat conf.d/test.conf</div><div class="line">upstream itest &#123;</div><div class="line">    server 123.59.204.185:80;</div><div class="line">    server 123.59.204.193:80;</div><div class="line">&#125;</div><div class="line"></div><div class="line">server &#123;</div><div class="line">    listen 8000;</div><div class="line">    server_name itest.com;</div><div class="line">    location / &#123;</div><div class="line">        proxy_pass http://itest;</div><div class="line">#        proxy_set_header  X-Real-IP  $remote_addr;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@nginx]# curl 127.0.0.1:8000</div><div class="line">&lt;h1&gt;ceph0.test.com&lt;/h1&gt;</div><div class="line">[root@nginx]# curl 127.0.0.1:8000</div><div class="line">&lt;h1&gt;ceph1.test.com&lt;/h1&gt;</div></pre></td></tr></table></figure>
+<p>百分之50的概率读取到一台机器</p>
+<p>注，upstream是定义在server{ }之外的，不能定义在server{ }内部。定义好upstream之后，用proxy_pass引用一下即可。</p>
+<h2 id="备份服务器"><a href="#备份服务器" class="headerlink" title="备份服务器"></a>备份服务器</h2><p>配置nginx文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"># cat /etc/nginx/conf.d/test.conf</div><div class="line">upstream itest &#123;</div><div class="line">    server 123.59.204.185:80;</div><div class="line">    server 123.59.204.193:80;</div><div class="line">    server 127.0.0.1:8000 backup;</div><div class="line">&#125;</div><div class="line"></div><div class="line">server &#123;</div><div class="line">    listen 8000;</div><div class="line">    server_name itest.com;</div><div class="line">    root /root/errorpage;</div><div class="line">    index index.html;</div><div class="line">    location / &#123;</div><div class="line">        proxy_pass http://itest;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>文件夹和index文件的建立</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># mkdir /root/errorpage</div><div class="line"># cat index.html</div><div class="line">&lt;h1&gt;Sorry, all ceph node is down! Please try again later!&lt;/h1&gt;</div></pre></td></tr></table></figure>
+<p>另外两台机器上执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service httpd stop</div></pre></td></tr></table></figure>
+<p>然后再访问的话就会访问到备份服务器，输出index.html的内容。</p>
+<p>附一个关于nginx的好系列文章：<a href="http://blog.csdn.net/poechant/article/details/7213546" target="_blank" rel="external">高性能Web服务器Nginx的配置与部署研究</a></p>
+<p>有空学习，mark之。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[iterm2快捷键的使用]]></title>
+      <url>http://xiaqunfeng.github.io/2017/05/02/iterm2%E5%BF%AB%E6%8D%B7%E9%94%AE%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
+      <content type="html"><![CDATA[<p>mac下终端神器iterm2，非常的好用，极大提高了效率，这里将自己使用过的快捷键总结如下。<br><a id="more"></a></p>
+<h2 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h2><p>新建tab：⌘ + t</p>
+<p>切换 tab：    ⌘+←, ⌘+→</p>
+<p>​            ⌘+{, ⌘+}</p>
+<p>​            ⌘ + Num</p>
+<p>切换全屏：⌘ + enter</p>
+<p>关闭tab：⌘ + w</p>
+<h2 id="分屏"><a href="#分屏" class="headerlink" title="分屏"></a>分屏</h2><p>切分屏幕：⌘+d 水平切分，⌘+Shift+d 垂直切分；</p>
+<p>切换Tab中的pane：⌘ + [ / ]</p>
+<p>按方向切换 pane：⌘+Option+方向键</p>
+<p>最大化Tab中的pane，隐藏本Tab中的其他pane：⌘+ shift +enter , 再次则还原</p>
+<p>关闭panel：⌘ + w</p>
+<h2 id="全局"><a href="#全局" class="headerlink" title="全局"></a>全局</h2><p>智能查找，支持正则查找：⌘+f</p>
+<p>全屏展示所有的 tab，可以搜索：⌘+Option+e</p>
+<p>自动填充：⌘ + ； 命令补全提示 </p>
+<p>打开最近目录： ⌘ + alt + /</p>
+<p>窗口太多，快速定位到光标所在位置：⌘ + / </p>
+<p>鼠标所在行高亮显示： ⌘ + alt + ； </p>
+<p>⌘+Option可以以矩形选中，类似于vim中的ctr l+ v操作</p>
+<p>⌘+Shift+h弹出历史记录窗口</p>
+<p>快照返回功能：按下 Cmd + Option + B 就会在界面上显示一个时间轴，按下键盘的左右箭头，时间轴就会自由的穿梭，这时 iTerm 上的命令行界面也随着变化成你选中的时间点的内容了</p>
+<p>双击选中，三击选中整行，四击智能选中（智能规则可配置），可以识别网址，引号引起的字符串，邮箱地址等。选中即复制。</p>
+<h2 id="按住⌘键"><a href="#按住⌘键" class="headerlink" title="按住⌘键"></a>按住⌘键</h2><p>可以拖拽选中的字符串</p>
+<p>可以点击 url：调用默认浏览器访问该网址</p>
+<p>可以点击文件：调用默认程序打开文件</p>
+<p>如果文件名是filename:42，且默认文本编辑器是 Macvim、Textmate或BBEdit，将会直接打开到这一行</p>
+<p>点击文件夹：在 finder 中打开该文件夹</p>
+<h2 id="标记"><a href="#标记" class="headerlink" title="标记"></a>标记</h2><p>设置标记：⌘ + shift + m </p>
+<p>跳转到上个标记：⌘ + shift + j</p>
+<p>多个标记切换：⌘ + shift + arrow(上下)</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>置空屏幕: clear </p>
+<p>​        ctrl + l </p>
+<p>​        ⌘ + k</p>
+<p>清空屏幕: command + k/r</p>
+<p>字体调大:  command + +</p>
+<p>字体调小:  command + -</p>
+<p>清除当前行：ctrl + u</p>
+<p>到行首：ctrl + a</p>
+<p>到行尾：ctrl + e</p>
+<p>从光标处删至字首/尾：ctrl + w / k</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[VSM部署]]></title>
       <url>http://xiaqunfeng.github.io/2017/05/02/VSM%E9%83%A8%E7%BD%B2/</url>
       <content type="html"><![CDATA[<p>本文介在已有ceph集群机器上部署VSM的过程，涵盖centos和ubuntu两种系统。<br><a id="more"></a></p>
@@ -19,6 +226,11 @@
 <p>代码基于Python语言，使用了wsgi、django等技术框架。</p>
 <p>Git主页：<br><a href="https://github.com/01org/virtual-storage-manager" target="_blank" rel="external">https://github.com/01org/virtual-storage-manager</a></p>
 <p>vsm-dependencies：<br><a href="https://github.com/01org/vsm-dependencies" target="_blank" rel="external">https://github.com/01org/vsm-dependencies</a></p>
+<p>VSM系统有两个角色，一个是vsm-controller，另外一个是vsm-agent：</p>
+<ul>
+<li>vsm-agent部署在ceph节点上</li>
+<li>vsm-controller部署在单独的任意节点（也可以部署在ceph节点上）</li>
+</ul>
 <p>架构图如下：<img src="http://oow6unnib.bkt.clouddn.com/vsm-architecture.png" alt="vsm-architecture"></p>
 <h2 id="centos上部署"><a href="#centos上部署" class="headerlink" title="centos上部署"></a>centos上部署</h2><p>OS：CentOS 7.2</p>
 <p>VSM：v2.1 released</p>
@@ -50,16 +262,22 @@
 <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./install.sh -u cephuser -v 2.1 --check-dependence-package</div></pre></td></tr></table></figure>
 <p>安装完成后，调用get_pass.sh提取管理密码</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ./get_pass.sh</div><div class="line">24195bcbce558aa7bd2c</div></pre></td></tr></table></figure>
-<h3 id="登录"><a href="#登录" class="headerlink" title="登录"></a>登录</h3><p>登录VSM仪表盘，地址：<a href="http://172.20.2.81:dashboard/vsm" target="_blank" rel="external">http://172.20.2.81:dashboard/vsm</a></p>
+<h3 id="登录"><a href="#登录" class="headerlink" title="登录"></a>登录</h3><p>登录VSM仪表盘，地址：<a href="https://172.20.2.81:dashboard/vsm" target="_blank" rel="external">https://172.20.2.81:dashboard/vsm</a></p>
 <p>用户名：admin</p>
 <p>密码：24195bcbce558aa7bd2c</p>
+<p>进入后界面如下：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/vsm-start.png" alt="vsm"></p>
+<blockquote>
+<p>注意：是https，不是http</p>
+</blockquote>
 <h2 id="ubuntu上部署"><a href="#ubuntu上部署" class="headerlink" title="ubuntu上部署"></a>ubuntu上部署</h2><p>OS：ubuntu 14.04</p>
 <p>安装方法和centos上基本类似，不一样的地方有：</p>
 <p>1、下载</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget https://github.com/01org/virtual-storage-manager/releases/download/v2.1.0/2.1.0-336-ubuntu14.tar.gz</div></pre></td></tr></table></figure>
 <p>2、不需要添加epel源</p>
 <h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>关于在非ceph集群集群上安装并创建ceph集群后续有空补充。</p>
-]]></content>
+<p>修改hostname</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo hostnamectl --static set-hostname vsm-controller</div></pre></td></tr></table></figure>]]></content>
     </entry>
     
     <entry>

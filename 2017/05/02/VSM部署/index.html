@@ -22,7 +22,8 @@
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="本文介在已有ceph集群机器上部署VSM的过程，涵盖centos和ubuntu两种系统。">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/vsm-architecture.png">
-<meta property="og:updated_time" content="2017-05-02T07:24:16.000Z">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/vsm-start.png">
+<meta property="og:updated_time" content="2017-05-05T03:29:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="VSM部署">
 <meta name="twitter:description" content="本文介在已有ceph集群机器上部署VSM的过程，涵盖centos和ubuntu两种系统。">
@@ -171,7 +172,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ceph/">ceph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/">machine learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rocksdb/">rocksdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/storage/">storage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ceph/">ceph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/">machine learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rocksdb/">rocksdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/storage/">storage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
                     </div>
                 </section>
                 
@@ -281,6 +282,11 @@
 <p>代码基于Python语言，使用了wsgi、django等技术框架。</p>
 <p>Git主页：<br><a href="https://github.com/01org/virtual-storage-manager" target="_blank" rel="external">https://github.com/01org/virtual-storage-manager</a></p>
 <p>vsm-dependencies：<br><a href="https://github.com/01org/vsm-dependencies" target="_blank" rel="external">https://github.com/01org/vsm-dependencies</a></p>
+<p>VSM系统有两个角色，一个是vsm-controller，另外一个是vsm-agent：</p>
+<ul>
+<li>vsm-agent部署在ceph节点上</li>
+<li>vsm-controller部署在单独的任意节点（也可以部署在ceph节点上）</li>
+</ul>
 <p>架构图如下：<img src="http://oow6unnib.bkt.clouddn.com/vsm-architecture.png" alt="vsm-architecture"></p>
 <h2 id="centos上部署"><a href="#centos上部署" class="headerlink" title="centos上部署"></a>centos上部署</h2><p>OS：CentOS 7.2</p>
 <p>VSM：v2.1 released</p>
@@ -312,16 +318,22 @@
 <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./install.sh -u cephuser -v 2.1 --check-dependence-package</div></pre></td></tr></table></figure>
 <p>安装完成后，调用get_pass.sh提取管理密码</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ./get_pass.sh</div><div class="line">24195bcbce558aa7bd2c</div></pre></td></tr></table></figure>
-<h3 id="登录"><a href="#登录" class="headerlink" title="登录"></a>登录</h3><p>登录VSM仪表盘，地址：<a href="http://172.20.2.81:dashboard/vsm" target="_blank" rel="external">http://172.20.2.81:dashboard/vsm</a></p>
+<h3 id="登录"><a href="#登录" class="headerlink" title="登录"></a>登录</h3><p>登录VSM仪表盘，地址：<a href="https://172.20.2.81:dashboard/vsm" target="_blank" rel="external">https://172.20.2.81:dashboard/vsm</a></p>
 <p>用户名：admin</p>
 <p>密码：24195bcbce558aa7bd2c</p>
+<p>进入后界面如下：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/vsm-start.png" alt="vsm"></p>
+<blockquote>
+<p>注意：是https，不是http</p>
+</blockquote>
 <h2 id="ubuntu上部署"><a href="#ubuntu上部署" class="headerlink" title="ubuntu上部署"></a>ubuntu上部署</h2><p>OS：ubuntu 14.04</p>
 <p>安装方法和centos上基本类似，不一样的地方有：</p>
 <p>1、下载</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget https://github.com/01org/virtual-storage-manager/releases/download/v2.1.0/2.1.0-336-ubuntu14.tar.gz</div></pre></td></tr></table></figure>
 <p>2、不需要添加epel源</p>
 <h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>关于在非ceph集群集群上安装并创建ceph集群后续有空补充。</p>
-
+<p>修改hostname</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo hostnamectl --static set-hostname vsm-controller</div></pre></td></tr></table></figure>
       
     </div>
     
@@ -332,7 +344,7 @@
         <p><span>本文标题:</span><a href="/2017/05/02/VSM部署/">VSM部署</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
         <p><span>发布时间:</span>2017-05-02, 14:16:59</p>
-        <p><span>最后更新:</span>2017-05-02, 15:24:16</p>
+        <p><span>最后更新:</span>2017-05-05, 11:29:53</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/05/02/VSM部署/" title="VSM部署">http://xiaqunfeng.github.io/2017/05/02/VSM部署/</a>
             <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/05/02/VSM部署/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -346,6 +358,12 @@
 
 
     <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/05/02/iterm2快捷键的使用/">
+                    iterm2快捷键的使用
+                </a>
+            </div>
         
         
             <div id="article-nav-older" class="article-nav-title">
@@ -440,7 +458,9 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+            <a href="/2017/05/02/iterm2快捷键的使用/" title="上一篇: iterm2快捷键的使用">
+                <i class="fa fa-angle-left"></i>
+            </a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
@@ -452,7 +472,7 @@
         
     </div>
 
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/05/02/VSM部署/">VSM部署</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/常用git命令清单/">常用git命令清单</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/理解socket编程/">理解socket编程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/cow和row快照机制的区别/">cow和row快照机制的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/Machine-Learning-Yearning-5、6/">Machine Learning Yearning(5、6、7)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/03/Machine-Learning-Yearning-3、4/">Machine Learning Yearning(3、4)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/02/Machine-Learning-Yearning-开篇、1、2/">Machine Learning Yearning(开篇、1、2)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/01/异步IO/">异步IO</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/23/Bluestore调研/">Bluestore调研</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/23/RocksDB相比LevelDB的新特性/">RocksDB相比LevelDB的新特性</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/20/Kernel modules (简体中文)/">Kernel modules (简体中文)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/Linux命令——pgrep和pkill/">Linux命令——pgrep和pkill</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/16/Linux命令——strace/">Linux命令——strace</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/10/获取每个osd的PG数/">获取每个osd的PG数</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/10/RBD-相关操作/">RBD 相关操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/07/在Kraken-release版本上测试Ceph-BlueStore/">在Kraken release版本上测试Ceph BlueStore</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/04/用户态和内核态/">用户态和内核态</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/04/ceph升级到kraken版本/">ceph升级到kraken版本</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/03/Dm-cache-vs-Bcache/">Dm-cache vs Bcache</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/03/Flashcache-vs-Cache-tier/">Flashcache vs Cache tier</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/25/Linux命令——parted/">Linux命令——parted</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/25/认识SSD/">认识SSD</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/24/Ceph-KRAKEN(V11.2.0)/">Ceph — V11.2.0 KRAKEN(译)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/24/Crushmap学习/">Crushmap学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/Ceph中严重数据不一致性BUG/">Ceph中严重数据不一致性BUG</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/块存储的世界/">块存储的世界</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/17/Linux命令——uptime/">Linux命令——uptime</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/dd磁盘命令小记/">dd磁盘命令小记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/解决calamari无法获取集群hosts信息的BUG/">解决calamari无法获取集群hosts信息的BUG</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/ubuntu下配置邮件发送/">ubuntu下配置邮件发送</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/ubuntu下系统打包/">ubuntu下系统打包</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux命令——history及其优化/">Linux命令——history及其优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux下利用screen进行屏幕协作/">Linux下利用screen进行屏幕协作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux命令——crontab/">Linux命令——crontab</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/06/hexo的搭建/">Mac上hexo博客的搭建</a></li></ul>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/05/04/iterm2配色/">iterm2配色--zsh & oh-my-zsh</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/03/nginx使用和配置/">nginx使用和配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/02/iterm2快捷键的使用/">iterm2快捷键的使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/02/VSM部署/">VSM部署</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/常用git命令清单/">常用git命令清单</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/理解socket编程/">理解socket编程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/cow和row快照机制的区别/">cow和row快照机制的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/Machine-Learning-Yearning-5、6/">Machine Learning Yearning(5、6、7)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/03/Machine-Learning-Yearning-3、4/">Machine Learning Yearning(3、4)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/02/Machine-Learning-Yearning-开篇、1、2/">Machine Learning Yearning(开篇、1、2)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/01/异步IO/">异步IO</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/23/Bluestore调研/">Bluestore调研</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/23/RocksDB相比LevelDB的新特性/">RocksDB相比LevelDB的新特性</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/20/Kernel modules (简体中文)/">Kernel modules (简体中文)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/Linux命令——pgrep和pkill/">Linux命令——pgrep和pkill</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/16/Linux命令——strace/">Linux命令——strace</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/10/获取每个osd的PG数/">获取每个osd的PG数</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/10/RBD-相关操作/">RBD 相关操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/07/在Kraken-release版本上测试Ceph-BlueStore/">在Kraken release版本上测试Ceph BlueStore</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/04/用户态和内核态/">用户态和内核态</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/04/ceph升级到kraken版本/">ceph升级到kraken版本</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/03/Dm-cache-vs-Bcache/">Dm-cache vs Bcache</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/03/Flashcache-vs-Cache-tier/">Flashcache vs Cache tier</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/25/Linux命令——parted/">Linux命令——parted</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/25/认识SSD/">认识SSD</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/24/Ceph-KRAKEN(V11.2.0)/">Ceph — V11.2.0 KRAKEN(译)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/24/Crushmap学习/">Crushmap学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/Ceph中严重数据不一致性BUG/">Ceph中严重数据不一致性BUG</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/块存储的世界/">块存储的世界</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/17/Linux命令——uptime/">Linux命令——uptime</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/dd磁盘命令小记/">dd磁盘命令小记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/解决calamari无法获取集群hosts信息的BUG/">解决calamari无法获取集群hosts信息的BUG</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/ubuntu下配置邮件发送/">ubuntu下配置邮件发送</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/ubuntu下系统打包/">ubuntu下系统打包</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux命令——history及其优化/">Linux命令——history及其优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux下利用screen进行屏幕协作/">Linux下利用screen进行屏幕协作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux命令——crontab/">Linux命令——crontab</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/06/hexo的搭建/">Mac上hexo博客的搭建</a></li></ul>
 
 
 
