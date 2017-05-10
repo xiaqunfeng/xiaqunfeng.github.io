@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="夏天的风" />
+
+
+
+<meta name="description" content="介绍磁盘状态监测工具：S.M.A.R.T。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="S.M.A.R.T--磁盘健康状态监测工具">
+<meta property="og:url" content="http://xiaqunfeng.github.io/2017/05/07/S-M-A-R-T-磁盘健康状态监测工具/index.html">
+<meta property="og:site_name" content="夏天的风的博客">
+<meta property="og:description" content="介绍磁盘状态监测工具：S.M.A.R.T。">
+<meta property="og:updated_time" content="2017-05-07T08:12:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="S.M.A.R.T--磁盘健康状态监测工具">
+<meta name="twitter:description" content="介绍磁盘状态监测工具：S.M.A.R.T。">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/qiniu.ico">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>S.M.A.R.T--磁盘健康状态监测工具 | 夏天的风的博客</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: false
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/stark.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">夏天的风</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">好记性不如烂笔头😝</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" href="https://github.com/xiaqunfeng" title="GitHub"></a>
+                            
+                                <a class="fa CSDN" href="http://blog.csdn.net/xiaqunfeng123" title="CSDN"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/centos/">centos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ceph/">ceph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/">machine learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rocksdb/">rocksdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/storage/">storage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">夏天的风</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/stark.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">夏天的风</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">好记性不如烂笔头😝</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/xiaqunfeng" title="GitHub"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://blog.csdn.net/xiaqunfeng123" title="CSDN"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-S-M-A-R-T-磁盘健康状态监测工具" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/05/07/S-M-A-R-T-磁盘健康状态监测工具/" class="article-date">
+      <time datetime="2017-05-07T07:25:21.000Z" itemprop="datePublished">2017-05-07</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      S.M.A.R.T--磁盘健康状态监测工具
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>介绍磁盘状态监测工具：S.M.A.R.T。<br><a id="more"></a></p>
+<h2 id="S-M-A-R-T"><a href="#S-M-A-R-T" class="headerlink" title="S.M.A.R.T."></a>S.M.A.R.T.</h2><p><strong>S.M.A.R.T.</strong>，全称为“Self-Monitoring Analysis and Reporting Technology”，即“自我监测、分析及报告技术”，是一种自动的硬盘状态检测与预警系统和规范。通过在硬盘硬件内的检测指令对硬盘的硬件如磁头、盘片、马达、电路的运行情况进行监控、记录并与厂商所设定的预设安全值进行比较，若监控情况将或已超出预设安全值的安全范围，就可以通过主机的监控硬件或软件自动向用户作出警告并进行轻微的自动修复，以提前保障硬盘数据的安全。</p>
+<p>软件包 <strong>smartmontools</strong> 它通过使用自我监控(Self-Monitoring)、分析(Analysis)和报告(Reporting)三种技术（缩写为S.M.A.R.T或SMART）来管理和监控存储硬件。如今大部分的ATA/SATA、SCSI/SAS和固态硬盘都搭载内置的SMART系统。SMART的目的是监控硬盘的可靠性、预测磁盘故障和执行各种类型的磁盘自检。smartmontools由smartctl和smartd两部分工具程序组成，它们一起为Linux平台提供对磁盘退化和故障的高级警告。</p>
+<blockquote>
+<p>文章内容大部分为转载，硬盘信息和配置部分为自己实验所得。</p>
+</blockquote>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install smartmontools</div></pre></td></tr></table></figure>
+<p>参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">smartctl -a  &lt;device&gt;    		显示硬盘所有SMART信息。</div><div class="line">smartctl -i &lt;device&gt;   			显示硬盘model number, serial number,是否开启SMART等信息。</div><div class="line">smartctl -s on &lt;device&gt;    		如果没有打开SMART技术，使用该命令打开SMART技术。</div><div class="line">smartctl -t short &lt;device&gt;    	后台检测硬盘，消耗时间短</div><div class="line">smartctl -t long &lt;device&gt;      	后台检测硬盘，消耗时间长</div><div class="line">smartctl -C -t short &lt;device&gt; 	前台检测硬盘，消耗时间短</div><div class="line">smartctl -C -t long &lt;device&gt;  	前台检测硬盘，消耗时间长</div><div class="line">smartctl -X &lt;device&gt;  			中断后台检测硬盘。</div><div class="line">smartctl -l selftest &lt;device&gt;  	显示硬盘检测日志。</div><div class="line">smartctl -l error &lt;device&gt; 		显示硬盘错误汇总。</div></pre></td></tr></table></figure>
+<p>列出和系统相连的硬盘</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls -l /dev | grep -E &apos;sd|hd&apos;</div></pre></td></tr></table></figure>
+<h2 id="显示出某个指定硬盘的信息"><a href="#显示出某个指定硬盘的信息" class="headerlink" title="显示出某个指定硬盘的信息"></a>显示出某个指定硬盘的信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"># smartctl --info /dev/sdc</div><div class="line">smartctl 6.2 2013-07-26 r3841 [x86_64-linux-4.9.23-26.el7.x86_64] (local build)</div><div class="line">Copyright (C) 2002-13, Bruce Allen, Christian Franke, www.smartmontools.org</div><div class="line"></div><div class="line">=== START OF INFORMATION SECTION ===</div><div class="line">Device Model:     TOSHIBA MG03ACA400</div><div class="line">Serial Number:    565BK4CXF</div><div class="line">LU WWN Device Id: 5 000039 70bc0043a</div><div class="line">Firmware Version: FL1A</div><div class="line">User Capacity:    4,000,787,030,016 bytes [4.00 TB]</div><div class="line">Sector Size:      512 bytes logical/physical</div><div class="line">Rotation Rate:    7200 rpm</div><div class="line">Device is:        Not in smartctl database [for details use: -P showall]</div><div class="line">ATA Version is:   ATA8-ACS (minor revision not indicated)</div><div class="line">SATA Version is:  SATA 3.0, 6.0 Gb/s (current: 6.0 Gb/s)</div><div class="line">Local Time is:    Sun May  7 15:10:58 2017 CST</div><div class="line">SMART support is: Available - device has SMART capability.</div><div class="line">SMART support is: Enabled</div></pre></td></tr></table></figure>
+<h2 id="检测某个硬盘的健康状况"><a href="#检测某个硬盘的健康状况" class="headerlink" title="检测某个硬盘的健康状况"></a>检测某个硬盘的健康状况</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div></pre></td><td class="code"><pre><div class="line"># smartctl -s on -a /dev/sdc</div><div class="line">smartctl 6.2 2013-07-26 r3841 [x86_64-linux-4.9.23-26.el7.x86_64] (local build)</div><div class="line">Copyright (C) 2002-13, Bruce Allen, Christian Franke, www.smartmontools.org</div><div class="line"></div><div class="line">=== START OF INFORMATION SECTION ===</div><div class="line">Device Model:     TOSHIBA MG03ACA400</div><div class="line">Serial Number:    565BK4CXF</div><div class="line">LU WWN Device Id: 5 000039 70bc0043a</div><div class="line">Firmware Version: FL1A</div><div class="line">User Capacity:    4,000,787,030,016 bytes [4.00 TB]</div><div class="line">Sector Size:      512 bytes logical/physical</div><div class="line">Rotation Rate:    7200 rpm</div><div class="line">Device is:        Not in smartctl database [for details use: -P showall]</div><div class="line">ATA Version is:   ATA8-ACS (minor revision not indicated)</div><div class="line">SATA Version is:  SATA 3.0, 6.0 Gb/s (current: 6.0 Gb/s)</div><div class="line">Local Time is:    Sun May  7 15:12:44 2017 CST</div><div class="line">SMART support is: Available - device has SMART capability.</div><div class="line">SMART support is: Enabled</div><div class="line"></div><div class="line">=== START OF ENABLE/DISABLE COMMANDS SECTION ===</div><div class="line">SMART Enabled.</div><div class="line"></div><div class="line">=== START OF READ SMART DATA SECTION ===</div><div class="line">SMART overall-health self-assessment test result: PASSED</div><div class="line"></div><div class="line">General SMART Values:</div><div class="line">Offline data collection status:  (0x82)	Offline data collection activity</div><div class="line">					was completed without error.</div><div class="line">					Auto Offline Data Collection: Enabled.</div><div class="line">Self-test execution status:      (   0)	The previous self-test routine completed</div><div class="line">					without error or no self-test has ever</div><div class="line">					been run.</div><div class="line">Total time to complete Offline</div><div class="line">data collection: 		(  120) seconds.</div><div class="line">Offline data collection</div><div class="line">capabilities: 			 (0x5b) SMART execute Offline immediate.</div><div class="line">					Auto Offline data collection on/off support.</div><div class="line">					Suspend Offline collection upon new</div><div class="line">					command.</div><div class="line">					Offline surface scan supported.</div><div class="line">					Self-test supported.</div><div class="line">					No Conveyance Self-test supported.</div><div class="line">					Selective Self-test supported.</div><div class="line">SMART capabilities:            (0x0003)	Saves SMART data before entering</div><div class="line">					power-saving mode.</div><div class="line">					Supports SMART auto save timer.</div><div class="line">Error logging capability:        (0x01)	Error logging supported.</div><div class="line">					General Purpose Logging supported.</div><div class="line">Short self-test routine</div><div class="line">recommended polling time: 	 (   2) minutes.</div><div class="line">Extended self-test routine</div><div class="line">recommended polling time: 	 ( 616) minutes.</div><div class="line">SCT capabilities: 	       (0x003d)	SCT Status supported.</div><div class="line">					SCT Error Recovery Control supported.</div><div class="line">					SCT Feature Control supported.</div><div class="line">					SCT Data Table supported.</div><div class="line"></div><div class="line">SMART Attributes Data Structure revision number: 16</div><div class="line">Vendor Specific SMART Attributes with Thresholds:</div><div class="line">ID# ATTRIBUTE_NAME          FLAG     VALUE WORST THRESH TYPE      UPDATED  WHEN_FAILED RAW_VALUE</div><div class="line">  1 Raw_Read_Error_Rate     0x000b   100   100   050    Pre-fail  Always       -       0</div><div class="line">  2 Throughput_Performance  0x0005   100   100   050    Pre-fail  Offline      -       0</div><div class="line">  3 Spin_Up_Time            0x0027   100   100   001    Pre-fail  Always       -       7416</div><div class="line">  4 Start_Stop_Count        0x0032   100   100   000    Old_age   Always       -       12</div><div class="line">  5 Reallocated_Sector_Ct   0x0033   100   100   050    Pre-fail  Always       -       0</div><div class="line">  7 Seek_Error_Rate         0x000b   100   100   050    Pre-fail  Always       -       0</div><div class="line">  8 Seek_Time_Performance   0x0005   100   100   050    Pre-fail  Offline      -       0</div><div class="line">  9 Power_On_Hours          0x0032   092   092   000    Old_age   Always       -       3390</div><div class="line"> 10 Spin_Retry_Count        0x0033   100   100   030    Pre-fail  Always       -       0</div><div class="line"> 12 Power_Cycle_Count       0x0032   100   100   000    Old_age   Always       -       12</div><div class="line">191 G-Sense_Error_Rate      0x0032   100   100   000    Old_age   Always       -       0</div><div class="line">192 Power-Off_Retract_Count 0x0032   100   100   000    Old_age   Always       -       4</div><div class="line">193 Load_Cycle_Count        0x0032   100   100   000    Old_age   Always       -       118</div><div class="line">194 Temperature_Celsius     0x0022   100   100   000    Old_age   Always       -       25 (Min/Max 15/35)</div><div class="line">196 Reallocated_Event_Count 0x0032   100   100   000    Old_age   Always       -       0</div><div class="line">197 Current_Pending_Sector  0x0032   100   100   000    Old_age   Always       -       0</div><div class="line">198 Offline_Uncorrectable   0x0030   100   100   000    Old_age   Offline      -       0</div><div class="line">199 UDMA_CRC_Error_Count    0x0032   200   200   000    Old_age   Always       -       0</div><div class="line">220 Disk_Shift              0x0002   100   100   000    Old_age   Always       -       0</div><div class="line">222 Loaded_Hours            0x0032   098   098   000    Old_age   Always       -       1112</div><div class="line">223 Load_Retry_Count        0x0032   100   100   000    Old_age   Always       -       0</div><div class="line">224 Load_Friction           0x0022   100   100   000    Old_age   Always       -       0</div><div class="line">226 Load-in_Time            0x0026   100   100   000    Old_age   Always       -       595</div><div class="line">240 Head_Flying_Hours       0x0001   100   100   001    Pre-fail  Offline      -       0</div><div class="line"></div><div class="line">SMART Error Log Version: 1</div><div class="line">No Errors Logged</div><div class="line"></div><div class="line">SMART Self-test log structure revision number 1</div><div class="line">No self-tests have been logged.  [To run self-tests, use: smartctl -t]</div><div class="line"></div><div class="line"></div><div class="line">SMART Selective self-test log data structure revision number 1</div><div class="line"> SPAN  MIN_LBA  MAX_LBA  CURRENT_TEST_STATUS</div><div class="line">    1        0        0  Not_testing</div><div class="line">    2        0        0  Not_testing</div><div class="line">    3        0        0  Not_testing</div><div class="line">    4        0        0  Not_testing</div><div class="line">    5        0        0  Not_testing</div><div class="line">Selective self-test flags (0x0):</div><div class="line">  After scanning selected spans, do NOT read-scan remainder of disk.</div><div class="line">If Selective self-test is pending on power-up, resume after 0 minute delay.</div></pre></td></tr></table></figure>
+<p>其中，”READ SMART DATA”部分显示出硬盘的整体健康状况</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">=== START OF READ SMART DATA SECTION ===</div><div class="line">SMART overall-health self-assessment test result: PASSED</div></pre></td></tr></table></figure>
+<h2 id="SMART属性表"><a href="#SMART属性表" class="headerlink" title="SMART属性表"></a>SMART属性表</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">ID# ATTRIBUTE_NAME          FLAG     VALUE WORST THRESH TYPE      UPDATED  WHEN_FAILED RAW_VALUE</div><div class="line">  1 Raw_Read_Error_Rate     0x000b   100   100   050    Pre-fail  Always       -       0</div><div class="line">  2 Throughput_Performance  0x0005   100   100   050    Pre-fail  Offline      -       0</div><div class="line">  3 Spin_Up_Time            0x0027   100   100   001    Pre-fail  Always       -       7416</div><div class="line">  4 Start_Stop_Count        0x0032   100   100   000    Old_age   Always       -       12</div><div class="line">  5 Reallocated_Sector_Ct   0x0033   100   100   050    Pre-fail  Always       -       0</div><div class="line">  7 Seek_Error_Rate         0x000b   100   100   050    Pre-fail  Always       -       0</div><div class="line">  8 Seek_Time_Performance   0x0005   100   100   050    Pre-fail  Offline      -       0</div><div class="line">  9 Power_On_Hours          0x0032   092   092   000    Old_age   Always       -       3390</div><div class="line"> 10 Spin_Retry_Count        0x0033   100   100   030    Pre-fail  Always       -       0</div><div class="line"> 12 Power_Cycle_Count       0x0032   100   100   000    Old_age   Always       -       12</div><div class="line">191 G-Sense_Error_Rate      0x0032   100   100   000    Old_age   Always       -       0</div><div class="line">192 Power-Off_Retract_Count 0x0032   100   100   000    Old_age   Always       -       4</div><div class="line">193 Load_Cycle_Count        0x0032   100   100   000    Old_age   Always       -       118</div><div class="line">194 Temperature_Celsius     0x0022   100   100   000    Old_age   Always       -       25 (Min/Max 15/35)</div><div class="line">196 Reallocated_Event_Count 0x0032   100   100   000    Old_age   Always       -       0</div><div class="line">197 Current_Pending_Sector  0x0032   100   100   000    Old_age   Always       -       0</div><div class="line">198 Offline_Uncorrectable   0x0030   100   100   000    Old_age   Offline      -       0</div><div class="line">199 UDMA_CRC_Error_Count    0x0032   200   200   000    Old_age   Always       -       0</div><div class="line">220 Disk_Shift              0x0002   100   100   000    Old_age   Always       -       0</div><div class="line">222 Loaded_Hours            0x0032   098   098   000    Old_age   Always       -       1112</div><div class="line">223 Load_Retry_Count        0x0032   100   100   000    Old_age   Always       -       0</div><div class="line">224 Load_Friction           0x0022   100   100   000    Old_age   Always       -       0</div><div class="line">226 Load-in_Time            0x0026   100   100   000    Old_age   Always       -       595</div><div class="line">240 Head_Flying_Hours       0x0001   100   100   001    Pre-fail  Offline      -       0</div></pre></td></tr></table></figure>
+<p>SMART属性表列出了制造商在硬盘中定义好的属性值，以及这些属性相关的故障阈值。这个表由驱动固件自动生成和更新。</p>
+<ul>
+<li><strong>ID</strong>：属性ID，通常是一个1到255之间的十进制或十六进制的数字。</li>
+<li><strong>ATTRIBUTE_NAME</strong>：硬盘制造商定义的属性名。</li>
+<li><strong>FLAG</strong>：属性操作标志（可以忽略）。</li>
+<li><strong>VALUE</strong>：这是表格中最重要的信息之一，代表给定属性的标准化值，在1到253之间。253意味着最好情况，1意味着最坏情况。取决于属性和制造商，初始化VALUE可以被设置成100或200.</li>
+<li><strong>WORST</strong>：所记录的最小VALUE。</li>
+<li><strong>THRESH</strong>：在报告硬盘FAILED状态前，WORST可以允许的最小值。</li>
+<li><strong>TYPE</strong>：属性的类型（Pre-fail或Old<em>age）。Pre-fail类型的属性可被看成一个关键属性，表示参与磁盘的整体SMART健康评估（PASSED/FAILED）。如果任何Pre-fail类型的属性故障，那么可视为磁盘将要发生故障。另一方面，Old</em>age类型的属性可被看成一个非关键的属性（如正常的磁盘磨损），表示不会使磁盘本身发生故障。</li>
+<li><strong>UPDATED</strong>：表示属性的更新频率。Offline代表磁盘上执行离线测试的时间。</li>
+<li><strong>WHEN_FAILED</strong>：如果VALUE小于等于THRESH，会被设置成“FAILING_NOW”；如果WORST小于等于THRESH会被设置成“In_the_past”；如果都不是，会被设置成“-”。在“FAILING_NOW”情况下，需要尽快备份重要文件，特别是属性是Pre-fail类型时。“In_the_past”代表属性已经故障了，但在运行测试的时候没问题。“-”代表这个属性从没故障过。</li>
+<li><strong>RAW_VALUE</strong>：制造商定义的原始值，从VALUE派生。</li>
+</ul>
+<h2 id="实时监控"><a href="#实时监控" class="headerlink" title="实时监控"></a>实时监控</h2><p>编辑smartctl的配置文件(/etc/default/smartmontools)以便在系统启动时启动smartd，并以秒为单位指定间隔时间（如7200 = 2小时）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">start_smartd=yes</div><div class="line">smartd_opts=&quot;--interval=7200&quot;</div></pre></td></tr></table></figure>
+<p>编辑smartd的配置文件，添加以下行内容。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># vim /etc/smartmontools/smartd</div><div class="line">smartd.conf        smartd_warning.d/  smartd_warning.sh</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/dev/sda -m myemail@mydomain.com -M test</div></pre></td></tr></table></figure>
+<p><strong>-m </strong>：指定发送测试报告到某个电子邮件地址。这里可以是系统用户比如root，或者如果服务器已经配置成发送电子邮件到系统外部，则是类似于<a href="mailto:myemail@mydomain.com" target="_blank" rel="external">myemail@mydomain.com</a>的邮件地址。</p>
+<p><strong>-M </strong>：指定发送邮件报告的期望类型。</p>
+<ul>
+<li><strong>once</strong>：为检测到的每种磁盘问题只发送一封警告邮件。</li>
+<li><strong>daily</strong>：为检测到的每种磁盘问题每隔一天发送一封额外的警告提醒邮件。</li>
+<li><strong>diminishing</strong>：为检测到的每种问题发送一封额外的警告提醒邮件，开始是每隔一天，然后每隔两天，每隔四天，以此类推。每个间隔是前一次间隔的2倍。</li>
+<li><strong>test</strong>：只要smartd一启动，立即发送一封测试邮件。</li>
+<li><strong>exec PATH</strong>：取代默认的邮件命令，运行PATH路径下的可执行文件。PATH必须指向一个可执行的二进制文件或脚本。当检测到一个问题时，可以指定执行一个期望的动作（闪烁控制台、关闭系统等等）。</li>
+</ul>
+<p>保存改动并重启smartd。</p>
+<p>可以使用“-s”标志和形如“T/MM/DD/d/HH”的正则表达式按照想要的调度方案执行测试，其中：</p>
+<p>正则表达式中的T代表测试的类型：</p>
+<ul>
+<li>L：长测试</li>
+<li>S：短测试</li>
+<li>C：传输测试（仅限ATA）</li>
+<li>O：离线测试（仅限ATA）</li>
+</ul>
+<p>其它的字符代表测试执行的日期和时间：</p>
+<ul>
+<li>MM是一年中的月份。</li>
+<li>DD是一月中的天份。</li>
+<li>HH是一天中的小时。</li>
+<li>d是一个星期中的某天（从1=周一到7=周日）。</li>
+<li>MM、DD和HH使用两位十进制数字表示。</li>
+</ul>
+<p>在上述表达中的小圆点表示所有可能的值。形如’(A|B|C)’在圆括号里的表达式表示三个可能值A、B和C中的任意一个。形如[1-5]在方括号中的表达式表示1到5的范围（包含5）.</p>
+<p>例如，想要在每个工作日的下午一点为所有的磁盘执行一次长测试，在/etc/smartd.conf中添加如下行内容。确保编辑完重启smartd。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">DEVICESCAN -s (L/../../[1-5]/13)</div></pre></td></tr></table></figure>
+<p>参考：</p>
+<p><a href="https://zh.wikipedia.org/wiki/S.M.A.R.T" target="_blank" rel="external">https://zh.wikipedia.org/wiki/S.M.A.R.T</a>.</p>
+<p><a href="https://linux.cn/article-4461-1.html" target="_blank" rel="external">使用 smartmontools 查看硬盘的健康状态</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/05/07/S-M-A-R-T-磁盘健康状态监测工具/">S.M.A.R.T--磁盘健康状态监测工具</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
+        <p><span>发布时间:</span>2017-05-07, 15:25:21</p>
+        <p><span>最后更新:</span>2017-05-07, 16:12:50</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/05/07/S-M-A-R-T-磁盘健康状态监测工具/" title="S.M.A.R.T--磁盘健康状态监测工具">http://xiaqunfeng.github.io/2017/05/07/S-M-A-R-T-磁盘健康状态监测工具/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/05/07/S-M-A-R-T-磁盘健康状态监测工具/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/05/07/firewalld和iptables/">
+                    firewalld和iptables
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/05/04/iterm2配色/">
+                    iterm2配色--zsh &amp; oh-my-zsh
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#S-M-A-R-T"><span class="toc-number">1.</span> <span class="toc-text">S.M.A.R.T.</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装"><span class="toc-number">2.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#显示出某个指定硬盘的信息"><span class="toc-number">3.</span> <span class="toc-text">显示出某个指定硬盘的信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#检测某个硬盘的健康状况"><span class="toc-number">4.</span> <span class="toc-text">检测某个硬盘的健康状况</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SMART属性表"><span class="toc-number">5.</span> <span class="toc-text">SMART属性表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实时监控"><span class="toc-number">6.</span> <span class="toc-text">实时监控</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"S.M.A.R.T--磁盘健康状态监测工具　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section id="comments">
+    <style> aside.comment-bar { margin: auto 30px; }</style>
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function(){
+            this.page.url = 'http://xiaqunfeng.github.io/2017/05/07/S-M-A-R-T-磁盘健康状态监测工具/';
+            this.page.identifier = '2017/05/07/S-M-A-R-T-磁盘健康状态监测工具/';
+        };
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = '//null.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+</section>
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/05/07/firewalld和iptables/" title="上一篇: firewalld和iptables">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/05/04/iterm2配色/" title="下一篇: iterm2配色--zsh &amp; oh-my-zsh">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/05/07/firewalld和iptables/">firewalld和iptables</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/07/S-M-A-R-T-磁盘健康状态监测工具/">S.M.A.R.T--磁盘健康状态监测工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/04/iterm2配色/">iterm2配色--zsh & oh-my-zsh</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/03/nginx使用和配置/">nginx使用和配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/02/iterm2快捷键的使用/">iterm2快捷键的使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/02/VSM部署/">VSM部署</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/常用git命令清单/">常用git命令清单</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/理解socket编程/">理解socket编程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/cow和row快照机制的区别/">cow和row快照机制的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/Machine-Learning-Yearning-5、6/">Machine Learning Yearning(5、6、7)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/03/Machine-Learning-Yearning-3、4/">Machine Learning Yearning(3、4)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/02/Machine-Learning-Yearning-开篇、1、2/">Machine Learning Yearning(开篇、1、2)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/01/异步IO/">异步IO</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/23/Bluestore调研/">Bluestore调研</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/23/RocksDB相比LevelDB的新特性/">RocksDB相比LevelDB的新特性</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/20/Kernel modules (简体中文)/">Kernel modules (简体中文)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/Linux命令——pgrep和pkill/">Linux命令——pgrep和pkill</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/16/Linux命令——strace/">Linux命令——strace</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/10/获取每个osd的PG数/">获取每个osd的PG数</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/10/RBD-相关操作/">RBD 相关操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/07/在Kraken-release版本上测试Ceph-BlueStore/">在Kraken release版本上测试Ceph BlueStore</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/04/用户态和内核态/">用户态和内核态</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/04/ceph升级到kraken版本/">ceph升级到kraken版本</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/03/Dm-cache-vs-Bcache/">Dm-cache vs Bcache</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/03/Flashcache-vs-Cache-tier/">Flashcache vs Cache tier</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/25/Linux命令——parted/">Linux命令——parted</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/25/认识SSD/">认识SSD</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/24/Ceph-KRAKEN(V11.2.0)/">Ceph — V11.2.0 KRAKEN(译)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/24/Crushmap学习/">Crushmap学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/Ceph中严重数据不一致性BUG/">Ceph中严重数据不一致性BUG</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/块存储的世界/">块存储的世界</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/17/Linux命令——uptime/">Linux命令——uptime</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/dd磁盘命令小记/">dd磁盘命令小记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/解决calamari无法获取集群hosts信息的BUG/">解决calamari无法获取集群hosts信息的BUG</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/ubuntu下配置邮件发送/">ubuntu下配置邮件发送</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/ubuntu下系统打包/">ubuntu下系统打包</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux命令——history及其优化/">Linux命令——history及其优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux下利用screen进行屏幕协作/">Linux下利用screen进行屏幕协作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux命令——crontab/">Linux命令——crontab</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/06/hexo的搭建/">Mac上hexo博客的搭建</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2017 夏天的风
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
