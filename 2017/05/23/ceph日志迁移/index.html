@@ -15,21 +15,16 @@
 
 
 
-<meta name="description" content="目前，块存储服务是Ceph存储中被使用的最普遍的服务之一，通过块存储服务，可以向客户端以使用块设备一样访问Ceph集群。然而，目前在使用块存储服务时，尤其是OpenStack与Ceph对接时，如果没有严格的控制Ceph端的对象大小（使用 &amp;gt;= 8MB对象时），将有可能导致严重的数据不一致情况，该异常由于XFS文件系统本身对Fiemap的支持特性导致的。">
+<meta name="description" content="将ceph日志从默认的位置移动到SSD的一个分区，比较常用。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Ceph中严重数据不一致性BUG">
-<meta property="og:url" content="http://xiaqunfeng.github.io/2017/01/20/Ceph中严重数据不一致性BUG/index.html">
+<meta property="og:title" content="ceph日志迁移">
+<meta property="og:url" content="http://xiaqunfeng.github.io/2017/05/23/ceph日志迁移/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="目前，块存储服务是Ceph存储中被使用的最普遍的服务之一，通过块存储服务，可以向客户端以使用块设备一样访问Ceph集群。然而，目前在使用块存储服务时，尤其是OpenStack与Ceph对接时，如果没有严格的控制Ceph端的对象大小（使用 &amp;gt;= 8MB对象时），将有可能导致严重的数据不一致情况，该异常由于XFS文件系统本身对Fiemap的支持特性导致的。">
-<meta property="og:image" content="https://www.ustack.com/wp-content/uploads/2016/11/1.png">
-<meta property="og:image" content="https://www.ustack.com/wp-content/uploads/2016/11/2-1.jpg">
-<meta property="og:image" content="https://www.ustack.com/wp-content/uploads/2016/11/3.jpg">
-<meta property="og:image" content="https://www.ustack.com/wp-content/uploads/2016/11/4.png">
-<meta property="og:updated_time" content="2017-01-20T07:15:20.000Z">
+<meta property="og:description" content="将ceph日志从默认的位置移动到SSD的一个分区，比较常用。">
+<meta property="og:updated_time" content="2017-05-23T09:35:33.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ceph中严重数据不一致性BUG">
-<meta name="twitter:description" content="目前，块存储服务是Ceph存储中被使用的最普遍的服务之一，通过块存储服务，可以向客户端以使用块设备一样访问Ceph集群。然而，目前在使用块存储服务时，尤其是OpenStack与Ceph对接时，如果没有严格的控制Ceph端的对象大小（使用 &amp;gt;= 8MB对象时），将有可能导致严重的数据不一致情况，该异常由于XFS文件系统本身对Fiemap的支持特性导致的。">
-<meta name="twitter:image" content="https://www.ustack.com/wp-content/uploads/2016/11/1.png">
+<meta name="twitter:title" content="ceph日志迁移">
+<meta name="twitter:description" content="将ceph日志从默认的位置移动到SSD的一个分区，比较常用。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -61,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Ceph中严重数据不一致性BUG | 夏天的风的博客</title>
+<title>ceph日志迁移 | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -231,11 +226,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-Ceph中严重数据不一致性BUG" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-ceph日志迁移" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/01/20/Ceph中严重数据不一致性BUG/" class="article-date">
-      <time datetime="2017-01-20T07:15:20.000Z" itemprop="datePublished">2017-01-20</time>
+      <a href="/2017/05/23/ceph日志迁移/" class="article-date">
+      <time datetime="2017-05-23T09:20:48.000Z" itemprop="datePublished">2017-05-23</time>
 </a>
 
 
@@ -250,7 +245,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Ceph中严重数据不一致性BUG
+      ceph日志迁移
     </h1>
   
 
@@ -271,19 +266,18 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>目前，块存储服务是Ceph存储中被使用的最普遍的服务之一，通过块存储服务，可以向客户端以使用块设备一样访问Ceph集群。然而，目前在使用块存储服务时，尤其是OpenStack与Ceph对接时，如果没有严格的控制Ceph端的对象大小（使用 &gt;= 8MB对象时），将有可能导致严重的数据不一致情况，该异常由于XFS文件系统本身对Fiemap的支持特性导致的。<br><a id="more"></a></p>
-<h2 id="触发场景"><a href="#触发场景" class="headerlink" title="触发场景"></a>触发场景</h2><p>XFS使用fiemap时，当extents数量大于1364时，通过ioctl的FS_IOC_FIEMAP接口，获取的extents数量上限为1364，导致超出部分extents数据获取不到。这将导致，在开启fiemap时，Ceph集群进行recovery与backfill之后，产生大量数据不一致的情况，也是迄今为止Ceph中影响最大的，最严重的数据不一致BUG。</p>
-<p>由于fiemap BUG，碎片化对象在recovery与backfill之后（fiemap 获取不正确的数据），从而使的恢复的对象数据与原对象数据不一致。而恢复后的副本若成为主副本，则可能发生静默读错误，并且如果使用Ceph策略自动修复对象（repair object之后），可能将错误数据覆盖至正确数据，数据将永远损毁。在某些情况下，还会触发对象永远处于inconsistent状态。</p>
-<h2 id="复现方式"><a href="#复现方式" class="headerlink" title="复现方式"></a>复现方式</h2><p>初始化大量extents碎片文件test，使其成为一个拥有3999个extents的碎片文件。<br><img src="https://www.ustack.com/wp-content/uploads/2016/11/1.png" alt="1"></p>
-<p>通过fiemap系统调用，获取这些extents<br><a href="https://www.ustack.com/wp-content/uploads/2016/11/2-1.jpg" target="_blank" rel="external"><img src="https://www.ustack.com/wp-content/uploads/2016/11/2-1.jpg" alt="2"></a><br>编译g++ do_fiemap.cc -o do_fiemap</p>
-<p>通过该程序可以打印出可以获取的到fiemap extents, do_fiemap test，通过xfs_bmap test 打印出真正的extents数量后，进行比较。<br><img src="https://www.ustack.com/wp-content/uploads/2016/11/3.jpg" alt="3"></p>
-<p>可以看到，我们最先写了2000个extents，并通过xfs_bmap获取到了 2000个有内容的extents，但是通过fiemap系统调用，只获取到了1364个有数据的extents，所以在ceph中使用fiemap系统调用在某些情况下导致数据一致性BUG。</p>
-<h2 id="修复方案"><a href="#修复方案" class="headerlink" title="修复方案"></a>修复方案</h2><p>1）目前，在使用块存储使用场景时，通常情况下，默认使用4MB对象。在无特殊情况下，不用使用大于4MB 对象的RBD 镜像。</p>
-<p>2）在I版以后，通过新的系统调用，seek_data, seek_hole，可以避免触发该BUG，防止extents过多时使用fiemap调用产生的问题<br><img src="https://www.ustack.com/wp-content/uploads/2016/11/4.png" alt="4"></p>
-<p>这组系统调用，可以让使用者通过while循环，反复的发现文件中的data 与 hole，从而组织出一个文件中真正存在的数据，能够避免产生与fiemap系统调用类似的BUG，又保证了recovery或者clone时候只复制有用数据，而反复的系统调，应该会带来一定性能上的影响，请读者们自行测试。</p>
-<p>目前，在I版本以后的ceph中，提供参数filestore_seek_data_hole，来启用该功能。当filestore_seek_data_hole 与 filestore_fiemap同时设置时，只用文件系统支持seek_data_hole，那么就会先通过seek_data_hole方式来获取文件的extents，所以在I版本以后的ceph中，应启用filestore_seek_data_hole功能来替代filestore_fiemap 功能。</p>
-<p>3）对于已经使用8MB，16MB 甚至更大对象大小的RBD镜像，请暂时设置禁用Fiemap功能，并等待后续版本修复。</p>
-<p>原文链接：<a href="https://www.ustack.com/blog/%E9%98%B2%E7%81%AB%E9%98%B2%E7%9B%97%E9%98%B2bug-%E6%9C%89%E4%BA%91%E5%AD%98%E5%82%A8%E5%9B%A2%E9%98%9F%E5%85%AC%E5%B8%83ceph%E4%B8%AD%E6%9C%80%E4%B8%A5%E9%87%8D%E6%95%B0%E6%8D%AE%E4%B8%8D%E4%B8%80/" target="_blank" rel="external">有云存储团队公布Ceph中最严重数据不一致BUG!</a></p>
+        <p>将ceph日志从默认的位置移动到SSD的一个分区，比较常用。<br><a id="more"></a></p>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><p>1、停止osd</p>
+<p>2、将该osd的日志下盘</p>
+<p>3、移除原有日志</p>
+<p>4、将osd的日志软链到SSD的分区</p>
+<p>5、创建新的journal</p>
+<p>6、启动osd</p>
+<h2 id="脚本"><a href="#脚本" class="headerlink" title="脚本"></a>脚本</h2><p>系统：centos 7.3</p>
+<p>以 osd 0 、/dev/sdb1 为例，脚本如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"># stop osd</div><div class="line">systemctl stop ceph-osd@0</div><div class="line"></div><div class="line"># flush journal</div><div class="line">ceph-osd --flush-journal -i 0</div><div class="line"></div><div class="line"># remove old journal</div><div class="line">rm -rf /var/lib/ceph/osd/ceph-0/journal</div><div class="line"></div><div class="line"># create symlink to partition</div><div class="line">ln -s /dev/sdb1 /var/lib/ceph/osd/ceph-0/journal</div><div class="line"></div><div class="line"># create new journal</div><div class="line">ceph-osd --mkjournal -i 0</div><div class="line"></div><div class="line"># start osd</div><div class="line">systemctl start ceph-osd@0</div></pre></td></tr></table></figure>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>确认日志和磁盘分区的权限，如果不是ceph，会出现访问失败</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">chown -R ceph:ceph /var/lib/ceph/osd/ceph-0/journal</div><div class="line">chown -R ceph:ceph /dev/sdb1</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -292,13 +286,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/01/20/Ceph中严重数据不一致性BUG/">Ceph中严重数据不一致性BUG</a></p>
+        <p><span>本文标题:</span><a href="/2017/05/23/ceph日志迁移/">ceph日志迁移</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-01-20, 15:15:20</p>
-        <p><span>最后更新:</span>2017-01-20, 15:15:20</p>
+        <p><span>发布时间:</span>2017-05-23, 17:20:48</p>
+        <p><span>最后更新:</span>2017-05-23, 17:35:33</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/01/20/Ceph中严重数据不一致性BUG/" title="Ceph中严重数据不一致性BUG">http://xiaqunfeng.github.io/2017/01/20/Ceph中严重数据不一致性BUG/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/01/20/Ceph中严重数据不一致性BUG/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/05/23/ceph日志迁移/" title="ceph日志迁移">http://xiaqunfeng.github.io/2017/05/23/ceph日志迁移/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/05/23/ceph日志迁移/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -311,15 +305,15 @@
     <nav id="article-nav">
         
             <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/01/24/Crushmap学习/">
-                    Crushmap学习
+                <a href="/2017/05/25/mac上实现vim的markdown预览/">
+                    mac上实现vim的markdown预览
                 </a>
             </div>
         
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/01/20/块存储的世界/">
-                    块存储的世界
+                <a href="/2017/05/11/cpu拓扑结构/">
+                    cpu拓扑及ceph使用时的优化
                 </a>
             </div>
         
@@ -331,7 +325,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#触发场景"><span class="toc-number">1.</span> <span class="toc-text">触发场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#复现方式"><span class="toc-number">2.</span> <span class="toc-text">复现方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修复方案"><span class="toc-number">3.</span> <span class="toc-text">修复方案</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-number">1.</span> <span class="toc-text">步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#脚本"><span class="toc-number">2.</span> <span class="toc-text">脚本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注意"><span class="toc-number">3.</span> <span class="toc-text">注意</span></a></li></ol>
         
     </div>
     <style>
@@ -367,7 +361,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Ceph中严重数据不一致性BUG　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"ceph日志迁移　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -386,8 +380,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.github.io/2017/01/20/Ceph中严重数据不一致性BUG/';
-            this.page.identifier = '2017/01/20/Ceph中严重数据不一致性BUG/';
+            this.page.url = 'http://xiaqunfeng.github.io/2017/05/23/ceph日志迁移/';
+            this.page.identifier = '2017/05/23/ceph日志迁移/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -409,7 +403,7 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/01/24/Crushmap学习/" title="上一篇: Crushmap学习">
+            <a href="/2017/05/25/mac上实现vim的markdown预览/" title="上一篇: mac上实现vim的markdown预览">
                 <i class="fa fa-angle-left"></i>
             </a>
         
@@ -417,7 +411,7 @@
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/01/20/块存储的世界/" title="下一篇: 块存储的世界">
+            <a href="/2017/05/11/cpu拓扑结构/" title="下一篇: cpu拓扑及ceph使用时的优化">
                 <i class="fa fa-angle-right"></i>
             </a>
         

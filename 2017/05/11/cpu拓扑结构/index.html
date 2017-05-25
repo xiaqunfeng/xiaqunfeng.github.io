@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="夏天的风" />
+
+
+
+<meta name="description" content="先将在ceph层面的调优，再介绍cpu的拓扑结构。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cpu拓扑及ceph使用时的优化">
+<meta property="og:url" content="http://xiaqunfeng.github.io/2017/05/11/cpu拓扑结构/index.html">
+<meta property="og:site_name" content="夏天的风的博客">
+<meta property="og:description" content="先将在ceph层面的调优，再介绍cpu的拓扑结构。">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/hwloc.png">
+<meta property="og:updated_time" content="2017-05-23T10:56:17.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cpu拓扑及ceph使用时的优化">
+<meta name="twitter:description" content="先将在ceph层面的调优，再介绍cpu的拓扑结构。">
+<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/hwloc.png">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/qiniu.ico">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>cpu拓扑及ceph使用时的优化 | 夏天的风的博客</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: false
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/stark.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">夏天的风</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">好记性不如烂笔头😝</p>
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" href="https://github.com/xiaqunfeng" title="GitHub"></a>
+                            
+                                <a class="fa CSDN" href="http://blog.csdn.net/xiaqunfeng123" title="CSDN"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/centos/">centos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ceph/">ceph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/">machine learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rocksdb/">rocksdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/storage/">storage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">夏天的风</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/stark.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">夏天的风</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">好记性不如烂笔头😝</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/xiaqunfeng" title="GitHub"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://blog.csdn.net/xiaqunfeng123" title="CSDN"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-cpu拓扑结构" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/05/11/cpu拓扑结构/" class="article-date">
+      <time datetime="2017-05-11T01:23:18.000Z" itemprop="datePublished">2017-05-11</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      cpu拓扑及ceph使用时的优化
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>先将在ceph层面的调优，再介绍cpu的拓扑结构。<br><a id="more"></a></p>
+<h2 id="ceph优化之CPU"><a href="#ceph优化之CPU" class="headerlink" title="ceph优化之CPU"></a>ceph优化之CPU</h2><p>NUMA的思路就是讲内存和CPU分割成多个区域，每个区域叫node，然后将node高速互联。node内CPU与内存的访问速度快于访问其他node的内存，NUMA可能会在某些情况下影响ceph-osd。</p>
+<p>ceph目前未对NUMA架构的内存做过多优化，在日常使用过程中，通常为 2~4 颗CPU，这时候选择SMP架构的内存在效率上会高一些，如果条件允许，可以通过进程绑定的方法，在保证CPU能尽可能访问自身内存的前提下，使用NUMA架构。</p>
+<h3 id="解决方案一："><a href="#解决方案一：" class="headerlink" title="解决方案一："></a>解决方案一：</h3><p><strong>通过BIOS关闭NUMA。</strong></p>
+<ul>
+<li>在os层numa关闭时，打开bios层的numa会影响性能，QPS会下降15-30%。</li>
+<li>在bios层面numa关闭时，无论os层面的numa是否打开，都不会影响性能。</li>
+</ul>
+<p>通过命令判断bios层是否开启numa：</p>
+<p>1、开启状态输出如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># grep -i numa /var/log/dmesg</div><div class="line">[    0.000000] NUMA: Initialized distance table, cnt=2</div><div class="line">[    0.000000] NUMA: Node 0 [mem 0x00000000-0x7fffffff] + [mem 0x100000000-0x47fffffff] -&gt; [mem 0x00000000-0x47fffffff]</div><div class="line">[    0.000000] Enabling automatic NUMA balancing. Configure with numa_balancing= or the kernel.numa_balancing sysctl</div><div class="line">[    0.593086] pci_bus 0000:00: on NUMA node 0</div><div class="line">[    0.598672] pci_bus 0000:80: on NUMA node 1</div></pre></td></tr></table></figure>
+<p>2、未开启状态输出如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># grep -i numa /var/log/dmesg</div><div class="line">[    0.000000] No NUMA configuration found</div></pre></td></tr></table></figure>
+<p>查看机器的NUMA拓扑结构</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># numastat</div><div class="line">                           node0           node1</div><div class="line">numa_hit             83549806562     18182486371</div><div class="line">numa_miss               54084897     15540366583</div><div class="line">numa_foreign         15540366583        54084897</div><div class="line">interleave_hit             14109           14168</div><div class="line">local_node           83549670098     18182734455</div><div class="line">other_node              54221361     15540118499</div></pre></td></tr></table></figure>
+<p>当发现numa_miss数值比较高时，说明需要对分配策略进行调整。例如将指定进程关联绑定到指定的CPU上，从而提高内存命中率。</p>
+<p>在运行程序的时候使用<code>numactl</code> <code>-m</code>和<code>-physcpubind</code>就能制定将这个程序运行在哪个cpu和哪个memory中。</p>
+<p>numa的陷阱：当你的服务器还有内存的时候，发现它已经在开始使用swap了，甚至已经导致机器出现停滞的现象。这个就有可能是由于numa的限制，如果一个进程限制它只能使用自己的numa节点的内存，那么当自身numa node内存使用光之后，就不会去使用其他numa node的内存了，会开始使用swap，甚至更糟的情况，机器没有设置swap的时候，可能会直接死机。所以可以使用<code>numactl --interleave=all</code>来取消numa node的限制。</p>
+<p>根据具体业务决定NUMA的使用：</p>
+<ul>
+<li>如果你的程序是会占用大规模内存的，你大多应该选择关闭numa node的限制（或从硬件关闭numa）。因为这个时候你的程序很有几率会碰到numa陷阱。</li>
+<li>如果你的程序并不占用大内存，而是要求更快的程序运行时间。你大多应该选择限制只访问本numa node的方法来进行处理。</li>
+</ul>
+<h3 id="解决方案二："><a href="#解决方案二：" class="headerlink" title="解决方案二："></a>解决方案二：</h3><p>通过cgroup将ceph-osd进程与某一个 CPU core 以及同一个 node下的内存进行绑定。</p>
+<p>绑定脚本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">mkdir -p /dys/fs/cgroup/cpuset/ceph</div><div class="line"># cup number : 0,1,2,3 = 0-3</div><div class="line">echo 0,4 &gt; /sys/fs/cgroup/cpuset/ceph/cpuset.cpus</div><div class="line"># NUMA node</div><div class="line">echo 0 &gt; /sys/fs/cgroup/cpuset/ceph/cpuset.mems</div><div class="line">osd-pid-list=$(ps aux | grep osd | grep -v grep | awk &apos;&#123;print $2&#125;&apos;)</div><div class="line">for osd-pid in $(osd-pid-list)</div><div class="line">do</div><div class="line">    echo $(osd-pid) &gt; /sys/fs/cgroup/cpuset/ceph/cgroup.procs</div><div class="line">done</div></pre></td></tr></table></figure>
+<p>注意的问题：</p>
+<p>· 防止进程跨CPU核心迁移，以更好的利用缓存；</p>
+<p>· 防止进程跨物理CPU迁移，以更好的利用内存和缓存；</p>
+<p>· Ceph进程和其他进程会互相抢占资源，使用Cgroups做好隔离措施；</p>
+<p>· 为Ceph进程预留足够多的CPU和内存资源，防止影响性能或产生OOM。尤其是高性能环境中并不能完全满足Ceph进程的开销，在高性能场景（全SSD）下，每个OSD进程可能需要高达6GHz的CPU和4GB以上的内存。</p>
+<h2 id="CPU架构"><a href="#CPU架构" class="headerlink" title="CPU架构"></a>CPU架构</h2><p>cpu相关的信息都在 <code>/proc/cpuinfo</code> 中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"># lscpu</div><div class="line">Architecture:          x86_64</div><div class="line">CPU op-mode(s):        32-bit, 64-bit</div><div class="line">Byte Order:            Little Endian</div><div class="line">CPU(s):                32</div><div class="line">On-line CPU(s) list:   0-31</div><div class="line">Thread(s) per core:    2</div><div class="line">Core(s) per socket:    8</div><div class="line">座：                 2</div><div class="line">NUMA 节点：         2</div><div class="line">厂商 ID：           GenuineIntel</div><div class="line">CPU 系列：          6</div><div class="line">型号：              63</div><div class="line">型号名称：        Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz</div><div class="line">步进：              2</div><div class="line">CPU MHz：             1200.585</div><div class="line">BogoMIPS：            4800.30</div><div class="line">虚拟化：           VT-x</div><div class="line">L1d 缓存：          32K</div><div class="line">L1i 缓存：          32K</div><div class="line">L2 缓存：           256K</div><div class="line">L3 缓存：           20480K</div><div class="line">NUMA 节点0 CPU：    0-7,16-23</div><div class="line">NUMA 节点1 CPU：    8-15,24-31</div></pre></td></tr></table></figure>
+<p>两种不同的CPU硬件体系架构：</p>
+<ul>
+<li>NUMA（Non-Uniform Memory Access，非一致性内存访问）</li>
+<li>SMP（Symmetric Multi-Processor，对称多处理器系统）</li>
+</ul>
+<p>SMP的主要特征是共享，所有的CPU共享使用全部资源，例如内存、总线和I/O，多个CPU对称工作，彼此之间没有主次之分，平等地访问共享的资源，这样势必引入资源的竞争问题，且如果内存访问达到瓶颈的时候，性能就不能随之增加。每个CPU通过总线访问内存，当CPU数量不断增加以后，总线的压力不断增加，导致CPU的处理能力大大降低。</p>
+<p>NUMA技术将CPU划分成不同的组（Node)，每个Node由多个CPU组成，并且有独立的本地内存、I/O等资源。Node之间通过互联模块连接和沟通，因此除了本地内存外，每个CPU仍可以访问远端Node的内存，不过效率会比访问本地内存差一些，我们用Node之间的距离（Distance，抽象的概念）来定义各个Node之间互访资源的开销。</p>
+<p>NUMA架构旨在超越SMP架构的可扩展性限制。 使用代表对称多处理的SMP，所有存储器访问都被发布到相同的共享存储器总线。 这对于相对较少数量的CPU来说可行，但是当您有数十个甚至数百个CPU竞争访问共享内存总线时，会出现共享总线的问题。 NUMA通过限制任何一个存储器总线上的CPU数量以及通过高速互连连接各个节点来减轻这些瓶颈。</p>
+<p>在NUMA盒上，访问非本地内存的成本很高。 如果您运行的是不支持NUMA的软件，那么它不会小心节点正在托管刚刚分配的内存，并没有利用NUMA架构的优势。 根据实施情况和平台，这种处罚可以忽略不计，压倒一切。</p>
+<h2 id="NUMA"><a href="#NUMA" class="headerlink" title="NUMA"></a>NUMA</h2><p>如果你只知道CPU这么一个概念，那么是无法理解CPU的拓扑的。事实上，在NUMA架构下，CPU的概念从大到小依次是：Node、Socket、Core、Processor。</p>
+<p>随着多核技术的发展，我们将多个CPU封装在一起，这个封装一般被称为Socket（插槽的意思，也有人称之为Packet），而Socket中的每个核心被称为Core。为了进一步提升CPU的处理能力，Intel又引入了HT（Hyper-Threading，超线程)的技术，一个Core打开HT之后，在OS看来就是两个核，当然这个核是逻辑上的概念，所以也被称为Logical Processor，本文简称为Processor。</p>
+<p>综上所述，一个NUMA Node可以有一个或者多个Socket，一个多核Socket显然包含多个Core，一个Core如果打开HT则变成两个Logical Processor。Logical processor只是OS内部看到的，实际上两个Processor还是位于同一个Core上，所以频繁的调度仍可能导致资源竞争，影响性能。</p>
+<p>NUMA相关的策略</p>
+<p>1、每个进程（或线程）都会从父进程继承NUMA策略，并分配有一个优先node。如果NUMA策略允许的话，进程可以调用其他node上的资源。</p>
+<p>2、NUMA的CPU分配策略有cpunodebind、physcpubind。cpunodebind规定进程运行在某几个node之上，而physcpubind可以更加精细地规定运行在哪些核上。</p>
+<p>3、NUMA的内存分配策略有localalloc、preferred、membind、interleave。</p>
+<p>localalloc规定进程从当前node上请求分配内存；</p>
+<p>而preferred比较宽松地指定了一个推荐的node来获取内存，如果被推荐的node上没有足够内存，进程可以尝试别的node。</p>
+<p>membind可以指定若干个node，进程只能从这些指定的node上请求分配内存。</p>
+<p>interleave规定进程从指定的若干个node上以RR（Round Robin 轮询调度）算法交织地请求分配内存。</p>
+<p>因为NUMA默认的内存分配策略是优先在进程所在CPU的本地内存中分配，会导致CPU节点之间内存分配不均衡，当某个CPU节点的内存不足时，会导致swap产生，而不是从远程节点分配内存。这就是所谓的swap insanity 现象。</p>
+<h2 id="查看CPU拓扑"><a href="#查看CPU拓扑" class="headerlink" title="查看CPU拓扑"></a>查看CPU拓扑</h2><p><strong>Node -&gt; Socket -&gt; Core -&gt; Processor</strong></p>
+<h3 id="查看Numa-Node"><a href="#查看Numa-Node" class="headerlink" title="查看Numa Node"></a>查看Numa Node</h3><p>安装numactl</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install numactl -y</div></pre></td></tr></table></figure>
+<p>numactl是设定进程NUMA策略的命令行工具，也可以用来查看当前的Nuwa node：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># numactl --hardware</div><div class="line">available: 2 nodes (0-1)</div><div class="line">node 0 cpus: 0 1 2 3 4 5 6 7 16 17 18 19 20 21 22 23</div><div class="line">node 0 size: 16263 MB</div><div class="line">node 0 free: 168 MB</div><div class="line">node 1 cpus: 8 9 10 11 12 13 14 15 24 25 26 27 28 29 30 31</div><div class="line">node 1 size: 16384 MB</div><div class="line">node 1 free: 263 MB</div><div class="line">node distances:</div><div class="line">node   0   1</div><div class="line">  0:  10  21</div><div class="line">  1:  21  10</div></pre></td></tr></table></figure>
+<h3 id="查看socket"><a href="#查看socket" class="headerlink" title="查看socket"></a>查看socket</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># grep &apos;physical id&apos; /proc/cpuinfo | awk -F: &apos;&#123;print $2 | &quot;sort -un&quot;&#125;&apos;</div><div class="line"> 0</div><div class="line"> 1</div><div class="line"># grep &apos;physical id&apos; /proc/cpuinfo | awk -F: &apos;&#123;print $2 | &quot;sort -un&quot;&#125;&apos; | wc -l</div><div class="line">2</div></pre></td></tr></table></figure>
+<p>查看每个socket对应几个processor</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># grep &apos;physical id&apos; /proc/cpuinfo | awk -F: &apos;&#123;print $2&#125;&apos; | sort | uniq -c</div><div class="line">     16  0</div><div class="line">     16  1</div></pre></td></tr></table></figure>
+<p>查看socket对应哪几个processor</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"># awk -F: &apos;&#123;</div><div class="line">&gt;     if ($1 ~ /processor/) &#123;</div><div class="line">&gt;         gsub(/ /,&quot;&quot;,$2);</div><div class="line">&gt;         p_id=$2;</div><div class="line">&gt;     &#125; else if ($1 ~ /physical id/)&#123;</div><div class="line">&gt;         gsub(/ /,&quot;&quot;,$2);</div><div class="line">&gt;         s_id=$2;</div><div class="line">&gt;         arr[s_id]=arr[s_id] &quot; &quot; p_id</div><div class="line">&gt;     &#125;</div><div class="line">&gt; &#125;</div><div class="line">&gt;</div><div class="line">&gt; END&#123;</div><div class="line">&gt;     for (i in arr)</div><div class="line">&gt;         print arr[i];</div><div class="line">&gt; &#125;&apos; /proc/cpuinfo | cut -c2-</div><div class="line">0 1 2 3 4 5 6 7 16 17 18 19 20 21 22 23</div><div class="line">8 9 10 11 12 13 14 15 24 25 26 27 28 29 30 31</div></pre></td></tr></table></figure>
+<h3 id="查看core"><a href="#查看core" class="headerlink" title="查看core"></a>查看core</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># cat /proc/cpuinfo | grep &apos;core&apos;  | sort -u</div><div class="line">core id		: 0</div><div class="line">core id		: 1</div><div class="line">core id		: 2</div><div class="line">core id		: 3</div><div class="line">core id		: 4</div><div class="line">core id		: 5</div><div class="line">core id		: 6</div><div class="line">core id		: 7</div><div class="line">cpu cores	: 8</div></pre></td></tr></table></figure>
+<h3 id="查看processor"><a href="#查看processor" class="headerlink" title="查看processor"></a>查看processor</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># grep &apos;processor&apos; /proc/cpuinfo | wc -l</div><div class="line">32</div></pre></td></tr></table></figure>
+<p>每个socket中有几个processor：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># grep &apos;siblings&apos; /proc/cpuinfo | sort -u</div><div class="line">siblings	: 16</div></pre></td></tr></table></figure>
+<h2 id="所有CPU拓扑信息"><a href="#所有CPU拓扑信息" class="headerlink" title="所有CPU拓扑信息"></a>所有CPU拓扑信息</h2><p>shell脚本如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div></pre></td><td class="code"><pre><div class="line"># cat cpu-topology.sh</div><div class="line">#!/bin/bash</div><div class="line"># Simple print cpu topology</div><div class="line"></div><div class="line">function get_nr_processor()</div><div class="line">&#123;</div><div class="line">    grep &apos;^processor&apos; /proc/cpuinfo | wc -l</div><div class="line">&#125;</div><div class="line"></div><div class="line">function get_nr_socket()</div><div class="line">&#123;</div><div class="line">    grep &apos;physical id&apos; /proc/cpuinfo | awk -F: &apos;&#123;</div><div class="line">            print $2 | &quot;sort -un&quot;&#125;&apos; | wc -l</div><div class="line">&#125;</div><div class="line"></div><div class="line">function get_nr_siblings()</div><div class="line">&#123;</div><div class="line">    grep &apos;siblings&apos; /proc/cpuinfo | awk -F: &apos;&#123;</div><div class="line">            print $2 | &quot;sort -un&quot;&#125;&apos;</div><div class="line">&#125;</div><div class="line"></div><div class="line">function get_nr_cores_of_socket()</div><div class="line">&#123;</div><div class="line">    grep &apos;cpu cores&apos; /proc/cpuinfo | awk -F: &apos;&#123;</div><div class="line">            print $2 | &quot;sort -un&quot;&#125;&apos;</div><div class="line">&#125;</div><div class="line"></div><div class="line">echo &apos;===== CPU Topology Table =====&apos;</div><div class="line">echo</div><div class="line"></div><div class="line">echo &apos;+--------------+---------+-----------+&apos;</div><div class="line">echo &apos;| Processor ID | Core ID | Socket ID |&apos;</div><div class="line">echo &apos;+--------------+---------+-----------+&apos;</div><div class="line"></div><div class="line">while read line; do</div><div class="line">    if [ -z &quot;$line&quot; ]; then</div><div class="line">        printf &apos;| %-12s | %-7s | %-9s |\n&apos; $p_id $c_id $s_id</div><div class="line">        echo &apos;+--------------+---------+-----------+&apos;</div><div class="line">        continue</div><div class="line">    fi</div><div class="line"></div><div class="line">    if echo &quot;$line&quot; | grep -q &quot;^processor&quot;; then</div><div class="line">        p_id=`echo &quot;$line&quot; | awk -F: &apos;&#123;print $2&#125;&apos; | tr -d &apos; &apos;` </div><div class="line">    fi</div><div class="line"></div><div class="line">    if echo &quot;$line&quot; | grep -q &quot;^core id&quot;; then</div><div class="line">        c_id=`echo &quot;$line&quot; | awk -F: &apos;&#123;print $2&#125;&apos; | tr -d &apos; &apos;` </div><div class="line">    fi</div><div class="line"></div><div class="line">    if echo &quot;$line&quot; | grep -q &quot;^physical id&quot;; then</div><div class="line">        s_id=`echo &quot;$line&quot; | awk -F: &apos;&#123;print $2&#125;&apos; | tr -d &apos; &apos;` </div><div class="line">    fi</div><div class="line">done &lt; /proc/cpuinfo</div><div class="line"></div><div class="line">echo</div><div class="line"></div><div class="line">awk -F: &apos;&#123; </div><div class="line">    if ($1 ~ /processor/) &#123;</div><div class="line">        gsub(/ /,&quot;&quot;,$2);</div><div class="line">        p_id=$2;</div><div class="line">    &#125; else if ($1 ~ /physical id/)&#123;</div><div class="line">        gsub(/ /,&quot;&quot;,$2);</div><div class="line">        s_id=$2;</div><div class="line">        arr[s_id]=arr[s_id] &quot; &quot; p_id</div><div class="line">    &#125;</div><div class="line">&#125; </div><div class="line"></div><div class="line">END&#123;</div><div class="line">    for (i in arr) </div><div class="line">        printf &quot;Socket %s:%s\n&quot;, i, arr[i];</div><div class="line">&#125;&apos; /proc/cpuinfo</div><div class="line"></div><div class="line">echo</div><div class="line">echo &apos;===== CPU Info Summary =====&apos;</div><div class="line">echo</div><div class="line"></div><div class="line">nr_processor=`get_nr_processor`</div><div class="line">echo &quot;Logical processors: $nr_processor&quot;</div><div class="line"></div><div class="line">nr_socket=`get_nr_socket`</div><div class="line">echo &quot;Physical socket: $nr_socket&quot;</div><div class="line"></div><div class="line">nr_siblings=`get_nr_siblings`</div><div class="line">echo &quot;Siblings in one socket: $nr_siblings&quot;</div><div class="line"></div><div class="line">nr_cores=`get_nr_cores_of_socket`</div><div class="line">echo &quot;Cores in one socket: $nr_cores&quot;</div><div class="line"></div><div class="line">let nr_cores*=nr_socket</div><div class="line">echo &quot;Cores in total: $nr_cores&quot;</div><div class="line"></div><div class="line">if [ &quot;$nr_cores&quot; = &quot;$nr_processor&quot; ]; then</div><div class="line">    echo &quot;Hyper-Threading: off&quot;</div><div class="line">else</div><div class="line">    echo &quot;Hyper-Threading: on&quot;</div><div class="line">fi</div><div class="line"></div><div class="line">echo</div><div class="line">echo &apos;===== END =====&apos;</div></pre></td></tr></table></figure>
+<p>结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div></pre></td><td class="code"><pre><div class="line"># sh cpu-topology.sh</div><div class="line">===== CPU Topology Table =====</div><div class="line"></div><div class="line">+--------------+---------+-----------+</div><div class="line">| Processor ID | Core ID | Socket ID |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 0            | 0       | 0         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 1            | 1       | 0         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 2            | 2       | 0         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 3            | 3       | 0         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 4            | 4       | 0         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 5            | 5       | 0         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 6            | 6       | 0         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 7            | 7       | 0         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 8            | 0       | 1         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 9            | 1       | 1         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 10           | 2       | 1         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 11           | 3       | 1         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 12           | 4       | 1         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 13           | 5       | 1         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 14           | 6       | 1         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 15           | 7       | 1         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 16           | 0       | 0         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 17           | 1       | 0         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 18           | 2       | 0         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 19           | 3       | 0         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 20           | 4       | 0         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 21           | 5       | 0         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 22           | 6       | 0         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 23           | 7       | 0         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 24           | 0       | 1         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 25           | 1       | 1         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 26           | 2       | 1         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 27           | 3       | 1         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 28           | 4       | 1         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 29           | 5       | 1         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 30           | 6       | 1         |</div><div class="line">+--------------+---------+-----------+</div><div class="line">| 31           | 7       | 1         |</div><div class="line">+--------------+---------+-----------+</div><div class="line"></div><div class="line">Socket 0: 0 1 2 3 4 5 6 7 16 17 18 19 20 21 22 23</div><div class="line">Socket 1: 8 9 10 11 12 13 14 15 24 25 26 27 28 29 30 31</div><div class="line"></div><div class="line">===== CPU Info Summary =====</div><div class="line"></div><div class="line">Logical processors: 32</div><div class="line">Physical socket: 2</div><div class="line">Siblings in one socket:  16</div><div class="line">Cores in one socket:  8</div><div class="line">Cores in total: 16</div><div class="line">Hyper-Threading: on</div><div class="line"></div><div class="line">===== END =====</div></pre></td></tr></table></figure>
+<h2 id="工具hwloc"><a href="#工具hwloc" class="headerlink" title="工具hwloc"></a>工具hwloc</h2><p>hwloc可以显示CPU拓扑，比较方面地查看CPU各级缓存以及各个核、物理CPU之间，可以共享哪一级别的CPU cache。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div></pre></td><td class="code"><pre><div class="line"># hwloc-ls</div><div class="line">Machine (94GB total)</div><div class="line">  NUMANode L#0 (P#0 47GB)</div><div class="line">    Package L#0 + L3 L#0 (20MB)</div><div class="line">      L2 L#0 (256KB) + L1d L#0 (32KB) + L1i L#0 (32KB) + Core L#0</div><div class="line">        PU L#0 (P#0)</div><div class="line">        PU L#1 (P#16)</div><div class="line">      L2 L#1 (256KB) + L1d L#1 (32KB) + L1i L#1 (32KB) + Core L#1</div><div class="line">        PU L#2 (P#1)</div><div class="line">        PU L#3 (P#17)</div><div class="line">      L2 L#2 (256KB) + L1d L#2 (32KB) + L1i L#2 (32KB) + Core L#2</div><div class="line">        PU L#4 (P#2)</div><div class="line">        PU L#5 (P#18)</div><div class="line">      L2 L#3 (256KB) + L1d L#3 (32KB) + L1i L#3 (32KB) + Core L#3</div><div class="line">        PU L#6 (P#3)</div><div class="line">        PU L#7 (P#19)</div><div class="line">      L2 L#4 (256KB) + L1d L#4 (32KB) + L1i L#4 (32KB) + Core L#4</div><div class="line">        PU L#8 (P#4)</div><div class="line">        PU L#9 (P#20)</div><div class="line">      L2 L#5 (256KB) + L1d L#5 (32KB) + L1i L#5 (32KB) + Core L#5</div><div class="line">        PU L#10 (P#5)</div><div class="line">        PU L#11 (P#21)</div><div class="line">      L2 L#6 (256KB) + L1d L#6 (32KB) + L1i L#6 (32KB) + Core L#6</div><div class="line">        PU L#12 (P#6)</div><div class="line">        PU L#13 (P#22)</div><div class="line">      L2 L#7 (256KB) + L1d L#7 (32KB) + L1i L#7 (32KB) + Core L#7</div><div class="line">        PU L#14 (P#7)</div><div class="line">        PU L#15 (P#23)</div><div class="line">    HostBridge L#0</div><div class="line">      PCIBridge</div><div class="line">        PCI 8086:1521</div><div class="line">          Net L#0 &quot;enp1s0f0&quot;</div><div class="line">        PCI 8086:1521</div><div class="line">          Net L#1 &quot;enp1s0f1&quot;</div><div class="line">      PCIBridge</div><div class="line">        PCI 8086:1521</div><div class="line">          Net L#2 &quot;enp4s0f0&quot;</div><div class="line">        PCI 8086:1521</div><div class="line">          Net L#3 &quot;enp4s0f1&quot;</div><div class="line">      PCIBridge</div><div class="line">        PCI 1000:0097</div><div class="line">          Block(Disk) L#4 &quot;sda&quot;</div><div class="line">      PCIBridge</div><div class="line">        PCI 8086:10fb</div><div class="line">          Net L#5 &quot;enp8s0f0&quot;</div><div class="line">        PCI 8086:10fb</div><div class="line">          Net L#6 &quot;enp8s0f1&quot;</div><div class="line">      PCIBridge</div><div class="line">        PCIBridge</div><div class="line">          PCI 1a03:2000</div><div class="line">            GPU L#7 &quot;card0&quot;</div><div class="line">            GPU L#8 &quot;controlD64&quot;</div><div class="line">  NUMANode L#1 (P#1 47GB)</div><div class="line">    Package L#1 + L3 L#1 (20MB)</div><div class="line">      L2 L#8 (256KB) + L1d L#8 (32KB) + L1i L#8 (32KB) + Core L#8</div><div class="line">        PU L#16 (P#8)</div><div class="line">        PU L#17 (P#24)</div><div class="line">      L2 L#9 (256KB) + L1d L#9 (32KB) + L1i L#9 (32KB) + Core L#9</div><div class="line">        PU L#18 (P#9)</div><div class="line">        PU L#19 (P#25)</div><div class="line">      L2 L#10 (256KB) + L1d L#10 (32KB) + L1i L#10 (32KB) + Core L#10</div><div class="line">        PU L#20 (P#10)</div><div class="line">        PU L#21 (P#26)</div><div class="line">      L2 L#11 (256KB) + L1d L#11 (32KB) + L1i L#11 (32KB) + Core L#11</div><div class="line">        PU L#22 (P#11)</div><div class="line">        PU L#23 (P#27)</div><div class="line">      L2 L#12 (256KB) + L1d L#12 (32KB) + L1i L#12 (32KB) + Core L#12</div><div class="line">        PU L#24 (P#12)</div><div class="line">        PU L#25 (P#28)</div><div class="line">      L2 L#13 (256KB) + L1d L#13 (32KB) + L1i L#13 (32KB) + Core L#13</div><div class="line">        PU L#26 (P#13)</div><div class="line">        PU L#27 (P#29)</div><div class="line">      L2 L#14 (256KB) + L1d L#14 (32KB) + L1i L#14 (32KB) + Core L#14</div><div class="line">        PU L#28 (P#14)</div><div class="line">        PU L#29 (P#30)</div><div class="line">      L2 L#15 (256KB) + L1d L#15 (32KB) + L1i L#15 (32KB) + Core L#15</div><div class="line">        PU L#30 (P#15)</div><div class="line">        PU L#31 (P#31)</div><div class="line">    HostBridge L#7</div><div class="line">      PCIBridge</div><div class="line">        PCI 8086:10fb</div><div class="line">          Net L#9 &quot;enp132s0f0&quot;</div><div class="line">        PCI 8086:10fb</div><div class="line">          Net L#10 &quot;enp132s0f1&quot;</div><div class="line">  Misc(MemoryModule)</div><div class="line">  Misc(MemoryModule)</div><div class="line">  Misc(MemoryModule)</div><div class="line">  Misc(MemoryModule)</div><div class="line">  Misc(MemoryModule)</div><div class="line">  Misc(MemoryModule)</div><div class="line">  Misc(MemoryModule)</div><div class="line">  Misc(MemoryModule)</div><div class="line">  Misc(MemoryModule)</div><div class="line">  Misc(MemoryModule)</div><div class="line">  Misc(MemoryModule)</div><div class="line">  Misc(MemoryModule)</div><div class="line">  Misc(MemoryModule)</div><div class="line">  Misc(MemoryModule)</div><div class="line">  Misc(MemoryModule)</div><div class="line">  Misc(MemoryModule)</div></pre></td></tr></table></figure>
+<p>如果是桌面环境，则会弹窗一个窗口：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/hwloc.png" alt="hwloc"></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/05/11/cpu拓扑结构/">cpu拓扑及ceph使用时的优化</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
+        <p><span>发布时间:</span>2017-05-11, 09:23:18</p>
+        <p><span>最后更新:</span>2017-05-23, 18:56:17</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/05/11/cpu拓扑结构/" title="cpu拓扑及ceph使用时的优化">http://xiaqunfeng.github.io/2017/05/11/cpu拓扑结构/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/05/11/cpu拓扑结构/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/05/23/ceph日志迁移/">
+                    ceph日志迁移
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/05/07/firewalld和iptables/">
+                    firewalld和iptables
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ceph优化之CPU"><span class="toc-number">1.</span> <span class="toc-text">ceph优化之CPU</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方案一："><span class="toc-number">1.1.</span> <span class="toc-text">解决方案一：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方案二："><span class="toc-number">1.2.</span> <span class="toc-text">解决方案二：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CPU架构"><span class="toc-number">2.</span> <span class="toc-text">CPU架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NUMA"><span class="toc-number">3.</span> <span class="toc-text">NUMA</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查看CPU拓扑"><span class="toc-number">4.</span> <span class="toc-text">查看CPU拓扑</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#查看Numa-Node"><span class="toc-number">4.1.</span> <span class="toc-text">查看Numa Node</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看socket"><span class="toc-number">4.2.</span> <span class="toc-text">查看socket</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看core"><span class="toc-number">4.3.</span> <span class="toc-text">查看core</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看processor"><span class="toc-number">4.4.</span> <span class="toc-text">查看processor</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#所有CPU拓扑信息"><span class="toc-number">5.</span> <span class="toc-text">所有CPU拓扑信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工具hwloc"><span class="toc-number">6.</span> <span class="toc-text">工具hwloc</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"cpu拓扑及ceph使用时的优化　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section id="comments">
+    <style> aside.comment-bar { margin: auto 30px; }</style>
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function(){
+            this.page.url = 'http://xiaqunfeng.github.io/2017/05/11/cpu拓扑结构/';
+            this.page.identifier = '2017/05/11/cpu拓扑结构/';
+        };
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = '//null.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+</section>
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/05/23/ceph日志迁移/" title="上一篇: ceph日志迁移">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/05/07/firewalld和iptables/" title="下一篇: firewalld和iptables">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/05/25/mac上实现vim的markdown预览/">mac上实现vim的markdown预览</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/23/ceph日志迁移/">ceph日志迁移</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/11/cpu拓扑结构/">cpu拓扑及ceph使用时的优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/07/firewalld和iptables/">firewalld和iptables</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/07/S-M-A-R-T-磁盘健康状态监测工具/">S.M.A.R.T--磁盘健康状态监测工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/04/iterm2配色/">iterm2配色--zsh & oh-my-zsh</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/03/nginx使用和配置/">nginx使用和配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/02/iterm2快捷键的使用/">iterm2快捷键的使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/02/VSM部署/">VSM部署</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/常用git命令清单/">常用git命令清单</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/理解socket编程/">理解socket编程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/cow和row快照机制的区别/">cow和row快照机制的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/Machine-Learning-Yearning-5、6/">Machine Learning Yearning(5、6、7)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/03/Machine-Learning-Yearning-3、4/">Machine Learning Yearning(3、4)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/02/Machine-Learning-Yearning-开篇、1、2/">Machine Learning Yearning(开篇、1、2)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/01/异步IO/">异步IO</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/23/Bluestore调研/">Bluestore调研</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/23/RocksDB相比LevelDB的新特性/">RocksDB相比LevelDB的新特性</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/20/Kernel modules (简体中文)/">Kernel modules (简体中文)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/Linux命令——pgrep和pkill/">Linux命令——pgrep和pkill</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/16/Linux命令——strace/">Linux命令——strace</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/10/获取每个osd的PG数/">获取每个osd的PG数</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/10/RBD-相关操作/">RBD 相关操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/07/在Kraken-release版本上测试Ceph-BlueStore/">在Kraken release版本上测试Ceph BlueStore</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/04/用户态和内核态/">用户态和内核态</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/04/ceph升级到kraken版本/">ceph升级到kraken版本</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/03/Dm-cache-vs-Bcache/">Dm-cache vs Bcache</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/03/Flashcache-vs-Cache-tier/">Flashcache vs Cache tier</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/25/Linux命令——parted/">Linux命令——parted</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/25/认识SSD/">认识SSD</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/24/Ceph-KRAKEN(V11.2.0)/">Ceph — V11.2.0 KRAKEN(译)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/24/Crushmap学习/">Crushmap学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/Ceph中严重数据不一致性BUG/">Ceph中严重数据不一致性BUG</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/块存储的世界/">块存储的世界</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/17/Linux命令——uptime/">Linux命令——uptime</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/dd磁盘命令小记/">dd磁盘命令小记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/解决calamari无法获取集群hosts信息的BUG/">解决calamari无法获取集群hosts信息的BUG</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/ubuntu下配置邮件发送/">ubuntu下配置邮件发送</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/ubuntu下系统打包/">ubuntu下系统打包</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux命令——history及其优化/">Linux命令——history及其优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux下利用screen进行屏幕协作/">Linux下利用screen进行屏幕协作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux命令——crontab/">Linux命令——crontab</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/06/hexo的搭建/">Mac上hexo博客的搭建</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2017 夏天的风
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
