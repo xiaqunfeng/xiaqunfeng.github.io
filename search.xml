@@ -4,6 +4,36 @@
   
     
     <entry>
+      <title><![CDATA[GPG key retrieval failure]]></title>
+      <url>http://xiaqunfeng.github.io/2017/05/26/GPG-key-retrieval-failure/</url>
+      <content type="html"><![CDATA[<p>在centos 7.31611上遇到的问题，记录一下解决方法，并附下载链接。<br><a id="more"></a></p>
+<h2 id="我的epel源"><a href="#我的epel源" class="headerlink" title="我的epel源"></a>我的epel源</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"># cat /etc/yum.repos.d</div><div class="line">[epel]</div><div class="line">name=Extra Packages for Enterprise Linux 7 - $basearch</div><div class="line">#baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch</div><div class="line">mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-7&amp;arch=$basearch</div><div class="line">failovermethod=priority</div><div class="line">enabled=1</div><div class="line">gpgcheck=1</div><div class="line">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7</div><div class="line"></div><div class="line">[epel-debuginfo]</div><div class="line">name=Extra Packages for Enterprise Linux 7 - $basearch - Debug</div><div class="line">#baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch/debug</div><div class="line">mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-7&amp;arch=$basearch</div><div class="line">failovermethod=priority</div><div class="line">enabled=0</div><div class="line">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7</div><div class="line">gpgcheck=1</div><div class="line"></div><div class="line">[epel-source]</div><div class="line">name=Extra Packages for Enterprise Linux 7 - $basearch - Source</div><div class="line">#baseurl=http://download.fedoraproject.org/pub/epel/7/SRPMS</div><div class="line">mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-source-7&amp;arch=$basearch</div><div class="line">failovermethod=priority</div><div class="line">enabled=0</div><div class="line">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7</div><div class="line">gpgcheck=1</div></pre></td></tr></table></figure>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>更新yum源的时候出现如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Retrieving key from file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7</div><div class="line"></div><div class="line"></div><div class="line">GPG key retrieval failed: [Errno 14] curl#37 - &quot;Couldn&apos;t open file /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7&quot;</div></pre></td></tr></table></figure>
+<p>查看一下，确实没有</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root@ceph0:~# ls /etc/pki/rpm-gpg/</div><div class="line">RPM-GPG-KEY-CentOS-7  RPM-GPG-KEY-CentOS-Debug-7  RPM-GPG-KEY-CentOS-Testing-7  RPM-GPG-KEY-ZABBIX</div></pre></td></tr></table></figure>
+<h2 id="网上解决方案"><a href="#网上解决方案" class="headerlink" title="网上解决方案"></a>网上解决方案</h2><p>这是个bug，没啥好的办法</p>
+<p><a href="https://bugzilla.redhat.com/show_bug.cgi?id=1237057" target="_blank" rel="external">https://bugzilla.redhat.com/show_bug.cgi?id=1237057</a></p>
+<h2 id="原因-amp-解决尝试"><a href="#原因-amp-解决尝试" class="headerlink" title="原因&amp;解决尝试"></a>原因&amp;解决尝试</h2><p>看了下输出，就是缺少 <code>RPM-GPG-KEY-EPEL-7</code> 嘛，补上是不是就可以了呢？</p>
+<p>带着这个疑问，实践一下：</p>
+<p>1、在原先成功的机器上，查看是否有</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@ceph3 yum.repos.d]# ls /etc/pki/rpm-gpg/</div><div class="line">RPM-GPG-KEY-CentOS-7  RPM-GPG-KEY-CentOS-Debug-7  RPM-GPG-KEY-CentOS-SIG-Virtualization  RPM-GPG-KEY-CentOS-Testing-7  RPM-GPG-KEY-EPEL-7</div></pre></td></tr></table></figure>
+<p>发现果然有</p>
+<p>2、将 <code>RPM-GPG-KEY-EPEL-7</code> 拷贝到现在的机器上</p>
+<p>3、这时再执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install epel-release -y</div></pre></td></tr></table></figure>
+<p>可以成功，问题解决！</p>
+<p align="center"><strong>附上<code>RPM-GPG-KEY-EPEL-7</code>下载链接，给有需要的人</strong></p>
+
+<p align="center"><a href="http://oow6unnib.bkt.clouddn.com/RPM-GPG-KEY-EPEL-7" target="_blank" rel="external">点此下载</a></p>
+
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>还有个问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm</div><div class="line">Retrieving https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm</div><div class="line">curl: (7) Failed connect to dl.fedoraproject.org:443; Connection refused</div><div class="line">error: skipping https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm - transfer failed</div><div class="line">You have new mail in /var/spool/mail/root</div></pre></td></tr></table></figure>
+<p>这个问题的原因是网站无法访问</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[mac上实现vim的markdown预览]]></title>
       <url>http://xiaqunfeng.github.io/2017/05/25/mac%E4%B8%8A%E5%AE%9E%E7%8E%B0vim%E7%9A%84markdown%E9%A2%84%E8%A7%88/</url>
       <content type="html"><![CDATA[<p>有时候在vim下创建了一个markdown文件，比如 <code>README.md</code> ，因为不能实时预览，所以要离开vim，用编辑器去编辑，比较麻烦。所以这里配置使能在vim编辑器上预览markdown文件。<br><a id="more"></a></p>
