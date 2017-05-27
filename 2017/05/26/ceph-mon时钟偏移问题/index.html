@@ -21,7 +21,7 @@
 <meta property="og:url" content="http://xiaqunfeng.github.io/2017/05/26/ceph-mon时钟偏移问题/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="之前记录的关于时钟漂移的解决过程和心得，这里分享一下。">
-<meta property="og:updated_time" content="2017-05-27T02:37:59.000Z">
+<meta property="og:updated_time" content="2017-05-27T02:45:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ceph mon时钟偏移问题">
 <meta name="twitter:description" content="之前记录的关于时钟漂移的解决过程和心得，这里分享一下。">
@@ -334,10 +334,10 @@
 <h3 id="查看此时运行的ceph配置"><a href="#查看此时运行的ceph配置" class="headerlink" title="查看此时运行的ceph配置"></a>查看此时运行的ceph配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">root@xs732:~/my-custer# ceph daemon mon.xs732 config show | grep clock</div><div class="line">    &quot;mon_clock_drift_allowed&quot;: &quot;0.05&quot;,</div><div class="line">    &quot;mon_clock_drift_warn_backoff&quot;: &quot;5&quot;,</div><div class="line">    &quot;clock_offset&quot;: &quot;0&quot;,</div></pre></td></tr></table></figure>
 <p>发现还是默认的 0.05 和 5，说明更改的配置根本没生效。</p>
 <h3 id="重启monitor"><a href="#重启monitor" class="headerlink" title="重启monitor"></a>重启monitor</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">systemctl restart ceph-mon@xs732.service</div></pre></td></tr></table></figure>
-<p>然后再查看，发现生效了</p>
 <blockquote>
 <p>注意，每台机器上都重启一下</p>
 </blockquote>
+<p>然后再查看，发现生效了</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">root@xs732:~/my-custer# ceph daemon mon.xs732 config show | grep clock</div><div class="line">    &quot;mon_clock_drift_allowed&quot;: &quot;0.10&quot;,</div><div class="line">    &quot;mon_clock_drift_warn_backoff&quot;: &quot;10&quot;,</div><div class="line">    &quot;clock_offset&quot;: &quot;0&quot;,</div></pre></td></tr></table></figure>
 <p>再次查看ceph集群状态</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># ceph -s</div><div class="line">    cluster f01fb68c-58c6-4707-8adb-b7ac88172340</div><div class="line">     health HEALTH_OK</div><div class="line">     monmap e2: 3 mons at &#123;xs732=10.34.57.25:6789/0,xs733=10.34.57.26:6789/0,xs734=10.34.57.27:6789/0&#125;</div><div class="line">            election epoch 12, quorum 0,1,2 xs732,xs733,xs734</div><div class="line">        mgr active: xs733 standbys: xs734, xs732</div><div class="line">     osdmap e50: 9 osds: 9 up, 9 in</div><div class="line">            flags sortbitwise,require_jewel_osds,require_kraken_osds</div><div class="line">      pgmap v113: 256 pgs, 1 pools, 0 bytes data, 0 objects</div><div class="line">            46397 MB used, 4423 GB / 4469 GB avail</div><div class="line">                 256 active+clean</div></pre></td></tr></table></figure>
@@ -353,7 +353,7 @@
         <p><span>本文标题:</span><a href="/2017/05/26/ceph-mon时钟偏移问题/">ceph mon时钟偏移问题</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
         <p><span>发布时间:</span>2017-05-26, 09:47:05</p>
-        <p><span>最后更新:</span>2017-05-27, 10:37:59</p>
+        <p><span>最后更新:</span>2017-05-27, 10:45:51</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/05/26/ceph-mon时钟偏移问题/" title="ceph mon时钟偏移问题">http://xiaqunfeng.github.io/2017/05/26/ceph-mon时钟偏移问题/</a>
             <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/05/26/ceph-mon时钟偏移问题/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
