@@ -15,18 +15,16 @@
 
 
 
-<meta name="description" content="一个shell脚本，用于获取ceph集群中每个osd的PG数，同时分别统计每个pool上的PG数信息。">
+<meta name="description" content="之前记录的关于时钟漂移的解决过程和心得，这里分享一下。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="获取每个osd的PG数">
-<meta property="og:url" content="http://xiaqunfeng.github.io/2017/02/10/获取每个osd的PG数/index.html">
+<meta property="og:title" content="ceph mon时钟偏移问题">
+<meta property="og:url" content="http://xiaqunfeng.github.io/2017/05/26/ceph-mon时钟偏移问题/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="一个shell脚本，用于获取ceph集群中每个osd的PG数，同时分别统计每个pool上的PG数信息。">
-<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
-<meta property="og:updated_time" content="2017-02-10T12:24:41.000Z">
+<meta property="og:description" content="之前记录的关于时钟漂移的解决过程和心得，这里分享一下。">
+<meta property="og:updated_time" content="2017-05-27T02:37:59.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="获取每个osd的PG数">
-<meta name="twitter:description" content="一个shell脚本，用于获取ceph集群中每个osd的PG数，同时分别统计每个pool上的PG数信息。">
-<meta name="twitter:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
+<meta name="twitter:title" content="ceph mon时钟偏移问题">
+<meta name="twitter:description" content="之前记录的关于时钟漂移的解决过程和心得，这里分享一下。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>获取每个osd的PG数 | 夏天的风的博客</title>
+<title>ceph mon时钟偏移问题 | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -228,11 +226,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-获取每个osd的PG数" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-ceph-mon时钟偏移问题" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/02/10/获取每个osd的PG数/" class="article-date">
-      <time datetime="2017-02-10T12:14:20.000Z" itemprop="datePublished">2017-02-10</time>
+      <a href="/2017/05/26/ceph-mon时钟偏移问题/" class="article-date">
+      <time datetime="2017-05-26T01:47:05.000Z" itemprop="datePublished">2017-05-26</time>
 </a>
 
 
@@ -247,7 +245,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      获取每个osd的PG数
+      ceph mon时钟偏移问题
     </h1>
   
 
@@ -258,7 +256,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -268,17 +266,82 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>一个shell脚本，用于获取ceph集群中每个osd的PG数，同时分别统计每个pool上的PG数信息。<br><a id="more"></a></p>
-<h2 id="Ceph集群信息"><a href="#Ceph集群信息" class="headerlink" title="Ceph集群信息"></a>Ceph集群信息</h2><p><strong>pool信息</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd lspools</div><div class="line">0 rbd,1 testpool,</div></pre></td></tr></table></figure>
-<p><strong>osd信息</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># ceph osd tree</div><div class="line">ID WEIGHT  TYPE NAME       UP/DOWN REWEIGHT PRIMARY-AFFINITY </div><div class="line">-1 0.54538 root default                                      </div><div class="line">-2 0.18179     host jewel0                                   </div><div class="line"> 0 0.18179         osd.0        up  1.00000          1.00000 </div><div class="line">-3 0.18179     host jewel1                                   </div><div class="line"> 1 0.18179         osd.1        up  1.00000          1.00000 </div><div class="line">-4 0.18179     host jewel2                                   </div><div class="line"> 2 0.18179         osd.2        up  1.00000          1.00000</div></pre></td></tr></table></figure>
-<h2 id="脚本执行结果展示"><a href="#脚本执行结果展示" class="headerlink" title="脚本执行结果展示"></a>脚本执行结果展示</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># sh pg-per-osd.sh </div><div class="line">dumped all in format plain</div><div class="line"></div><div class="line">pool :	0	1	| SUM </div><div class="line">--------------------------------</div><div class="line">osd.0	64	128	| 192</div><div class="line">osd.1	64	128	| 192</div><div class="line">osd.2	64	128	| 192</div><div class="line">--------------------------------</div><div class="line">SUM :	192	384</div></pre></td></tr></table></figure>
-<p>每行显示单个OSD在每个pool中的PG数详情</p>
-<p>每列显示单个pool中每个OSD的PG数详情</p>
-<h2 id="shell脚本"><a href="#shell脚本" class="headerlink" title="shell脚本"></a>shell脚本</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># cat pg-per-osd.sh</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line"></div><div class="line">ceph pg dump | awk &apos;</div><div class="line"> /^pg_stat/ &#123; col=1; while($col!=&quot;up&quot;) &#123;col++&#125;; col++ &#125;</div><div class="line"> /^[0-9a-f]+\.[0-9a-f]+/ &#123; match($0,/^[0-9a-f]+/); pool=substr($0, RSTART, RLENGTH); poollist[pool]=0;</div><div class="line"> up=$col; i=0; RSTART=0; RLENGTH=0; delete osds; while(match(up,/[0-9]+/)&gt;0) &#123; osds[++i]=substr(up,RSTART,RLENGTH); up = substr(up, RSTART+RLENGTH) &#125;</div><div class="line"> for(i in osds) &#123;array[osds[i],pool]++; osdlist[osds[i]];&#125;</div><div class="line">&#125;</div><div class="line">END &#123;</div><div class="line"> printf(&quot;\n&quot;);</div><div class="line"> printf(&quot;pool :\t&quot;); for (i in poollist) printf(&quot;%s\t&quot;,i); printf(&quot;| SUM \n&quot;);</div><div class="line"> for (i in poollist) printf(&quot;--------&quot;); printf(&quot;----------------\n&quot;);</div><div class="line"> for (i in osdlist) &#123; printf(&quot;osd.%i\t&quot;, i); sum=0;</div><div class="line">   for (j in poollist) &#123; printf(&quot;%i\t&quot;, array[i,j]); sum+=array[i,j]; sumpool[j]+=array[i,j] &#125;; printf(&quot;| %i\n&quot;,sum) &#125;</div><div class="line"> for (i in poollist) printf(&quot;--------&quot;); printf(&quot;----------------\n&quot;);</div><div class="line"> printf(&quot;SUM :\t&quot;); for (i in poollist) printf(&quot;%s\t&quot;,sumpool[i]); printf(&quot;|\n&quot;);</div><div class="line">&#125;&apos;</div></pre></td></tr></table></figure>
-<h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
+        <p>之前记录的关于时钟漂移的解决过程和心得，这里分享一下。<br><a id="more"></a></p>
+<h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><p>查看集群状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># ceph -s</div><div class="line">    cluster f01fb68c-58c6-4707-8adb-b7ac88172340</div><div class="line">     health HEALTH_WARN</div><div class="line">            clock skew detected on mon.xs734</div><div class="line">            Monitor clock skew detected</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>根据提示，发现这是一个明显的时钟漂移的问题</p>
+<h2 id="配置NTP"><a href="#配置NTP" class="headerlink" title="配置NTP"></a>配置NTP</h2><p>第一反应就是ntp同步，配置ntp</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">yum install ntp ntpdate -y</div><div class="line">ntpdate pool.ntp.org</div><div class="line">systemctl restart ntpdate.service</div><div class="line">systemctl restart ntpd.service</div><div class="line">systemctl enable ntpdate.service</div><div class="line">systemctl enable ntpd.service</div></pre></td></tr></table></figure>
+<blockquote>
+<p>每台机器上重复如上过程</p>
+</blockquote>
+<p>此时，查看集群的时间</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># for x in xs732 xs733 xs734; do ssh $x &apos;date&apos;; done</div><div class="line">Thu May 05 17:51:26 CST 2017</div><div class="line">Thu May 05 17:51:27 CST 2017</div><div class="line">Thu May 05 17:51:27 CST 2017</div></pre></td></tr></table></figure>
+<p>说明时间基本已经同步了。<strong>一般情况下问题就已经解决了，但这里还有问题。</strong></p>
+<h2 id="进一步跟踪集群状态"><a href="#进一步跟踪集群状态" class="headerlink" title="进一步跟踪集群状态"></a>进一步跟踪集群状态</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># ceph -s</div><div class="line">    cluster f01fb68c-58c6-4707-8adb-b7ac88172340</div><div class="line">     health HEALTH_WARN</div><div class="line">            clock skew detected on mon.xs734</div><div class="line">            Monitor clock skew detected</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>这时候问题来了，发现集群还是处于 WARN 的状态，进一步看问题出在哪</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># ceph -w</div><div class="line">...</div><div class="line">2017-05-26 10:27:14.325856 mon.0 [WRN] mon.2 10.34.57.27:6789/0 clock skew 0.0556591s &gt; max 0.05s</div><div class="line">2017-05-26 10:27:44.292273 mon.0 [INF] HEALTH_WARN; clock skew detected on mon.xs733, mon.xs734; Monitor clock skew detected</div></pre></td></tr></table></figure>
+<p><strong>问题所在：0.0556591s &gt; max 0.05s 漂移的时间略大于默认的0.05秒</strong></p>
+<blockquote>
+<p>很少出现这种大于0.05秒的情况</p>
+</blockquote>
+<h2 id="修改配置"><a href="#修改配置" class="headerlink" title="修改配置"></a>修改配置</h2><h3 id="更改配置文件"><a href="#更改配置文件" class="headerlink" title="更改配置文件"></a>更改配置文件</h3><p>在 <code>/etc/ceph/ceph.conf</code> 中添加如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[mon]</div><div class="line">mon_clock_drift_allowed = 0.10</div><div class="line">mon clock drift warn backoff = 10</div></pre></td></tr></table></figure>
+<blockquote>
+<p>亲测，参数名称要不要下划线都可以</p>
+</blockquote>
+<p>改完后将配置推到集群所有的机器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph-deploy --overwrite-conf config push xs732 xs733 xs734</div></pre></td></tr></table></figure>
+<h3 id="关于这两个参数"><a href="#关于这两个参数" class="headerlink" title="关于这两个参数"></a>关于这两个参数</h3><p>mon clock drift allowed</p>
+<table>
+<thead>
+<tr>
+<th>描述:</th>
+<th>监视器间允许的时钟漂移量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>类型:</td>
+<td>Float</td>
+</tr>
+<tr>
+<td>默认值:</td>
+<td>.050</td>
+</tr>
+</tbody>
+</table>
+<p>mon clock drift warn backoff</p>
+<table>
+<thead>
+<tr>
+<th>描述:</th>
+<th>时钟偏移警告的退避指数。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>类型:</td>
+<td>Float</td>
+</tr>
+<tr>
+<td>默认值:</td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+<p>链接：<a href="http://docs.ceph.org.cn/rados/configuration/mon-config-ref/" target="_blank" rel="external">http://docs.ceph.org.cn/rados/configuration/mon-config-ref/</a></p>
+<h3 id="查看此时运行的ceph配置"><a href="#查看此时运行的ceph配置" class="headerlink" title="查看此时运行的ceph配置"></a>查看此时运行的ceph配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">root@xs732:~/my-custer# ceph daemon mon.xs732 config show | grep clock</div><div class="line">    &quot;mon_clock_drift_allowed&quot;: &quot;0.05&quot;,</div><div class="line">    &quot;mon_clock_drift_warn_backoff&quot;: &quot;5&quot;,</div><div class="line">    &quot;clock_offset&quot;: &quot;0&quot;,</div></pre></td></tr></table></figure>
+<p>发现还是默认的 0.05 和 5，说明更改的配置根本没生效。</p>
+<h3 id="重启monitor"><a href="#重启monitor" class="headerlink" title="重启monitor"></a>重启monitor</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">systemctl restart ceph-mon@xs732.service</div></pre></td></tr></table></figure>
+<p>然后再查看，发现生效了</p>
+<blockquote>
+<p>注意，每台机器上都重启一下</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">root@xs732:~/my-custer# ceph daemon mon.xs732 config show | grep clock</div><div class="line">    &quot;mon_clock_drift_allowed&quot;: &quot;0.10&quot;,</div><div class="line">    &quot;mon_clock_drift_warn_backoff&quot;: &quot;10&quot;,</div><div class="line">    &quot;clock_offset&quot;: &quot;0&quot;,</div></pre></td></tr></table></figure>
+<p>再次查看ceph集群状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># ceph -s</div><div class="line">    cluster f01fb68c-58c6-4707-8adb-b7ac88172340</div><div class="line">     health HEALTH_OK</div><div class="line">     monmap e2: 3 mons at &#123;xs732=10.34.57.25:6789/0,xs733=10.34.57.26:6789/0,xs734=10.34.57.27:6789/0&#125;</div><div class="line">            election epoch 12, quorum 0,1,2 xs732,xs733,xs734</div><div class="line">        mgr active: xs733 standbys: xs734, xs732</div><div class="line">     osdmap e50: 9 osds: 9 up, 9 in</div><div class="line">            flags sortbitwise,require_jewel_osds,require_kraken_osds</div><div class="line">      pgmap v113: 256 pgs, 1 pools, 0 bytes data, 0 objects</div><div class="line">            46397 MB used, 4423 GB / 4469 GB avail</div><div class="line">                 256 active+clean</div></pre></td></tr></table></figure>
+<p>OK，问题解决！</p>
 
       
     </div>
@@ -287,13 +350,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/02/10/获取每个osd的PG数/">获取每个osd的PG数</a></p>
+        <p><span>本文标题:</span><a href="/2017/05/26/ceph-mon时钟偏移问题/">ceph mon时钟偏移问题</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-02-10, 20:14:20</p>
-        <p><span>最后更新:</span>2017-02-10, 20:24:41</p>
+        <p><span>发布时间:</span>2017-05-26, 09:47:05</p>
+        <p><span>最后更新:</span>2017-05-27, 10:37:59</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/02/10/获取每个osd的PG数/" title="获取每个osd的PG数">http://xiaqunfeng.github.io/2017/02/10/获取每个osd的PG数/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/02/10/获取每个osd的PG数/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/05/26/ceph-mon时钟偏移问题/" title="ceph mon时钟偏移问题">http://xiaqunfeng.github.io/2017/05/26/ceph-mon时钟偏移问题/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/05/26/ceph-mon时钟偏移问题/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -305,16 +368,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/02/16/Linux命令——strace/">
-                    Linux命令——strace
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/02/10/RBD-相关操作/">
-                    RBD 相关操作
+                <a href="/2017/05/26/GPG-key-retrieval-failure/">
+                    GPG key retrieval failure
                 </a>
             </div>
         
@@ -326,7 +383,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Ceph集群信息"><span class="toc-number">1.</span> <span class="toc-text">Ceph集群信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#脚本执行结果展示"><span class="toc-number">2.</span> <span class="toc-text">脚本执行结果展示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#shell脚本"><span class="toc-number">3.</span> <span class="toc-text">shell脚本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#打赏通道"><span class="toc-number">4.</span> <span class="toc-text">打赏通道</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#现象"><span class="toc-number">1.</span> <span class="toc-text">现象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置NTP"><span class="toc-number">2.</span> <span class="toc-text">配置NTP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#进一步跟踪集群状态"><span class="toc-number">3.</span> <span class="toc-text">进一步跟踪集群状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改配置"><span class="toc-number">4.</span> <span class="toc-text">修改配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#更改配置文件"><span class="toc-number">4.1.</span> <span class="toc-text">更改配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于这两个参数"><span class="toc-number">4.2.</span> <span class="toc-text">关于这两个参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看此时运行的ceph配置"><span class="toc-number">4.3.</span> <span class="toc-text">查看此时运行的ceph配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#重启monitor"><span class="toc-number">4.4.</span> <span class="toc-text">重启monitor</span></a></li></ol></li></ol>
         
     </div>
     <style>
@@ -362,7 +419,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"获取每个osd的PG数　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"ceph mon时钟偏移问题　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -381,8 +438,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.github.io/2017/02/10/获取每个osd的PG数/';
-            this.page.identifier = '2017/02/10/获取每个osd的PG数/';
+            this.page.url = 'http://xiaqunfeng.github.io/2017/05/26/ceph-mon时钟偏移问题/';
+            this.page.identifier = '2017/05/26/ceph-mon时钟偏移问题/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -404,15 +461,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/02/16/Linux命令——strace/" title="上一篇: Linux命令——strace">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/02/10/RBD-相关操作/" title="下一篇: RBD 相关操作">
+            <a href="/2017/05/26/GPG-key-retrieval-failure/" title="下一篇: GPG key retrieval failure">
                 <i class="fa fa-angle-right"></i>
             </a>
         
