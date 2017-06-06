@@ -15,19 +15,16 @@
 
 
 
-<meta name="description" content="如题，环境是ubuntu 14.04，解决过程和方法详见正文。">
+<meta name="description" content="探索 kernel RBD map 失败的问题。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="解决calamari无法获取集群hosts信息的BUG">
-<meta property="og:url" content="http://xiaqunfeng.github.io/2017/01/12/解决calamari无法获取集群hosts信息的BUG/index.html">
+<meta property="og:title" content="ceph rbd map failed">
+<meta property="og:url" content="http://xiaqunfeng.github.io/2017/06/06/ceph-rbd-map-failed/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="如题，环境是ubuntu 14.04，解决过程和方法详见正文。">
-<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/calamari-1.png">
-<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/calamari-2.png">
-<meta property="og:updated_time" content="2017-01-12T09:55:14.000Z">
+<meta property="og:description" content="探索 kernel RBD map 失败的问题。">
+<meta property="og:updated_time" content="2017-06-06T07:37:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="解决calamari无法获取集群hosts信息的BUG">
-<meta name="twitter:description" content="如题，环境是ubuntu 14.04，解决过程和方法详见正文。">
-<meta name="twitter:image" content="http://ojet8bprn.bkt.clouddn.com/calamari-1.png">
+<meta name="twitter:title" content="ceph rbd map failed">
+<meta name="twitter:description" content="探索 kernel RBD map 失败的问题。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -59,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>解决calamari无法获取集群hosts信息的BUG | 夏天的风的博客</title>
+<title>ceph rbd map failed | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -229,11 +226,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-解决calamari无法获取集群hosts信息的BUG" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-ceph-rbd-map-failed" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/01/12/解决calamari无法获取集群hosts信息的BUG/" class="article-date">
-      <time datetime="2017-01-12T09:55:14.000Z" itemprop="datePublished">2017-01-12</time>
+      <a href="/2017/06/06/ceph-rbd-map-failed/" class="article-date">
+      <time datetime="2017-06-06T03:29:17.000Z" itemprop="datePublished">2017-06-06</time>
 </a>
 
 
@@ -248,7 +245,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      解决calamari无法获取集群hosts信息的BUG
+      ceph rbd map failed
     </h1>
   
 
@@ -269,30 +266,87 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>如题，环境是ubuntu 14.04，解决过程和方法详见正文。<br><a id="more"></a></p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前在磨磨的文章中看到这个问题，他是在CentOS上，通过修改 <code>/usr/lib/python2.7/site-packages/salt/master.py</code> 文件，然后重启salt-master和salt-minion服务来解决的，链接在文末。原理类似，可ubuntu上并不能完全照搬。</p>
-<h2 id="折腾过程"><a href="#折腾过程" class="headerlink" title="折腾过程"></a>折腾过程</h2><blockquote>
-<p>这部分的内容为折腾求证的过程，想看解决方法的可以直接跳过！</p>
-</blockquote>
-<p>在ubuntu上并没有这个文件和路径，通过tab可以看到site开头的只有这几个：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root@calamari:~# vim /usr/lib/python2.7/site</div><div class="line">sitecustomize.py   sitecustomize.pyc  site.py            site.pyc</div></pre></td></tr></table></figure>
-<p>我以为可能是系统下包安装的位置不对而已，好，那我就查看一下ubuntu下salt-master的安装位置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">root@calamari:~# dpkg -L salt-master</div><div class="line">/.</div><div class="line">/usr</div><div class="line">/usr/share</div><div class="line">/usr/share/man</div><div class="line">/usr/share/man/man1</div><div class="line">/usr/share/man/man1/salt.1.gz</div><div class="line">/usr/share/man/man1/salt-run.1.gz</div><div class="line">/usr/share/man/man1/salt-master.1.gz</div><div class="line">/usr/share/man/man1/salt-key.1.gz</div><div class="line">/usr/share/man/man1/salt-cp.1.gz</div><div class="line">/usr/share/doc</div><div class="line">/usr/share/doc/salt-master</div><div class="line">/usr/share/doc/salt-master/changelog.Debian.gz</div><div class="line">/usr/share/doc/salt-master/NEWS.Debian.gz</div><div class="line">/usr/share/doc/salt-master/copyright</div><div class="line">/usr/bin</div><div class="line">/usr/bin/salt-run</div><div class="line">/usr/bin/salt-master</div><div class="line">/usr/bin/salt-key</div><div class="line">/usr/bin/salt-cp</div><div class="line">/usr/bin/salt</div><div class="line">/lib</div><div class="line">/lib/systemd</div><div class="line">/lib/systemd/system</div><div class="line">/lib/systemd/system/salt-master.service</div><div class="line">/etc</div><div class="line">/etc/init.d</div><div class="line">/etc/init.d/salt-master</div><div class="line">/etc/init</div><div class="line">/etc/init/salt-master.conf</div><div class="line">/etc/salt</div><div class="line">/etc/salt/master</div><div class="line">/etc/salt/master.d</div></pre></td></tr></table></figure>
-<p>然后通过 <code>find</code> 命令去 <code>/etc, /usr, /lib</code> 这几个目录下找 <code>master.py</code> ，结果真没有</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find: `master.py&apos;: No such file or directory</div></pre></td></tr></table></figure>
-<p>好吧，下面来看问题。</p>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>在calamari的web界面下，查看 MANAGE -&gt; Cluster -&gt;HOSTS 信息，发现啥也没有，如下图所示：<img src="http://ojet8bprn.bkt.clouddn.com/calamari-1.png" alt="calamari-1"></p>
-<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>calamari的salt-master节点在读取</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/var/cache/salt/master/minions/&#123;minion-hostname&#125;/data.p</div></pre></td></tr></table></figure>
-<p>该文件的时候有权限问题，当前权限为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-rw------- 1 root root 3019 Jan 10 11:06 data.p</div></pre></td></tr></table></figure>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>修改权限为 644 即可，写了个脚本，如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">for x in 0 1 2</div><div class="line">do</div><div class="line">    chmod 644 /var/cache/salt/master/minions/ceph$x/data.p</div><div class="line">done</div></pre></td></tr></table></figure>
-<p>修改完后，再次查看，可以看到hosts的详细信息了<img src="http://ojet8bprn.bkt.clouddn.com/calamari-2.png" alt="calamari-2"></p>
+        <p>探索 kernel RBD map 失败的问题。<br><a id="more"></a></p>
+<h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>搭完 rbd mirror后，想通过client往image里写一些数据，所以在client端map rbd设备，结果失败了。</p>
 <blockquote>
-<p>当然，重启 salt-minion 后又需要在 salt-master 机器上重新执行一遍，<del>~~(&gt;_&lt;)</del>~~，忧伤~</p>
+<p>rbd mirror的image 需要两个属性：exclusive-lock, journaling</p>
 </blockquote>
-<p>磨磨的方法：<a href="http://www.zphj1987.com/2017/01/09/calamari-node-info/" target="_blank" rel="external">centos下该问题的解决方法</a></p>
+<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><h3 id="查看rbd-image-info"><a href="#查看rbd-image-info" class="headerlink" title="查看rbd image info"></a>查看rbd image info</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># rbd info rbd/image-1</div><div class="line">rbd image &apos;image-1&apos;:</div><div class="line">	size 1024 MB in 256 objects</div><div class="line">	order 22 (4096 kB objects)</div><div class="line">	block_name_prefix: rbd_data.108b238e1f29</div><div class="line">	format: 2</div><div class="line">	features: exclusive-lock, journaling</div><div class="line">	flags:</div><div class="line">	journal: 108b238e1f29</div><div class="line">	mirroring state: enabled</div><div class="line">	mirroring global id: c603d9dc-6f8d-49e0-ab68-5944d348e527</div><div class="line">	mirroring primary: true</div></pre></td></tr></table></figure>
+<h3 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># rbd map rbd/image-1</div><div class="line">rbd: sysfs write failed</div><div class="line">RBD image feature set mismatch. You can disable features unsupported by the kernel with &quot;rbd feature disable&quot;.</div><div class="line">In some cases useful info is found in syslog - try &quot;dmesg | tail&quot; or so.</div><div class="line">rbd: map failed: (6) No such device or address</div></pre></td></tr></table></figure>
+<p>然后dmesg看一下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># dmesg | tail</div><div class="line">[   64.808315] rbd: loaded (major 251)</div><div class="line">[   64.818369] libceph: mon2 172.20.2.160:6789 session established</div><div class="line">[   64.819187] libceph: client14167 fsid 4c7ec5af-cbd3-40fd-8c96-0615c77660d4</div><div class="line">[   64.836328] rbd: image image-1: image uses unsupported features: 0x40</div><div class="line">[  443.658569] libceph: mon1 172.20.2.161:6789 session established</div><div class="line">[  443.659143] libceph: client4313 fsid 4c7ec5af-cbd3-40fd-8c96-0615c77660d4</div><div class="line">[  443.683178] rbd: rbd0: capacity 10737418240 features 0x1</div><div class="line">[  978.502132] rbd: image image-1: image uses unsupported features: 0x40</div></pre></td></tr></table></figure>
+<h3 id="错误原因"><a href="#错误原因" class="headerlink" title="错误原因"></a>错误原因</h3><p><strong>image uses unsupported features: 0x40</strong></p>
+<p>不支持特性 0x40 = 64，也就是不支持特性 <strong>journaling</strong></p>
+<h2 id="关于内核支持的特性分析"><a href="#关于内核支持的特性分析" class="headerlink" title="关于内核支持的特性分析"></a>关于内核支持的特性分析</h2><p>查看内核版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># uname -r</div><div class="line">3.10.0-327.el7.x86_64</div></pre></td></tr></table></figure>
+<p>根据查阅资料和实践，发现：</p>
+<ul>
+<li>CentOS的3.10内核仅支持其中的layering 和 exclusive-lock，其他feature概不支持</li>
+<li>内核4.6仍然只支持：layering、exclusive-lock和 striping 属性</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># rbd info rbd/test-map</div><div class="line">rbd image &apos;test-map&apos;:</div><div class="line">	size 512 MB in 128 objects</div><div class="line">	order 22 (4096 kB objects)</div><div class="line">	block_name_prefix: rbd_data.10ca238e1f29</div><div class="line">	format: 2</div><div class="line">	features: layering, exclusive-lock</div><div class="line">	flags:</div></pre></td></tr></table></figure>
+<p>map</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># rbd map rbd/test-map</div><div class="line">/dev/rbd1</div></pre></td></tr></table></figure>
+<p>此时可以map成功。</p>
+<h2 id="RBD特性解析"><a href="#RBD特性解析" class="headerlink" title="RBD特性解析"></a>RBD特性解析</h2><h3 id="特性一览表"><a href="#特性一览表" class="headerlink" title="特性一览表"></a>特性一览表</h3><p>RBD支持的特性，及具体BIT值的计算如下</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>功能</th>
+<th>BIT码</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>layering</td>
+<td>支持分层</td>
+<td>1</td>
+</tr>
+<tr>
+<td>striping</td>
+<td>支持条带化 v2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>exclusive-lock</td>
+<td>支持独占锁</td>
+<td>4</td>
+</tr>
+<tr>
+<td>object-map</td>
+<td>支持对象映射（依赖 exclusive-lock ）</td>
+<td>8</td>
+</tr>
+<tr>
+<td>fast-diff</td>
+<td>快速计算差异（依赖 object-map ）</td>
+<td>16</td>
+</tr>
+<tr>
+<td>deep-flatten</td>
+<td>支持快照扁平化操作</td>
+<td>32</td>
+</tr>
+<tr>
+<td>journaling</td>
+<td>支持记录 IO 操作（依赖独占锁）</td>
+<td>64</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ceph-kraken版本默认属性值"><a href="#ceph-kraken版本默认属性值" class="headerlink" title="ceph kraken版本默认属性值"></a>ceph kraken版本默认属性值</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph --show-config|grep rbd|grep features</div><div class="line">rbd_default_features = 61</div></pre></td></tr></table></figure>
+<p>为啥是61？我们创建一个默认配置的rbd看看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># rbd create test-feature --size 64</div><div class="line"># rbd info rbd/test-feature</div><div class="line">rbd image &apos;test-feature&apos;:</div><div class="line">	size 65536 kB in 16 objects</div><div class="line">	order 22 (4096 kB objects)</div><div class="line">	block_name_prefix: rbd_data.107d238e1f29</div><div class="line">	format: 2</div><div class="line">	features: layering, exclusive-lock, object-map, fast-diff, deep-flatten</div><div class="line">	flags:</div></pre></td></tr></table></figure>
+<p><strong>1+4+8+16+32 = 61</strong></p>
+<p>就是说除了特性：striping 和 journaling 外都开启了。</p>
+<h3 id="控制属性"><a href="#控制属性" class="headerlink" title="控制属性"></a>控制属性</h3><p>有三种方法来开启需要的特性</p>
+<p>1、在创建image时，通过 <code>--image-feature</code> 来指定需要开启的特性</p>
+<p>2、对已存在的image可以通过如下命令开启和关闭</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">rbd feature enable &lt;pool-name&gt;/&lt;image-name&gt; &lt;feature-name&gt;</div><div class="line">rbd feature disable &lt;pool-name&gt;/&lt;image-name&gt; &lt;feature-name&gt;</div></pre></td></tr></table></figure>
+<p>3、当然，每次通过enable和disable来不是很便捷，可以通过修改配置文件来解决</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">vim /etc/ceph/ceph.conf</div><div class="line">...</div><div class="line">rbd_default_features = 1</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>具体该设为多少可以通过上面BIT值查表计算得出。</p>
 
       
     </div>
@@ -301,13 +355,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/01/12/解决calamari无法获取集群hosts信息的BUG/">解决calamari无法获取集群hosts信息的BUG</a></p>
+        <p><span>本文标题:</span><a href="/2017/06/06/ceph-rbd-map-failed/">ceph rbd map failed</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-01-12, 17:55:14</p>
-        <p><span>最后更新:</span>2017-01-12, 17:55:14</p>
+        <p><span>发布时间:</span>2017-06-06, 11:29:17</p>
+        <p><span>最后更新:</span>2017-06-06, 15:37:00</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/01/12/解决calamari无法获取集群hosts信息的BUG/" title="解决calamari无法获取集群hosts信息的BUG">http://xiaqunfeng.github.io/2017/01/12/解决calamari无法获取集群hosts信息的BUG/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/01/12/解决calamari无法获取集群hosts信息的BUG/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/06/06/ceph-rbd-map-failed/" title="ceph rbd map failed">http://xiaqunfeng.github.io/2017/06/06/ceph-rbd-map-failed/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/06/06/ceph-rbd-map-failed/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -319,16 +373,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/01/12/dd磁盘命令小记/">
-                    dd磁盘命令小记
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/01/11/ubuntu下配置邮件发送/">
-                    ubuntu下配置邮件发送
+                <a href="/2017/05/26/ceph-mon时钟偏移问题/">
+                    ceph mon时钟偏移问题
                 </a>
             </div>
         
@@ -340,7 +388,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#折腾过程"><span class="toc-number">2.</span> <span class="toc-text">折腾过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题"><span class="toc-number">3.</span> <span class="toc-text">问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#原因"><span class="toc-number">4.</span> <span class="toc-text">原因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方法"><span class="toc-number">5.</span> <span class="toc-text">解决方法</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#场景"><span class="toc-number">1.</span> <span class="toc-text">场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#原因"><span class="toc-number">2.</span> <span class="toc-text">原因</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#查看rbd-image-info"><span class="toc-number">2.1.</span> <span class="toc-text">查看rbd image info</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输出"><span class="toc-number">2.2.</span> <span class="toc-text">输出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#错误原因"><span class="toc-number">2.3.</span> <span class="toc-text">错误原因</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于内核支持的特性分析"><span class="toc-number">3.</span> <span class="toc-text">关于内核支持的特性分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RBD特性解析"><span class="toc-number">4.</span> <span class="toc-text">RBD特性解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#特性一览表"><span class="toc-number">4.1.</span> <span class="toc-text">特性一览表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ceph-kraken版本默认属性值"><span class="toc-number">4.2.</span> <span class="toc-text">ceph kraken版本默认属性值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#控制属性"><span class="toc-number">4.3.</span> <span class="toc-text">控制属性</span></a></li></ol></li></ol>
         
     </div>
     <style>
@@ -376,7 +424,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"解决calamari无法获取集群hosts信息的BUG　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"ceph rbd map failed　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -395,8 +443,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.github.io/2017/01/12/解决calamari无法获取集群hosts信息的BUG/';
-            this.page.identifier = '2017/01/12/解决calamari无法获取集群hosts信息的BUG/';
+            this.page.url = 'http://xiaqunfeng.github.io/2017/06/06/ceph-rbd-map-failed/';
+            this.page.identifier = '2017/06/06/ceph-rbd-map-failed/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -418,15 +466,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/01/12/dd磁盘命令小记/" title="上一篇: dd磁盘命令小记">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/01/11/ubuntu下配置邮件发送/" title="下一篇: ubuntu下配置邮件发送">
+            <a href="/2017/05/26/ceph-mon时钟偏移问题/" title="下一篇: ceph mon时钟偏移问题">
                 <i class="fa fa-angle-right"></i>
             </a>
         
