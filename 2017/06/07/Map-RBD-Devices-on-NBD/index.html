@@ -15,16 +15,16 @@
 
 
 
-<meta name="description" content="在centos 7.31611上遇到的问题，记录一下解决方法，并附下载链接。">
+<meta name="description" content="jewel及以后的版本支持rbd-nbd的特性，在需要map支持较多特性的rbd image时，可以使用此方法。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="GPG key retrieval failure">
-<meta property="og:url" content="http://xiaqunfeng.github.io/2017/05/26/GPG-key-retrieval-failure/index.html">
+<meta property="og:title" content="Map RBD Devices on NBD">
+<meta property="og:url" content="http://xiaqunfeng.github.io/2017/06/07/Map-RBD-Devices-on-NBD/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="在centos 7.31611上遇到的问题，记录一下解决方法，并附下载链接。">
-<meta property="og:updated_time" content="2017-05-26T01:39:38.000Z">
+<meta property="og:description" content="jewel及以后的版本支持rbd-nbd的特性，在需要map支持较多特性的rbd image时，可以使用此方法。">
+<meta property="og:updated_time" content="2017-06-07T07:03:38.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="GPG key retrieval failure">
-<meta name="twitter:description" content="在centos 7.31611上遇到的问题，记录一下解决方法，并附下载链接。">
+<meta name="twitter:title" content="Map RBD Devices on NBD">
+<meta name="twitter:description" content="jewel及以后的版本支持rbd-nbd的特性，在需要map支持较多特性的rbd image时，可以使用此方法。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -56,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>GPG key retrieval failure | 夏天的风的博客</title>
+<title>Map RBD Devices on NBD | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -226,11 +226,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-GPG-key-retrieval-failure" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Map-RBD-Devices-on-NBD" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/05/26/GPG-key-retrieval-failure/" class="article-date">
-      <time datetime="2017-05-26T01:13:24.000Z" itemprop="datePublished">2017-05-26</time>
+      <a href="/2017/06/07/Map-RBD-Devices-on-NBD/" class="article-date">
+      <time datetime="2017-06-07T02:51:42.000Z" itemprop="datePublished">2017-06-07</time>
 </a>
 
 
@@ -245,7 +245,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      GPG key retrieval failure
+      Map RBD Devices on NBD
     </h1>
   
 
@@ -256,7 +256,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/centos/">centos</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -266,30 +266,57 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>在centos 7.31611上遇到的问题，记录一下解决方法，并附下载链接。<br><a id="more"></a></p>
-<h2 id="我的epel源"><a href="#我的epel源" class="headerlink" title="我的epel源"></a>我的epel源</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"># cat /etc/yum.repos.d</div><div class="line">[epel]</div><div class="line">name=Extra Packages for Enterprise Linux 7 - $basearch</div><div class="line">#baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch</div><div class="line">mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-7&amp;arch=$basearch</div><div class="line">failovermethod=priority</div><div class="line">enabled=1</div><div class="line">gpgcheck=1</div><div class="line">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7</div><div class="line"></div><div class="line">[epel-debuginfo]</div><div class="line">name=Extra Packages for Enterprise Linux 7 - $basearch - Debug</div><div class="line">#baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch/debug</div><div class="line">mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-7&amp;arch=$basearch</div><div class="line">failovermethod=priority</div><div class="line">enabled=0</div><div class="line">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7</div><div class="line">gpgcheck=1</div><div class="line"></div><div class="line">[epel-source]</div><div class="line">name=Extra Packages for Enterprise Linux 7 - $basearch - Source</div><div class="line">#baseurl=http://download.fedoraproject.org/pub/epel/7/SRPMS</div><div class="line">mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-source-7&amp;arch=$basearch</div><div class="line">failovermethod=priority</div><div class="line">enabled=0</div><div class="line">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7</div><div class="line">gpgcheck=1</div></pre></td></tr></table></figure>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>更新yum源的时候出现如下错误：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Retrieving key from file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7</div><div class="line"></div><div class="line"></div><div class="line">GPG key retrieval failed: [Errno 14] curl#37 - &quot;Couldn&apos;t open file /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7&quot;</div></pre></td></tr></table></figure>
-<p>查看一下，确实没有</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root@ceph0:~# ls /etc/pki/rpm-gpg/</div><div class="line">RPM-GPG-KEY-CentOS-7  RPM-GPG-KEY-CentOS-Debug-7  RPM-GPG-KEY-CentOS-Testing-7  RPM-GPG-KEY-ZABBIX</div></pre></td></tr></table></figure>
-<h2 id="网上解决方案"><a href="#网上解决方案" class="headerlink" title="网上解决方案"></a>网上解决方案</h2><p>这是个bug，没啥好的办法</p>
-<p><a href="https://bugzilla.redhat.com/show_bug.cgi?id=1237057" target="_blank" rel="external">https://bugzilla.redhat.com/show_bug.cgi?id=1237057</a></p>
-<h2 id="原因-amp-解决尝试"><a href="#原因-amp-解决尝试" class="headerlink" title="原因&amp;解决尝试"></a>原因&amp;解决尝试</h2><p>看了下输出，就是缺少 <code>RPM-GPG-KEY-EPEL-7</code> 嘛，补上是不是就可以了呢？</p>
-<p>带着这个疑问，实践一下：</p>
-<p>1、在原先成功的机器上，查看是否有</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@ceph3 yum.repos.d]# ls /etc/pki/rpm-gpg/</div><div class="line">RPM-GPG-KEY-CentOS-7  RPM-GPG-KEY-CentOS-Debug-7  RPM-GPG-KEY-CentOS-SIG-Virtualization  RPM-GPG-KEY-CentOS-Testing-7  RPM-GPG-KEY-EPEL-7</div></pre></td></tr></table></figure>
-<p>发现果然有</p>
-<p>2、将 <code>RPM-GPG-KEY-EPEL-7</code> 拷贝到现在的机器上</p>
-<p>3、这时再执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install epel-release -y</div></pre></td></tr></table></figure>
-<p>可以成功，问题解决！</p>
-<p align="center"><strong>附上<code>RPM-GPG-KEY-EPEL-7</code>下载链接，给有需要的人</strong></p>
-
-<p align="center"><a href="http://oow6unnib.bkt.clouddn.com/RPM-GPG-KEY-EPEL-7" target="_blank" rel="external">点此下载</a></p>
-
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>还有个问题</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm</div><div class="line">Retrieving https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm</div><div class="line">curl: (7) Failed connect to dl.fedoraproject.org:443; Connection refused</div><div class="line">error: skipping https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm - transfer failed</div><div class="line">You have new mail in /var/spool/mail/root</div></pre></td></tr></table></figure>
-<p>这个问题的原因是网站无法访问</p>
+        <p>jewel及以后的版本支持rbd-nbd的特性，在需要map支持较多特性的rbd image时，可以使用此方法。<br><a id="more"></a></p>
+<h2 id="引出问题"><a href="#引出问题" class="headerlink" title="引出问题"></a>引出问题</h2><p>前一篇文章中说到在map特性比较丰富的rbd设备时，内核不支持，所以出现如如下错误</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># rbd nbd map rbd/image-1</div><div class="line">rbd: sysfs write failed</div><div class="line">RBD image feature set mismatch. You can disable features unsupported by the kernel with &quot;rbd feature disable&quot;.</div><div class="line">In some cases useful info is found in syslog - try &quot;dmesg | tail&quot; or so.</div></pre></td></tr></table></figure>
+<p>所以行不通，于是寻求其他解决方案。</p>
+<p>幸运的是，jewel及以后版本中，RBD支持将RBD image map为本地nbd设备，通过<code>rbd nbd map</code>命令即可映射为本地nbd设备。</p>
+<h3 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h3><p>安装 rbd-nbd</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install rbd-nbd -y</div></pre></td></tr></table></figure>
+<p>map</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># rbd nbd map rbd/image-1</div><div class="line">/dev/nbd0</div></pre></td></tr></table></figure>
+<p>成功！</p>
+<p>这时就可以格式化并挂载来使用该设备了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># mkfs.xfs -f /dev/nbd0</div><div class="line"># mkdir /mnt/nbd0</div><div class="line"># mount -noatime /dev/nbd0 /mnt/nbd0</div><div class="line"># lsblk</div><div class="line">...</div><div class="line">nbd0    43:0    0    1G  0 disk /mnt/nbd0</div></pre></td></tr></table></figure>
+<p>查看已映射的nbd设备</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># rbd-nbd list-mapped</div><div class="line">/dev/nbd0</div></pre></td></tr></table></figure>
+<blockquote>
+<p>查看已挂载的rbd设备的命令是：rbd showmapped</p>
+</blockquote>
+<p>那么，什么是nbd设备？</p>
+<h2 id="NBD"><a href="#NBD" class="headerlink" title="NBD"></a>NBD</h2><p><strong>NBD</strong>(Network Block Device)让你可以将一个远程主机的磁盘空间，当作一个块设备来使用，就像一块硬盘一样。NBD是一个内核模块，大部分Linux发行版都包含它。</p>
+<h3 id="和RBD比较"><a href="#和RBD比较" class="headerlink" title="和RBD比较"></a>和RBD比较</h3><p>ceph jewel版本中有一个特性，RBD的NBD驱动，它允许librbd对外提供一个内核级别的RBD。</p>
+<p>与RBD内核驱动程序相比，NBD有许多优点：</p>
+<ul>
+<li>RBD-KO开发和特性的添加必须要经过稳定的内核</li>
+<li>RBD-KO开发慢于librbd，如果要与librbd开发保持同步，需要时间和努力</li>
+<li>NBD已经很好地集成到内核多年，是大多数现今的内核的一部分</li>
+</ul>
+<p>RBD-NBD依靠librbd的用户空间实现，该实现通过使用强大和完善的NBD（网络块设备）内核模块已经非常稳定。</p>
+<p>参考：<a href="http://www.sebastien-han.fr/blog/2016/04/04/ceph-jewel-preview-map-rbd-devices-on-nbd/" target="_blank" rel="external">Ceph Jewel Preview: map RBD devices on NBD</a></p>
+<h3 id="和NFS的区别"><a href="#和NFS的区别" class="headerlink" title="和NFS的区别"></a>和NFS的区别</h3><ul>
+<li>NFS只是提供一个挂载点供客户端使用，客户端无法改变这个挂载点的分区格式</li>
+<li>NBD提供的是一个块设备，客户端可以把这个块设备格式化成各种类型的分区，更便于用户的使用</li>
+</ul>
+<h2 id="RBD-NBD"><a href="#RBD-NBD" class="headerlink" title="RBD-NBD"></a>RBD-NBD</h2><p><strong>rbd-nbd</strong> 是个 RADOS 块设备（ rbd ）映像的客户端，与 rbd 内核模块类似。它可以把一个 rbd 映像映射为 nbd （ Network Block Device，网络块设备）设备，这样就可以当常规的本地块设备使用了。</p>
+<h3 id="相关命令"><a href="#相关命令" class="headerlink" title="相关命令"></a>相关命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">rbd-nbd [-c conf] [–nbds_max limit] [–read-only] [–device nbd device] map image-spec | snap-spec</div><div class="line">rbd-nbd unmap nbd device</div><div class="line">rbd-nbd list-mapped</div></pre></td></tr></table></figure>
+<h3 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h3><ul>
+<li><p>-c ceph.conf</p>
+<p>指定 ceph.conf 配置文件，而不是用默认的 /etc/ceph/ceph.conf 来确定启动时需要的 monitor 地址。</p>
+</li>
+</ul>
+<ul>
+<li><p>–nbds_max <em>limit</em></p>
+<p>载入 NBD 内核模块时覆盖其参数，用于限制 nbd 设备的数量。</p>
+</li>
+</ul>
+<h3 id="映像名和快照名规则"><a href="#映像名和快照名规则" class="headerlink" title="映像名和快照名规则"></a>映像名和快照名规则</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">image-spec is [pool-name]/image-name</div><div class="line">snap-spec is [pool-name]/image-name@snap-name</div></pre></td></tr></table></figure>
+<h2 id="ceph-rbd"><a href="#ceph-rbd" class="headerlink" title="ceph rbd"></a>ceph rbd</h2><p>使用Ceph的块存储有两种路径：</p>
+<p>一种是利用QEMU走librbd路径，另一种是使用kernel module，走kernel的路径，两种途径的接口实现不完全相同。就目前来说，前者是目前更稳定的途径，也是Ceph所有应用场景中最广泛使用的。</p>
+<ul>
+<li>librbd是用户态的，主要为虚拟机提供块存储设备，kvm对接的就是librbd</li>
+<li>kernel rbd是内核态的，主要为Host提供块设备支持，内核直接与osd交互，性能优于用户态</li>
+</ul>
 
       
     </div>
@@ -298,13 +325,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/05/26/GPG-key-retrieval-failure/">GPG key retrieval failure</a></p>
+        <p><span>本文标题:</span><a href="/2017/06/07/Map-RBD-Devices-on-NBD/">Map RBD Devices on NBD</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-05-26, 09:13:24</p>
-        <p><span>最后更新:</span>2017-05-26, 09:39:38</p>
+        <p><span>发布时间:</span>2017-06-07, 10:51:42</p>
+        <p><span>最后更新:</span>2017-06-07, 15:03:38</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/05/26/GPG-key-retrieval-failure/" title="GPG key retrieval failure">http://xiaqunfeng.github.io/2017/05/26/GPG-key-retrieval-failure/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/05/26/GPG-key-retrieval-failure/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/06/07/Map-RBD-Devices-on-NBD/" title="Map RBD Devices on NBD">http://xiaqunfeng.github.io/2017/06/07/Map-RBD-Devices-on-NBD/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/06/07/Map-RBD-Devices-on-NBD/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -316,16 +343,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/05/26/ceph-mon时钟偏移问题/">
-                    ceph mon时钟偏移问题
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/05/25/mac上实现vim的markdown预览/">
-                    mac上实现vim的markdown预览
+                <a href="/2017/06/06/ceph-rbd-map-failed/">
+                    ceph rbd map failed
                 </a>
             </div>
         
@@ -337,7 +358,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#我的epel源"><span class="toc-number">1.</span> <span class="toc-text">我的epel源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题"><span class="toc-number">2.</span> <span class="toc-text">问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#网上解决方案"><span class="toc-number">3.</span> <span class="toc-text">网上解决方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#原因-amp-解决尝试"><span class="toc-number">4.</span> <span class="toc-text">原因&解决尝试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-number">5.</span> <span class="toc-text">其他</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#引出问题"><span class="toc-number">1.</span> <span class="toc-text">引出问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#实践"><span class="toc-number">1.1.</span> <span class="toc-text">实践</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NBD"><span class="toc-number">2.</span> <span class="toc-text">NBD</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#和RBD比较"><span class="toc-number">2.1.</span> <span class="toc-text">和RBD比较</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#和NFS的区别"><span class="toc-number">2.2.</span> <span class="toc-text">和NFS的区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RBD-NBD"><span class="toc-number">3.</span> <span class="toc-text">RBD-NBD</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#相关命令"><span class="toc-number">3.1.</span> <span class="toc-text">相关命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#选项"><span class="toc-number">3.2.</span> <span class="toc-text">选项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#映像名和快照名规则"><span class="toc-number">3.3.</span> <span class="toc-text">映像名和快照名规则</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ceph-rbd"><span class="toc-number">4.</span> <span class="toc-text">ceph rbd</span></a></li></ol>
         
     </div>
     <style>
@@ -373,7 +394,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"GPG key retrieval failure　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"Map RBD Devices on NBD　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -392,8 +413,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.github.io/2017/05/26/GPG-key-retrieval-failure/';
-            this.page.identifier = '2017/05/26/GPG-key-retrieval-failure/';
+            this.page.url = 'http://xiaqunfeng.github.io/2017/06/07/Map-RBD-Devices-on-NBD/';
+            this.page.identifier = '2017/06/07/Map-RBD-Devices-on-NBD/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -415,15 +436,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/05/26/ceph-mon时钟偏移问题/" title="上一篇: ceph mon时钟偏移问题">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/05/25/mac上实现vim的markdown预览/" title="下一篇: mac上实现vim的markdown预览">
+            <a href="/2017/06/06/ceph-rbd-map-failed/" title="下一篇: ceph rbd map failed">
                 <i class="fa fa-angle-right"></i>
             </a>
         

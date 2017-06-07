@@ -4,6 +4,63 @@
   
     
     <entry>
+      <title><![CDATA[Map RBD Devices on NBD]]></title>
+      <url>http://xiaqunfeng.github.io/2017/06/07/Map-RBD-Devices-on-NBD/</url>
+      <content type="html"><![CDATA[<p>jewel及以后的版本支持rbd-nbd的特性，在需要map支持较多特性的rbd image时，可以使用此方法。<br><a id="more"></a></p>
+<h2 id="引出问题"><a href="#引出问题" class="headerlink" title="引出问题"></a>引出问题</h2><p>前一篇文章中说到在map特性比较丰富的rbd设备时，内核不支持，所以出现如如下错误</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># rbd nbd map rbd/image-1</div><div class="line">rbd: sysfs write failed</div><div class="line">RBD image feature set mismatch. You can disable features unsupported by the kernel with &quot;rbd feature disable&quot;.</div><div class="line">In some cases useful info is found in syslog - try &quot;dmesg | tail&quot; or so.</div></pre></td></tr></table></figure>
+<p>所以行不通，于是寻求其他解决方案。</p>
+<p>幸运的是，jewel及以后版本中，RBD支持将RBD image map为本地nbd设备，通过<code>rbd nbd map</code>命令即可映射为本地nbd设备。</p>
+<h3 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h3><p>安装 rbd-nbd</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install rbd-nbd -y</div></pre></td></tr></table></figure>
+<p>map</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># rbd nbd map rbd/image-1</div><div class="line">/dev/nbd0</div></pre></td></tr></table></figure>
+<p>成功！</p>
+<p>这时就可以格式化并挂载来使用该设备了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># mkfs.xfs -f /dev/nbd0</div><div class="line"># mkdir /mnt/nbd0</div><div class="line"># mount -noatime /dev/nbd0 /mnt/nbd0</div><div class="line"># lsblk</div><div class="line">...</div><div class="line">nbd0    43:0    0    1G  0 disk /mnt/nbd0</div></pre></td></tr></table></figure>
+<p>查看已映射的nbd设备</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># rbd-nbd list-mapped</div><div class="line">/dev/nbd0</div></pre></td></tr></table></figure>
+<blockquote>
+<p>查看已挂载的rbd设备的命令是：rbd showmapped</p>
+</blockquote>
+<p>那么，什么是nbd设备？</p>
+<h2 id="NBD"><a href="#NBD" class="headerlink" title="NBD"></a>NBD</h2><p><strong>NBD</strong>(Network Block Device)让你可以将一个远程主机的磁盘空间，当作一个块设备来使用，就像一块硬盘一样。NBD是一个内核模块，大部分Linux发行版都包含它。</p>
+<h3 id="和RBD比较"><a href="#和RBD比较" class="headerlink" title="和RBD比较"></a>和RBD比较</h3><p>ceph jewel版本中有一个特性，RBD的NBD驱动，它允许librbd对外提供一个内核级别的RBD。</p>
+<p>与RBD内核驱动程序相比，NBD有许多优点：</p>
+<ul>
+<li>RBD-KO开发和特性的添加必须要经过稳定的内核</li>
+<li>RBD-KO开发慢于librbd，如果要与librbd开发保持同步，需要时间和努力</li>
+<li>NBD已经很好地集成到内核多年，是大多数现今的内核的一部分</li>
+</ul>
+<p>RBD-NBD依靠librbd的用户空间实现，该实现通过使用强大和完善的NBD（网络块设备）内核模块已经非常稳定。</p>
+<p>参考：<a href="http://www.sebastien-han.fr/blog/2016/04/04/ceph-jewel-preview-map-rbd-devices-on-nbd/" target="_blank" rel="external">Ceph Jewel Preview: map RBD devices on NBD</a></p>
+<h3 id="和NFS的区别"><a href="#和NFS的区别" class="headerlink" title="和NFS的区别"></a>和NFS的区别</h3><ul>
+<li>NFS只是提供一个挂载点供客户端使用，客户端无法改变这个挂载点的分区格式</li>
+<li>NBD提供的是一个块设备，客户端可以把这个块设备格式化成各种类型的分区，更便于用户的使用</li>
+</ul>
+<h2 id="RBD-NBD"><a href="#RBD-NBD" class="headerlink" title="RBD-NBD"></a>RBD-NBD</h2><p><strong>rbd-nbd</strong> 是个 RADOS 块设备（ rbd ）映像的客户端，与 rbd 内核模块类似。它可以把一个 rbd 映像映射为 nbd （ Network Block Device，网络块设备）设备，这样就可以当常规的本地块设备使用了。</p>
+<h3 id="相关命令"><a href="#相关命令" class="headerlink" title="相关命令"></a>相关命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">rbd-nbd [-c conf] [–nbds_max limit] [–read-only] [–device nbd device] map image-spec | snap-spec</div><div class="line">rbd-nbd unmap nbd device</div><div class="line">rbd-nbd list-mapped</div></pre></td></tr></table></figure>
+<h3 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h3><ul>
+<li><p>-c ceph.conf</p>
+<p>指定 ceph.conf 配置文件，而不是用默认的 /etc/ceph/ceph.conf 来确定启动时需要的 monitor 地址。</p>
+</li>
+</ul>
+<ul>
+<li><p>–nbds_max <em>limit</em></p>
+<p>载入 NBD 内核模块时覆盖其参数，用于限制 nbd 设备的数量。</p>
+</li>
+</ul>
+<h3 id="映像名和快照名规则"><a href="#映像名和快照名规则" class="headerlink" title="映像名和快照名规则"></a>映像名和快照名规则</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">image-spec is [pool-name]/image-name</div><div class="line">snap-spec is [pool-name]/image-name@snap-name</div></pre></td></tr></table></figure>
+<h2 id="ceph-rbd"><a href="#ceph-rbd" class="headerlink" title="ceph rbd"></a>ceph rbd</h2><p>使用Ceph的块存储有两种路径：</p>
+<p>一种是利用QEMU走librbd路径，另一种是使用kernel module，走kernel的路径，两种途径的接口实现不完全相同。就目前来说，前者是目前更稳定的途径，也是Ceph所有应用场景中最广泛使用的。</p>
+<ul>
+<li>librbd是用户态的，主要为虚拟机提供块存储设备，kvm对接的就是librbd</li>
+<li>kernel rbd是内核态的，主要为Host提供块设备支持，内核直接与osd交互，性能优于用户态</li>
+</ul>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[ceph rbd map failed]]></title>
       <url>http://xiaqunfeng.github.io/2017/06/06/ceph-rbd-map-failed/</url>
       <content type="html"><![CDATA[<p>探索 kernel RBD map 失败的问题。<br><a id="more"></a></p>
