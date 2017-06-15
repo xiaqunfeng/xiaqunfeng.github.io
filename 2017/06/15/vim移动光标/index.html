@@ -15,19 +15,16 @@
 
 
 
-<meta name="description" content="很清晰的讲解快照两种模式cow和row的区别。">
+<meta name="description" content="平常的基本编辑环境都是vim，因此总结了一些光标移动的命令，可以提高效率，使vim用起来不显得那么笨重。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="cow和row快照机制的区别">
-<meta property="og:url" content="http://xiaqunfeng.github.io/2017/03/09/cow和row快照机制的区别/index.html">
+<meta property="og:title" content="vim移动光标">
+<meta property="og:url" content="http://xiaqunfeng.github.io/2017/06/15/vim移动光标/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="很清晰的讲解快照两种模式cow和row的区别。">
-<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/cow.jpg">
-<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/row.jpg">
-<meta property="og:updated_time" content="2017-03-09T03:51:26.000Z">
+<meta property="og:description" content="平常的基本编辑环境都是vim，因此总结了一些光标移动的命令，可以提高效率，使vim用起来不显得那么笨重。">
+<meta property="og:updated_time" content="2017-06-15T11:23:17.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="cow和row快照机制的区别">
-<meta name="twitter:description" content="很清晰的讲解快照两种模式cow和row的区别。">
-<meta name="twitter:image" content="http://ojet8bprn.bkt.clouddn.com/cow.jpg">
+<meta name="twitter:title" content="vim移动光标">
+<meta name="twitter:description" content="平常的基本编辑环境都是vim，因此总结了一些光标移动的命令，可以提高效率，使vim用起来不显得那么笨重。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -59,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>cow和row快照机制的区别 | 夏天的风的博客</title>
+<title>vim移动光标 | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -229,11 +226,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-cow和row快照机制的区别" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-vim移动光标" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/03/09/cow和row快照机制的区别/" class="article-date">
-      <time datetime="2017-03-09T03:32:24.000Z" itemprop="datePublished">2017-03-09</time>
+      <a href="/2017/06/15/vim移动光标/" class="article-date">
+      <time datetime="2017-06-15T11:17:41.000Z" itemprop="datePublished">2017-06-15</time>
 </a>
 
 
@@ -248,7 +245,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      cow和row快照机制的区别
+      vim移动光标
     </h1>
   
 
@@ -259,7 +256,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/storage/">storage</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -269,39 +266,37 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>很清晰的讲解快照两种模式cow和row的区别。<br><a id="more"></a></p>
-<p>所谓快照，是指某数据集在某一时刻一个完全可用的拷贝。也叫即时拷贝。注意是一个完全可用的。如果是在window环境下，则要结合VSS 机制，把应用程序的buffer,文件系统的buffer,操作系统的buffer全部刷向磁盘后，再做快照。﻿</p>
-<p>当前快照有两种实现，分别是COW（Copy on first write） 和ROW(Redirect on first write).﻿﻿﻿</p>
-<h2 id="COW"><a href="#COW" class="headerlink" title="COW"></a>COW</h2><p>假如有一个卷8个物理块，分别为1~8， 在某一个时刻做了快照，这时候生成了一个快照卷，快照卷也有8个块，和原始卷一样指向相同的物理块。这时候有一个新的io，修改原始卷的第8个物理块，对COW 而言，会依次做如下几步﻿</p>
-<ul>
-<li>1、分配一个新的物理块。我们称为第9个物理块﻿</li>
-<li>2、读取第8个物理块﻿</li>
-<li>3、新读取的第8个物理块数据写入到第9个物理块。﻿</li>
-<li>4、更新快照卷map,指向第9个物理块﻿</li>
-<li>5、更新第8个物理块﻿</li>
-</ul>
-<p>﻿<img src="http://ojet8bprn.bkt.clouddn.com/cow.jpg" alt="COW"></p>
-<p>从上面可以看出，本来写一个物理块，变成了1读3写。﻿</p>
-<p>COW 优点：﻿</p>
-<p>1、原始卷物理块连续。没有碎片。﻿</p>
-<p>COW 缺点：﻿</p>
-<p>1、写放大，本来一个写，变成1读3写。﻿﻿﻿</p>
-<h2 id="ROW"><a href="#ROW" class="headerlink" title="ROW"></a>ROW</h2><p>对ROW 而言，会依次做如下几步﻿</p>
-<ul>
-<li>1、分配一个新的物理块。我们称为第9个物理块﻿</li>
-<li>2、数据写入到第9个物理块。﻿</li>
-<li>3、更新原始卷map,指向第9个物理块﻿﻿</li>
-</ul>
-<p>﻿<img src="http://ojet8bprn.bkt.clouddn.com/row.jpg" alt="ROW"></p>
-<p>从上面可以看出，本来写一个物理块，变成了2写。﻿</p>
-<p>ROW 优点：﻿</p>
-<p>1、性能比COW 好。﻿</p>
-<p>ROW 缺点：﻿</p>
-<p>1、写放大，本来一个写，变成2写。﻿</p>
-<p>2、原始卷物理块不连续。没、有碎片。</p>
-<blockquote>
-<p>本文为转载，原始链接未找到</p>
-</blockquote>
+        <p>平常的基本编辑环境都是vim，因此总结了一些光标移动的命令，可以提高效率，使vim用起来不显得那么笨重。<br><a id="more"></a></p>
+<h2 id="光标方向"><a href="#光标方向" class="headerlink" title="光标方向"></a>光标方向</h2><p>上下左右：<code>h</code>, <code>j</code>, <code>k</code>, <code>l</code></p>
+<p>支持数字前缀，比如<code>10j</code>可以向下移动10行</p>
+<p><code>ctrl + o</code>返回上一个光标位置</p>
+<p><code>ctrl + i</code>跳到下一个光标位置</p>
+<h2 id="单词移动"><a href="#单词移动" class="headerlink" title="单词移动"></a>单词移动</h2><p><code>w</code>移动光标到下一个单词的词首</p>
+<p><code>b</code>移动光标到上一个单词的词首</p>
+<p><code>e</code>移动光标到光标所在单词的结尾</p>
+<p><code>ge</code>移动光标到上一个单词的结尾</p>
+<p>支持数字前缀，比如<code>4w</code>可以向后移动4个单词</p>
+<p>以上单词的分割标准是：空格、特殊符号</p>
+<p>比如:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">raw: sudo apt-get -y install ceph</div></pre></td></tr></table></figure>
+<p>这里 <code>:</code>  <code>-</code> 以及空格，都是分割符号</p>
+<p><code>W</code>, <code>B</code>, <code>E</code> 功能同上，只不过它分隔单词的标准是空格，所以可以跳的更远，更方便，用的比较多。</p>
+<h2 id="屏幕移动"><a href="#屏幕移动" class="headerlink" title="屏幕移动"></a>屏幕移动</h2><p><code>H</code>移动到屏幕的首行</p>
+<p><code>L</code>到屏幕尾行</p>
+<p><code>M</code>到屏幕中间</p>
+<p><code>ctrl + f</code>向下翻页</p>
+<p><code>ctrl + b</code>向上翻页</p>
+<p><code>ctrl + e</code>逐行下滚</p>
+<p><code>ctrl + y</code>逐行上滚</p>
+<h2 id="行移动"><a href="#行移动" class="headerlink" title="行移动"></a>行移动</h2><p><code>^</code>到行首</p>
+<p><code>$</code>到行尾</p>
+<p><code>gg</code>移到文件首行</p>
+<p><code>G</code>移到文件尾行</p>
+<p><code>zt</code>置顶当前行</p>
+<p><code>zz</code>将当前行移到屏幕中部</p>
+<p><code>zb</code>将当前行移到底部</p>
+<p>拷贝一行：<code>^y$</code>，也可以直接 <code>yy</code></p>
+<p>拷贝整个文件：<code>ggyG</code></p>
 
       
     </div>
@@ -310,13 +305,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/03/09/cow和row快照机制的区别/">cow和row快照机制的区别</a></p>
+        <p><span>本文标题:</span><a href="/2017/06/15/vim移动光标/">vim移动光标</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-03-09, 11:32:24</p>
-        <p><span>最后更新:</span>2017-03-09, 11:51:26</p>
+        <p><span>发布时间:</span>2017-06-15, 19:17:41</p>
+        <p><span>最后更新:</span>2017-06-15, 19:23:17</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/03/09/cow和row快照机制的区别/" title="cow和row快照机制的区别">http://xiaqunfeng.github.io/2017/03/09/cow和row快照机制的区别/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/03/09/cow和row快照机制的区别/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/06/15/vim移动光标/" title="vim移动光标">http://xiaqunfeng.github.io/2017/06/15/vim移动光标/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/06/15/vim移动光标/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -328,16 +323,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/03/24/理解socket编程/">
-                    理解socket编程
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/03/09/Machine-Learning-Yearning-5、6/">
-                    Machine Learning Yearning(5、6、7)
+                <a href="/2017/06/07/Map-RBD-Devices-on-NBD/">
+                    Map RBD Devices on NBD
                 </a>
             </div>
         
@@ -349,7 +338,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#COW"><span class="toc-number">1.</span> <span class="toc-text">COW</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ROW"><span class="toc-number">2.</span> <span class="toc-text">ROW</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#光标方向"><span class="toc-number">1.</span> <span class="toc-text">光标方向</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#单词移动"><span class="toc-number">2.</span> <span class="toc-text">单词移动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#屏幕移动"><span class="toc-number">3.</span> <span class="toc-text">屏幕移动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#行移动"><span class="toc-number">4.</span> <span class="toc-text">行移动</span></a></li></ol>
         
     </div>
     <style>
@@ -385,7 +374,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"cow和row快照机制的区别　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"vim移动光标　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -404,8 +393,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.github.io/2017/03/09/cow和row快照机制的区别/';
-            this.page.identifier = '2017/03/09/cow和row快照机制的区别/';
+            this.page.url = 'http://xiaqunfeng.github.io/2017/06/15/vim移动光标/';
+            this.page.identifier = '2017/06/15/vim移动光标/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -427,15 +416,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/03/24/理解socket编程/" title="上一篇: 理解socket编程">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/03/09/Machine-Learning-Yearning-5、6/" title="下一篇: Machine Learning Yearning(5、6、7)">
+            <a href="/2017/06/07/Map-RBD-Devices-on-NBD/" title="下一篇: Map RBD Devices on NBD">
                 <i class="fa fa-angle-right"></i>
             </a>
         
