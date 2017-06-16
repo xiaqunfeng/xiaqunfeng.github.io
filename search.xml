@@ -4,6 +4,41 @@
   
     
     <entry>
+      <title><![CDATA[centos 7下操纵ceph进程]]></title>
+      <url>http://xiaqunfeng.github.io/2017/06/16/centos-7%E4%B8%8B%E6%93%8D%E7%BA%B5ceph%E8%BF%9B%E7%A8%8B/</url>
+      <content type="html"><![CDATA[<p>分享一个以前的笔记。官网给的通过<code>/etc/init.d/ceph</code>stop、start等命令在centos7下不行，service命令也是不行的。现在都使用原生的 systemd 来管理ceph进程。<br><a id="more"></a></p>
+<h2 id="操作集群"><a href="#操作集群" class="headerlink" title="操作集群"></a>操作集群</h2><p>在<a href="http://docs.ceph.org.cn/rados/operations/operating/" target="_blank" rel="external">官方文档</a>中给出了几种操作方法：</p>
+<p><strong>1、用 UPSTART 控制 CEPH</strong></p>
+<p>用 ceph-deploy 把 Ceph Cuttlefish 及更高版部署到 Ubuntu 之后，你可以用基于事件的 Upstart来启动、关闭 Ceph 节点上的守护进程。 Upstart 不要求你在配置文件里定义守护进程例程。</p>
+<p><strong>2、通过 SYSVINIT 机制运行 CEPH</strong></p>
+<p>在 CentOS 、 Redhat 、 Fedora 和 SLES 发行版上可以通过传统的 sysvinit 运行 Ceph ， Debian/Ubuntu 的较老的版本也可以用此方法。</p>
+<p><strong>3、把 CEPH 当服务运行</strong></p>
+<p>如果你是用 ceph-deploy 部署 Argonaut 或 Bobtail 的，那么 Ceph 可以作为服务运行（还可以用 sysvinit ）。</p>
+<h2 id="CentOS-7"><a href="#CentOS-7" class="headerlink" title="CentOS 7"></a>CentOS 7</h2><p>但是，现在所有支持 systemd 的发行版（ CentOS 7 、 Fedora 、 Debian Jessie 8.x 、 SUSE ）都用原生的 systemd 文件来管理 ceph 守护进程，不再使用原来的 sysvinit 脚本了。</p>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo systemctl start ceph.target       # start all daemons</div><div class="line">sudo systemctl status ceph-osd@12      # check status of osd.12</div></pre></td></tr></table></figure>
+<p>罗列节点上 Ceph 的 systemd unit 用此命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo systemctl status ceph\*.service ceph\*.target</div></pre></td></tr></table></figure>
+<h3 id="启动所有守护进程"><a href="#启动所有守护进程" class="headerlink" title="启动所有守护进程"></a>启动所有守护进程</h3><p>要启动一 Ceph 节点（任何类型）上的所有守护进程，用下列命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo systemctl start ceph.target</div></pre></td></tr></table></figure>
+<h3 id="停止所有守护进程"><a href="#停止所有守护进程" class="headerlink" title="停止所有守护进程"></a>停止所有守护进程</h3><p>要停止一 Ceph 节点（任何类型）上的所有守护进程，用下列命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo systemctl stop ceph\*.service ceph\*.target</div></pre></td></tr></table></figure>
+<h3 id="按类型启动所有守护进程"><a href="#按类型启动所有守护进程" class="headerlink" title="按类型启动所有守护进程"></a>按类型启动所有守护进程</h3><p>要启动一节点上的某一类守护进程，用下列命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo systemctl start ceph-osd.target</div><div class="line">sudo systemctl start ceph-mon.target</div><div class="line">sudo systemctl start ceph-mds.target</div></pre></td></tr></table></figure>
+<h3 id="按类型停止所有守护进程"><a href="#按类型停止所有守护进程" class="headerlink" title="按类型停止所有守护进程"></a>按类型停止所有守护进程</h3><p>要停止一节点上的某一类守护进程，用下列命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo systemctl stop ceph-mon\*.service ceph-mon.target</div><div class="line">sudo systemctl stop ceph-osd\*.service ceph-osd.target</div><div class="line">sudo systemctl stop ceph-mds\*.service ceph-mds.target</div></pre></td></tr></table></figure>
+<h3 id="启动单个进程"><a href="#启动单个进程" class="headerlink" title="启动单个进程"></a>启动单个进程</h3><p>要启动某节点上的某个守护进程例程，用下列命令之一：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo systemctl start ceph-osd@&#123;id&#125;</div><div class="line">sudo systemctl start ceph-mon@&#123;hostname&#125;</div><div class="line">sudo systemctl start ceph-mds@&#123;hostname&#125;</div></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo systemctl start ceph-osd@1</div><div class="line">sudo systemctl start ceph-mon@ceph-server</div><div class="line">sudo systemctl start ceph-mds@ceph-server</div></pre></td></tr></table></figure>
+<h3 id="停止单个进程"><a href="#停止单个进程" class="headerlink" title="停止单个进程"></a>停止单个进程</h3><p>要停止某节点上的某个守护进程例程，用下列命令之一：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo systemctl stop ceph-osd@&#123;id&#125;</div><div class="line">sudo systemctl stop ceph-mon@&#123;hostname&#125;</div><div class="line">sudo systemctl stop ceph-mds@&#123;hostname&#125;</div></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo systemctl stop ceph-osd@1</div><div class="line">sudo systemctl stop ceph-mon@ceph-server</div><div class="line">sudo systemctl stop ceph-mds@ceph-server</div></pre></td></tr></table></figure>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[vim移动光标]]></title>
       <url>http://xiaqunfeng.github.io/2017/06/15/vim%E7%A7%BB%E5%8A%A8%E5%85%89%E6%A0%87/</url>
       <content type="html"><![CDATA[<p>平常的基本编辑环境都是vim，因此总结了一些光标移动的命令，可以提高效率，使vim用起来不显得那么笨重。<br><a id="more"></a></p>
