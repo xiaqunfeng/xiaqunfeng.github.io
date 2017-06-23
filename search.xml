@@ -4,6 +4,74 @@
   
     
     <entry>
+      <title><![CDATA[wget批量下载http目录及文件]]></title>
+      <url>http://xiaqunfeng.github.io/2017/06/23/wget%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDhttp%E7%9B%AE%E5%BD%95%E5%8F%8A%E6%96%87%E4%BB%B6/</url>
+      <content type="html"><![CDATA[<p>有时候看到好的镜像，想保存下来，不可能一个个通过url手动来下载，这时候就需要批量下载了。<br><a id="more"></a></p>
+<p>举个例子，我要下载的地址和内容如下：<br><img src="http://oow6unnib.bkt.clouddn.com/wget-http.jpg" alt="wget-http"></p>
+<h2 id="得到页面的index-html"><a href="#得到页面的index-html" class="headerlink" title="得到页面的index.html"></a>得到页面的index.html</h2><p>在 <code>/root/test-wget</code> 目录下操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget -m http://mirrors.163.com/ceph/rpm-jewel/el7/SRPMS/</div></pre></td></tr></table></figure>
+<p>得到index.html</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"># cat /root/test-wget/mirrors.163.com/ceph/rpm-jewel/el7/SRPMS/index.html</div><div class="line">&lt;html&gt;</div><div class="line">&lt;head&gt;&lt;title&gt;Index of /ceph/rpm-jewel/el7/SRPMS/&lt;/title&gt;&lt;/head&gt;</div><div class="line">&lt;body bgcolor=&quot;white&quot;&gt;</div><div class="line">&lt;h1&gt;Index of /ceph/rpm-jewel/el7/SRPMS/&lt;/h1&gt;&lt;hr&gt;&lt;pre&gt;&lt;a href=&quot;../&quot;&gt;../&lt;/a&gt;</div><div class="line">&lt;a href=&quot;repodata/&quot;&gt;repodata/&lt;/a&gt;                                          11-Apr-2017 03:06       -</div><div class="line">&lt;a href=&quot;ceph-10.1.0-0.el7.src.rpm&quot;&gt;ceph-10.1.0-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      8M</div><div class="line">&lt;a href=&quot;ceph-10.1.1-0.el7.src.rpm&quot;&gt;ceph-10.1.1-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      9M</div><div class="line">&lt;a href=&quot;ceph-10.1.2-0.el7.src.rpm&quot;&gt;ceph-10.1.2-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      9M</div><div class="line">&lt;a href=&quot;ceph-10.2.0-0.el7.src.rpm&quot;&gt;ceph-10.2.0-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      9M</div><div class="line">&lt;a href=&quot;ceph-10.2.1-0.el7.src.rpm&quot;&gt;ceph-10.2.1-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      9M</div><div class="line">&lt;a href=&quot;ceph-10.2.2-0.el7.src.rpm&quot;&gt;ceph-10.2.2-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      8M</div><div class="line">&lt;a href=&quot;ceph-10.2.3-0.el7.src.rpm&quot;&gt;ceph-10.2.3-0.el7.src.rpm&lt;/a&gt;                          17-Oct-2016 20:29      9M</div><div class="line">&lt;a href=&quot;ceph-10.2.4-0.el7.src.rpm&quot;&gt;ceph-10.2.4-0.el7.src.rpm&lt;/a&gt;                          07-Dec-2016 05:39     10M</div><div class="line">&lt;a href=&quot;ceph-10.2.5-0.el7.src.rpm&quot;&gt;ceph-10.2.5-0.el7.src.rpm&lt;/a&gt;                          05-Jan-2017 02:49     10M</div><div class="line">&lt;a href=&quot;ceph-10.2.6-0.el7.src.rpm&quot;&gt;ceph-10.2.6-0.el7.src.rpm&lt;/a&gt;                          08-Mar-2017 21:55     11M</div><div class="line">&lt;a href=&quot;ceph-10.2.7-0.el7.src.rpm&quot;&gt;ceph-10.2.7-0.el7.src.rpm&lt;/a&gt;                          11-Apr-2017 02:53     11M</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.29-0.src.rpm&quot;&gt;ceph-deploy-1.5.29-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     91K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.30-0.src.rpm&quot;&gt;ceph-deploy-1.5.30-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     91K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.31-0.src.rpm&quot;&gt;ceph-deploy-1.5.31-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     91K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.32-0.src.rpm&quot;&gt;ceph-deploy-1.5.32-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     91K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.33-0.src.rpm&quot;&gt;ceph-deploy-1.5.33-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     91K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.34-0.src.rpm&quot;&gt;ceph-deploy-1.5.34-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     94K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.35-0.src.rpm&quot;&gt;ceph-deploy-1.5.35-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     95K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.36-0.src.rpm&quot;&gt;ceph-deploy-1.5.36-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     95K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.37-0.src.rpm&quot;&gt;ceph-deploy-1.5.37-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     95K</div><div class="line">&lt;a href=&quot;ceph-release-1-1.el7.src.rpm&quot;&gt;ceph-release-1-1.el7.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53    4186</div><div class="line">&lt;a href=&quot;radosgw-agent-1.2.5-0.el7.src.rpm&quot;&gt;radosgw-agent-1.2.5-0.el7.src.rpm&lt;/a&gt;                  11-Apr-2017 02:53     29K</div><div class="line">&lt;a href=&quot;radosgw-agent-1.2.6-0.el7.src.rpm&quot;&gt;radosgw-agent-1.2.6-0.el7.src.rpm&lt;/a&gt;                  11-Apr-2017 02:53     29K</div><div class="line">&lt;a href=&quot;radosgw-agent-1.2.7-0.el7.src.rpm&quot;&gt;radosgw-agent-1.2.7-0.el7.src.rpm&lt;/a&gt;                  11-Apr-2017 02:53     29K</div><div class="line">&lt;/pre&gt;&lt;hr&gt;&lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
+<h2 id="开始下载"><a href="#开始下载" class="headerlink" title="开始下载"></a>开始下载</h2><p>命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget -nc -B http://mirrors.163.com/ceph/rpm-jewel/el7/SRPMS/ -F -nH --cut-dirs=3 -i index.html</div></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-nc</td>
+<td>下载时跳过已经存在的文件</td>
+</tr>
+<tr>
+<td>-B</td>
+<td>使用 -F -i 文件选项时，在相对链接前添加指定的 URL</td>
+</tr>
+<tr>
+<td>-nH</td>
+<td>不创建主机名目录</td>
+</tr>
+<tr>
+<td>-i</td>
+<td>下载从指定文件中找到的 URL</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>显示信息</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>递归下载</td>
+</tr>
+<tr>
+<td>-l</td>
+<td>最大递归深度(inf 或 0 表示无限)</td>
+</tr>
+<tr>
+<td>-F</td>
+<td>以 HTML 方式处理输入文件</td>
+</tr>
+<tr>
+<td>–cut-dir=num</td>
+<td>忽略远程目录中指定数目的目录层</td>
+</tr>
+<tr>
+<td>-E</td>
+<td>将所有 MIME 类型为 text/html 的文件都加上 .html 扩展文件名</td>
+</tr>
+</tbody>
+</table>
+<p>更多关于参数的问题详见：<a href="http://jiaxl.blog.51cto.com/3064605/1191196" target="_blank" rel="external">wget参数介绍</a></p>
+<p>然后就开始下载，直至完成<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">FINISHED --2017-06-23 18:11:54--</div><div class="line">Total wall clock time: 7m 31s</div><div class="line">Downloaded: 24 files, 103M in 7m 29s (234 KB/s)</div></pre></td></tr></table></figure></p>
+<p>下载完成后列表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"># ll</div><div class="line">总用量 105264</div><div class="line">-rw-r--r--. 1 root root  8894228 6月  15 2016 ceph-10.1.0-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  8942739 6月  15 2016 ceph-10.1.1-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  8961123 6月  15 2016 ceph-10.1.2-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  8967492 6月  15 2016 ceph-10.2.0-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  8996472 6月  15 2016 ceph-10.2.1-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  8876099 6月  15 2016 ceph-10.2.2-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  9044336 10月 17 2016 ceph-10.2.3-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root 10849625 12月  7 2016 ceph-10.2.4-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root 10795514 1月   5 02:49 ceph-10.2.5-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root 11215646 3月   8 21:55 ceph-10.2.6-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root 11245006 4月  11 02:53 ceph-10.2.7-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root    92710 4月  11 02:53 ceph-deploy-1.5.29-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    92915 4月  11 02:53 ceph-deploy-1.5.30-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    92953 4月  11 02:53 ceph-deploy-1.5.31-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    93493 4月  11 02:53 ceph-deploy-1.5.32-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    93323 4月  11 02:53 ceph-deploy-1.5.33-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    96664 4月  11 02:53 ceph-deploy-1.5.34-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    97010 4月  11 02:53 ceph-deploy-1.5.35-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    96998 4月  11 02:53 ceph-deploy-1.5.36-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    97146 4月  11 02:53 ceph-deploy-1.5.37-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root     4186 4月  11 02:53 ceph-release-1-1.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root     3189 6月  23 18:01 index.html</div><div class="line">-rw-r--r--. 1 root root    30175 4月  11 02:53 radosgw-agent-1.2.5-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root    29980 4月  11 02:53 radosgw-agent-1.2.6-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root    30044 4月  11 02:53 radosgw-agent-1.2.7-0.el7.src.rpm</div></pre></td></tr></table></figure></p>
+<p>以上</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[公有云和私有云的区别]]></title>
       <url>http://xiaqunfeng.github.io/2017/06/16/%E5%85%AC%E6%9C%89%E4%BA%91%E5%92%8C%E7%A7%81%E6%9C%89%E4%BA%91%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
       <content type="html"><![CDATA[<p>介绍了一下公有云和私有云的区别，以及该如何选择。<br><a id="more"></a></p>

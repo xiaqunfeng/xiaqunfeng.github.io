@@ -15,16 +15,18 @@
 
 
 
-<meta name="description" content="给iterm2进行配色，炫酷一点。">
+<meta name="description" content="有时候看到好的镜像，想保存下来，不可能一个个通过url手动来下载，这时候就需要批量下载了。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iterm2配色--zsh & oh-my-zsh">
-<meta property="og:url" content="http://xiaqunfeng.github.io/2017/05/04/iterm2配色/index.html">
+<meta property="og:title" content="wget批量下载http目录及文件">
+<meta property="og:url" content="http://xiaqunfeng.github.io/2017/06/23/wget批量下载http目录及文件/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="给iterm2进行配色，炫酷一点。">
-<meta property="og:updated_time" content="2017-05-05T08:37:19.000Z">
+<meta property="og:description" content="有时候看到好的镜像，想保存下来，不可能一个个通过url手动来下载，这时候就需要批量下载了。">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/wget-http.jpg">
+<meta property="og:updated_time" content="2017-06-23T11:17:52.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iterm2配色--zsh & oh-my-zsh">
-<meta name="twitter:description" content="给iterm2进行配色，炫酷一点。">
+<meta name="twitter:title" content="wget批量下载http目录及文件">
+<meta name="twitter:description" content="有时候看到好的镜像，想保存下来，不可能一个个通过url手动来下载，这时候就需要批量下载了。">
+<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/wget-http.jpg">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -56,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>iterm2配色--zsh &amp; oh-my-zsh | 夏天的风的博客</title>
+<title>wget批量下载http目录及文件 | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -226,11 +228,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-iterm2配色" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-wget批量下载http目录及文件" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/05/04/iterm2配色/" class="article-date">
-      <time datetime="2017-05-04T12:32:26.000Z" itemprop="datePublished">2017-05-04</time>
+      <a href="/2017/06/23/wget批量下载http目录及文件/" class="article-date">
+      <time datetime="2017-06-23T10:21:12.000Z" itemprop="datePublished">2017-06-23</time>
 </a>
 
 
@@ -245,7 +247,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      iterm2配色--zsh &amp; oh-my-zsh
+      wget批量下载http目录及文件
     </h1>
   
 
@@ -256,7 +258,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mac/">mac</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -266,47 +268,68 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>给iterm2进行配色，炫酷一点。<br><a id="more"></a></p>
-<h3 id="Solarized"><a href="#Solarized" class="headerlink" title="Solarized"></a>Solarized</h3><p>目前网络上最流行的配色解决方案：<a href="http://ethanschoonover.com/solarized" target="_blank" rel="external">Solarized</a></p>
-<p>Solarized Dark 官方网站: <a href="http://ethanschoonover.com/solarized" target="_blank" rel="external">http://ethanschoonover.com/solarized</a></p>
-<p>Solarized Dark github 地址: <a href="https://github.com/altercation/solarized" target="_blank" rel="external">https://github.com/altercation/solarized</a></p>
-<p>下载下来后会看到琳琅满目的配色解决方案，其中有一个目录 <code>iterm2-colors-solarized</code> 是为 iterm2 准备的解决方案。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># ls iterm2-colors-solarized/</div><div class="line">.md</div><div class="line">Solarized Dark.itermcolors</div><div class="line">Solarized Light.itermcolors</div></pre></td></tr></table></figure>
-<p>进入目录能看到 3个文件 (1个 md说明文件,2个配色文件) </p>
-<p>我们使用其中一个 Solarized Dark.itermcolors</p>
-<p>然后 preferences -&gt; colors -&gt; import 即可。</p>
-<h3 id="zsh"><a href="#zsh" class="headerlink" title="zsh"></a>zsh</h3><p>众所周知在Unix/Linux系统下是存在很多不同的shell，常见的就有bash, csh，ksh，zsh等等。在Linux和MAC OS系统中，默认使用的是bash。这里介绍功能更加强大的 <strong>zsh</strong>。</p>
-<p>1、通过homebrew安装：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install zsh</div></pre></td></tr></table></figure>
-<p>2、将zsh设置成系统默认shell，以代替bash</p>
-<p>用编辑器打开<code>/etc/shells</code>，在末尾添加：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/bin/zsh</div></pre></td></tr></table></figure>
-<p> 在终端中执行以下命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chsh -s /usr/local/bin/zsh</div></pre></td></tr></table></figure>
-<p>然后重新启动iTerm2，zsh就已经被配置成默认的shell了。</p>
-<h2 id="oh-my-zsh"><a href="#oh-my-zsh" class="headerlink" title="oh-my-zsh"></a>oh-my-zsh</h2><p>github：<a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank" rel="external">https://github.com/robbyrussell/oh-my-zsh</a></p>
-<p>1、安装</p>
-<p> <strong>on-my-zsh</strong>的安装支持自动和手动，为了省去麻烦，我建议优先使用自动，如果要使用手动安装，请查看安装说明。这里只说一下自动安装。 在终端里，如果你有<code>curl</code>，则在终端输入</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -L http://install.ohmyz.sh | sh</div></pre></td></tr></table></figure>
-<p>如果你使用<code>wget</code>,则在终端输入</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget --no-check-certificate http://install.ohmyz.sh -O - | sh</div></pre></td></tr></table></figure>
-<p>这样oh-my-zsh就安装完成了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">~/.oh-my-zsh  master ✔                                                              1d</div><div class="line">▶ ls</div><div class="line">CONTRIBUTING.md cache           log             templates</div><div class="line">LICENSE.txt     custom          oh-my-zsh.sh    themes</div><div class="line">README.md       lib             plugins         tools</div></pre></td></tr></table></figure>
-<p>2、配置</p>
-<p>zsh的配置在<code>~/.zshrc</code>下面这</p>
-<p>主题的配置</p>
-<p>在<code>~/.oh-my-zsh/themes</code>存在各式各样的主题文件，每个主题可以通过：<a href="https://github.com/robbyrussell/oh-my-zsh/wiki/Themes" target="_blank" rel="external">https://github.com/robbyrussell/oh-my-zsh/wiki/Themes</a> 进行查看。选好样式后，</p>
-<p>在<code>.zshrc</code>中的 <code>ZSH_THEME</code>设置成你所选用的主题，重启iTerm2，就可以看到相应的效果。我这里用的 <strong>avit</strong>。上面哪个oh-my-zsh 文件夹目录的列表就是用的这个主题。</p>
-<p>如果使用agnoster主题的话还需要装字体包，如下：</p>
-<p><a href="https://github.com/Lokaltog/vim-powerline/tree/develop/fontpatcher" target="_blank" rel="external">https://github.com/Lokaltog/vim-powerline/tree/develop/fontpatcher</a></p>
-<p><a href="https://github.com/powerline/fonts" target="_blank" rel="external">https://github.com/powerline/fonts</a></p>
-<h3 id="更多的配色方案"><a href="#更多的配色方案" class="headerlink" title="更多的配色方案"></a>更多的配色方案</h3><p><a href="https://github.com/mbadolato/iTerm2-Color-Schemes" target="_blank" rel="external">https://github.com/mbadolato/iTerm2-Color-Schemes</a></p>
-<p>可以根据自己的喜好来选择主题了。</p>
-<h2 id="高亮"><a href="#高亮" class="headerlink" title="高亮"></a>高亮</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/zsh-users/zsh-syntax-highlighting.git</div><div class="line">echo &quot;source $&#123;(q-)PWD&#125;/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh&quot; &gt;&gt; $&#123;ZDOTDIR:-$HOME&#125;/.zshrc</div><div class="line">source ./zsh-syntax-highlighting/zsh-syntax-highlighting.zsh</div></pre></td></tr></table></figure>
-<p>在 .zshrc 尾部添加</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">plugins=(zsh-syntax-highlighting)</div></pre></td></tr></table></figure>
-<p>然后</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source ~/.zshrc</div></pre></td></tr></table></figure>
+        <p>有时候看到好的镜像，想保存下来，不可能一个个通过url手动来下载，这时候就需要批量下载了。<br><a id="more"></a></p>
+<p>举个例子，我要下载的地址和内容如下：<br><img src="http://oow6unnib.bkt.clouddn.com/wget-http.jpg" alt="wget-http"></p>
+<h2 id="得到页面的index-html"><a href="#得到页面的index-html" class="headerlink" title="得到页面的index.html"></a>得到页面的index.html</h2><p>在 <code>/root/test-wget</code> 目录下操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget -m http://mirrors.163.com/ceph/rpm-jewel/el7/SRPMS/</div></pre></td></tr></table></figure>
+<p>得到index.html</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"># cat /root/test-wget/mirrors.163.com/ceph/rpm-jewel/el7/SRPMS/index.html</div><div class="line">&lt;html&gt;</div><div class="line">&lt;head&gt;&lt;title&gt;Index of /ceph/rpm-jewel/el7/SRPMS/&lt;/title&gt;&lt;/head&gt;</div><div class="line">&lt;body bgcolor=&quot;white&quot;&gt;</div><div class="line">&lt;h1&gt;Index of /ceph/rpm-jewel/el7/SRPMS/&lt;/h1&gt;&lt;hr&gt;&lt;pre&gt;&lt;a href=&quot;../&quot;&gt;../&lt;/a&gt;</div><div class="line">&lt;a href=&quot;repodata/&quot;&gt;repodata/&lt;/a&gt;                                          11-Apr-2017 03:06       -</div><div class="line">&lt;a href=&quot;ceph-10.1.0-0.el7.src.rpm&quot;&gt;ceph-10.1.0-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      8M</div><div class="line">&lt;a href=&quot;ceph-10.1.1-0.el7.src.rpm&quot;&gt;ceph-10.1.1-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      9M</div><div class="line">&lt;a href=&quot;ceph-10.1.2-0.el7.src.rpm&quot;&gt;ceph-10.1.2-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      9M</div><div class="line">&lt;a href=&quot;ceph-10.2.0-0.el7.src.rpm&quot;&gt;ceph-10.2.0-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      9M</div><div class="line">&lt;a href=&quot;ceph-10.2.1-0.el7.src.rpm&quot;&gt;ceph-10.2.1-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      9M</div><div class="line">&lt;a href=&quot;ceph-10.2.2-0.el7.src.rpm&quot;&gt;ceph-10.2.2-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      8M</div><div class="line">&lt;a href=&quot;ceph-10.2.3-0.el7.src.rpm&quot;&gt;ceph-10.2.3-0.el7.src.rpm&lt;/a&gt;                          17-Oct-2016 20:29      9M</div><div class="line">&lt;a href=&quot;ceph-10.2.4-0.el7.src.rpm&quot;&gt;ceph-10.2.4-0.el7.src.rpm&lt;/a&gt;                          07-Dec-2016 05:39     10M</div><div class="line">&lt;a href=&quot;ceph-10.2.5-0.el7.src.rpm&quot;&gt;ceph-10.2.5-0.el7.src.rpm&lt;/a&gt;                          05-Jan-2017 02:49     10M</div><div class="line">&lt;a href=&quot;ceph-10.2.6-0.el7.src.rpm&quot;&gt;ceph-10.2.6-0.el7.src.rpm&lt;/a&gt;                          08-Mar-2017 21:55     11M</div><div class="line">&lt;a href=&quot;ceph-10.2.7-0.el7.src.rpm&quot;&gt;ceph-10.2.7-0.el7.src.rpm&lt;/a&gt;                          11-Apr-2017 02:53     11M</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.29-0.src.rpm&quot;&gt;ceph-deploy-1.5.29-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     91K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.30-0.src.rpm&quot;&gt;ceph-deploy-1.5.30-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     91K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.31-0.src.rpm&quot;&gt;ceph-deploy-1.5.31-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     91K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.32-0.src.rpm&quot;&gt;ceph-deploy-1.5.32-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     91K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.33-0.src.rpm&quot;&gt;ceph-deploy-1.5.33-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     91K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.34-0.src.rpm&quot;&gt;ceph-deploy-1.5.34-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     94K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.35-0.src.rpm&quot;&gt;ceph-deploy-1.5.35-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     95K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.36-0.src.rpm&quot;&gt;ceph-deploy-1.5.36-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     95K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.37-0.src.rpm&quot;&gt;ceph-deploy-1.5.37-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     95K</div><div class="line">&lt;a href=&quot;ceph-release-1-1.el7.src.rpm&quot;&gt;ceph-release-1-1.el7.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53    4186</div><div class="line">&lt;a href=&quot;radosgw-agent-1.2.5-0.el7.src.rpm&quot;&gt;radosgw-agent-1.2.5-0.el7.src.rpm&lt;/a&gt;                  11-Apr-2017 02:53     29K</div><div class="line">&lt;a href=&quot;radosgw-agent-1.2.6-0.el7.src.rpm&quot;&gt;radosgw-agent-1.2.6-0.el7.src.rpm&lt;/a&gt;                  11-Apr-2017 02:53     29K</div><div class="line">&lt;a href=&quot;radosgw-agent-1.2.7-0.el7.src.rpm&quot;&gt;radosgw-agent-1.2.7-0.el7.src.rpm&lt;/a&gt;                  11-Apr-2017 02:53     29K</div><div class="line">&lt;/pre&gt;&lt;hr&gt;&lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
+<h2 id="开始下载"><a href="#开始下载" class="headerlink" title="开始下载"></a>开始下载</h2><p>命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget -nc -B http://mirrors.163.com/ceph/rpm-jewel/el7/SRPMS/ -F -nH --cut-dirs=3 -i index.html</div></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-nc</td>
+<td>下载时跳过已经存在的文件</td>
+</tr>
+<tr>
+<td>-B</td>
+<td>使用 -F -i 文件选项时，在相对链接前添加指定的 URL</td>
+</tr>
+<tr>
+<td>-nH</td>
+<td>不创建主机名目录</td>
+</tr>
+<tr>
+<td>-i</td>
+<td>下载从指定文件中找到的 URL</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>显示信息</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>递归下载</td>
+</tr>
+<tr>
+<td>-l</td>
+<td>最大递归深度(inf 或 0 表示无限)</td>
+</tr>
+<tr>
+<td>-F</td>
+<td>以 HTML 方式处理输入文件</td>
+</tr>
+<tr>
+<td>–cut-dir=num</td>
+<td>忽略远程目录中指定数目的目录层</td>
+</tr>
+<tr>
+<td>-E</td>
+<td>将所有 MIME 类型为 text/html 的文件都加上 .html 扩展文件名</td>
+</tr>
+</tbody>
+</table>
+<p>更多关于参数的问题详见：<a href="http://jiaxl.blog.51cto.com/3064605/1191196" target="_blank" rel="external">wget参数介绍</a></p>
+<p>然后就开始下载，直至完成<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">FINISHED --2017-06-23 18:11:54--</div><div class="line">Total wall clock time: 7m 31s</div><div class="line">Downloaded: 24 files, 103M in 7m 29s (234 KB/s)</div></pre></td></tr></table></figure></p>
+<p>下载完成后列表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"># ll</div><div class="line">总用量 105264</div><div class="line">-rw-r--r--. 1 root root  8894228 6月  15 2016 ceph-10.1.0-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  8942739 6月  15 2016 ceph-10.1.1-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  8961123 6月  15 2016 ceph-10.1.2-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  8967492 6月  15 2016 ceph-10.2.0-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  8996472 6月  15 2016 ceph-10.2.1-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  8876099 6月  15 2016 ceph-10.2.2-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  9044336 10月 17 2016 ceph-10.2.3-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root 10849625 12月  7 2016 ceph-10.2.4-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root 10795514 1月   5 02:49 ceph-10.2.5-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root 11215646 3月   8 21:55 ceph-10.2.6-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root 11245006 4月  11 02:53 ceph-10.2.7-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root    92710 4月  11 02:53 ceph-deploy-1.5.29-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    92915 4月  11 02:53 ceph-deploy-1.5.30-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    92953 4月  11 02:53 ceph-deploy-1.5.31-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    93493 4月  11 02:53 ceph-deploy-1.5.32-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    93323 4月  11 02:53 ceph-deploy-1.5.33-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    96664 4月  11 02:53 ceph-deploy-1.5.34-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    97010 4月  11 02:53 ceph-deploy-1.5.35-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    96998 4月  11 02:53 ceph-deploy-1.5.36-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    97146 4月  11 02:53 ceph-deploy-1.5.37-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root     4186 4月  11 02:53 ceph-release-1-1.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root     3189 6月  23 18:01 index.html</div><div class="line">-rw-r--r--. 1 root root    30175 4月  11 02:53 radosgw-agent-1.2.5-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root    29980 4月  11 02:53 radosgw-agent-1.2.6-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root    30044 4月  11 02:53 radosgw-agent-1.2.7-0.el7.src.rpm</div></pre></td></tr></table></figure></p>
+<p>以上</p>
 
       
     </div>
@@ -315,13 +338,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/05/04/iterm2配色/">iterm2配色--zsh &amp; oh-my-zsh</a></p>
+        <p><span>本文标题:</span><a href="/2017/06/23/wget批量下载http目录及文件/">wget批量下载http目录及文件</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-05-04, 20:32:26</p>
-        <p><span>最后更新:</span>2017-05-05, 16:37:19</p>
+        <p><span>发布时间:</span>2017-06-23, 18:21:12</p>
+        <p><span>最后更新:</span>2017-06-23, 19:17:52</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/05/04/iterm2配色/" title="iterm2配色--zsh &amp; oh-my-zsh">http://xiaqunfeng.github.io/2017/05/04/iterm2配色/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/05/04/iterm2配色/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/06/23/wget批量下载http目录及文件/" title="wget批量下载http目录及文件">http://xiaqunfeng.github.io/2017/06/23/wget批量下载http目录及文件/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/06/23/wget批量下载http目录及文件/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -333,16 +356,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/05/07/S-M-A-R-T-磁盘健康状态监测工具/">
-                    S.M.A.R.T--磁盘健康状态监测工具
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/05/03/nginx使用和配置/">
-                    nginx使用和配置
+                <a href="/2017/06/16/公有云和私有云的区别/">
+                    公有云和私有云的区别
                 </a>
             </div>
         
@@ -354,7 +371,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Solarized"><span class="toc-number">1.</span> <span class="toc-text">Solarized</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zsh"><span class="toc-number">2.</span> <span class="toc-text">zsh</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#oh-my-zsh"><span class="toc-number"></span> <span class="toc-text">oh-my-zsh</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#更多的配色方案"><span class="toc-number">1.</span> <span class="toc-text">更多的配色方案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#高亮"><span class="toc-number"></span> <span class="toc-text">高亮</span></a>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#得到页面的index-html"><span class="toc-number">1.</span> <span class="toc-text">得到页面的index.html</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开始下载"><span class="toc-number">2.</span> <span class="toc-text">开始下载</span></a></li></ol>
         
     </div>
     <style>
@@ -390,7 +407,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"iterm2配色--zsh & oh-my-zsh　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"wget批量下载http目录及文件　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -409,8 +426,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.github.io/2017/05/04/iterm2配色/';
-            this.page.identifier = '2017/05/04/iterm2配色/';
+            this.page.url = 'http://xiaqunfeng.github.io/2017/06/23/wget批量下载http目录及文件/';
+            this.page.identifier = '2017/06/23/wget批量下载http目录及文件/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -432,15 +449,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/05/07/S-M-A-R-T-磁盘健康状态监测工具/" title="上一篇: S.M.A.R.T--磁盘健康状态监测工具">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/05/03/nginx使用和配置/" title="下一篇: nginx使用和配置">
+            <a href="/2017/06/16/公有云和私有云的区别/" title="下一篇: 公有云和私有云的区别">
                 <i class="fa fa-angle-right"></i>
             </a>
         
