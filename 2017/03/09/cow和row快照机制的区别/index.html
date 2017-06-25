@@ -18,7 +18,7 @@
 <meta name="description" content="很清晰的讲解快照两种模式cow和row的区别。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="cow和row快照机制的区别">
-<meta property="og:url" content="http://xiaqunfeng.github.io/2017/03/09/cow和row快照机制的区别/index.html">
+<meta property="og:url" content="http://xiaqunfeng.cc/2017/03/09/cow和row快照机制的区别/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="很清晰的讲解快照两种模式cow和row的区别。">
 <meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/cow.jpg">
@@ -75,7 +75,7 @@
         isCategory: false,
         fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
         scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
-        search: false
+        search: true
     }
 </script>
 
@@ -111,6 +111,13 @@
         <p class="header-subtitle">好记性不如烂笔头😝</p>
         
 
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
         
 
 
@@ -315,8 +322,8 @@
         <p><span>发布时间:</span>2017-03-09, 11:32:24</p>
         <p><span>最后更新:</span>2017-03-09, 11:51:26</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/03/09/cow和row快照机制的区别/" title="cow和row快照机制的区别">http://xiaqunfeng.github.io/2017/03/09/cow和row快照机制的区别/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/03/09/cow和row快照机制的区别/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/09/cow和row快照机制的区别/" title="cow和row快照机制的区别">http://xiaqunfeng.cc/2017/03/09/cow和row快照机制的区别/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/03/09/cow和row快照机制的区别/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -404,7 +411,7 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.github.io/2017/03/09/cow和row快照机制的区别/';
+            this.page.url = 'http://xiaqunfeng.cc/2017/03/09/cow和row快照机制的区别/';
             this.page.identifier = '2017/03/09/cow和row快照机制的区别/';
         };
         var loadComment = function(){

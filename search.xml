@@ -5,7 +5,7 @@
     
     <entry>
       <title><![CDATA[wget批量下载http目录及文件]]></title>
-      <url>http://xiaqunfeng.github.io/2017/06/23/wget%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDhttp%E7%9B%AE%E5%BD%95%E5%8F%8A%E6%96%87%E4%BB%B6/</url>
+      <url>http://xiaqunfeng.cc/2017/06/23/wget%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDhttp%E7%9B%AE%E5%BD%95%E5%8F%8A%E6%96%87%E4%BB%B6/</url>
       <content type="html"><![CDATA[<p>有时候看到好的镜像，想保存下来，不可能一个个通过url手动来下载，这时候就需要批量下载了。<br><a id="more"></a></p>
 <p>举个例子，我要下载的地址和内容如下：<br><img src="http://oow6unnib.bkt.clouddn.com/wget-http.jpg" alt="wget-http"></p>
 <h2 id="得到页面的index-html"><a href="#得到页面的index-html" class="headerlink" title="得到页面的index.html"></a>得到页面的index.html</h2><p>我就在 <code>/root</code> 目录下操作</p>
@@ -69,11 +69,19 @@
 <p>下载完成后列表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"># ll</div><div class="line">总用量 105264</div><div class="line">-rw-r--r--. 1 root root  8894228 6月  15 2016 ceph-10.1.0-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  8942739 6月  15 2016 ceph-10.1.1-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  8961123 6月  15 2016 ceph-10.1.2-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  8967492 6月  15 2016 ceph-10.2.0-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  8996472 6月  15 2016 ceph-10.2.1-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  8876099 6月  15 2016 ceph-10.2.2-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  9044336 10月 17 2016 ceph-10.2.3-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root 10849625 12月  7 2016 ceph-10.2.4-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root 10795514 1月   5 02:49 ceph-10.2.5-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root 11215646 3月   8 21:55 ceph-10.2.6-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root 11245006 4月  11 02:53 ceph-10.2.7-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root    92710 4月  11 02:53 ceph-deploy-1.5.29-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    92915 4月  11 02:53 ceph-deploy-1.5.30-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    92953 4月  11 02:53 ceph-deploy-1.5.31-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    93493 4月  11 02:53 ceph-deploy-1.5.32-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    93323 4月  11 02:53 ceph-deploy-1.5.33-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    96664 4月  11 02:53 ceph-deploy-1.5.34-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    97010 4月  11 02:53 ceph-deploy-1.5.35-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    96998 4月  11 02:53 ceph-deploy-1.5.36-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    97146 4月  11 02:53 ceph-deploy-1.5.37-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root     4186 4月  11 02:53 ceph-release-1-1.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root     3189 6月  23 18:01 index.html</div><div class="line">-rw-r--r--. 1 root root    30175 4月  11 02:53 radosgw-agent-1.2.5-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root    29980 4月  11 02:53 radosgw-agent-1.2.6-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root    30044 4月  11 02:53 radosgw-agent-1.2.7-0.el7.src.rpm</div></pre></td></tr></table></figure></p>
 <p>以上</p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[公有云和私有云的区别]]></title>
-      <url>http://xiaqunfeng.github.io/2017/06/16/%E5%85%AC%E6%9C%89%E4%BA%91%E5%92%8C%E7%A7%81%E6%9C%89%E4%BA%91%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+      <url>http://xiaqunfeng.cc/2017/06/16/%E5%85%AC%E6%9C%89%E4%BA%91%E5%92%8C%E7%A7%81%E6%9C%89%E4%BA%91%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
       <content type="html"><![CDATA[<p>介绍了一下公有云和私有云的区别，以及该如何选择。<br><a id="more"></a></p>
 <p><img src="http://oow6unnib.bkt.clouddn.com/public-private-cloud.jpg" alt="public-private-cloud"></p>
 <h2 id="私有云"><a href="#私有云" class="headerlink" title="私有云"></a>私有云</h2><p>这是一个可以存在于公司的托管数据中心的云主机解决方案，所有信息都在专用防火墙后面。一般来说，公司已经选择为其数据中心付出了相当大的代价，并仍然希望使用其已建立的基础设施。这是一个主要的优势，也是私有云与公共云的辩论在这个特定主题上如此激烈的一个重要原因。</p>
@@ -84,11 +92,19 @@
 <p>然而，与私有云系统相比最大的缺点是缺乏安全性。这就是为什么许多企业正在讨论对公有、私有云计算的倾向，即使意味着更大的费用，也会倾向于安全。虽然公共云系统确实具有广泛的安全性，事实上，由于增加的公司数量是相当大的担忧，所以系统的任何攻击，违规或崩溃都会更大。</p>
 <p>应该注意的是，每个公司的数据都是分开的，尽管过去几年的头条新闻中，公有云系统的安全漏洞也比较少见。这就是为什么在公有云 vs 私有云的辩论中，答案往往会归结为公司的需求和预算。</p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> cloud </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[centos 7下操纵ceph进程]]></title>
-      <url>http://xiaqunfeng.github.io/2017/06/16/centos-7%E4%B8%8B%E6%93%8D%E7%BA%B5ceph%E8%BF%9B%E7%A8%8B/</url>
+      <url>http://xiaqunfeng.cc/2017/06/16/centos-7%E4%B8%8B%E6%93%8D%E7%BA%B5ceph%E8%BF%9B%E7%A8%8B/</url>
       <content type="html"><![CDATA[<p>分享一个以前的笔记。官网给的通过<code>/etc/init.d/ceph</code>stop、start等命令在centos7下不行，service命令也是不行的。现在都使用原生的 systemd 来管理ceph进程。<br><a id="more"></a></p>
 <h2 id="操作集群"><a href="#操作集群" class="headerlink" title="操作集群"></a>操作集群</h2><p>在<a href="http://docs.ceph.org.cn/rados/operations/operating/" target="_blank" rel="external">官方文档</a>中给出了几种操作方法：</p>
 <p><strong>1、用 UPSTART 控制 CEPH</strong></p>
@@ -119,11 +135,21 @@
 <p>例如：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo systemctl stop ceph-osd@1</div><div class="line">sudo systemctl stop ceph-mon@ceph-server</div><div class="line">sudo systemctl stop ceph-mds@ceph-server</div></pre></td></tr></table></figure>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+            <tag> centos </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[vim移动光标]]></title>
-      <url>http://xiaqunfeng.github.io/2017/06/15/vim%E7%A7%BB%E5%8A%A8%E5%85%89%E6%A0%87/</url>
+      <url>http://xiaqunfeng.cc/2017/06/15/vim%E7%A7%BB%E5%8A%A8%E5%85%89%E6%A0%87/</url>
       <content type="html"><![CDATA[<p>平常的基本编辑环境都是vim，因此总结了一些光标移动的命令，可以提高效率，使vim用起来不显得那么笨重。<br><a id="more"></a></p>
 <h2 id="光标方向"><a href="#光标方向" class="headerlink" title="光标方向"></a>光标方向</h2><p>上下左右：<code>h</code>, <code>j</code>, <code>k</code>, <code>l</code></p>
 <p>支持数字前缀，比如<code>10j</code>可以向下移动10行</p>
@@ -156,11 +182,19 @@
 <p>拷贝一行：<code>^y$</code>，也可以直接 <code>yy</code></p>
 <p>拷贝整个文件：<code>ggyG</code></p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[Map RBD Devices on NBD]]></title>
-      <url>http://xiaqunfeng.github.io/2017/06/07/Map-RBD-Devices-on-NBD/</url>
+      <url>http://xiaqunfeng.cc/2017/06/07/Map-RBD-Devices-on-NBD/</url>
       <content type="html"><![CDATA[<p>jewel及以后的版本支持rbd-nbd的特性，在需要map支持较多特性的rbd image时，可以使用此方法。<br><a id="more"></a></p>
 <h2 id="引出问题"><a href="#引出问题" class="headerlink" title="引出问题"></a>引出问题</h2><p>前一篇文章中说到在map特性比较丰富的rbd设备时，内核不支持，所以出现如如下错误</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># rbd nbd map rbd/image-1</div><div class="line">rbd: sysfs write failed</div><div class="line">RBD image feature set mismatch. You can disable features unsupported by the kernel with &quot;rbd feature disable&quot;.</div><div class="line">In some cases useful info is found in syslog - try &quot;dmesg | tail&quot; or so.</div></pre></td></tr></table></figure>
@@ -213,11 +247,19 @@
 <li>kernel rbd是内核态的，主要为Host提供块设备支持，内核直接与osd交互，性能优于用户态</li>
 </ul>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[ceph rbd map failed]]></title>
-      <url>http://xiaqunfeng.github.io/2017/06/06/ceph-rbd-map-failed/</url>
+      <url>http://xiaqunfeng.cc/2017/06/06/ceph-rbd-map-failed/</url>
       <content type="html"><![CDATA[<p>探索 kernel RBD map 失败的问题。<br><a id="more"></a></p>
 <h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>搭完 rbd mirror后，想通过client往image里写一些数据，所以在client端map rbd设备，结果失败了。</p>
 <blockquote>
@@ -300,11 +342,19 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">vim /etc/ceph/ceph.conf</div><div class="line">...</div><div class="line">rbd_default_features = 1</div><div class="line">...</div></pre></td></tr></table></figure>
 <p>具体该设为多少可以通过上面BIT值查表计算得出。</p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[ceph mon时钟偏移问题]]></title>
-      <url>http://xiaqunfeng.github.io/2017/05/26/ceph-mon%E6%97%B6%E9%92%9F%E5%81%8F%E7%A7%BB%E9%97%AE%E9%A2%98/</url>
+      <url>http://xiaqunfeng.cc/2017/05/26/ceph-mon%E6%97%B6%E9%92%9F%E5%81%8F%E7%A7%BB%E9%97%AE%E9%A2%98/</url>
       <content type="html"><![CDATA[<p>之前记录的关于时钟漂移的解决过程和心得，这里分享一下。<br><a id="more"></a></p>
 <h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><p>查看集群状态</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># ceph -s</div><div class="line">    cluster f01fb68c-58c6-4707-8adb-b7ac88172340</div><div class="line">     health HEALTH_WARN</div><div class="line">            clock skew detected on mon.xs734</div><div class="line">            Monitor clock skew detected</div><div class="line">...</div></pre></td></tr></table></figure>
@@ -382,11 +432,19 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># ceph -s</div><div class="line">    cluster f01fb68c-58c6-4707-8adb-b7ac88172340</div><div class="line">     health HEALTH_OK</div><div class="line">     monmap e2: 3 mons at &#123;xs732=10.34.57.25:6789/0,xs733=10.34.57.26:6789/0,xs734=10.34.57.27:6789/0&#125;</div><div class="line">            election epoch 12, quorum 0,1,2 xs732,xs733,xs734</div><div class="line">        mgr active: xs733 standbys: xs734, xs732</div><div class="line">     osdmap e50: 9 osds: 9 up, 9 in</div><div class="line">            flags sortbitwise,require_jewel_osds,require_kraken_osds</div><div class="line">      pgmap v113: 256 pgs, 1 pools, 0 bytes data, 0 objects</div><div class="line">            46397 MB used, 4423 GB / 4469 GB avail</div><div class="line">                 256 active+clean</div></pre></td></tr></table></figure>
 <p>OK，问题解决！</p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[GPG key retrieval failure]]></title>
-      <url>http://xiaqunfeng.github.io/2017/05/26/GPG-key-retrieval-failure/</url>
+      <url>http://xiaqunfeng.cc/2017/05/26/GPG-key-retrieval-failure/</url>
       <content type="html"><![CDATA[<p>在centos 7.31611上遇到的问题，记录一下解决方法，并附下载链接。<br><a id="more"></a></p>
 <h2 id="我的epel源"><a href="#我的epel源" class="headerlink" title="我的epel源"></a>我的epel源</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"># cat /etc/yum.repos.d</div><div class="line">[epel]</div><div class="line">name=Extra Packages for Enterprise Linux 7 - $basearch</div><div class="line">#baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch</div><div class="line">mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-7&amp;arch=$basearch</div><div class="line">failovermethod=priority</div><div class="line">enabled=1</div><div class="line">gpgcheck=1</div><div class="line">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7</div><div class="line"></div><div class="line">[epel-debuginfo]</div><div class="line">name=Extra Packages for Enterprise Linux 7 - $basearch - Debug</div><div class="line">#baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch/debug</div><div class="line">mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-7&amp;arch=$basearch</div><div class="line">failovermethod=priority</div><div class="line">enabled=0</div><div class="line">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7</div><div class="line">gpgcheck=1</div><div class="line"></div><div class="line">[epel-source]</div><div class="line">name=Extra Packages for Enterprise Linux 7 - $basearch - Source</div><div class="line">#baseurl=http://download.fedoraproject.org/pub/epel/7/SRPMS</div><div class="line">mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-source-7&amp;arch=$basearch</div><div class="line">failovermethod=priority</div><div class="line">enabled=0</div><div class="line">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7</div><div class="line">gpgcheck=1</div></pre></td></tr></table></figure>
 <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>更新yum源的时候出现如下错误：</p>
@@ -412,11 +470,19 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm</div><div class="line">Retrieving https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm</div><div class="line">curl: (7) Failed connect to dl.fedoraproject.org:443; Connection refused</div><div class="line">error: skipping https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm - transfer failed</div><div class="line">You have new mail in /var/spool/mail/root</div></pre></td></tr></table></figure>
 <p>这个问题的原因是网站无法访问</p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> centos </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[mac上实现vim的markdown预览]]></title>
-      <url>http://xiaqunfeng.github.io/2017/05/25/mac%E4%B8%8A%E5%AE%9E%E7%8E%B0vim%E7%9A%84markdown%E9%A2%84%E8%A7%88/</url>
+      <url>http://xiaqunfeng.cc/2017/05/25/mac%E4%B8%8A%E5%AE%9E%E7%8E%B0vim%E7%9A%84markdown%E9%A2%84%E8%A7%88/</url>
       <content type="html"><![CDATA[<p>有时候在vim下创建了一个markdown文件，比如 <code>README.md</code> ，因为不能实时预览，所以要离开vim，用编辑器去编辑，比较麻烦。所以这里配置使能在vim编辑器上预览markdown文件。<br><a id="more"></a></p>
 <p>这里分享两个插件</p>
 <h2 id="vim-instant-markdown"><a href="#vim-instant-markdown" class="headerlink" title="vim-instant-markdown"></a><strong>vim-instant-markdown</strong></h2><h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>github：<a href="https://github.com/suan/vim-instant-markdown" target="_blank" rel="external">https://github.com/suan/vim-instant-markdown</a></p>
@@ -451,11 +517,19 @@
 <p>这种配置在配合 mvim + hexo + markdown 的时候特别爽，可以实时显示，都省了先执行<code>hexo s</code>，然后登陆<code>localhost:4000</code> 去查看了。</p>
 <p>本篇博客的实时预览截图如下：（可以看到，端口为9183）<br><img src="http://oow6unnib.bkt.clouddn.com/markdown-preview.png" alt="markdown-preview"></p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> mac </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[ceph日志迁移]]></title>
-      <url>http://xiaqunfeng.github.io/2017/05/23/ceph%E6%97%A5%E5%BF%97%E8%BF%81%E7%A7%BB/</url>
+      <url>http://xiaqunfeng.cc/2017/05/23/ceph%E6%97%A5%E5%BF%97%E8%BF%81%E7%A7%BB/</url>
       <content type="html"><![CDATA[<p>将ceph日志从默认的位置移动到SSD的一个分区，比较常用。<br><a id="more"></a></p>
 <h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><p>1、停止osd</p>
 <p>2、将该osd的日志下盘</p>
@@ -469,11 +543,19 @@
 <h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>确认日志和磁盘分区的权限，如果不是ceph，会出现访问失败</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">chown -R ceph:ceph /var/lib/ceph/osd/ceph-0/journal</div><div class="line">chown -R ceph:ceph /dev/sdb1</div></pre></td></tr></table></figure>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[cpu拓扑及ceph使用时的优化]]></title>
-      <url>http://xiaqunfeng.github.io/2017/05/11/cpu%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84/</url>
+      <url>http://xiaqunfeng.cc/2017/05/11/cpu%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84/</url>
       <content type="html"><![CDATA[<p>先将在ceph层面的调优，再介绍cpu的拓扑结构。<br><a id="more"></a></p>
 <h2 id="ceph优化之CPU"><a href="#ceph优化之CPU" class="headerlink" title="ceph优化之CPU"></a>ceph优化之CPU</h2><p>NUMA的思路就是讲内存和CPU分割成多个区域，每个区域叫node，然后将node高速互联。node内CPU与内存的访问速度快于访问其他node的内存，NUMA可能会在某些情况下影响ceph-osd。</p>
 <p>ceph目前未对NUMA架构的内存做过多优化，在日常使用过程中，通常为 2~4 颗CPU，这时候选择SMP架构的内存在效率上会高一些，如果条件允许，可以通过进程绑定的方法，在保证CPU能尽可能访问自身内存的前提下，使用NUMA架构。</p>
@@ -551,11 +633,21 @@
 <p>如果是桌面环境，则会弹窗一个窗口：</p>
 <p><img src="http://oow6unnib.bkt.clouddn.com/hwloc.png" alt="hwloc"></p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[firewalld和iptables]]></title>
-      <url>http://xiaqunfeng.github.io/2017/05/07/firewalld%E5%92%8Ciptables/</url>
+      <url>http://xiaqunfeng.cc/2017/05/07/firewalld%E5%92%8Ciptables/</url>
       <content type="html"><![CDATA[<p>centos7上关于打开和关闭防火墙及端口略有区别，记录之~<br><a id="more"></a><br>Centos升级到7之后，使用firewalld代替了原来的iptables，控制Linuxs的端口。firewalld是基于iptables的，虽然有iptables的核心，但是iptables的服务是没安装的。</p>
 <h2 id="防火墙的设置"><a href="#防火墙的设置" class="headerlink" title="防火墙的设置"></a>防火墙的设置</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">systemctl stop firewalld 		# 停止firewall</div><div class="line">systemctl disable firewalld 	# 禁止firewall开机启动</div><div class="line">systemctl start firewalld 		# 开启防火墙</div></pre></td></tr></table></figure>
 <h2 id="端口操作"><a href="#端口操作" class="headerlink" title="端口操作"></a>端口操作</h2><p>查看已开放的端口</p>
@@ -570,11 +662,21 @@
 <h2 id="使用iptables"><a href="#使用iptables" class="headerlink" title="使用iptables"></a>使用iptables</h2><p>如果你要改用iptables的话，需要安装iptables服务：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo yum install iptables-services</div><div class="line">sudo systemctl enable iptables &amp;&amp; sudo systemctl enable ip6tables</div><div class="line">sudo systemctl start iptables &amp;&amp; sudo systemctl start ip6tables</div></pre></td></tr></table></figure>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> centos </tag>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[S.M.A.R.T--磁盘健康状态监测工具]]></title>
-      <url>http://xiaqunfeng.github.io/2017/05/07/S-M-A-R-T-%E7%A3%81%E7%9B%98%E5%81%A5%E5%BA%B7%E7%8A%B6%E6%80%81%E7%9B%91%E6%B5%8B%E5%B7%A5%E5%85%B7/</url>
+      <url>http://xiaqunfeng.cc/2017/05/07/S-M-A-R-T-%E7%A3%81%E7%9B%98%E5%81%A5%E5%BA%B7%E7%8A%B6%E6%80%81%E7%9B%91%E6%B5%8B%E5%B7%A5%E5%85%B7/</url>
       <content type="html"><![CDATA[<p>介绍磁盘状态监测工具：S.M.A.R.T。<br><a id="more"></a></p>
 <h2 id="S-M-A-R-T"><a href="#S-M-A-R-T" class="headerlink" title="S.M.A.R.T."></a>S.M.A.R.T.</h2><p><strong>S.M.A.R.T.</strong>，全称为“Self-Monitoring Analysis and Reporting Technology”，即“自我监测、分析及报告技术”，是一种自动的硬盘状态检测与预警系统和规范。通过在硬盘硬件内的检测指令对硬盘的硬件如磁头、盘片、马达、电路的运行情况进行监控、记录并与厂商所设定的预设安全值进行比较，若监控情况将或已超出预设安全值的安全范围，就可以通过主机的监控硬件或软件自动向用户作出警告并进行轻微的自动修复，以提前保障硬盘数据的安全。</p>
 <p>软件包 <strong>smartmontools</strong> 它通过使用自我监控(Self-Monitoring)、分析(Analysis)和报告(Reporting)三种技术（缩写为S.M.A.R.T或SMART）来管理和监控存储硬件。如今大部分的ATA/SATA、SCSI/SAS和固态硬盘都搭载内置的SMART系统。SMART的目的是监控硬盘的可靠性、预测磁盘故障和执行各种类型的磁盘自检。smartmontools由smartctl和smartd两部分工具程序组成，它们一起为Linux平台提供对磁盘退化和故障的高级警告。</p>
@@ -642,11 +744,19 @@
 <p><a href="https://zh.wikipedia.org/wiki/S.M.A.R.T" target="_blank" rel="external">https://zh.wikipedia.org/wiki/S.M.A.R.T</a>.</p>
 <p><a href="https://linux.cn/article-4461-1.html" target="_blank" rel="external">使用 smartmontools 查看硬盘的健康状态</a></p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[iterm2配色--zsh & oh-my-zsh]]></title>
-      <url>http://xiaqunfeng.github.io/2017/05/04/iterm2%E9%85%8D%E8%89%B2/</url>
+      <url>http://xiaqunfeng.cc/2017/05/04/iterm2%E9%85%8D%E8%89%B2/</url>
       <content type="html"><![CDATA[<p>给iterm2进行配色，炫酷一点。<br><a id="more"></a></p>
 <h3 id="Solarized"><a href="#Solarized" class="headerlink" title="Solarized"></a>Solarized</h3><p>目前网络上最流行的配色解决方案：<a href="http://ethanschoonover.com/solarized" target="_blank" rel="external">Solarized</a></p>
 <p>Solarized Dark 官方网站: <a href="http://ethanschoonover.com/solarized" target="_blank" rel="external">http://ethanschoonover.com/solarized</a></p>
@@ -689,11 +799,19 @@
 <p>然后</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source ~/.zshrc</div></pre></td></tr></table></figure>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> mac </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[nginx使用和配置]]></title>
-      <url>http://xiaqunfeng.github.io/2017/05/03/nginx%E4%BD%BF%E7%94%A8%E5%92%8C%E9%85%8D%E7%BD%AE/</url>
+      <url>http://xiaqunfeng.cc/2017/05/03/nginx%E4%BD%BF%E7%94%A8%E5%92%8C%E9%85%8D%E7%BD%AE/</url>
       <content type="html"><![CDATA[<p>简单介绍nginx，特别是反向代理和负载均衡部分，并用通过实战加深理解。<br><a id="more"></a></p>
 <h2 id="Nginx简介"><a href="#Nginx简介" class="headerlink" title="Nginx简介"></a>Nginx简介</h2><p>Nginx（发音同engine x）是一个网页服务器，它能反向代理HTTP, HTTPS, SMTP, POP3, IMAP的协议链接，以及一个负载均衡器和一个HTTP缓存。</p>
 <p>架设服务器均衡负载方式有多种，Nginx、LVS、HAProxy+Keepalived是目前使用最广泛的三种方案。其中Keepalived+HAProxy是一个高可用性方案。</p>
@@ -803,11 +921,19 @@
 <p>附一个关于nginx的好系列文章：<a href="http://blog.csdn.net/poechant/article/details/7213546" target="_blank" rel="external">高性能Web服务器Nginx的配置与部署研究</a></p>
 <p>有空学习，mark之。</p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[iterm2快捷键的使用]]></title>
-      <url>http://xiaqunfeng.github.io/2017/05/02/iterm2%E5%BF%AB%E6%8D%B7%E9%94%AE%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
+      <url>http://xiaqunfeng.cc/2017/05/02/iterm2%E5%BF%AB%E6%8D%B7%E9%94%AE%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
       <content type="html"><![CDATA[<p>mac下终端神器iterm2，非常的好用，极大提高了效率，这里将自己使用过的快捷键总结如下。<br><a id="more"></a></p>
 <h2 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h2><p>新建tab：⌘ + t</p>
 <p>切换 tab：    ⌘+←, ⌘+→</p>
@@ -849,11 +975,19 @@
 <p>到行尾：ctrl + e</p>
 <p>从光标处删至字首/尾：ctrl + w / k</p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> mac </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[VSM部署]]></title>
-      <url>http://xiaqunfeng.github.io/2017/05/02/VSM%E9%83%A8%E7%BD%B2/</url>
+      <url>http://xiaqunfeng.cc/2017/05/02/VSM%E9%83%A8%E7%BD%B2/</url>
       <content type="html"><![CDATA[<p>本文介在已有ceph集群机器上部署VSM的过程，涵盖centos和ubuntu两种系统。<br><a id="more"></a></p>
 <h2 id="VSM-Virtual-Storage-Manager"><a href="#VSM-Virtual-Storage-Manager" class="headerlink" title="VSM - Virtual Storage Manager"></a>VSM - Virtual Storage Manager</h2><p>最新发布的release版本为2.1，pre-release版本为2.2，已不再更新和维护（因为负责人<a href="mailto:yaguang.wang@intel.com" target="_blank" rel="external">yaguang.wang@intel.com</a> or <a href="mailto:ferber.dan@intel.com" target="_blank" rel="external">ferber.dan@intel.com</a>已经从intel离职了）。</p>
 <p>从2.1版本开始，VSM支持在已有ceph集群上部署，正是因为这个原因，才开始尝试部署VSM。</p>
@@ -918,11 +1052,19 @@
 <p>2、不需要添加epel源</p>
 <h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>关于在非ceph集群集群上安装并创建ceph集群后续有空补充。</p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[常用git命令清单]]></title>
-      <url>http://xiaqunfeng.github.io/2017/03/24/%E5%B8%B8%E7%94%A8git%E5%91%BD%E4%BB%A4%E6%B8%85%E5%8D%95/</url>
+      <url>http://xiaqunfeng.cc/2017/03/24/%E5%B8%B8%E7%94%A8git%E5%91%BD%E4%BB%A4%E6%B8%85%E5%8D%95/</url>
       <content type="html"><![CDATA[<p>转载的文章，里面git命令应有尽有，包含所有常用命令，mark之。<br><a id="more"></a></p>
 <p>一般来说，日常使用只要记住下图6个命令，就可以了。但是熟练使用，恐怕要记住60～100个命令。</p>
 <p><img src="http://www.ruanyifeng.com/blogimg/asset/2015/bg2015120901.png" alt="img"></p>
@@ -969,11 +1111,19 @@
 <p>（完）</p>
 <p>原文链接：<a href="http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html" target="_blank" rel="external">常用 Git 命令清单</a></p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> git </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[理解socket编程]]></title>
-      <url>http://xiaqunfeng.github.io/2017/03/24/%E7%90%86%E8%A7%A3socket%E7%BC%96%E7%A8%8B/</url>
+      <url>http://xiaqunfeng.cc/2017/03/24/%E7%90%86%E8%A7%A3socket%E7%BC%96%E7%A8%8B/</url>
       <content type="html"><![CDATA[<p>理解socket编程的思想，介绍各个函数及其作用，文末有一个server和client的代码，可直接运行。<br><a id="more"></a></p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>本地进程通信</strong></p>
 <p>本地的进程间通信（IPC）有很多种方式，但可以总结为下面4类：</p>
@@ -1061,11 +1211,21 @@
 <p>编译运行</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">gcc server.c -o s</div><div class="line">gcc client.c -o c</div><div class="line"></div><div class="line"># ./s</div><div class="line">recv msg from client: hello socket</div><div class="line"></div><div class="line"># ./c 127.0.0.1</div><div class="line">send msg to server!</div><div class="line">hello socket     		// 交互输入</div></pre></td></tr></table></figure>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+            <tag> network </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[cow和row快照机制的区别]]></title>
-      <url>http://xiaqunfeng.github.io/2017/03/09/cow%E5%92%8Crow%E5%BF%AB%E7%85%A7%E6%9C%BA%E5%88%B6%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+      <url>http://xiaqunfeng.cc/2017/03/09/cow%E5%92%8Crow%E5%BF%AB%E7%85%A7%E6%9C%BA%E5%88%B6%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
       <content type="html"><![CDATA[<p>很清晰的讲解快照两种模式cow和row的区别。<br><a id="more"></a></p>
 <p>所谓快照，是指某数据集在某一时刻一个完全可用的拷贝。也叫即时拷贝。注意是一个完全可用的。如果是在window环境下，则要结合VSS 机制，把应用程序的buffer,文件系统的buffer,操作系统的buffer全部刷向磁盘后，再做快照。﻿</p>
 <p>当前快照有两种实现，分别是COW（Copy on first write） 和ROW(Redirect on first write).﻿﻿﻿</p>
@@ -1100,11 +1260,19 @@
 <p>本文为转载，原始链接未找到</p>
 </blockquote>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> storage </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[Machine Learning Yearning(5、6、7)]]></title>
-      <url>http://xiaqunfeng.github.io/2017/03/09/Machine-Learning-Yearning-5%E3%80%816/</url>
+      <url>http://xiaqunfeng.cc/2017/03/09/Machine-Learning-Yearning-5%E3%80%816/</url>
       <content type="html"><![CDATA[<p>第5、6、7三章，主要讲开发集和测试集，包括选型、大小、比例等。<br><a id="more"></a></p>
 <p>Setting up development and test sets</p>
 <p>设置开发和测试集</p>
@@ -1140,11 +1308,19 @@
 <p>——————————</p>
 <p>[2]. 在理论上，我们可以测试算法的变化是否对开发集产生统计上显着的差异。 在实践中，大多数团队不会为此困扰（除非他们出版学术研究论文），我通常没法发现统计意义的测试对测量临时进展是有用的。</p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> machine learning </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[Machine Learning Yearning(3、4)]]></title>
-      <url>http://xiaqunfeng.github.io/2017/03/03/Machine-Learning-Yearning-3%E3%80%814/</url>
+      <url>http://xiaqunfeng.cc/2017/03/03/Machine-Learning-Yearning-3%E3%80%814/</url>
       <content type="html"><![CDATA[<p>NG的机器学习教程，第三章：预备知识和注释；第四章：规模驱使机器学习前进。<br><a id="more"></a></p>
 <h2 id="Chapter-3、Prerequisites-and-Notation"><a href="#Chapter-3、Prerequisites-and-Notation" class="headerlink" title="Chapter 3、Prerequisites and Notation"></a>Chapter 3、Prerequisites and Notation</h2><p><strong>预备知识和注释</strong><br>​    如果你有学习过机器学习课程，比如我在Coursera上的的机器学习MOOC，或者如果你有应用监督学习的经验，你也将能够理解这段文字。<br>​    我假设你熟悉监督学习（supervised learning）：使用标记的训练样本（x，y）去学习一个从x映射到y的函数。 监督学习算法包括线性回归（linear regression），逻辑回归（logistic regression）和神经网络（neural networks）。 机器学习的形式有很多，但是现如今大部分机器学习的实用价值来自于监督学习。<br>​    我将经常提到神经网络（也称为“deep learning”）。你只需要遵循本问对它是什么有一个基本的理解就可以了。<br>​    如果您不熟悉这里提到的概念，请观看在Coursera上前三周 机器学习视频课程<a href="http://ml-class.org" target="_blank" rel="external">http://ml-class.org</a></p>
 <p><img src="http://img.blog.csdn.net/20161208234928384?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
@@ -1163,11 +1339,19 @@
 <p>因此，当你做到下面两点的时候你会获得最佳的性能（i）训练一个非常大的神经网络，使其在上面的绿色曲线上; （ii）有大量的数据。<br>许多其他细节，如神经网络架构也很重要，这里已经有很多创新。 但是现在提高算法性能的更可靠的方法之一仍然是（i）训练更大的网络和（ii）获得更多的数据。<br>如何完成（i）和（ii）的方法是极其复杂的。 这本书将详细讨论细节。 我们将从对传统学习算法和神经网络都有用的一般策略开始，并建立构建深度学习系统所需的最先进策略。</p>
 <p>[1]这个图表展示了NN在小数据集下做得更好。这种效果不如NNs在大数据集中表现良好的效果一致。 在小数据系统中，取决于特征是如何手工设计的，传统算法可能做的很好，也可能做得并不好。 例如，如果你有20个训练样本，那么使用逻辑回归还是神经网络可能并不重要; 手工特征的选择将比算法的选择产生更大的影响。 但如果你有100万的样本，我更倾向于神经网络。</p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> machine learning </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[Machine Learning Yearning(开篇、1、2)]]></title>
-      <url>http://xiaqunfeng.github.io/2017/03/02/Machine-Learning-Yearning-%E5%BC%80%E7%AF%87%E3%80%811%E3%80%812/</url>
+      <url>http://xiaqunfeng.cc/2017/03/02/Machine-Learning-Yearning-%E5%BC%80%E7%AF%87%E3%80%811%E3%80%812/</url>
       <content type="html"><![CDATA[<p>NG的机器学习教程，翻译过来，这里是开篇、第一章和第二章的内容。<br><a id="more"></a></p>
 <h2 id="开篇"><a href="#开篇" class="headerlink" title="开篇"></a>开篇</h2><p>网上搜了一下，发现已经有一些翻译后的资料了，我这里就是边学习边翻译记录，主要作为给自己的学习笔记吧，并不冲突。</p>
 <p>官网：<a href="http://www.mlyearning.org/" target="_blank" rel="external">http://www.mlyearning.org/</a></p>
@@ -1209,11 +1393,19 @@
 <h2 id="Chapter-2、How-to-use-this-book-to-help-your-team"><a href="#Chapter-2、How-to-use-this-book-to-help-your-team" class="headerlink" title="Chapter 2、How to use this book to help your team"></a>Chapter 2、How to use this book to help your team</h2><p>如何使用这本书来帮助你的团队<br>阅读完本书后，您将对如何设置机器学习项目的技术方向有深入的了解。<br>但是你的队友可能不明白你为什么要推荐一个特定的方向。 也许你希望你的团队定义一个单数评估指标，但他们不相信。 你如何说服他们？<br>这就是为什么我把章节短：所以，你可以打印出来，让你的队友只读你需要他们知道的那一两页。<br>优先级上的一些改变会对您的团队的生产力产生巨大的影响。 通过帮助您的团队进行一些这样的改变，我希望您可以成为您的团队的超级英雄！</p>
 <p><img src="http://img.blog.csdn.net/20161208232515575?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> machine learning </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[异步IO]]></title>
-      <url>http://xiaqunfeng.github.io/2017/03/01/%E5%BC%82%E6%AD%A5IO/</url>
+      <url>http://xiaqunfeng.cc/2017/03/01/%E5%BC%82%E6%AD%A5IO/</url>
       <content type="html"><![CDATA[<p>介绍了AIO，以及四种IO模型。<br><a id="more"></a></p>
 <p>Linux® 中最常用的输入/输出（I/O）模型是同步 I/O。在这个模型中，当请求发出之后，应用程序就会阻塞，直到请求满足为止。这是很好的一种解决方案，因为调用应用程序在等待 I/O 请求完成时不需要使用任何中央处理单元（CPU）。但是在某些情况中，I/O 请求可能需要与其他进程产生交叠。可移植操作系统接口（POSIX）异步 I/O（AIO）应用程序接口（API）就提供了这种功能。在本文中，我们将对这个 API 概要进行介绍，并来了解一下如何使用它。</p>
 <h2 id="AIO-简介"><a href="#AIO-简介" class="headerlink" title="AIO 简介"></a>AIO 简介</h2><p>Linux 异步 I/O 是 Linux 内核中提供的一个相当新的增强。它是 2.6 版本内核的一个标准特性，但是我们在 2.4 版本内核的补丁中也可以找到它。AIO 背后的基本思想是允许进程发起很多 I/O 操作，而不用阻塞或等待任何操作完成。稍后或在接收到 I/O 操作完成的通知时，进程就可以检索 I/O 操作的结果。</p>
@@ -1252,11 +1444,19 @@
 <p>在异步非阻塞 I/O 中，我们可以同时发起多个传输操作。这需要每个传输操作都有惟一的上下文，这样我们才能在它们完成时区分到底是哪个传输操作完成了。在 AIO 中，这是一个 <code>aiocb</code>（AIO I/O Control Block）结构。这个结构包含了有关传输的所有信息，包括为数据准备的用户缓冲区。在产生 I/O （称为完成）通知时，<code>aiocb</code> 结构就被用来惟一标识所完成的 I/O 操作。这个 API 的展示显示了如何使用它。</p>
 <p>本文为转载文章, 原文链接：<a href="https://www.ibm.com/developerworks/cn/linux/l-async/" target="_blank" rel="external">使用异步 I/O 大大提高应用程序的性能</a></p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[Bluestore调研]]></title>
-      <url>http://xiaqunfeng.github.io/2017/02/23/Bluestore%E8%B0%83%E7%A0%94/</url>
+      <url>http://xiaqunfeng.cc/2017/02/23/Bluestore%E8%B0%83%E7%A0%94/</url>
       <content type="html"><![CDATA[<p>这是之前关注bluestore时写的调研文章，主要介绍了bluestore的架构、存储模型、IO、元数据等，以及优势。现在ceph已经出到K版本了，虽然未在生产中实践，但已经可用。<br><a id="more"></a></p>
 <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>​    Ceph是一种软件定义存储解决方案，因此Ceph的主要目标是保障存储数据的安全。为了达到数据安全的目的，我们需要原子特性。目前没有一种文件存储系统能够提供写和更新操作的原子特性（Btrfs拥有原子特性的事务, 这是人们为了解决上述问题作出的尝试，但事实上并不成功）。</p>
 <p>​    Ceph开发者不得不探索其他的解决方案。这个解决方案就是大家非常熟悉的Ceph日志。ceph后端的存储引擎目前使用的是filestore，写采用的是WAL的方式，但是写前记录日志这种技术有一个主要缺陷就是它把你的硬盘性能降低到原来的二分之一（仅当日志和OSD数据共享同一个硬盘时），因为filestore在写数据前需要先写journal，所以有一倍的写放大。</p>
@@ -1325,11 +1525,19 @@
 <p>​    对于随机IO，直接WAL的形式，写入RocksDB 高性能的KV存储中。</p>
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[RocksDB相比LevelDB的新特性]]></title>
-      <url>http://xiaqunfeng.github.io/2017/02/23/RocksDB%E7%9B%B8%E6%AF%94LevelDB%E7%9A%84%E6%96%B0%E7%89%B9%E6%80%A7/</url>
+      <url>http://xiaqunfeng.cc/2017/02/23/RocksDB%E7%9B%B8%E6%AF%94LevelDB%E7%9A%84%E6%96%B0%E7%89%B9%E6%80%A7/</url>
       <content type="html"><![CDATA[<p>如题，具体列举了RocksDB中相比LevelDB的一些新特性。<br><a id="more"></a></p>
 <h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><ul>
 <li>多线程压缩</li>
@@ -1392,11 +1600,19 @@
 </ul>
 <p>英文原文链接：<a href="https://github.com/facebook/rocksdb/wiki/Features-Not-in-LevelDB" target="_blank" rel="external">Features Not in LevelDB</a></p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> rocksdb </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[Kernel modules (简体中文)]]></title>
-      <url>http://xiaqunfeng.github.io/2017/02/20/Kernel%20modules%20(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)/</url>
+      <url>http://xiaqunfeng.cc/2017/02/20/Kernel%20modules%20(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)/</url>
       <content type="html"><![CDATA[<p>介绍了内核模块的相关操作。加载、查看info、卸载、配置等……<br><a id="more"></a></p>
 <p>相关文章</p>
 <ul>
@@ -1473,11 +1689,19 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"># aa_mod_parameters</div><div class="line">&gt;&gt;&gt; ehci_hcd - USB 2.0 &apos;Enhanced&apos; Host Controller (EHCI) Driver</div><div class="line">        hird=0 - hird:host initiated resume duration, +1 for each 75us (int)</div><div class="line">        ignore_oc=N - ignore_oc:ignore bogus hardware overcurrent indications (bool)</div><div class="line">        log2_irq_thresh=0 - log2_irq_thresh:log2 IRQ latency, 1-64 microframes (int)</div><div class="line">        park=0 - park:park setting; 1-3 back-to-back async packets (uint)</div><div class="line"></div><div class="line">&gt;&gt;&gt; processor - ACPI Processor Driver</div><div class="line">        ignore_ppc=-1 - ignore_ppc:If the frequency of your machine gets wronglylimited by BIOS, this should help (int)</div><div class="line">        ignore_tpc=0 - ignore_tpc:Disable broken BIOS _TPC throttling support (int)</div><div class="line">        latency_factor=2 - latency_factor: (uint)</div><div class="line"></div><div class="line">&gt;&gt;&gt; usb_storage - USB Mass Storage driver for Linux</div><div class="line">        delay_use=1 - delay_use:seconds to delay before using a new device (uint)</div><div class="line">        option_zero_cd=1 - option_zero_cd:ZeroCD mode (1=Force Modem (default), 2=Allow CD-Rom (uint)</div><div class="line">        quirks= - quirks:supplemental list of device IDs and their quirks (string)</div><div class="line">        swi_tru_install=1 - swi_tru_install:TRU-Install mode (1=Full Logic (def), 2=Force CD-Rom, 3=Force Modem) (uint)</div><div class="line"></div><div class="line">&gt;&gt;&gt; video - ACPI Video Driver</div><div class="line">        allow_duplicates=N - allow_duplicates: (bool)</div><div class="line">        brightness_switch_enabled=Y - brightness_switch_enabled: (bool)</div><div class="line">        use_bios_initial_backlight=Y - use_bios_initial_backlight: (bool)</div></pre></td></tr></table></figure>
 <p>原文链接：<a href="https://wiki.archlinux.org/index.php/Kernel_modules_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87" target="_blank" rel="external">kernel modules</a>)</p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[Linux命令——pgrep和pkill]]></title>
-      <url>http://xiaqunfeng.github.io/2017/02/17/Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94pgrep%E5%92%8Cpkill/</url>
+      <url>http://xiaqunfeng.cc/2017/02/17/Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94pgrep%E5%92%8Cpkill/</url>
       <content type="html"><![CDATA[<p>通过程序名来查询进程PID的命令pgrep，以及对应的杀进程命令pkill。<br><a id="more"></a></p>
 <h2 id="pgrep"><a href="#pgrep" class="headerlink" title="pgrep"></a>pgrep</h2><p>在linux中查看进程信息，经常要用到<code>pa auxf</code>，具体到某个进程的时候，又需进行grep管道。如：<code>ps auxf|grep java|grep -v grep</code> ，即然这么长，可以不可以简化呢？当然可以，如果还是使用ps命令的话，可以改为<code>ps auxf|grep jav[a]</code>，这样就不用排除自身了。不过感觉命令还是长了点，能不能再简点，可以，使用<code>pgrep java</code>，不过此时得出的只是pid 。</p>
 <p>pgrep是linux中常用的通过 <strong>程序名</strong> 来查询进程PID信息的命令。</p>
@@ -1602,11 +1826,19 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"># pkill --help</div><div class="line"></div><div class="line">Usage:</div><div class="line"> pkill [options] &lt;pattern&gt;</div><div class="line"></div><div class="line">Options:</div><div class="line"> -&lt;sig&gt;, --signal &lt;sig&gt;    signal to send (either number or name)</div><div class="line"> -e, --echo                display what is killed</div><div class="line"> -c, --count               count of matching processes</div><div class="line"> -f, --full                use full process name to match</div><div class="line"> -g, --pgroup &lt;id,...&gt;     match listed process group IDs</div><div class="line"> -G, --group &lt;gid,...&gt;     match real group IDs</div><div class="line"> -n, --newest              select most recently started</div><div class="line"> -o, --oldest              select least recently started</div><div class="line"> -P, --parent &lt;ppid,...&gt;   match only child processes of the given parent</div><div class="line"> -s, --session &lt;sid,...&gt;   match session IDs</div><div class="line"> -t, --terminal &lt;tty,...&gt;  match by controlling terminal</div><div class="line"> -u, --euid &lt;id,...&gt;       match by effective IDs</div><div class="line"> -U, --uid &lt;id,...&gt;        match by real IDs</div><div class="line"> -x, --exact               match exactly with the command name</div><div class="line"> -F, --pidfile &lt;file&gt;      read PIDs from file</div><div class="line"> -L, --logpidfile          fail if PID file is not locked</div><div class="line"> --ns &lt;pid&gt;                match the processes that belong to the same</div><div class="line">                           namespace as &lt;pid&gt;</div><div class="line"> --nslist &lt;ns,...&gt;         list which namespaces will be considered for</div><div class="line">                           the --ns option.</div><div class="line">                           Available namespaces: ipc, mnt, net, pid, user, uts</div><div class="line"></div><div class="line"> -h, --help     display this help and exit</div><div class="line"> -V, --version  output version information and exit</div><div class="line"></div><div class="line">For more details see pgrep(1).</div></pre></td></tr></table></figure>
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[Linux命令——strace]]></title>
-      <url>http://xiaqunfeng.github.io/2017/02/16/Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94strace/</url>
+      <url>http://xiaqunfeng.cc/2017/02/16/Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94strace/</url>
       <content type="html"><![CDATA[<p>strace命令，用来查看运行程序的系统调用，统计每个系统调用的时间。<br><a id="more"></a></p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>strace常用来跟踪进程执行时的系统调用和所接收的信号。 在Linux世界，进程不能直接访问硬件设备，当进程需要访问硬件设备(比如读取磁盘文件，接收网络数据等等)时，必须由用户态模式切换至内核态模式，通过系统调用访问硬件设备。strace可以跟踪到一个进程产生的系统调用,包括参数，返回值，执行消耗的时间。</p>
 <p>我们可以使用strace对应用的系统调用和信号传递的跟踪结果来对应用进行分析，以达到解决问题或者是了解应用工作过程的目的。当然strace与专业的调试工具比如说gdb之类的是没法相比的，因为它不是一个专业的调试器。 </p>
@@ -1651,11 +1883,19 @@
 <p><a href="http://man.linuxde.net/strace" target="_blank" rel="external">strace命令</a></p>
 <p><a href="http://huoding.com/2013/10/06/288" target="_blank" rel="external">通过Strace定位故障原因</a></p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[获取每个osd的PG数]]></title>
-      <url>http://xiaqunfeng.github.io/2017/02/10/%E8%8E%B7%E5%8F%96%E6%AF%8F%E4%B8%AAosd%E7%9A%84PG%E6%95%B0/</url>
+      <url>http://xiaqunfeng.cc/2017/02/10/%E8%8E%B7%E5%8F%96%E6%AF%8F%E4%B8%AAosd%E7%9A%84PG%E6%95%B0/</url>
       <content type="html"><![CDATA[<p>一个shell脚本，用于获取ceph集群中每个osd的PG数，同时分别统计每个pool上的PG数信息。<br><a id="more"></a></p>
 <h2 id="Ceph集群信息"><a href="#Ceph集群信息" class="headerlink" title="Ceph集群信息"></a>Ceph集群信息</h2><p><strong>pool信息</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd lspools</div><div class="line">0 rbd,1 testpool,</div></pre></td></tr></table></figure>
@@ -1668,11 +1908,21 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line"></div><div class="line">ceph pg dump | awk &apos;</div><div class="line"> /^pg_stat/ &#123; col=1; while($col!=&quot;up&quot;) &#123;col++&#125;; col++ &#125;</div><div class="line"> /^[0-9a-f]+\.[0-9a-f]+/ &#123; match($0,/^[0-9a-f]+/); pool=substr($0, RSTART, RLENGTH); poollist[pool]=0;</div><div class="line"> up=$col; i=0; RSTART=0; RLENGTH=0; delete osds; while(match(up,/[0-9]+/)&gt;0) &#123; osds[++i]=substr(up,RSTART,RLENGTH); up = substr(up, RSTART+RLENGTH) &#125;</div><div class="line"> for(i in osds) &#123;array[osds[i],pool]++; osdlist[osds[i]];&#125;</div><div class="line">&#125;</div><div class="line">END &#123;</div><div class="line"> printf(&quot;\n&quot;);</div><div class="line"> printf(&quot;pool :\t&quot;); for (i in poollist) printf(&quot;%s\t&quot;,i); printf(&quot;| SUM \n&quot;);</div><div class="line"> for (i in poollist) printf(&quot;--------&quot;); printf(&quot;----------------\n&quot;);</div><div class="line"> for (i in osdlist) &#123; printf(&quot;osd.%i\t&quot;, i); sum=0;</div><div class="line">   for (j in poollist) &#123; printf(&quot;%i\t&quot;, array[i,j]); sum+=array[i,j]; sumpool[j]+=array[i,j] &#125;; printf(&quot;| %i\n&quot;,sum) &#125;</div><div class="line"> for (i in poollist) printf(&quot;--------&quot;); printf(&quot;----------------\n&quot;);</div><div class="line"> printf(&quot;SUM :\t&quot;); for (i in poollist) printf(&quot;%s\t&quot;,sumpool[i]); printf(&quot;|\n&quot;);</div><div class="line">&#125;&apos;</div></pre></td></tr></table></figure>
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+            <tag> shell </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[RBD 相关操作]]></title>
-      <url>http://xiaqunfeng.github.io/2017/02/10/RBD-%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/</url>
+      <url>http://xiaqunfeng.cc/2017/02/10/RBD-%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/</url>
       <content type="html"><![CDATA[<p>本文主要有两点：一、创建RBD设备用于测试；二、RBD相关其他操作。<br><a id="more"></a></p>
 <p>查看系统和内核版本</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># lsb_release -a</div><div class="line">No LSB modules are available.</div><div class="line">Distributor ID:	Ubuntu</div><div class="line">Description:	Ubuntu 14.04.4 LTS</div><div class="line">Release:	14.04</div><div class="line">Codename:	trusty</div></pre></td></tr></table></figure>
@@ -1731,11 +1981,19 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># rbd map rbd/rbd-test</div><div class="line">rbd: sysfs write failed</div><div class="line">RBD image feature set mismatch. You can disable features unsupported by the kernel with &quot;rbd feature disable&quot;.</div><div class="line">In some cases useful info is found in syslog - try &quot;dmesg | tail&quot; or so.</div><div class="line">rbd: map failed: (6) No such device or address</div></pre></td></tr></table></figure>
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[在Kraken release版本上测试Ceph BlueStore]]></title>
-      <url>http://xiaqunfeng.github.io/2017/02/07/%E5%9C%A8Kraken-release%E7%89%88%E6%9C%AC%E4%B8%8A%E6%B5%8B%E8%AF%95Ceph-BlueStore/</url>
+      <url>http://xiaqunfeng.cc/2017/02/07/%E5%9C%A8Kraken-release%E7%89%88%E6%9C%AC%E4%B8%8A%E6%B5%8B%E8%AF%95Ceph-BlueStore/</url>
       <content type="html"><![CDATA[<p>前面写了一篇文章《ceph升级到kraken版本》，在升级后的集群上重新部署OSD遇到一些问题。这里在干净的kraken环境下部署bluestore，用来测试一下性能。本文记录部署过程及遇到的问题和解决方法。<br><a id="more"></a></p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Ceph版本Kraken（11.2.0）已经发布，发行说明告诉我们，用于OSD的新的BlueStore后端现在可用。</p>
 <h2 id="bluestore"><a href="#bluestore" class="headerlink" title="bluestore"></a>bluestore</h2><p>OSD的当前后端是FileStore，它主要使用XFS文件系统来存储它的数据。 为了克服XFS和POSIX的一些限制，所以开发了BlueStore后端。</p>
@@ -1775,11 +2033,19 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph-deploy --overwrite-conf mon create-initial</div></pre></td></tr></table></figure>
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[用户态和内核态]]></title>
-      <url>http://xiaqunfeng.github.io/2017/02/04/%E7%94%A8%E6%88%B7%E6%80%81%E5%92%8C%E5%86%85%E6%A0%B8%E6%80%81/</url>
+      <url>http://xiaqunfeng.cc/2017/02/04/%E7%94%A8%E6%88%B7%E6%80%81%E5%92%8C%E5%86%85%E6%A0%B8%E6%80%81/</url>
       <content type="html"><![CDATA[<p>以前整理的小知识点，关于用户态和内核态的解释。<br><a id="more"></a></p>
 <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>内核态与用户态是操作系统的两种运行级别，intel cpu提供Ring0-Ring3三种级别的运行模式。Ring0级别最高，Ring3最低。</p>
 <p>所以当CPU处于内核态，可以随意进入用户态。当CPU处于用户态，只能通过中断的方式进入内核态。一般程序一开始都是运行于用户态，当程序需要使用系统资源时，就必须通过调用软中断进入内核态。</p>
@@ -1797,11 +2063,19 @@
 <p>这样，用户态的程序就不能随意操作内核地址空间，具有一定的安全保护作用。</p>
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[ceph升级到kraken版本]]></title>
-      <url>http://xiaqunfeng.github.io/2017/02/04/ceph%E5%8D%87%E7%BA%A7%E5%88%B0kraken%E7%89%88%E6%9C%AC/</url>
+      <url>http://xiaqunfeng.cc/2017/02/04/ceph%E5%8D%87%E7%BA%A7%E5%88%B0kraken%E7%89%88%E6%9C%AC/</url>
       <content type="html"><![CDATA[<p>记录从jewel版本升级到kraken版本的过程，其中重启mon和osd部分官网上的命令并不凑效，这里纠正并记录之。<br><a id="more"></a></p>
 <h2 id="1、在Jewel集群上设置sortbitwise标志"><a href="#1、在Jewel集群上设置sortbitwise标志" class="headerlink" title="1、在Jewel集群上设置sortbitwise标志"></a>1、在Jewel集群上设置sortbitwise标志</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph osd set sortbitwise</div></pre></td></tr></table></figure>
 <h2 id="2、添加安装源"><a href="#2、添加安装源" class="headerlink" title="2、添加安装源"></a>2、添加安装源</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo deb https://download.ceph.com/debian-kraken/ $(lsb_release -sc) main | sudo tee /etc/apt/sources.list.d/ceph.list</div></pre></td></tr></table></figure>
@@ -1829,11 +2103,19 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd set require_kraken_osds</div><div class="line">require_kraken_osds is set</div></pre></td></tr></table></figure>
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[Dm-cache vs Bcache]]></title>
-      <url>http://xiaqunfeng.github.io/2017/02/03/Dm-cache-vs-Bcache/</url>
+      <url>http://xiaqunfeng.cc/2017/02/03/Dm-cache-vs-Bcache/</url>
       <content type="html"><![CDATA[<p>前面一篇文章介绍了flashcache和cache tier，并进行了对比，其实flashcache的原理和dm-cache是类似的。这里就介绍下dm-cache和bcache，这两种策略均已在linux内核中。<br><a id="more"></a></p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>现代硬盘驱动器（HDD）已经走了很长的路。他们旋转得越来越快;与过去的HDD相比具有更高的存储密度和更低的错误率，但是它们和其前身一样，仍然被视为性能瓶颈。随着时间的推移，我们已经看到了许多缓存方案来提高性能;有一些块缓存解决方案在磁盘驱动器（磁盘或存储控制器）或使用主机系统内存的文件系统级缓存解决方案附近使用某种类型的缓存。随着企业级的可接受性，大而经济的闪存存储技术的可用性，使用固态驱动器（SSD）的块缓存解决方案作为性能增强解决方案。使用基于SSD的块缓存，我们可以寻找SSD速度和HDD容量 - 快速，大而且实惠。</p>
 <p>在块缓存解决方案中，概念上，将逻辑设备呈现给文件系统（或多个应用），而不是实际目的地HDD（或其它目的地块设备，例如iSCSI LUN），其中数据意在被存储。因此呈现的逻辑设备与原始设备具有相同的大小物理设备，而用于高速缓存的SSD可以跨越逻辑设备映射。</p>
@@ -1856,11 +2138,19 @@
 <p>dm-cache 确实还有很多事情要做。起初，它是进行 cache 和原始设备的并行 IO，但最终不得不回到顺序 IO。</p>
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> storage </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[Flashcache vs Cache tier]]></title>
-      <url>http://xiaqunfeng.github.io/2017/02/03/Flashcache-vs-Cache-tier/</url>
+      <url>http://xiaqunfeng.cc/2017/02/03/Flashcache-vs-Cache-tier/</url>
       <content type="html"><![CDATA[<p>使用SSD作为缓存来提高性能有多种方法，文章前言里会介绍，主要有bcache、dm-cache、flashcache、cache tier等，本文比较两种在ceph中的常用方案：flashcache 和 cache tier。<br><a id="more"></a></p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>传统的HDD具备大容量的优势，但是性能相对偏低，尤其是随机IO性能，经常成为系统的性能瓶颈，在虚拟机化环境下表现的更明显，因为虚拟化场景会加剧IO随机化。相比HDD，SSD具有高性能的优势，尤其在随机IO这方面，优势非常明显，但是SSD的硬件成本比较高。</p>
 <p>目前业界在结合HDD的大容量和SSD的高性能方面做了一些优化，基本思路是使用SSD作为HDD的cache。计算机领域，cache的思想无处不在，比如CPU的L1、L2 cache，raid card上的cache，TLB cache等。关于SSD作为HDD的cache的优化方案，主要有Linux bcache，Linux dm-cache，Facebook flashcache，btier，IBM flashcache等。</p>
@@ -1940,11 +2230,19 @@
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> storage </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[Linux命令——parted]]></title>
-      <url>http://xiaqunfeng.github.io/2017/01/25/Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94parted/</url>
+      <url>http://xiaqunfeng.cc/2017/01/25/Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94parted/</url>
       <content type="html"><![CDATA[<p>一直用parted命令来进行磁盘分区，这里学习一下总结一下。顺带对比一下MBR和GPT两种分区表，以及parted命令和fdisk命令的区别。<br><a id="more"></a></p>
 <h2 id="MBR和GPT"><a href="#MBR和GPT" class="headerlink" title="MBR和GPT"></a>MBR和GPT</h2><p>MBR：MBR分区表(即主引导记录)大家都很熟悉。所支持的最大卷：2T，而且对分区有限制：最多4个主分区或3个主分区加一个扩展分区（包含随意数目的逻辑分区）。</p>
 <p>GPT：GPT（即GUID分区表）。是源自EFI标准的一种较新的磁盘分区表结构的标准，是未来磁盘分区的主要形式。GPT的分区信息是在分区中，而MBR在主引导扇区。</p>
@@ -1988,11 +2286,19 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># none</div><div class="line">Error: Could not detect file system.  </div><div class="line"></div><div class="line"># ext4，ext3</div><div class="line">Error: File system has an incompatible feature enabled.  Compatible       </div><div class="line">features are has_journal, dir_index, filetype, sparse_super and large_file.</div><div class="line">Use tune2fs or debugfs to remove features.</div><div class="line"></div><div class="line"># xfs</div><div class="line">No Implementation: Support for opening xfs file systems is not implemented</div><div class="line">yet.</div></pre></td></tr></table></figure>
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[认识SSD]]></title>
-      <url>http://xiaqunfeng.github.io/2017/01/25/%E8%AE%A4%E8%AF%86SSD/</url>
+      <url>http://xiaqunfeng.cc/2017/01/25/%E8%AE%A4%E8%AF%86SSD/</url>
       <content type="html"><![CDATA[<p>SSD越来越火，性能提升比较快，成本也有所下降，是未来的方向和主流，这里认识和学习一下SSD相关知识，以便更好的理解和应用SSD的特性。<br><a id="more"></a></p>
 <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>固态硬盘（Solid State Disk）用固态电子存储芯片阵列而制成的硬盘，由控制单元和存储单元（FLASH芯片、DRAM芯片）组成。<br>一块SSD，<strong>核心部件</strong>是一颗控制器和多颗Flash颗粒，一般还会有一些内存和超级电容。</p>
 <pre><code>--&gt;控制器主要作用是提供高效的手段来访问这些Flash颗粒。
@@ -2113,11 +2419,19 @@
 <p>&emsp;&emsp;当某个单元长时间被反复擦写时（比如Oracle redo），不仅会造成写入的性能问题，而且会大大缩短SSD的使用寿命。所以，引入磨损均衡算法（wear leveling）。</p>
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力<br>！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> storage </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[Ceph — V11.2.0 KRAKEN(译)]]></title>
-      <url>http://xiaqunfeng.github.io/2017/01/24/Ceph-KRAKEN(V11.2.0)/</url>
+      <url>http://xiaqunfeng.cc/2017/01/24/Ceph-KRAKEN(V11.2.0)/</url>
       <content type="html"><![CDATA[<p>ceph的版本出到K了，针对bluestore又有了新的优化，并进行了一定的压力和故障测试，当然还有其他的特性，针对Jewel版本有较多改动。当前还没有什么中文资料，<a href="http://docs.ceph.org.cn/" target="_blank" rel="external">ceph中文社区</a>中关于V11.2.0还没有更新进去，所以闲暇之余翻译了一下，也给大家节省时间。<br><a id="more"></a></p>
 <p>英文原文链接：<a href="http://docs.ceph.com/docs/master/release-notes/#v11.2.0-kraken" target="_blank" rel="external">http://docs.ceph.com/docs/master/release-notes/#v11.2.0-kraken</a></p>
 <h2 id="V11-2-0-KRAKEN"><a href="#V11-2-0-KRAKEN" class="headerlink" title="V11.2.0 KRAKEN"></a>V11.2.0 KRAKEN</h2><p>这是Kraken系列的第一个release版本。它适用于生产部署，并将维护到下一个稳定的版本Luminous，将在2017年春季完成。</p>
@@ -2173,11 +2487,19 @@
 <p>要创建一个BlueStore OSD，在OSD创建期间将-bluestore选项传递给ceph-disk或ceph-deploy。</p>
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[Crushmap学习]]></title>
-      <url>http://xiaqunfeng.github.io/2017/01/24/Crushmap%E5%AD%A6%E4%B9%A0/</url>
+      <url>http://xiaqunfeng.cc/2017/01/24/Crushmap%E5%AD%A6%E4%B9%A0/</url>
       <content type="html"><![CDATA[<p>介绍了ceph中crush的优点、原理及作用，同时dump出自己的crushmap内容，进行详细的分解学习。<br><a id="more"></a></p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>随着大规模分布式存储系统的出现。这些系统必须平衡的分布数据和负载，最大化系统的性能，并要处理系统的扩展和硬件失效。但是简单HASH分布不能有效处理设备数量的变化，导致大量数据迁移。ceph设计了CRUSH，用在分布式对象存储系统上，可以有效映射数据对象到存储设备上(不需要中心设备)。因为大型系统的结构式动态变化的，CRUSH能够处理存储设备的添加和移除，并最小化由于存储设备的的添加和移动而导致的数据迁移。</p>
 <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>CRUSH算法，全称 Controlled Replication Under Scalable Hashing。它是一种伪随机的算法，在相同的环境下，它能够在层级结构的存储集群中有效的分布对象的副本。</p>
@@ -2248,11 +2570,19 @@
 
 
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[Ceph中严重数据不一致性BUG]]></title>
-      <url>http://xiaqunfeng.github.io/2017/01/20/Ceph%E4%B8%AD%E4%B8%A5%E9%87%8D%E6%95%B0%E6%8D%AE%E4%B8%8D%E4%B8%80%E8%87%B4%E6%80%A7BUG/</url>
+      <url>http://xiaqunfeng.cc/2017/01/20/Ceph%E4%B8%AD%E4%B8%A5%E9%87%8D%E6%95%B0%E6%8D%AE%E4%B8%8D%E4%B8%80%E8%87%B4%E6%80%A7BUG/</url>
       <content type="html"><![CDATA[<p>目前，块存储服务是Ceph存储中被使用的最普遍的服务之一，通过块存储服务，可以向客户端以使用块设备一样访问Ceph集群。然而，目前在使用块存储服务时，尤其是OpenStack与Ceph对接时，如果没有严格的控制Ceph端的对象大小（使用 &gt;= 8MB对象时），将有可能导致严重的数据不一致情况，该异常由于XFS文件系统本身对Fiemap的支持特性导致的。<br><a id="more"></a></p>
 <h2 id="触发场景"><a href="#触发场景" class="headerlink" title="触发场景"></a>触发场景</h2><p>XFS使用fiemap时，当extents数量大于1364时，通过ioctl的FS_IOC_FIEMAP接口，获取的extents数量上限为1364，导致超出部分extents数据获取不到。这将导致，在开启fiemap时，Ceph集群进行recovery与backfill之后，产生大量数据不一致的情况，也是迄今为止Ceph中影响最大的，最严重的数据不一致BUG。</p>
 <p>由于fiemap BUG，碎片化对象在recovery与backfill之后（fiemap 获取不正确的数据），从而使的恢复的对象数据与原对象数据不一致。而恢复后的副本若成为主副本，则可能发生静默读错误，并且如果使用Ceph策略自动修复对象（repair object之后），可能将错误数据覆盖至正确数据，数据将永远损毁。在某些情况下，还会触发对象永远处于inconsistent状态。</p>
@@ -2267,11 +2597,19 @@
 <p>3）对于已经使用8MB，16MB 甚至更大对象大小的RBD镜像，请暂时设置禁用Fiemap功能，并等待后续版本修复。</p>
 <p>原文链接：<a href="https://www.ustack.com/blog/%E9%98%B2%E7%81%AB%E9%98%B2%E7%9B%97%E9%98%B2bug-%E6%9C%89%E4%BA%91%E5%AD%98%E5%82%A8%E5%9B%A2%E9%98%9F%E5%85%AC%E5%B8%83ceph%E4%B8%AD%E6%9C%80%E4%B8%A5%E9%87%8D%E6%95%B0%E6%8D%AE%E4%B8%8D%E4%B8%80/" target="_blank" rel="external">有云存储团队公布Ceph中最严重数据不一致BUG!</a></p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[块存储的世界]]></title>
-      <url>http://xiaqunfeng.github.io/2017/01/20/%E5%9D%97%E5%AD%98%E5%82%A8%E7%9A%84%E4%B8%96%E7%95%8C/</url>
+      <url>http://xiaqunfeng.cc/2017/01/20/%E5%9D%97%E5%AD%98%E5%82%A8%E7%9A%84%E4%B8%96%E7%95%8C/</url>
       <content type="html"><![CDATA[<p>在OpenStack中，存储是非常重要的一块，但是因为其提供方式的不同，即使是专业的工程师也会感到十分困惑。OpenStack的存储主要分为三大类，一是对象    存储服务，Swift解决的问题，二是块设备存储服务，在OpenStack里主要是提供给虚拟机的作为“硬盘”的存储，这里又分为本地块存储和分布式块存储，Cinder项目正    在解决相关的问题；第三类，数据库存储服务，Databases as a Service(DBaaS), 对应AWS里面的RDC，目前是一个正在孵化的项目，Trove，前身是Rackspace开源出&gt;    来的RedDwarf。本文重点介绍块存储服务。<br><a id="more"></a></p>
 <blockquote>
 <p>转载的文章，原文排版看的心累，链接见文末。</p>
@@ -2364,11 +2702,19 @@
 <li>原文链接：<a href="https://www.ustack.com/blog/block-storage-overview/" target="_blank" rel="external">块存储的世界</a></li>
 </ul>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[Linux命令——uptime]]></title>
-      <url>http://xiaqunfeng.github.io/2017/01/17/Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94uptime/</url>
+      <url>http://xiaqunfeng.cc/2017/01/17/Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94uptime/</url>
       <content type="html"><![CDATA[<p>打印系统总共运行了多长时间和系统的平均负载。<br><a id="more"></a></p>
 <h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Usage:</div><div class="line"> uptime [options]</div><div class="line"></div><div class="line">Options:</div><div class="line"> -p, --pretty   show uptime in pretty format</div><div class="line"> -h, --help     display this help and exit</div><div class="line"> -s, --since    system up since</div><div class="line"> -V, --version  output version information and exit</div><div class="line"></div><div class="line">For more details see uptime(1).</div></pre></td></tr></table></figure>
 <h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><h3 id="uptime"><a href="#uptime" class="headerlink" title="uptime"></a>uptime</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># uptime</div><div class="line"> 17:40:45 up 1 day,  6:37,  3 users,  load average: 0.27, 0.21, 0.31</div></pre></td></tr></table></figure>
@@ -2406,11 +2752,19 @@
 <h3 id="系统启动的时间"><a href="#系统启动的时间" class="headerlink" title="系统启动的时间"></a>系统启动的时间</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># uptime -s</div><div class="line">2017-01-16 11:03:35</div></pre></td></tr></table></figure>
 <h3 id="uptime版本"><a href="#uptime版本" class="headerlink" title="uptime版本"></a>uptime版本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># uptime -V</div><div class="line">uptime from procps-ng 3.3.9</div></pre></td></tr></table></figure>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[dd磁盘命令小记]]></title>
-      <url>http://xiaqunfeng.github.io/2017/01/12/dd%E7%A3%81%E7%9B%98%E5%91%BD%E4%BB%A4%E5%B0%8F%E8%AE%B0/</url>
+      <url>http://xiaqunfeng.cc/2017/01/12/dd%E7%A3%81%E7%9B%98%E5%91%BD%E4%BB%A4%E5%B0%8F%E8%AE%B0/</url>
       <content type="html"><![CDATA[<p>dd是经常使用的命令了，方便快捷，这里闲来小总结一下，以及怎样测出最真实的写入速度。<br><a id="more"></a></p>
 <h2 id="命令的使用"><a href="#命令的使用" class="headerlink" title="命令的使用"></a>命令的使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"># dd --help</div><div class="line">Usage: dd [OPERAND]...</div><div class="line">  or:  dd OPTION</div><div class="line">Copy a file, converting and formatting according to the operands.</div><div class="line"></div><div class="line">  bs=BYTES        read and write up to BYTES bytes at a time</div><div class="line">  cbs=BYTES       convert BYTES bytes at a time</div><div class="line">  conv=CONVS      convert the file as per the comma separated symbol list</div><div class="line">  count=N         copy only N input blocks</div><div class="line">  ibs=BYTES       read up to BYTES bytes at a time (default: 512)</div><div class="line">  if=FILE         read from FILE instead of stdin</div><div class="line">  iflag=FLAGS     read as per the comma separated symbol list</div><div class="line">  obs=BYTES       write BYTES bytes at a time (default: 512)</div><div class="line">  of=FILE         write to FILE instead of stdout</div><div class="line">  oflag=FLAGS     write as per the comma separated symbol list</div><div class="line">  seek=N          skip N obs-sized blocks at start of output</div><div class="line">  skip=N          skip N ibs-sized blocks at start of input</div><div class="line">  status=WHICH    WHICH info to suppress outputting to stderr;</div><div class="line">                  &apos;noxfer&apos; suppresses transfer stats, &apos;none&apos; suppresses all</div></pre></td></tr></table></figure>
 <p><strong>翻译</strong></p>
@@ -2496,11 +2850,19 @@
 <p>4、<code>dd if=/dev/zero of=test bs=1M count=128 oflag=dsync</code></p>
 <p>加入参数 <code>oflag=dsync</code> 后，dd在执行时每次都会进行同步写入操作。这条命令每次读取1M后就要先把这1M写入磁盘，然后再读取下面这1M，一共重复128次。这是最慢的一种方式，因为基本上没有用到写缓存(write cache)。</p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[解决calamari无法获取集群hosts信息的BUG]]></title>
-      <url>http://xiaqunfeng.github.io/2017/01/12/%E8%A7%A3%E5%86%B3calamari%E6%97%A0%E6%B3%95%E8%8E%B7%E5%8F%96%E9%9B%86%E7%BE%A4hosts%E4%BF%A1%E6%81%AF%E7%9A%84BUG/</url>
+      <url>http://xiaqunfeng.cc/2017/01/12/%E8%A7%A3%E5%86%B3calamari%E6%97%A0%E6%B3%95%E8%8E%B7%E5%8F%96%E9%9B%86%E7%BE%A4hosts%E4%BF%A1%E6%81%AF%E7%9A%84BUG/</url>
       <content type="html"><![CDATA[<p>如题，环境是ubuntu 14.04，解决过程和方法详见正文。<br><a id="more"></a></p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前在磨磨的文章中看到这个问题，他是在CentOS上，通过修改 <code>/usr/lib/python2.7/site-packages/salt/master.py</code> 文件，然后重启salt-master和salt-minion服务来解决的，链接在文末。原理类似，可ubuntu上并不能完全照搬。</p>
 <h2 id="折腾过程"><a href="#折腾过程" class="headerlink" title="折腾过程"></a>折腾过程</h2><blockquote>
@@ -2526,11 +2888,19 @@
 </blockquote>
 <p>磨磨的方法：<a href="http://www.zphj1987.com/2017/01/09/calamari-node-info/" target="_blank" rel="external">centos下该问题的解决方法</a></p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[ubuntu下配置邮件发送]]></title>
-      <url>http://xiaqunfeng.github.io/2017/01/11/ubuntu%E4%B8%8B%E9%85%8D%E7%BD%AE%E9%82%AE%E4%BB%B6%E5%8F%91%E9%80%81/</url>
+      <url>http://xiaqunfeng.cc/2017/01/11/ubuntu%E4%B8%8B%E9%85%8D%E7%BD%AE%E9%82%AE%E4%BB%B6%E5%8F%91%E9%80%81/</url>
       <content type="html"><![CDATA[<p>Linux下发送email有很多种方式，包括sendmail、mailx、mutt、uuencode等等。这里介绍ubuntu下使用mutt和msmtp发送邮件的配置方法。<br><a id="more"></a></p>
 <h2 id="软件包的安装"><a href="#软件包的安装" class="headerlink" title="软件包的安装"></a>软件包的安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install mutt</div><div class="line">sudo apt-get install msmtp</div></pre></td></tr></table></figure>
 <h2 id="文件的配置"><a href="#文件的配置" class="headerlink" title="文件的配置"></a>文件的配置</h2><h3 id="配置-mutt"><a href="#配置-mutt" class="headerlink" title="配置 mutt"></a>配置 mutt</h3><p>,系统全局设置配置文件在 /etc/Muttrc,如果使用某个系统用户，可以在~/.muttc中设置，没有该文件，就自己创建。</p>
@@ -2576,11 +2946,21 @@
 <p><a href="http://www.cnblogs.com/xiazh/archive/2011/04/15/2016966.html" target="_blank" rel="external">ubuntu下使用mutt和msmtp发送邮件的简单配置</a></p>
 <p><a href="https://linux.cn/article-5502-1.html" target="_blank" rel="external">4个可以发送电子邮件的命令行工具</a></p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+            <tag> ubuntu </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[ubuntu下系统打包]]></title>
-      <url>http://xiaqunfeng.github.io/2017/01/11/ubuntu%E4%B8%8B%E7%B3%BB%E7%BB%9F%E6%89%93%E5%8C%85/</url>
+      <url>http://xiaqunfeng.cc/2017/01/11/ubuntu%E4%B8%8B%E7%B3%BB%E7%BB%9F%E6%89%93%E5%8C%85/</url>
       <content type="html"><![CDATA[<p>介绍在ubuntu下利用remastersys工具给系统打包成 iso 镜像的方法，在其他系统（centos、windows等）下方法类似，不在赘述。<br><a id="more"></a></p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>​    在初始环境下，经过多次反复安装和配置才组建完成的自己需要的环境，其中各种版本问题和依赖较多，安装过程繁杂，为了避免痛苦的安装过程轮回发生，需要给系统打个包，后续使用直接安装即可。</p>
 <p>使用工具：Remastersys</p>
@@ -2606,11 +2986,21 @@
 <p>3.4、清除由 remastersys产生的临时文件</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo remastersys clean</div></pre></td></tr></table></figure>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+            <tag> ubuntu </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[Linux命令——history及其优化]]></title>
-      <url>http://xiaqunfeng.github.io/2017/01/11/Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94history%E5%8F%8A%E5%85%B6%E4%BC%98%E5%8C%96/</url>
+      <url>http://xiaqunfeng.cc/2017/01/11/Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94history%E5%8F%8A%E5%85%B6%E4%BC%98%E5%8C%96/</url>
       <content type="html"><![CDATA[<p>没啥好说的，就是查看历史输入的命令。这里引入两个优化点，一是历史记录带时间，二是可以统计汇总不同终端下的命令。<br><a id="more"></a></p>
 <h2 id="命令格式"><a href="#命令格式" class="headerlink" title="命令格式"></a>命令格式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">history [n]</div><div class="line">history [-c]</div><div class="line">history [-raw] histfiles</div></pre></td></tr></table></figure>
 <p>参数解释：</p>
@@ -2681,11 +3071,19 @@
 <p>执行使生效</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source /etc/bash.bashrc</div></pre></td></tr></table></figure>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[Linux下利用screen进行屏幕协作]]></title>
-      <url>http://xiaqunfeng.github.io/2017/01/11/Linux%E4%B8%8B%E5%88%A9%E7%94%A8screen%E8%BF%9B%E8%A1%8C%E5%B1%8F%E5%B9%95%E5%8D%8F%E4%BD%9C/</url>
+      <url>http://xiaqunfeng.cc/2017/01/11/Linux%E4%B8%8B%E5%88%A9%E7%94%A8screen%E8%BF%9B%E8%A1%8C%E5%B1%8F%E5%B9%95%E5%8D%8F%E4%BD%9C/</url>
       <content type="html"><![CDATA[<p>Linux本身是支持多终端并行处理的，但是某些时候我们可能需要两个人同时处理同一个终端，比如远程协助定位问题等。screen正好能满足这个需求。<br><a id="more"></a></p>
 <h2 id="screen的安装"><a href="#screen的安装" class="headerlink" title="screen的安装"></a>screen的安装</h2><p>debian和ubuntu下安装方法</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apt-get install screen</div></pre></td></tr></table></figure>
@@ -2704,11 +3102,21 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[screen is terminating]</div></pre></td></tr></table></figure>
 <p>表示退出成功。</p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+            <tag> shell </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[Linux命令——crontab]]></title>
-      <url>http://xiaqunfeng.github.io/2017/01/11/Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94crontab/</url>
+      <url>http://xiaqunfeng.cc/2017/01/11/Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94crontab/</url>
       <content type="html"><![CDATA[<p>crond是linux下用来周期性的执行某种任务或等待处理某些事件的一个守护进程。通过crontab 命令，我们可以在固定的间隔时间执行指定的系统指令或 shell script脚本。时间间隔的单位可以是分钟、小时、日、月、周及以上的任意组合。<br><a id="more"></a></p>
 <h2 id="命令格式"><a href="#命令格式" class="headerlink" title="命令格式"></a>命令格式</h2><p>crontab使用格式说明</p>
 <p><img src="http://ojet8bprn.bkt.clouddn.com/crontab%E6%A0%BC%E5%BC%8F%E8%AF%B4%E6%98%8E.png" alt="crontab格式说明"></p>
@@ -2805,11 +3213,19 @@
 <p>4、在crontab中 <code>%</code> 表示换行的意思。使用的时候必须进行转义%。比如经常使用的 <code>date ‘+%Y%m%d’</code> 在crontab里是不会执行的，应该换成 <code>date ‘+\%Y\%m\%d’’</code>。</p>
 <p><strong>参考资料</strong>：<a href="http://linuxtools-rst.readthedocs.io/zh_CN/latest/tool/crontab.html" target="_blank" rel="external">crontab 定时任务</a></p>
 ]]></content>
+      
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[Mac上hexo博客的搭建]]></title>
-      <url>http://xiaqunfeng.github.io/2017/01/06/hexo%E7%9A%84%E6%90%AD%E5%BB%BA/</url>
+      <url>http://xiaqunfeng.cc/2017/01/06/hexo%E7%9A%84%E6%90%AD%E5%BB%BA/</url>
       <content type="html"><![CDATA[<p>​    第一篇hexo博客，介绍了在mac上搭建hexo博客的全过程。包括：准备工作、本地站点的建立、启动和部署站点、创建新文章、发布到github、更换主题 和 绑定域名。<br><a id="more"></a></p>
 <h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><ol>
 <li><strong>github</strong></li>
@@ -2853,7 +3269,7 @@
 <p>再执行 <code>hexo d</code></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">$ hexo d</div><div class="line">INFO  Deploying: git</div><div class="line">INFO  Clearing .deploy_git folder...</div><div class="line">INFO  Copying files from public folder...</div><div class="line">On branch master</div><div class="line">nothing to commit, working tree clean</div><div class="line">Username for &apos;https://github.com&apos;: xiaqunfeng</div><div class="line">Password for &apos;https://xiaqunfeng@github.com&apos;: </div><div class="line">To https://github.com/xiaqunfeng/xiaqunfeng.github.io.git</div><div class="line"> * [new branch]      HEAD -&gt; master</div><div class="line">Branch master set up to track remote branch master from https://github.com/xiaqunfeng/xiaqunfeng.github.io.git.</div><div class="line">INFO  Deploy done: git</div></pre></td></tr></table></figure>
 <p>输入github的用户名和密码即可。此时，博客已经完全搭建起来了。</p>
-<p>在浏览器中输入：<a href="https://xiaqunfeng.github.io/">https://xiaqunfeng.github.io/</a> 即可访问。</p>
+<p>在浏览器中输入：<a href="https://xiaqunfeng.github.io/" target="_blank" rel="external">https://xiaqunfeng.github.io/</a> 即可访问。</p>
 <p>预览如下： <img src="http://ojet8bprn.bkt.clouddn.com/hexo-new.png" alt=""></p>
 <h2 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h2><p>自己google一下hexo主题，选一个自己喜欢的，然后git clone下来。比如 Next 主题</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git clone https://github.com/iissnan/hexo-theme-next.git</div></pre></td></tr></table></figure>
@@ -2883,8 +3299,27 @@
 <p>添加记录：一个主机记录 <code>@</code>， 一个为<code>www</code>，记录值都是博客主页对应的ip。 </p>
 <p>等待生效，最迟72小时生效，然后就可通过域名浏览你的博客主页了。</p>
 ]]></content>
+      
+        
     </entry>
     
   
+  
+    
+    <entry>
+      <title><![CDATA[tags]]></title>
+      <url>http://xiaqunfeng.cc/tags/index.html</url>
+      <content type="html"></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[关于我]]></title>
+      <url>http://xiaqunfeng.cc/about/index.html</url>
+      <content type="html"><![CDATA[<p align="center"><strong>关注ceph、分布式存储、openstack、容器、机器学习</strong></p>
+
+<h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果觉得该博客文章对您有所帮助，欢迎小额赞助和鼓励。 </p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
+]]></content>
+    </entry>
+    
   
 </search>

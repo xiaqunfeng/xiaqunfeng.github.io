@@ -18,7 +18,7 @@
 <meta name="description" content="这是之前关注bluestore时写的调研文章，主要介绍了bluestore的架构、存储模型、IO、元数据等，以及优势。现在ceph已经出到K版本了，虽然未在生产中实践，但已经可用。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Bluestore调研">
-<meta property="og:url" content="http://xiaqunfeng.github.io/2017/02/23/Bluestore调研/index.html">
+<meta property="og:url" content="http://xiaqunfeng.cc/2017/02/23/Bluestore调研/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="这是之前关注bluestore时写的调研文章，主要介绍了bluestore的架构、存储模型、IO、元数据等，以及优势。现在ceph已经出到K版本了，虽然未在生产中实践，但已经可用。">
 <meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/Bluestore%E6%9E%B6%E6%9E%84%E5%9B%BE.png">
@@ -76,7 +76,7 @@
         isCategory: false,
         fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
         scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
-        search: false
+        search: true
     }
 </script>
 
@@ -112,6 +112,13 @@
         <p class="header-subtitle">好记性不如烂笔头😝</p>
         
 
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
         
 
 
@@ -350,8 +357,8 @@
         <p><span>发布时间:</span>2017-02-23, 16:30:39</p>
         <p><span>最后更新:</span>2017-02-23, 16:41:11</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/02/23/Bluestore调研/" title="Bluestore调研">http://xiaqunfeng.github.io/2017/02/23/Bluestore调研/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/02/23/Bluestore调研/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/02/23/Bluestore调研/" title="Bluestore调研">http://xiaqunfeng.cc/2017/02/23/Bluestore调研/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/02/23/Bluestore调研/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -439,7 +446,7 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.github.io/2017/02/23/Bluestore调研/';
+            this.page.url = 'http://xiaqunfeng.cc/2017/02/23/Bluestore调研/';
             this.page.identifier = '2017/02/23/Bluestore调研/';
         };
         var loadComment = function(){

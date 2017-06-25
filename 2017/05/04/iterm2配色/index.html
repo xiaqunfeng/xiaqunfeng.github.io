@@ -18,7 +18,7 @@
 <meta name="description" content="给iterm2进行配色，炫酷一点。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iterm2配色--zsh & oh-my-zsh">
-<meta property="og:url" content="http://xiaqunfeng.github.io/2017/05/04/iterm2配色/index.html">
+<meta property="og:url" content="http://xiaqunfeng.cc/2017/05/04/iterm2配色/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="给iterm2进行配色，炫酷一点。">
 <meta property="og:updated_time" content="2017-05-05T08:37:19.000Z">
@@ -72,7 +72,7 @@
         isCategory: false,
         fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
         scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
-        search: false
+        search: true
     }
 </script>
 
@@ -108,6 +108,13 @@
         <p class="header-subtitle">好记性不如烂笔头😝</p>
         
 
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
         
 
 
@@ -320,8 +327,8 @@
         <p><span>发布时间:</span>2017-05-04, 20:32:26</p>
         <p><span>最后更新:</span>2017-05-05, 16:37:19</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/05/04/iterm2配色/" title="iterm2配色--zsh &amp; oh-my-zsh">http://xiaqunfeng.github.io/2017/05/04/iterm2配色/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/05/04/iterm2配色/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/05/04/iterm2配色/" title="iterm2配色--zsh &amp; oh-my-zsh">http://xiaqunfeng.cc/2017/05/04/iterm2配色/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/05/04/iterm2配色/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -409,7 +416,7 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.github.io/2017/05/04/iterm2配色/';
+            this.page.url = 'http://xiaqunfeng.cc/2017/05/04/iterm2配色/';
             this.page.identifier = '2017/05/04/iterm2配色/';
         };
         var loadComment = function(){

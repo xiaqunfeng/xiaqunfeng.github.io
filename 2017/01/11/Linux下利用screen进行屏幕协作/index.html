@@ -18,7 +18,7 @@
 <meta name="description" content="Linux本身是支持多终端并行处理的，但是某些时候我们可能需要两个人同时处理同一个终端，比如远程协助定位问题等。screen正好能满足这个需求。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux下利用screen进行屏幕协作">
-<meta property="og:url" content="http://xiaqunfeng.github.io/2017/01/11/Linux下利用screen进行屏幕协作/index.html">
+<meta property="og:url" content="http://xiaqunfeng.cc/2017/01/11/Linux下利用screen进行屏幕协作/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="Linux本身是支持多终端并行处理的，但是某些时候我们可能需要两个人同时处理同一个终端，比如远程协助定位问题等。screen正好能满足这个需求。">
 <meta property="og:updated_time" content="2017-01-11T03:30:52.000Z">
@@ -72,7 +72,7 @@
         isCategory: false,
         fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
         scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
-        search: false
+        search: true
     }
 </script>
 
@@ -108,6 +108,13 @@
         <p class="header-subtitle">好记性不如烂笔头😝</p>
         
 
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
         
 
 
@@ -296,8 +303,8 @@
         <p><span>发布时间:</span>2017-01-11, 11:30:52</p>
         <p><span>最后更新:</span>2017-01-11, 11:30:52</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/01/11/Linux下利用screen进行屏幕协作/" title="Linux下利用screen进行屏幕协作">http://xiaqunfeng.github.io/2017/01/11/Linux下利用screen进行屏幕协作/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/01/11/Linux下利用screen进行屏幕协作/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/01/11/Linux下利用screen进行屏幕协作/" title="Linux下利用screen进行屏幕协作">http://xiaqunfeng.cc/2017/01/11/Linux下利用screen进行屏幕协作/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/01/11/Linux下利用screen进行屏幕协作/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -385,7 +392,7 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.github.io/2017/01/11/Linux下利用screen进行屏幕协作/';
+            this.page.url = 'http://xiaqunfeng.cc/2017/01/11/Linux下利用screen进行屏幕协作/';
             this.page.identifier = '2017/01/11/Linux下利用screen进行屏幕协作/';
         };
         var loadComment = function(){

@@ -18,7 +18,7 @@
 <meta name="description" content="关注云存储、大数据、机器学习">
 <meta property="og:type" content="website">
 <meta property="og:title" content="夏天的风的博客">
-<meta property="og:url" content="http://xiaqunfeng.github.io/archives/2017/02/page/2/index.html">
+<meta property="og:url" content="http://xiaqunfeng.cc/archives/2017/02/page/2/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="关注云存储、大数据、机器学习">
 <meta name="twitter:card" content="summary">
@@ -71,7 +71,7 @@
         isCategory: false,
         fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
         scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
-        search: false
+        search: true
     }
 </script>
 
@@ -107,6 +107,13 @@
         <p class="header-subtitle">好记性不如烂笔头😝</p>
         
 
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
         
 
 

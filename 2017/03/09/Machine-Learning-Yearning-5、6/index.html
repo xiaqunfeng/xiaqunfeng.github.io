@@ -18,7 +18,7 @@
 <meta name="description" content="第5、6、7三章，主要讲开发集和测试集，包括选型、大小、比例等。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Machine Learning Yearning(5、6、7)">
-<meta property="og:url" content="http://xiaqunfeng.github.io/2017/03/09/Machine-Learning-Yearning-5、6/index.html">
+<meta property="og:url" content="http://xiaqunfeng.cc/2017/03/09/Machine-Learning-Yearning-5、6/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="第5、6、7三章，主要讲开发集和测试集，包括选型、大小、比例等。">
 <meta property="og:image" content="http://img.blog.csdn.net/20161209012152300?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
@@ -75,7 +75,7 @@
         isCategory: false,
         fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
         scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
-        search: false
+        search: true
     }
 </script>
 
@@ -111,6 +111,13 @@
         <p class="header-subtitle">好记性不如烂笔头😝</p>
         
 
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
         
 
 
@@ -316,8 +323,8 @@
         <p><span>发布时间:</span>2017-03-09, 10:38:35</p>
         <p><span>最后更新:</span>2017-03-12, 15:41:39</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/03/09/Machine-Learning-Yearning-5、6/" title="Machine Learning Yearning(5、6、7)">http://xiaqunfeng.github.io/2017/03/09/Machine-Learning-Yearning-5、6/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/03/09/Machine-Learning-Yearning-5、6/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/09/Machine-Learning-Yearning-5、6/" title="Machine Learning Yearning(5、6、7)">http://xiaqunfeng.cc/2017/03/09/Machine-Learning-Yearning-5、6/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/03/09/Machine-Learning-Yearning-5、6/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -405,7 +412,7 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.github.io/2017/03/09/Machine-Learning-Yearning-5、6/';
+            this.page.url = 'http://xiaqunfeng.cc/2017/03/09/Machine-Learning-Yearning-5、6/';
             this.page.identifier = '2017/03/09/Machine-Learning-Yearning-5、6/';
         };
         var loadComment = function(){

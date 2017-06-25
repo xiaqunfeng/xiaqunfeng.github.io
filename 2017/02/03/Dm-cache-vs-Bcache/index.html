@@ -18,7 +18,7 @@
 <meta name="description" content="前面一篇文章介绍了flashcache和cache tier，并进行了对比，其实flashcache的原理和dm-cache是类似的。这里就介绍下dm-cache和bcache，这两种策略均已在linux内核中。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Dm-cache vs Bcache">
-<meta property="og:url" content="http://xiaqunfeng.github.io/2017/02/03/Dm-cache-vs-Bcache/index.html">
+<meta property="og:url" content="http://xiaqunfeng.cc/2017/02/03/Dm-cache-vs-Bcache/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="前面一篇文章介绍了flashcache和cache tier，并进行了对比，其实flashcache的原理和dm-cache是类似的。这里就介绍下dm-cache和bcache，这两种策略均已在linux内核中。">
 <meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/dm-cache.png">
@@ -76,7 +76,7 @@
         isCategory: false,
         fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
         scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
-        search: false
+        search: true
     }
 </script>
 
@@ -112,6 +112,13 @@
         <p class="header-subtitle">好记性不如烂笔头😝</p>
         
 
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
         
 
 
@@ -304,8 +311,8 @@
         <p><span>发布时间:</span>2017-02-03, 17:37:45</p>
         <p><span>最后更新:</span>2017-02-03, 17:46:46</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/02/03/Dm-cache-vs-Bcache/" title="Dm-cache vs Bcache">http://xiaqunfeng.github.io/2017/02/03/Dm-cache-vs-Bcache/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.github.io/2017/02/03/Dm-cache-vs-Bcache/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/02/03/Dm-cache-vs-Bcache/" title="Dm-cache vs Bcache">http://xiaqunfeng.cc/2017/02/03/Dm-cache-vs-Bcache/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/02/03/Dm-cache-vs-Bcache/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -393,7 +400,7 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.github.io/2017/02/03/Dm-cache-vs-Bcache/';
+            this.page.url = 'http://xiaqunfeng.cc/2017/02/03/Dm-cache-vs-Bcache/';
             this.page.identifier = '2017/02/03/Dm-cache-vs-Bcache/';
         };
         var loadComment = function(){
