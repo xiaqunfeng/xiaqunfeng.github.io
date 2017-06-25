@@ -3284,22 +3284,36 @@
 <p>上面两个命令可以合并为一个：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo d -g #在部署前先生成</div></pre></td></tr></table></figure>
 <h2 id="绑定域名"><a href="#绑定域名" class="headerlink" title="绑定域名"></a>绑定域名</h2><blockquote>
-<p>我暂时还没购买和绑定域名，就暂时先简单介绍一下，后续再来补充完善。</p>
+<p>update 2017.06.25。已购买域名，特来补充完善。</p>
 </blockquote>
 <p>1、购买域名</p>
 <p>某乎<a href="https://www.zhihu.com/question/19551906" target="_blank" rel="external">这里</a>有各种推荐，自己可以参考的看看。</p>
 <p>godaddy地址: <a href="https://www.godaddy.com/" target="_blank" rel="external">https://www.godaddy.com</a></p>
 <p>阿里云域名地址: <a href="http://wanwang.aliyun.com/" target="_blank" rel="external">http://wanwang.aliyun.com</a></p>
-<p>2、到自己的gitHubPages的ip地址</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ping http://xiaqunfeng.github.io</div><div class="line">PING github.map.fastly.net (151.101.192.133): 56 data bytes</div><div class="line">64 bytes from 151.101.192.133: icmp_seq=0 ttl=49 time=62.670 ms</div><div class="line">64 bytes from 151.101.192.133: icmp_seq=1 ttl=49 time=65.062 ms</div><div class="line">...</div></pre></td></tr></table></figure>
-<p>这里IP地址为：<code>151.101.192.133</code></p>
-<p>3、域名绑定IP地址</p>
-<p>登录自己购买域名的地方，找到域名相关选项</p>
-<p>添加域名</p>
-<p>添加记录：一个主机记录 <code>@</code>， 一个为<code>www</code>，记录值都是博客主页对应的ip。 </p>
-<p>等待生效，最迟72小时生效，然后就可通过域名浏览你的博客主页了。</p>
+<p><strong> 总结 </strong><br>某乎上那些推荐都看了一遍，也琢磨了一下，最后发现，还是阿里云上的比较便宜，然后操作起来也比较方便，于是就在阿里云上买了。</p>
+<p>我的域名：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">www.xiaqunfeng.cc</div></pre></td></tr></table></figure></p>
+<p><strong> 关于域名选择 </strong></p>
+<p>.com .cn .net .org 这种比较适合网站比较大的，当然，价格也贵一点，.com .cn 还需要网站备案什么的。现在一些其他后缀也很不错，比如 .cc .me .im .pro .top .info 等等，这些资料大家可以自己去查，就不细说了，强烈推荐 .me 和 .cc ，不过 .me 比 .cc贵，特别是买的时间越久或者续费都贵。我的 .cc 16块一年，哈哈，便宜，然后也挺好。</p>
+<p>2、域名解析</p>
+<p>域名解析-&gt;解析设置-&gt;添加解析，记录类型选A或CNAME，A记录的记录值就是ip地址，github提供了两个IP地址，192.30.252.153和192.30.252.154，可以随便填一个，或者两个都填，线路就默认，CNAME记录值填你的github博客网址</p>
+<p>我的如下：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/domain-hexo.jpg" alt="domain"></p>
+<p>3、创建<code>CNAME</code>文件</p>
+<p>这一步没做的话，打开网址访问不来博客。</p>
+<p>在hexo 博客的根目录下source文件夹里创建CNAME文件，里面填上域名信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># cat CNAME</div><div class="line">xiaqunfeng.cc</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注：如果里面填的是 www.xiaqunfeng.cc，那以后就只能用它来访问；如果填的是 xiaqunfeng.cc，那以后用 www.xiaqunfeng.cc 和 xiaqunfeng.cc 都可以访问。</p>
+</blockquote>
+<p>等待生效，一般几分钟就好了，然后就可通过域名浏览你的博客主页了。</p>
 ]]></content>
       
+        
+        <tags>
+            
+            <tag> mac </tag>
+            
+        </tags>
         
     </entry>
     
