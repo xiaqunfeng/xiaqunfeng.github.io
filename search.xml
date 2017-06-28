@@ -4,6 +4,143 @@
   
     
     <entry>
+      <title><![CDATA[Ceph v12.1.0 Luminous RC released]]></title>
+      <url>http://xiaqunfeng.cc/2017/06/28/Ceph-v12-1-0-Luminous-RC-released/</url>
+      <content type="html"><![CDATA[<p>ceph L 版本终于出了一个候选release版本。来看看都有哪些新功能吧。<br><a id="more"></a></p>
+<p>本文翻译自官网：<a href="http://ceph.com/releases/v12-1-0-luminous-rc-released/" target="_blank" rel="external">v12.1.0 Luminous RC released</a></p>
+<p>Github：<a href="https://github.com/ceph/ceph/tree/luminous" target="_blank" rel="external">https://github.com/ceph/ceph/tree/luminous</a></p>
+<h2 id="v12-1-0-Luminous-RC-released"><a href="#v12-1-0-Luminous-RC-released" class="headerlink" title="v12.1.0 Luminous RC released"></a>v12.1.0 Luminous RC released</h2><p>这是Luminous的第一个候选版本，下一个长期的稳定release。</p>
+<p>Ceph Luminous将是下一个长期的稳定release系列的基础。 自Kraken（v11.2.z）和jewel（v10.2.z）以来，发生了重大的变化。</p>
+<h2 id="Major-Changes-from-Kraken"><a href="#Major-Changes-from-Kraken" class="headerlink" title="Major Changes from Kraken"></a>Major Changes from Kraken</h2><h3 id="General"><a href="#General" class="headerlink" title="General"></a>General</h3><p>Ceph目前拥有一个简单的、内置的基于Web的仪表板，用于监控群集状态。</p>
+<h3 id="RADOS"><a href="#RADOS" class="headerlink" title="RADOS"></a>RADOS</h3><p><strong>BlueStore</strong></p>
+<ul>
+<li>ceph-osd的新后端存储BlueStore已经稳定，并且是新建OSD的默认设置。 BlueStore通过直接管理物理磁盘（HDD或SSD）而不使用XFS之类的中间文件系统来管理存储在每个OSD上的数据，这提供了更好的性能和特性。</li>
+<li>BlueStore对于通过ceph存储的数据支持完整数据和元数据校验。</li>
+<li>BlueStore支持zlib、snappy或LZ4的在线压缩。（Ceph还支持zstd进行RGW压缩，但由于性能原因，不推荐BlueStore使用zstd）。<br>EC pools现在完全支持覆盖写，允许它们与RBD和CephFS一起使用。<a href="http://ceph.com/releases/rados/operations/erasure-code/#erasure-coding-with-overwrites" target="_blank" rel="external">Read more about EC overwrites**</a></li>
+</ul>
+<p><strong>ceph-mgr</strong></p>
+<ul>
+<li>ceph-mgr是一个新的进程，它是任何Ceph部署所必须的一部分。虽然当ceph-mgr停止时，可以继续下发IO，但是度量不会刷新，并且某些与度量相关的请求（如：ceph df）可能会阻塞。为了可靠性，我们建议部署ceph-mgr的多个实例。查看这里的注释<a href="http://ceph.com/releases/v12-1-0-luminous-rc-released/#id1" target="_blank" rel="external"><code>Upgrading</code>_</a> </li>
+<li>ceph-mgr进程包括一个基于REST的管理API。 API仍然处于实验阶段，并有一定的限制，但未来将成为Ceph基于API管理的基础。</li>
+</ul>
+<p>集群的总体可扩展性有所提高。我们已经成功测试了多达10,000个OSD节点的集群。</p>
+<ul>
+<li>目前，每个OSD都具有与其相关联的设备类（例如，hdd或ssd），允许CRUSH规则将数据简单地映射到系统中的设备的子集。通常不需要手动编写CRUSH规则或手动编辑CRUSH。</li>
+<li>现在可以优化CRUSH权重，以保持OSD之间数据的近乎完美的分布。</li>
+<li>还有一个新的upmap异常处理机制，允许单个PG移动以实现完美的分布（这需要luminous的客户端）。</li>
+<li>目前每个OSD可以根据后端设备是HDD还是SSD来调整其默认配置。一般不需要手动调整。</li>
+<li>mclock QoS排队算法原型现在是可用的；</li>
+<li>现在有一种 backoff 机制，可以防止OSD出现对当前不能处理IO的对象或PG的请求出现过载。</li>
+<li>简化了OSD更换过程，并且更加鲁棒。</li>
+<li>您可以使用 <code>ceph features</code> 来查询所有连接的守护进程和客户端的支持特性和版本。</li>
+<li>您可以配置你想要最旧的Ceph客户端版本，并通过 <code>ceph osd set-require-min-compat-client</code> 命令连接到集群，Ceph将阻止您启用会破坏与这些客户端兼容性的特性。</li>
+<li>一些 <code>sleep</code> 的设置，包括 <code>osd_recovery_sleep</code>，<code>osd_snap_trim_sleep</code> 和 <code>osd_scrub_sleep</code> 已经被重新实现，并且可以有效地工作。（这些在某些情况下用于解决问题，限制后台工作。）</li>
+</ul>
+<p><strong>RGW:</strong></p>
+<ul>
+<li>ElasticSearch支持的RGW元数据搜索现在通过RGW本身支持最终用户请求服务，并且还支持自定义元数据字段。查询语言是一组RESTful API，用户可以通过其元数据来搜索对象。还添加了允许自定义元数据字段控制的新API。</li>
+<li>RGW支持动态存储桶索引分片（bucket index sharding）。随着桶中的对象数量的增加，RGW将自动重新构建桶索引。不需要用户干预或桶大小容量规划。</li>
+<li>RGW引入了上传对象的服务器端加密，用于管理加密密钥的三个选项有：自动加密（仅推荐用于测试设置），客户提供的类似于Amazon SSE-C规范的密钥，以及通过使用外部密钥管理服务 （OpenstackBarbician）类似于Amazon SSE-KMS规范。</li>
+<li>RGW具有初步的类似AWS的存储桶策略API支持。现在，策略是一种表达一系列新授权概念的方式。未来，这将成为附加身份验证功能的基础，例如STS和组策略等。</li>
+<li>RGW通过使用rados命名空间合并了几个元数据索引池。</li>
+</ul>
+<p><strong>RBD:</strong></p>
+<ul>
+<li>RBD目前通过<code>rbd create</code>新的<code>--data-pool</code>选项，对EC pools有全面稳定的支持。</li>
+<li>RBD镜像的rbd-mirror守护进程现在是高可用的。我们建议部署rbd-mirror的多个实例来实现可靠性。</li>
+<li>在创建集群期间，不再自动创建默认的 <code>rbd</code> 存储池。另外，当没有指定池时，rbd CLI 使用的默认池的名称可以通过新的 <code>rbd default pool = &lt;pool name&gt;</code> 配置选项来覆盖。</li>
+<li>通过新的 <code>rbd trash</code>  CLI命令初步支持延迟 image 删除。images，即使是由克隆主动使用的镜像，也可以移动到垃圾桶，并在以后删除。</li>
+<li>新的管理池级别的命令 <code>rbd mirror pool promote</code> 和 <code>rbd mirror pool demote</code>可以批量提升/降级一个pool内所有的mirrored images。</li>
+<li>mirroring 现在可以通过 <code>rbd mirroring replay delay = &lt;seconds&gt;</code> 配置选项支持可选择的配置复制延迟。</li>
+<li>当对象map 特性启用时，可以提升丢弃处理功能。</li>
+<li>rbd CLI <code>import</code> 和 <code>copy</code> 命令现在可以检测稀疏并保留稀疏区域。</li>
+<li>snapshots现在将包含创建时间戳。</li>
+</ul>
+<p><strong>CephFS:</strong></p>
+<ul>
+<li>现在，多个活动的MDS守护进程是稳定的。活动的MDS服务器的数量可以基于活动的CephFS文件系统进行上下调整。</li>
+<li>CephFS目录分片现在是稳定的，并且在新的文件系统上默认启用。要使其在现有的文件系统上启动，使用命令 <code>ceph fs set&lt;fs_name&gt; allow_dirfrags</code>。大的或非常繁忙的目录被分割并（可能）自动分布在多个MDS守护进程中。</li>
+<li>在自动负载均衡不需要和无效的情况下，目录子树可以明确固定到特定的MDS守护进程。</li>
+</ul>
+<p><strong>Miscellaneous:</strong> </p>
+<p>Debian Stretch现在正在构建版本包。我们现在构建的发行版包括： </p>
+<ul>
+<li>CentOS 7 (x86_64and aarch64)</li>
+<li>Debian 8 Jessie(x86_64)</li>
+<li>Debian 9 Stretch(x86_64)</li>
+<li>Ubuntu 16.04 Xenial(x86_64 and aarch64)</li>
+<li>Ubuntu 14.04Trusty (x86_64)</li>
+</ul>
+<p>注意 QA 仅限于 CentOS 和 Ubuntu (xenialand trusty).</p>
+<p><strong>CLI 变化</strong></p>
+<ul>
+<li><code>ceph -s</code> 或者 <code>ceph status</code> 命令焕然一新。</li>
+<li><code>ceph {osd，mds，mon} versions</code> 总结了运行中守护进程的版本。</li>
+<li><code>ceph {osd，mds，mon} count-metadata &lt;property&gt;</code> 类似地列出通过 <code>ceph {osd，mds，mon} metadata</code> 命令可见的任何其他守护进程元数据。</li>
+<li><code>ceph features</code> 总结了连接的客户端和守护进程的特性和版本。</li>
+<li><code>ceph osd require-osd-release &lt;release&gt;</code> 替换旧的<code>require_RELEASE_osds</code> flags。</li>
+<li><code>ceph osd pg-upmap</code>，<code>ceph osdrm-pg-upmap</code>，<code>ceph osd pg-upmap-items</code>，<code>ceph osdrm-pg-upmap-items</code>可以明确地管理upmap项目。</li>
+<li><code>ceph osd getcrushmap</code>在stderr上返回一个crush map版本号，如果版本匹配，<code>ceph osd setcrushmap [version]</code> 将只会注入更新的crush map。这允许crush map进行离线更新，然后重新注入到群集中，而不用担心颠覆性的变化（例如，通过其他管理员新添加和修改osds）。</li>
+<li><code>ceph osd create</code> 已被 <code>ceph osd new</code> 所替换。大多数用户应该使用像 <code>ceph-disk</code> 这样面向用户的工具来隐藏这个。</li>
+<li><code>ceph osd destroy</code> 将标记一个OSD被损坏，并删除其cephx和lockbox keys。但其OSD id和CRUS map entry 将保留不动，允许使用最少数据重新平衡的替换设备重新使用该 ID。</li>
+<li><code>ceph osd purge</code> 将从集群中删除OSD的所有痕迹，包括其cephx加密密钥，dm-crypt lockbox秘钥，OSD ID和crush map entry。</li>
+<li><code>ceph osd ls-tree &lt;name&gt;</code> 将在给定的CRUSH名称（如主机或机架名称）下输出OSD id列表。这对于为整个子树应用更改信息非常有用。例如，<code>ceph osd down</code> ，<code>ceph osd ls-tree rack1</code>。</li>
+<li><code>ceph osd {add，rm} - {noout，noin，nodown，noup}</code> 允许<code>noout</code>，<code>nodown</code>，<code>noin</code>和<code>noup</code> 标志应用于指定的的OSD。</li>
+<li><code>ceph log last [n]</code> 将输出集群日志的最后n行。</li>
+<li><code>ceph mgr dump</code> 将dump出MgrMap，包括当前活动的和任何 standbys 的 ceph-mgr守护进程。</li>
+<li><code>ceph osd crush swap-bucket &lt;src&gt; &lt;dest&gt;</code>将交换层次结构中两个CRUSH buckets的内容，同时保留buckets的id。这允许替换整个设备子树（例如，用新imaged的BlueStore OSD替换整个主机的FileStore OSD），而不会中断跨越相邻设备的数据分布。</li>
+<li><code>ceph osd set-require-min-compat-client &lt;release&gt;</code> 可以配置支持群集的最旧的客户端版本。其他更改，如CRUSH可调参数，如果违反此设置，将会失败并显示错误。如果当前连接到集群的客户端版本比指定版本还老旧，则更改此设置也将失败。</li>
+<li><code>ceph config-key dump</code> dump出config-key entries及其内容。（已有的 <code>ceph config-key ls</code> 仅dump密钥名称，而不是值。）</li>
+<li><code>ceph osd set-{full，nearfull，backfillfull}-ratio</code> 将集群范围的比例设置为各种全阈值（例如：当集群拒绝IO时，当集群警告接近满时，当OSD延迟PG重新平衡到本身时）。</li>
+<li><code>ceph osd reweightn</code> 将在单个命令中指定多个OSD的 <code>reweight</code> 值。这相当于一系列 <code>ceph osd rewight</code> 命令。</li>
+<li><code>ceph crush class {create,rm,ls}</code> 管理新的CRUSH设备类功能。 <code>ceph crush set-device-class &lt;osd&gt; &lt;class&gt;</code> 将为特定设备设置class。</li>
+<li><code>ceph mon feature ls</code> 将列出MonMap中记录的monitor功能。<code>ceph mon feature set</code> 将设置一个可选功能（这些功能尚未存在）。</li>
+</ul>
+<h2 id="Major-Changes-from-Jewel"><a href="#Major-Changes-from-Jewel" class="headerlink" title="Major Changes from Jewel"></a>Major Changes from Jewel</h2><p><strong>RADOS</strong></p>
+<ul>
+<li>我们现在默认使用AsyncMessenger（ms type = async），而不是传统的SimpleMessenger。 最明显的区别是，我们现在使用固定大小的线程池进行网络连接（而不是使用SimpleMessenger每个socket两个线程）。</li>
+<li>现在几乎可以马上检测到一些OSD故障，而之前的心跳超时（默认为20秒）必须过期。 当host保持up状态，但ceph-osd进程不再运行的故障出现时，可以防止IO长时间阻塞。</li>
+<li>编码OSDMaps的大小已经减少了。</li>
+<li>当recovery或rebalancing进行时，OSD现在会静止scrubbing。</li>
+</ul>
+<p><strong>RGW</strong></p>
+<ul>
+<li>RGW现在支持 S3 多部分对象部分复制（multipart object copy-part）API。</li>
+<li>现在离线resharding一个现有的bucket是可能的。离线resharding bucket当前需要所有到这个指定bucket的IO（特别是writes）是静止的。（为了自动在线resharding，看上面Luminous的新特性）</li>
+<li>RGW现在支持对对象的数据压缩。</li>
+<li>Civetweb版本已经更新到1.8。</li>
+<li>支持Swift静态网站API（之前的版本就已经支持S3）</li>
+<li>S3 bucket生命周期 API 已添加。注意当前只支持对象到期。</li>
+<li>支持用户自定义搜索过滤器已添加到 LDAP 认证实现中。</li>
+<li>对NFS版本3的支持已添加到RGW NFS网关</li>
+<li>已经为librgw创建了一个Python绑定</li>
+</ul>
+<p><strong>RBD</strong></p>
+<ul>
+<li>rbd-mirror守护进程现在支持从主image到非主image复制动态image特征更新和image元数据密钥/值对。</li>
+<li>Image快照的数量可以可选地限制在可配置的最大值。</li>
+<li>rbd Python API现在支持异步IO操作。</li>
+</ul>
+<p><strong>CephFS</strong></p>
+<ul>
+<li>libcephfs函数定义已更改，以启用适当的uid / gid控件。library版本已经增加，以反映界面的变化。</li>
+<li>standby replay MDS守护程序现在在执行删除的工作负载上消耗更少的内存。</li>
+<li>Scrub 现在修复回溯，通常使用 <code>damage ls</code> 发现错误。</li>
+<li>新 <code>pg_files</code> 子命令<code>cephfs-data-scan</code>可以识别受损坏或丢失的RADOS PG影响的文件。</li>
+<li>假阳性警告 <code>failing to respond to cache pressure</code> 已被修复。</li>
+</ul>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[wget批量下载http目录及文件]]></title>
       <url>http://xiaqunfeng.cc/2017/06/23/wget%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDhttp%E7%9B%AE%E5%BD%95%E5%8F%8A%E6%96%87%E4%BB%B6/</url>
       <content type="html"><![CDATA[<p>有时候看到好的镜像，想保存下来，不可能一个个通过url手动来下载，这时候就需要批量下载了。<br><a id="more"></a></p>
@@ -666,9 +803,9 @@
         
         <tags>
             
-            <tag> centos </tag>
-            
             <tag> Linux </tag>
+            
+            <tag> centos </tag>
             
         </tags>
         
@@ -3321,12 +3458,9 @@
   
     
     <entry>
-      <title><![CDATA[关于我]]></title>
-      <url>http://xiaqunfeng.cc/about/index.html</url>
-      <content type="html"><![CDATA[<p align="center"><strong>关注ceph、分布式存储、openstack、容器、机器学习</strong></p>
-
-<h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果觉得该博客文章对您有所帮助，欢迎小额赞助和鼓励。 </p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
-]]></content>
+      <title></title>
+      <url>http://xiaqunfeng.cc/baidu_verify_UL74CvGIA2.html</url>
+      <content type="html"><![CDATA[UL74CvGIA2]]></content>
     </entry>
     
     <entry>
@@ -3336,9 +3470,12 @@
     </entry>
     
     <entry>
-      <title></title>
-      <url>http://xiaqunfeng.cc/baidu_verify_UL74CvGIA2.html</url>
-      <content type="html"><![CDATA[UL74CvGIA2]]></content>
+      <title><![CDATA[关于我]]></title>
+      <url>http://xiaqunfeng.cc/about/index.html</url>
+      <content type="html"><![CDATA[<p align="center"><strong>关注ceph、分布式存储、openstack、容器、机器学习</strong></p>
+
+<h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果觉得该博客文章对您有所帮助，欢迎小额赞助和鼓励。 </p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
+]]></content>
     </entry>
     
   
