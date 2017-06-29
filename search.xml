@@ -4,6 +4,53 @@
   
     
     <entry>
+      <title><![CDATA[ceph Luminous dashboard初探]]></title>
+      <url>http://xiaqunfeng.cc/2017/06/29/ceph-Luminous%E5%88%9D%E6%8E%A2/</url>
+      <content type="html"><![CDATA[<p>体验ceph luminous，并初步探测ceph luminous的相关功能，这里先来看看官方标配的仪表盘长啥样。<br><a id="more"></a></p>
+<p>就冲这句话：Ceph now has a simple, built-in web-based dashboard for monitoring<br>cluster status，来一探究竟。</p>
+<h2 id="Luminous集群"><a href="#Luminous集群" class="headerlink" title="Luminous集群"></a>Luminous集群</h2><p><strong>物理环境</strong></p>
+<p>3个 host ，每个 host 含有 2 个OSD</p>
+<p><strong>查看ceph版本</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph -v</div><div class="line">ceph version 12.1.0 (262617c9f16c55e863693258061c5b25dea5b086) luminous (dev)</div></pre></td></tr></table></figure>
+<h3 id="ceph-s"><a href="#ceph-s" class="headerlink" title="ceph -s"></a>ceph -s</h3><p>查看集群状态，这里发现 <code>ceph -s</code> 信息和之前的不一样。（更多新的命令后续探索后奉上）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"># ceph -s</div><div class="line">  cluster:</div><div class="line">    id:     4c7ec5af-cbd3-40fd-8c96-0615c77660d4</div><div class="line">    health: HEALTH_OK</div><div class="line"></div><div class="line">  services:</div><div class="line">    mon: 3 daemons, quorum luminous0,luminous1,luminous2</div><div class="line">    mgr: luminous0(active)</div><div class="line">    mds: 1/1/1 up &#123;0=luminous0=up:active&#125;</div><div class="line">    osd: 6 osds: 6 up, 6 in</div><div class="line"></div><div class="line">  data:</div><div class="line">    pools:   7 pools, 112 pgs</div><div class="line">    objects: 208 objects, 3359 bytes</div><div class="line">    usage:   6341 MB used, 54492 MB / 60833 MB avail</div><div class="line">    pgs:     112 active+clean</div></pre></td></tr></table></figure>
+<p>这里我在机器 luminous0 上还部署了 mgr 和 mds。</p>
+<blockquote>
+<p>注意：mgr是高可用的，如果配置多个的话，会有standbys。我这里只配了一个 mgr，所以就只有active，没有standby。访问的时候，务必使用 active 进程所在节点的 IP ！！</p>
+</blockquote>
+<h2 id="dashboard"><a href="#dashboard" class="headerlink" title="dashboard"></a>dashboard</h2><h3 id="开启监控"><a href="#开启监控" class="headerlink" title="开启监控"></a>开启监控</h3><p>在所有运行了 ceph-mgr 守护进程的机器上编辑ceph配置文件 <code>/etc/ceph/ceph.conf</code> ，以启用 dashboard。</p>
+<p>添加如下配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[mgr]</div><div class="line">mgr_modules = dashboard</div></pre></td></tr></table></figure>
+<p>注意：不要重启 ceph-mgr 进程，还有其他的配置要做。</p>
+<h3 id="配置IP和端口"><a href="#配置IP和端口" class="headerlink" title="配置IP和端口"></a>配置IP和端口</h3><p>服务器地址和可选端口必须配置为 config-key</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph config-key put mgr/dashboard/server_addr 172.20.2.243</div><div class="line">set mgr/dashboard/server_addr</div></pre></td></tr></table></figure>
+<p>查看，发现<strong>默认端口是 7000</strong> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># netstat -antpl | grep ceph-mgr | grep LISTEN</div><div class="line">tcp        0      0 0.0.0.0:6800            0.0.0.0:*               LISTEN      57645/ceph-mgr</div><div class="line">tcp        0      0 172.20.2.243:7000       0.0.0.0:*               LISTEN      57645/ceph-mgr</div></pre></td></tr></table></figure>
+<p>当然，可以改为指定端口号，使用如下命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph config-key put mgr/dashboard/server_port 8888</div></pre></td></tr></table></figure>
+<h3 id="重启ceph-mgr"><a href="#重启ceph-mgr" class="headerlink" title="重启ceph-mgr"></a>重启ceph-mgr</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># systemctl restart ceph-mgr@luminous0</div></pre></td></tr></table></figure>
+<p>这时候就可以访问了。</p>
+<h3 id="访问界面"><a href="#访问界面" class="headerlink" title="访问界面"></a>访问界面</h3><p><strong>1、主界面</strong>（Cluster health）</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/luminous-0.jpg" alt="dashboard"></p>
+<p><strong>2、Servers界面</strong></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/luminous-2.jpg" alt="servers"></p>
+<p><strong>3、cephfs界面</strong></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/luminous-1.jpg" alt="ceph-fs"></p>
+<h2 id="使用后感想"><a href="#使用后感想" class="headerlink" title="使用后感想"></a>使用后感想</h2><p>1、这仅仅只是一个展示的界面，不能进行相关操作</p>
+<p>2、关于 MONITORS 和 OSDS 的信息不能详细展开，更不能看到每台机器的情况</p>
+<p>3、比起ceph周边的监控软件：calamari、VSM、inkscope、grafana等，相去甚远，当然，可以简单展示基本信息，还是不错的。</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Ceph v12.1.0 Luminous RC released]]></title>
       <url>http://xiaqunfeng.cc/2017/06/28/Ceph-v12-1-0-Luminous-RC-released/</url>
       <content type="html"><![CDATA[<p>ceph L 版本终于出了一个候选release版本。来看看都有哪些新功能吧。<br><a id="more"></a></p>
@@ -94,7 +141,7 @@
 <li><code>ceph osd set-{full，nearfull，backfillfull}-ratio</code> 将集群范围的比例设置为各种全阈值（例如：当集群拒绝IO时，当集群警告接近满时，当OSD延迟PG重新平衡到本身时）。</li>
 <li><code>ceph osd reweightn</code> 将在单个命令中指定多个OSD的 <code>reweight</code> 值。这相当于一系列 <code>ceph osd rewight</code> 命令。</li>
 <li><code>ceph crush class {create,rm,ls}</code> 管理新的CRUSH设备类功能。 <code>ceph crush set-device-class &lt;osd&gt; &lt;class&gt;</code> 将为特定设备设置class。</li>
-<li><code>ceph mon feature ls</code> 将列出MonMap中记录的monitor功能。<code>ceph mon feature set</code> 将设置一个可选功能（这些功能尚未存在）。</li>
+<li><code>ceph mon feature list</code> 将列出MonMap中记录的monitor功能。<code>ceph mon feature set</code> 将设置一个可选功能（这些功能尚未存在）。</li>
 </ul>
 <h2 id="Major-Changes-from-Jewel"><a href="#Major-Changes-from-Jewel" class="headerlink" title="Major Changes from Jewel"></a>Major Changes from Jewel</h2><p><strong>RADOS</strong></p>
 <ul>
@@ -803,9 +850,9 @@
         
         <tags>
             
-            <tag> Linux </tag>
-            
             <tag> centos </tag>
+            
+            <tag> Linux </tag>
             
         </tags>
         

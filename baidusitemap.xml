@@ -3,10 +3,26 @@
 
 
     
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/06/29/ceph-Luminous%E5%88%9D%E6%8E%A2/</loc>
+    <lastmod>2017-06-29T09:13:27.000Z</lastmod>
+    <data>
+        <display>
+        <title>ceph Luminous dashboard初探</title>
+        <pubTime>2017-06-29T07:45:15.000Z</pubTime>
+        
+        <tag>ceph</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
     
   <url>
     <loc>http://xiaqunfeng.cc/2017/06/28/Ceph-v12-1-0-Luminous-RC-released/</loc>
-    <lastmod>2017-06-28T08:45:04.000Z</lastmod>
+    <lastmod>2017-06-29T08:11:07.000Z</lastmod>
     <data>
         <display>
         <title>Ceph v12.1.0 Luminous RC released</title>
@@ -20,6 +36,7 @@
     </data>
     </url>
 
+    
     
   <url>
     <loc>http://xiaqunfeng.cc/2017/01/06/hexo%E7%9A%84%E6%90%AD%E5%BB%BA/</loc>
@@ -273,9 +290,9 @@
         <title>firewalld和iptables</title>
         <pubTime>2017-05-07T08:08:01.000Z</pubTime>
         
-        <tag>Linux</tag>
-         
         <tag>centos</tag>
+         
+        <tag>Linux</tag>
          
          
            
@@ -289,7 +306,7 @@
     <lastmod>2017-05-05T08:37:19.000Z</lastmod>
     <data>
         <display>
-        <title>iterm2配色--zsh &amp; oh-my-zsh</title>
+        <title>iterm2配色--zsh & oh-my-zsh</title>
         <pubTime>2017-05-04T12:32:26.000Z</pubTime>
         
         <tag>mac</tag>
