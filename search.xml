@@ -803,9 +803,9 @@
         
         <tags>
             
-            <tag> centos </tag>
-            
             <tag> Linux </tag>
+            
+            <tag> centos </tag>
             
         </tags>
         
@@ -3470,18 +3470,18 @@
     </entry>
     
     <entry>
-      <title><![CDATA[tags]]></title>
-      <url>http://xiaqunfeng.cc/tags/index.html</url>
-      <content type="html"></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[关于我]]></title>
       <url>http://xiaqunfeng.cc/about/index.html</url>
       <content type="html"><![CDATA[<p align="center"><strong>关注ceph、分布式存储、openstack、容器、机器学习</strong></p>
 
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果觉得该博客文章对您有所帮助，欢迎小额赞助和鼓励。 </p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 ]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[tags]]></title>
+      <url>http://xiaqunfeng.cc/tags/index.html</url>
+      <content type="html"></content>
     </entry>
     
   
