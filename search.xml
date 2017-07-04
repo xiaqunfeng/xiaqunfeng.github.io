@@ -4,6 +4,77 @@
   
     
     <entry>
+      <title><![CDATA[ceph Luminous新功能之crush class]]></title>
+      <url>http://xiaqunfeng.cc/2017/07/04/ceph-Luminous%E6%96%B0%E5%8A%9F%E8%83%BD%E4%B9%8Bcrush-class/</url>
+      <content type="html"><![CDATA[<p>cursh class为新增的管理设备类的功能，可以将特定一组设备指定为类，创建rule的时候直接指定class即可，以前也可以实现该功能，只不过需要编辑crushmap，手动添加class。该功能只需要命令行就可以实现。<br><a id="more"></a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>集群情况和上一篇文章一样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"># ceph -s</div><div class="line">  cluster:</div><div class="line">    id:     4c7ec5af-cbd3-40fd-8c96-0615c77660d4</div><div class="line">    health: HEALTH_OK</div><div class="line"></div><div class="line">  services:</div><div class="line">    mon: 3 daemons, quorum luminous0,luminous1,luminous2</div><div class="line">    mgr: luminous0(active)</div><div class="line">    mds: 1/1/1 up &#123;0=luminous0=up:active&#125;</div><div class="line">    osd: 6 osds: 6 up, 6 in</div><div class="line"></div><div class="line">  data:</div><div class="line">    pools:   7 pools, 112 pgs</div><div class="line">    objects: 240 objects, 3359 bytes</div><div class="line">    usage:   9245 MB used, 51587 MB / 60833 MB avail</div><div class="line">    pgs:     112 active+clean</div></pre></td></tr></table></figure>
+<h2 id="关于之前的crush"><a href="#关于之前的crush" class="headerlink" title="关于之前的crush"></a>关于之前的crush</h2><h3 id="完全手动管理crush"><a href="#完全手动管理crush" class="headerlink" title="完全手动管理crush"></a>完全手动管理crush</h3><p>1、在 <code>ceph.conf</code> 配置中将挂钩关掉</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">osd_crush_update_on_start = false</div></pre></td></tr></table></figure>
+<p>2、部署OSD</p>
+<p>3、手动创建所有的 CRUSH buckets</p>
+<p>4、手动在每个 buckets 中放置 OSD</p>
+<p>每当新加入、移除一个节点，或者将OSD从一个 host 移到另一个 host 时，也必须手动更改 CRUSH map。</p>
+<h3 id="CEPH-CRUSH-LOCATION-挂钩"><a href="#CEPH-CRUSH-LOCATION-挂钩" class="headerlink" title="CEPH-CRUSH-LOCATION 挂钩"></a>CEPH-CRUSH-LOCATION 挂钩</h3><p>定义 osd_crush_location_hook，它可以让你定义一个路径去执行脚本，允许你自动处理以上过程。</p>
+<p>调用方式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">myhook --cluster &lt;cluster_name&gt; --id &lt;id&gt; --type osd</div></pre></td></tr></table></figure>
+<p>集群名通常是 ceph ， id 是守护进程标识符（ OSD 号）。</p>
+<h2 id="CRUSH-devices-class"><a href="#CRUSH-devices-class" class="headerlink" title="CRUSH devices class"></a>CRUSH devices class</h2><h3 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h3><p>这么做的目的是为ceph不同类型的设备（HDD,SSD,NVMe）提供一个合理的默认，以便用户不必自己手动编辑指定。这相当于给磁盘组一个统一的class标签，根据class创建rule，然后根据role创建pool，整个操作不需要手动修改crushmap。</p>
+<h3 id="创建两个-class"><a href="#创建两个-class" class="headerlink" title="创建两个 class"></a>创建两个 class</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># ceph osd crush class ls</div><div class="line">[]</div><div class="line"># ceph osd crush class create hdd</div><div class="line">created class hdd with id 0 to crush map</div><div class="line"># ceph osd crush class create ssd</div><div class="line">created class ssd with id 1 to crush map</div><div class="line"># ceph osd crush class ls</div><div class="line">[</div><div class="line">    &quot;hdd&quot;,</div><div class="line">    &quot;ssd&quot;</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>根据class，可以对osd进行以下两种操作：</p>
+<p>1、部署OSD时指定 class，比如，指定部署磁盘所在的 OSD 到指定 class 中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph-disk prepare --crush-device-class &lt;class&gt; /dev/XXX</div></pre></td></tr></table></figure>
+<p>2、将现有 osd 加入到指定 class 中，命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph osd crush set-device-class osd.&lt;id&gt; &lt;class&gt;</div></pre></td></tr></table></figure>
+<p><strong> 以下对第二种操作进行实验，也是使用最多的。</strong></p>
+<h3 id="当前OSD-分布"><a href="#当前OSD-分布" class="headerlink" title="当前OSD 分布"></a>当前OSD 分布</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># ceph osd tree</div><div class="line">ID WEIGHT  TYPE NAME          UP/DOWN REWEIGHT PRIMARY-AFFINITY</div><div class="line">-1 0.05814 root default</div><div class="line">-2 0.01938     host luminous0</div><div class="line"> 1 0.00969         osd.1           up  1.00000          1.00000</div><div class="line"> 5 0.00969         osd.5           up  1.00000          1.00000</div><div class="line">-3 0.01938     host luminous2</div><div class="line"> 0 0.00969         osd.0           up  1.00000          1.00000</div><div class="line"> 4 0.00969         osd.4           up  1.00000          1.00000</div><div class="line">-4 0.01938     host luminous1</div><div class="line"> 2 0.00969         osd.2           up  1.00000          1.00000</div><div class="line"> 3 0.00969         osd.3           up  1.00000          1.00000</div></pre></td></tr></table></figure>
+<h3 id="为class添加osd"><a href="#为class添加osd" class="headerlink" title="为class添加osd"></a>为class添加osd</h3><p>将0、1、2分到hdd class，3、4、5分到ssd class</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># for i in 0 1 2; do ceph osd crush set-device-class osd.$i hdd; done</div><div class="line">set-device-class item id 3 name &apos;osd.0&apos; device_class hdd</div><div class="line">set-device-class item id 4 name &apos;osd.1&apos; device_class hdd</div><div class="line">set-device-class item id 5 name &apos;osd.2&apos; device_class hdd</div><div class="line"># for i in 3 4 5; do ceph osd crush set-device-class osd.$i ssd; done</div><div class="line">set-device-class item id 3 name &apos;osd.3&apos; device_class ssd</div><div class="line">set-device-class item id 4 name &apos;osd.4&apos; device_class ssd</div><div class="line">set-device-class item id 5 name &apos;osd.5&apos; device_class ssd</div></pre></td></tr></table></figure>
+<h3 id="再查看osd分布"><a href="#再查看osd分布" class="headerlink" title="再查看osd分布"></a>再查看osd分布</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"># ceph osd tree</div><div class="line">ID  WEIGHT  TYPE NAME              UP/DOWN REWEIGHT PRIMARY-AFFINITY</div><div class="line">-12 0.02907 root default~ssd</div><div class="line"> -9 0.00969     host luminous0~ssd</div><div class="line">  5 0.00969         osd.5               up  1.00000          1.00000</div><div class="line">-10 0.00969     host luminous2~ssd</div><div class="line">  4 0.00969         osd.4               up  1.00000          1.00000</div><div class="line">-11 0.00969     host luminous1~ssd</div><div class="line">  3 0.00969         osd.3               up  1.00000          1.00000</div><div class="line"> -8 0.02907 root default~hdd</div><div class="line"> -5 0.00969     host luminous0~hdd</div><div class="line">  1 0.00969         osd.1               up  1.00000          1.00000</div><div class="line"> -6 0.00969     host luminous2~hdd</div><div class="line">  0 0.00969         osd.0               up  1.00000          1.00000</div><div class="line"> -7 0.00969     host luminous1~hdd</div><div class="line">  2 0.00969         osd.2               up  1.00000          1.00000</div><div class="line"> -1 0.05814 root default</div><div class="line"> -2 0.01938     host luminous0</div><div class="line">  1 0.00969         osd.1               up  1.00000          1.00000</div><div class="line">  5 0.00969         osd.5               up  1.00000          1.00000</div><div class="line"> -3 0.01938     host luminous2</div><div class="line">  0 0.00969         osd.0               up  1.00000          1.00000</div><div class="line">  4 0.00969         osd.4               up  1.00000          1.00000</div><div class="line"> -4 0.01938     host luminous1</div><div class="line">  2 0.00969         osd.2               up  1.00000          1.00000</div><div class="line">  3 0.00969         osd.3               up  1.00000          1.00000</div></pre></td></tr></table></figure>
+<h3 id="创建rule"><a href="#创建rule" class="headerlink" title="创建rule"></a>创建rule</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># ceph osd crush rule create-simple hdd-rule default~ssd host firstn</div><div class="line">Invalid command:  invalid chars ~ in default~ssd</div><div class="line">osd crush rule create-simple &lt;name&gt; &lt;root&gt; &lt;type&gt; &#123;firstn|indep&#125; :  create crush rule &lt;name&gt; to start from &lt;root&gt;, replicate across buckets of type &lt;type&gt;, using a choose mode of &lt;firstn|indep&gt; (default firstn; indep best for erasure pools)</div><div class="line">Error EINVAL: invalid command</div></pre></td></tr></table></figure>
+<p>这里出现错误，我在想，是不是 class name 不用带上 <code>default~</code> 这个符号，于是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd crush rule create-simple hdd-rule ssd host firstn</div><div class="line">Error ENOENT: root item ssd does not exist</div></pre></td></tr></table></figure>
+<p>依然出错，这是个<a href="http://tracker.ceph.com/issues/20446" target="_blank" rel="external">bug</a>，还在 <a href="https://github.com/ceph/ceph/pull/16027" target="_blank" rel="external">merge 中</a></p>
+<blockquote>
+<p>先跳过这个直接创建rule关联class的命令，后续BUG修复了再来实验</p>
+</blockquote>
+<h3 id="手动来创建rule"><a href="#手动来创建rule" class="headerlink" title="手动来创建rule"></a>手动来创建rule</h3><p>首先查看当前rule的状况</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># ceph osd crush rule ls</div><div class="line">[</div><div class="line">    &quot;replicated_rule&quot;</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>只有一个默认的rule</p>
+<p><strong> 第一步：获取crushmap </strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd getcrushmap -o c1</div><div class="line">11</div></pre></td></tr></table></figure>
+<p><strong>第二步：反编译crushmap</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># crushtool -d c1 -o c2.txt</div></pre></td></tr></table></figure>
+<p>编辑crushmap</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># vim c2.txt</div></pre></td></tr></table></figure>
+<p>在 <code># rule</code> 那一栏 <code>replicated_rule</code> 的后面添加 <code>hdd_rule</code> 和 <code>ssd_rule</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"># rules</div><div class="line">rule replicated_rule &#123;</div><div class="line">        ruleset 0</div><div class="line">        type replicated</div><div class="line">        min_size 1</div><div class="line">        max_size 10</div><div class="line">        step take default</div><div class="line">        step chooseleaf firstn 0 type host</div><div class="line">        step emit</div><div class="line">&#125;</div><div class="line"></div><div class="line">rule hdd_rule &#123;</div><div class="line">        ruleset 1</div><div class="line">        type replicated</div><div class="line">        min_size 1</div><div class="line">        max_size 10</div><div class="line">        step take default class hdd</div><div class="line">        step chooseleaf firstn 0 type osd</div><div class="line">        step emit</div><div class="line">&#125;</div><div class="line"></div><div class="line">rule ssd_rule &#123;</div><div class="line">        ruleset 2</div><div class="line">        type replicated</div><div class="line">        min_size 1</div><div class="line">        max_size 10</div><div class="line">        step take default class ssd</div><div class="line">        step chooseleaf firstn 0 type osd</div><div class="line">        step emit</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>第三步：编译crushmap</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># crushtool -c c2.txt -o c1.new</div></pre></td></tr></table></figure>
+<p><strong>第四步：注入crushmap</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd setcrushmap -i c1.new</div><div class="line">12</div></pre></td></tr></table></figure>
+<p>此时，查看rule</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># ceph osd crush rule ls</div><div class="line">[</div><div class="line">    &quot;replicated_rule&quot;,</div><div class="line">    &quot;hdd_rule&quot;,</div><div class="line">    &quot;ssd_rule&quot;</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>有了新创建的两个rule</p>
+<h2 id="测试一下，rule-绑定-class是否成功"><a href="#测试一下，rule-绑定-class是否成功" class="headerlink" title="测试一下，rule 绑定 class是否成功"></a>测试一下，rule 绑定 class是否成功</h2><p>1、在 ssd_rule 上创建一个 pool</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd pool create testpool 64 64 ssd_rule</div><div class="line">pool &apos;testpool&apos; created</div></pre></td></tr></table></figure>
+<p>2、写一个对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># rados -p testpool put object1 c2.txt</div></pre></td></tr></table></figure>
+<p>3、查看对象的osdmap</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd map testpool object1</div><div class="line">osdmap e46 pool &apos;testpool&apos; (7) object &apos;object1&apos; -&gt; pg 7.bac5debc (7.3c) -&gt; up ([5,3,4], p5) acting ([5,3,4], p5)</div></pre></td></tr></table></figure>
+<p>发现对象确实只写在 ssd class 所对应的 3个OSD（osd.3 osd.4 osd.5）上，rule绑定成功。</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[ceph Luminous dashboard初探]]></title>
       <url>http://xiaqunfeng.cc/2017/06/29/ceph-Luminous%E5%88%9D%E6%8E%A2/</url>
       <content type="html"><![CDATA[<p>体验ceph luminous，并初步探测ceph luminous的相关功能，这里先来看看官方标配的仪表盘长啥样。<br><a id="more"></a></p>
@@ -3506,14 +3577,14 @@
     
     <entry>
       <title></title>
-      <url>http://xiaqunfeng.cc/baidu_verify_UL74CvGIA2.html</url>
-      <content type="html"><![CDATA[UL74CvGIA2]]></content>
+      <url>http://xiaqunfeng.cc/googlea245ce220ad05de3.html</url>
+      <content type="html"><![CDATA[google-site-verification: googlea245ce220ad05de3.html]]></content>
     </entry>
     
     <entry>
       <title></title>
-      <url>http://xiaqunfeng.cc/googlea245ce220ad05de3.html</url>
-      <content type="html"><![CDATA[google-site-verification: googlea245ce220ad05de3.html]]></content>
+      <url>http://xiaqunfeng.cc/baidu_verify_UL74CvGIA2.html</url>
+      <content type="html"><![CDATA[UL74CvGIA2]]></content>
     </entry>
     
     <entry>
