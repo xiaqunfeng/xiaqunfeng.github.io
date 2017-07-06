@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="夏天的风" />
+
+
+
+<meta name="description" content="在luminous版本中有好多新命令，来逐一探索一下。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ceph luminous新命令探索">
+<meta property="og:url" content="http://xiaqunfeng.cc/2017/07/06/ceph-luminous新命令探索/index.html">
+<meta property="og:site_name" content="夏天的风的博客">
+<meta property="og:description" content="在luminous版本中有好多新命令，来逐一探索一下。">
+<meta property="og:updated_time" content="2017-07-06T06:38:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ceph luminous新命令探索">
+<meta name="twitter:description" content="在luminous版本中有好多新命令，来逐一探索一下。">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/qiniu.ico">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>ceph luminous新命令探索 | 夏天的风的博客</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?2eeeeb98562c97f7d79f13899ec599cd";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/stark.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">夏天的风</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">好记性不如烂笔头😝</p>
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" href="https://github.com/xiaqunfeng" title="GitHub"></a>
+                            
+                                <a class="fa CSDN" href="http://blog.csdn.net/xiaqunfeng123" title="CSDN"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/centos/">centos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ceph/">ceph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/">machine learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rocksdb/">rocksdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/storage/">storage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">夏天的风</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/stark.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">夏天的风</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">好记性不如烂笔头😝</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/xiaqunfeng" title="GitHub"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://blog.csdn.net/xiaqunfeng123" title="CSDN"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-ceph-luminous新命令探索" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/06/ceph-luminous新命令探索/" class="article-date">
+      <time datetime="2017-07-06T06:27:33.000Z" itemprop="datePublished">2017-07-06</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ceph luminous新命令探索
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>在luminous版本中有好多新命令，来逐一探索一下。<br><a id="more"></a></p>
+<h2 id="ceph-s"><a href="#ceph-s" class="headerlink" title="ceph -s"></a>ceph -s</h2><p>这个命令之前就说过了，这个来个对比吧。</p>
+<p>luminous版本：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"># ceph -s</div><div class="line">  cluster:</div><div class="line">    id:     4c7ec5af-cbd3-40fd-8c96-0615c77660d4</div><div class="line">    health: HEALTH_OK</div><div class="line"></div><div class="line">  services:</div><div class="line">    mon: 3 daemons, quorum luminous0,luminous1,luminous2</div><div class="line">    mgr: luminous0(active)</div><div class="line">    mds: 1/1/1 up &#123;0=luminous0=up:active&#125;</div><div class="line">    osd: 6 osds: 6 up, 6 in</div><div class="line"></div><div class="line">  data:</div><div class="line">    pools:   10 pools, 192 pgs</div><div class="line">    objects: 251 objects, 10685 bytes</div><div class="line">    usage:   9156 MB used, 41538 MB / 50694 MB avail</div><div class="line">    pgs:     192 active+clean</div></pre></td></tr></table></figure></p>
+<p>kraken版本:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># ceph -s</div><div class="line">    cluster 4c7ec5af-cbd3-40fd-8c96-0615c77660d4</div><div class="line">     health HEALTH_OK</div><div class="line">     monmap e2: 3 mons at &#123;test0=172.20.2.235:6789/0,test1=172.20.2.236:6789/0,test2=172.20.2.237:6789/0&#125;</div><div class="line">            election epoch 8, quorum 0,1,2 test0,test1,test2</div><div class="line">        mgr active: test2 standbys: test1, test0</div><div class="line">     osdmap e28: 6 osds: 6 up, 6 in</div><div class="line">            flags sortbitwise,require_jewel_osds,require_kraken_osds</div><div class="line">      pgmap v11414: 320 pgs, 2 pools, 149 MB data, 68 objects</div><div class="line">            609 MB used, 30044 MB / 30653 MB avail</div><div class="line">                 320 active+clean</div></pre></td></tr></table></figure></p>
+<h2 id="CEPH-OSD"><a href="#CEPH-OSD" class="headerlink" title="CEPH OSD"></a>CEPH OSD</h2><h3 id="ceph-osd-ls-tree"><a href="#ceph-osd-ls-tree" class="headerlink" title="ceph osd ls-tree"></a>ceph osd ls-tree</h3><p>功能：</p>
+<p>将在给定的CRUSH名称（如主机或机架名称）下输出OSD id列表。这对于为整个子树应用更改信息非常有用。</p>
+<p>命令格式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph osd ls-tree &lt;name&gt;</div></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># ceph osd ls-tree default</div><div class="line">0</div><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># ceph osd ls-tree default~ssd</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td></tr></table></figure>
+<h3 id="ceph-osd-add-rm-noout-noin-nodown-noup"><a href="#ceph-osd-add-rm-noout-noin-nodown-noup" class="headerlink" title="ceph osd {add, rm} - {noout, noin, nodown, noup}"></a>ceph osd {add, rm} - {noout, noin, nodown, noup}</h3><p>功能：</p>
+<p>允许<code>noout</code>，<code>nodown</code>，<code>noin</code>和<code>noup</code> 标志应用于指定的的OSD。</p>
+<p>命令格式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph osd &#123;add, rm&#125;-&#123;noout, noin, nodown, noup&#125; &lt;ids&gt; [&lt;ids&gt;...]</div></pre></td></tr></table></figure>
+<p>意义:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mark osd(s) &lt;id&gt; [&lt;id&gt;...] as &#123;noout, noin, nodown, noup&#125;, or use &lt;all|any|*&gt; to mark all osds as &#123;noout, noin, nodown, noup&#125;</div><div class="line">allow osd(s) &lt;id&gt; [&lt;id&gt;...] to be marked &#123;out, in, down, up&#125; (if they are currently marked as noout, noin, nodown, noup),can use &lt;all|any|*&gt; to automatically filter out all nodown osds</div></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># ceph osd add-noout 1 4</div><div class="line"># ceph osd rm-noout 1 4</div><div class="line"># ceph osd add-noout all</div><div class="line"># ceph osd rm-noout any</div></pre></td></tr></table></figure>
+<p>查看某一个osd的信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"># ceph osd dump 1</div><div class="line">epoch 1</div><div class="line">fsid 4c7ec5af-cbd3-40fd-8c96-0615c77660d4</div><div class="line">created 2017-06-29 15:34:07.310885</div><div class="line">modified 2017-06-29 15:34:07.310885</div><div class="line">flags sortbitwise</div><div class="line">crush_version 1</div><div class="line">full_ratio 0.95</div><div class="line">backfillfull_ratio 0.9</div><div class="line">nearfull_ratio 0.85</div><div class="line">require_min_compat_client jewel</div><div class="line">min_compat_client jewel</div><div class="line">pool 0 &apos;rbd&apos; replicated size 3 min_size 2 crush_rule 0 object_hash rjenkins pg_num 64 pgp_num 64 last_change 1 flags hashpspool stripe_width 0</div><div class="line">max_osd 0</div></pre></td></tr></table></figure>
+<blockquote>
+<p>这里其实并不会显示标记</p>
+</blockquote>
+<p><strong>原先的标记命令</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph osd &#123;set, unset&#125; &#123;noout, noin, nodown, noup&#125;</div></pre></td></tr></table></figure>
+<h3 id="ceph-osd-crush-swap-bucket"><a href="#ceph-osd-crush-swap-bucket" class="headerlink" title="ceph osd crush swap-bucket"></a>ceph osd crush swap-bucket</h3><p>功能：</p>
+<p>将交换层次结构中两个CRUSH buckets的内容，同时保留buckets的id。这允许替换整个设备子树（例如，用新imaged的BlueStore OSD替换整个主机的FileStore OSD），而不会中断跨越相邻设备的数据分布。</p>
+<p>命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph osd crush swap-bucket &lt;source&gt; &lt;dest&gt; &#123;--yes-i-really-mean-it&#125;</div></pre></td></tr></table></figure>
+<p>解释：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">swap existing bucket contents from (orphan) bucket &lt;source&gt; and &lt;target&gt;</div></pre></td></tr></table></figure>
+<h3 id="ceph-osd-destroy"><a href="#ceph-osd-destroy" class="headerlink" title="ceph osd destroy"></a>ceph osd destroy</h3><p>功能：</p>
+<p>将标记一个OSD被损坏，并删除其cephx和lockbox keys。但其OSD id和CRUS map entry 将保留不动，允许使用最少数据重新平衡的替换设备重新使用该 ID。简单来说</p>
+<p>命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph osd destroy &lt;osdname (id|osd.id)&gt; &#123;--yes-i-really-mean-it&#125;</div></pre></td></tr></table></figure>
+<p>解释</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mark osd as being destroyed. Keeps the ID intact (allowing reuse), but removes cephx keys,config-key data and lockbox keys, rendering data permanently unreadable.</div></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># ceph osd destroy 1</div><div class="line">Error EPERM: Are you SURE? This will mean real, permanent data loss, as well as cephx and lockbox keys. Pass --yes-i-really-mean-it if you really do.</div><div class="line"></div><div class="line"># ceph osd destroy 1 --yes-i-really-mean-it</div><div class="line">Error EBUSY: osd.1 is not `down`.</div><div class="line"></div><div class="line"># ceph osd down 1</div><div class="line">marked down osd.1.</div></pre></td></tr></table></figure>
+<blockquote>
+<p>这里有个奇怪的现象，执行 ceph osd down 发现osd 还是 up的状态，一直无果，最终还是停掉进程使其 down</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># systemctl stop ceph-osd@1</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd destroy 1 --yes-i-really-mean-it</div><div class="line">destroyed osd.1</div></pre></td></tr></table></figure>
+<p>此时，osd.1 还在集群中，只不过已经清理了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd stat</div><div class="line">6 osds: 5 up, 5 in</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># ceph osd tree</div><div class="line"> -1 0.05699 root default</div><div class="line"> -2 0.01900     host luminous0</div><div class="line">  1 0.00999         osd.1             down        0          1.00000</div><div class="line">  5 0.00999         osd.5               up  1.00000          1.00000</div><div class="line"> -3 0.01900     host luminous2</div><div class="line">  0 0.00999         osd.0               up  1.00000          1.00000</div><div class="line">  4 0.00999         osd.4               up  1.00000          1.00000</div><div class="line"> -4 0.01900     host luminous1</div><div class="line">  2 0.00999         osd.2               up  1.00000          1.00000</div><div class="line">  3 0.00999         osd.3               up  1.00000          1.00000</div></pre></td></tr></table></figure>
+<h3 id="ceph-osd-purge"><a href="#ceph-osd-purge" class="headerlink" title="ceph osd purge"></a>ceph osd purge</h3><p>功能：</p>
+<p>将从集群中删除OSD的所有痕迹，包括其cephx加密密钥，dm-crypt lockbox秘钥，OSD ID和crush map entry。</p>
+<p>命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">osd purge &lt;osdname (id|osd.id)&gt; &#123;--yes-i-really-mean-it&#125;</div></pre></td></tr></table></figure>
+<p>解释：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">purge all osd data from the monitors. Combines `osd destroy`, `osd rm`, and `osd crush rm`</div></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd purge 1 --yes-i-really-mean-it</div><div class="line">purged osd.1</div></pre></td></tr></table></figure>
+<p>此时发现osd已经不再集群中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd stat</div><div class="line">5 osds: 5 up, 5 in</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># ceph osd tree</div><div class="line">-1 0.04799 root default</div><div class="line"> -2 0.00999     host luminous0</div><div class="line">  5 0.00999         osd.5               up  1.00000          1.00000</div><div class="line"> -3 0.01900     host luminous2</div><div class="line">  0 0.00999         osd.0               up  1.00000          1.00000</div><div class="line">  4 0.00999         osd.4               up  1.00000          1.00000</div><div class="line"> -4 0.01900     host luminous1</div><div class="line">  2 0.00999         osd.2               up  1.00000          1.00000</div><div class="line">  3 0.00999         osd.3               up  1.00000          1.00000</div></pre></td></tr></table></figure>
+<h3 id="ceph-osd-rewightn"><a href="#ceph-osd-rewightn" class="headerlink" title="ceph osd rewightn"></a>ceph osd rewightn</h3><blockquote>
+<p>该命令没试验成功！！</p>
+</blockquote>
+<p>功能：</p>
+<p>在单个命令中指定多个OSD的 <code>reweight</code> 值。这相当于一系列 <code>ceph osd rewight</code>命令。</p>
+<p>命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph osd reweightn &lt;weights&gt;</div></pre></td></tr></table></figure>
+<p>解释：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">reweight osds with &#123;&lt;id&gt;: &lt;weight&gt;,...&#125;)</div></pre></td></tr></table></figure>
+<p>单个osd的rewight命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ceph osd reweight &lt;osdname (id|osd.id)&gt; &lt;float[0.0-1.0]&gt;</div><div class="line">explain: reweight osd to 0.0 &lt; &lt;weight&gt; &lt; 1.0</div></pre></td></tr></table></figure>
+<p>我当前osd状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># ceph osd tree</div><div class="line"> -1 0.05699 root default</div><div class="line"> -2 0.01900     host luminous0</div><div class="line">  1 0.00999         osd.1               up  1.00000          1.00000</div><div class="line">  5 0.00999         osd.5               up  1.00000          1.00000</div><div class="line"> -3 0.01900     host luminous2</div><div class="line">  0 0.00999         osd.0               up  1.00000          1.00000</div><div class="line">  4 0.00999         osd.4               up  1.00000          1.00000</div><div class="line"> -4 0.01900     host luminous1</div><div class="line">  2 0.00999         osd.2               up  1.00000          1.00000</div><div class="line">  3 0.00999         osd.3               up  1.00000          1.00000</div></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"># ceph osd reweightn &#123;5:0.02, 4:0.03, 2:0.01&#125;</div><div class="line">Invalid command:  unused arguments: [u&apos;4:0.03,&apos;, u&apos;2:0.01&#125;&apos;]</div><div class="line">osd reweightn &lt;weights&gt; :  reweight osds with &#123;&lt;id&gt;: &lt;weight&gt;,...&#125;)</div><div class="line">Error EINVAL: invalid command</div><div class="line"></div><div class="line"># ceph osd reweightn 5:0.02</div><div class="line">Error EINVAL: unable to parse &apos;weights&apos; value &apos;5:0.02&apos;</div><div class="line"></div><div class="line"># ceph osd reweightn &#123;5:0.02&#125;</div><div class="line">Error EINVAL: unable to parse &apos;weights&apos; value &apos;&#123;5:0.02&#125;&apos;</div><div class="line"></div><div class="line"># ceph osd reweightn osd.5  0.02</div><div class="line">Invalid command:  unused arguments: [u&apos;0.02&apos;]</div><div class="line">osd reweightn &lt;weights&gt; :  reweight osds with &#123;&lt;id&gt;: &lt;weight&gt;,...&#125;)</div><div class="line">Error EINVAL: invalid command</div></pre></td></tr></table></figure>
+<blockquote>
+<p>该命令好像有问题，没有get到正确的姿势，有知道的请指正</p>
+</blockquote>
+<h2 id="ceph-log-last-n"><a href="#ceph-log-last-n" class="headerlink" title="ceph log last [n]"></a>ceph log last [n]</h2><p>输出集群日志的最后 n 行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># ceph log last 10</div><div class="line">2017-06-30 17:13:14.216738 osd.3 osd.3 172.20.2.244:6804/38283 4 : cluster [INF] 0.d scrub ok</div><div class="line">2017-06-30 17:14:32.906853 osd.1 osd.1 172.20.2.243:6801/43997 5 : cluster [INF] 0.f scrub starts</div><div class="line">2017-06-30 17:14:32.908231 osd.1 osd.1 172.20.2.243:6801/43997 6 : cluster [INF] 0.f scrub ok</div><div class="line">2017-06-30 17:26:28.012607 osd.4 osd.4 172.20.2.245:6804/38814 5 : cluster [INF] 6.6 scrub starts</div><div class="line">2017-06-30 17:26:28.017546 osd.4 osd.4 172.20.2.245:6804/38814 6 : cluster [INF] 6.6 scrub ok</div><div class="line">2017-06-30 17:28:13.016525 osd.5 osd.5 172.20.2.243:6805/45058 3 : cluster [INF] 0.28 scrub starts</div><div class="line">2017-06-30 17:28:13.017914 osd.5 osd.5 172.20.2.243:6805/45058 4 : cluster [INF] 0.28 scrub ok</div><div class="line">2017-06-30 17:28:13.026468 osd.4 osd.4 172.20.2.245:6804/38814 7 : cluster [INF] 0.33 deep-scrub starts</div><div class="line">2017-06-30 17:28:13.027690 osd.4 osd.4 172.20.2.245:6804/38814 8 : cluster [INF] 0.33 deep-scrub ok</div><div class="line">2017-06-30 17:32:53.687436 mon.luminous0 mon.0 172.20.2.243:6789/0 357 : audit [INF] from=&apos;client.? 172.20.2.243:0/3812708038&apos; entity=&apos;client.admin&apos; cmd=[&#123;&quot;prefix&quot;: &quot;log last&quot;, &quot;num&quot;: 5&#125;]: dispatch</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：这是显示集群的最近 n 条日志，不是某一个日志文件里的，比如 <code>/var/log/ceph/ceph.log</code> 等。</p>
+</blockquote>
+<p>这对调试比较有用，不用去打开日志查看了</p>
+<h2 id="ceph-features"><a href="#ceph-features" class="headerlink" title="ceph features"></a>ceph features</h2><p>查询所有连接的守护进程和客户端的支持特性和版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"># ceph features</div><div class="line">&#123;</div><div class="line">    &quot;mon&quot;: &#123;</div><div class="line">        &quot;group&quot;: &#123;</div><div class="line">            &quot;features&quot;: 1152323339925389307,</div><div class="line">            &quot;release&quot;: &quot;luminous&quot;,</div><div class="line">            &quot;num&quot;: 14</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    &quot;mds&quot;: &#123;</div><div class="line">        &quot;group&quot;: &#123;</div><div class="line">            &quot;features&quot;: 1152323339925389307,</div><div class="line">            &quot;release&quot;: &quot;luminous&quot;,</div><div class="line">            &quot;num&quot;: 1</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    &quot;osd&quot;: &#123;</div><div class="line">        &quot;group&quot;: &#123;</div><div class="line">            &quot;features&quot;: 1152323339925389307,</div><div class="line">            &quot;release&quot;: &quot;luminous&quot;,</div><div class="line">            &quot;num&quot;: 6</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    &quot;client&quot;: &#123;</div><div class="line">        &quot;group&quot;: &#123;</div><div class="line">            &quot;features&quot;: 1152323339925389307,</div><div class="line">            &quot;release&quot;: &quot;luminous&quot;,</div><div class="line">            &quot;num&quot;: 2</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="ceph-mgr-dump"><a href="#ceph-mgr-dump" class="headerlink" title="ceph mgr dump"></a>ceph mgr dump</h2><p>dump出MgrMap，包括当前活动的和任何 standbys 的 ceph-mgr守护进程</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># ceph mgr dump</div><div class="line">&#123;</div><div class="line">    &quot;epoch&quot;: 15,</div><div class="line">    &quot;active_gid&quot;: 34310,</div><div class="line">    &quot;active_name&quot;: &quot;luminous0&quot;,</div><div class="line">    &quot;active_addr&quot;: &quot;172.20.2.243:6800/71321&quot;,</div><div class="line">    &quot;available&quot;: true,</div><div class="line">    &quot;standbys&quot;: []</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="ceph-config-key"><a href="#ceph-config-key" class="headerlink" title="ceph config-key"></a>ceph config-key</h2><p>命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">config-key del &lt;key&gt;						delete &lt;key&gt;</div><div class="line">config-key dump 							dump keys and values</div><div class="line">config-key exists &lt;key&gt;						check for &lt;key&gt;&apos;s existence</div><div class="line">config-key get &lt;key&gt; 						get &lt;key&gt;</div><div class="line">config-key list 							list keys</div><div class="line">config-key put &lt;key&gt; &#123;&lt;val&gt;&#125;				put &lt;key&gt;, value &lt;val&gt;</div><div class="line">config-key rm &lt;key&gt; 						rm &lt;key&gt;</div></pre></td></tr></table></figure>
+<p>比如，dump出config-key entries及其内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># ceph config-key dump</div><div class="line">&#123;</div><div class="line">    &quot;initial_mon_keyring&quot;: &quot;AQDfMxVZAAAAABAAA1za9TC3Z2kmEdlVZL6gGQ==&quot;,</div><div class="line">    &quot;mgr/dashboard/server_addr&quot;: &quot;172.20.2.243&quot;,</div><div class="line">    &quot;mgr/dashboard/server_port&quot;: &quot;7000&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>list，只dump出key，不包含value</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># ceph config-key list</div><div class="line">[</div><div class="line">    &quot;initial_mon_keyring&quot;,</div><div class="line">    &quot;mgr/dashboard/server_addr&quot;,</div><div class="line">    &quot;mgr/dashboard/server_port&quot;</div><div class="line">]</div></pre></td></tr></table></figure>
+<h2 id="ceph-mon-feature-list"><a href="#ceph-mon-feature-list" class="headerlink" title="ceph mon feature list"></a>ceph mon feature list</h2><p>列出MonMap中记录的monitor功能</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># ceph mon feature list</div><div class="line">all features</div><div class="line">	supported: [kraken,luminous]</div><div class="line">	persistent: [kraken,luminous]</div><div class="line">on current monmap (epoch 1)</div><div class="line">	persistent: [kraken,luminous]</div><div class="line">	required: [kraken,luminous]</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/07/06/ceph-luminous新命令探索/">ceph luminous新命令探索</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
+        <p><span>发布时间:</span>2017-07-06, 14:27:33</p>
+        <p><span>最后更新:</span>2017-07-06, 14:38:59</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/07/06/ceph-luminous新命令探索/" title="ceph luminous新命令探索">http://xiaqunfeng.cc/2017/07/06/ceph-luminous新命令探索/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/07/06/ceph-luminous新命令探索/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/07/04/ceph-Luminous新功能之crush-class/">
+                    ceph Luminous新功能之crush class
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ceph-s"><span class="toc-number">1.</span> <span class="toc-text">ceph -s</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CEPH-OSD"><span class="toc-number">2.</span> <span class="toc-text">CEPH OSD</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ceph-osd-ls-tree"><span class="toc-number">2.1.</span> <span class="toc-text">ceph osd ls-tree</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ceph-osd-add-rm-noout-noin-nodown-noup"><span class="toc-number">2.2.</span> <span class="toc-text">ceph osd {add, rm} - {noout, noin, nodown, noup}</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ceph-osd-crush-swap-bucket"><span class="toc-number">2.3.</span> <span class="toc-text">ceph osd crush swap-bucket</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ceph-osd-destroy"><span class="toc-number">2.4.</span> <span class="toc-text">ceph osd destroy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ceph-osd-purge"><span class="toc-number">2.5.</span> <span class="toc-text">ceph osd purge</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ceph-osd-rewightn"><span class="toc-number">2.6.</span> <span class="toc-text">ceph osd rewightn</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ceph-log-last-n"><span class="toc-number">3.</span> <span class="toc-text">ceph log last [n]</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ceph-features"><span class="toc-number">4.</span> <span class="toc-text">ceph features</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ceph-mgr-dump"><span class="toc-number">5.</span> <span class="toc-text">ceph mgr dump</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ceph-config-key"><span class="toc-number">6.</span> <span class="toc-text">ceph config-key</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ceph-mon-feature-list"><span class="toc-number">7.</span> <span class="toc-text">ceph mon feature list</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"ceph luminous新命令探索　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section id="comments">
+    <style> aside.comment-bar { margin: auto 30px; }</style>
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function(){
+            this.page.url = 'http://xiaqunfeng.cc/2017/07/06/ceph-luminous新命令探索/';
+            this.page.identifier = '2017/07/06/ceph-luminous新命令探索/';
+        };
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = '//null.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+</section>
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/07/04/ceph-Luminous新功能之crush-class/" title="下一篇: ceph Luminous新功能之crush class">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/07/06/ceph-luminous新命令探索/">ceph luminous新命令探索</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/04/ceph-Luminous新功能之crush-class/">ceph Luminous新功能之crush class</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/29/ceph-Luminous初探/">ceph Luminous dashboard初探</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/28/Ceph-v12-1-0-Luminous-RC-released/">Ceph v12.1.0 Luminous RC released</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/23/wget批量下载http目录及文件/">wget批量下载http目录及文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/16/公有云和私有云的区别/">公有云和私有云的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/16/centos-7下操纵ceph进程/">centos 7下操纵ceph进程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/15/vim移动光标/">vim移动光标</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/07/Map-RBD-Devices-on-NBD/">Map RBD Devices on NBD</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/06/ceph-rbd-map-failed/">ceph rbd map failed</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/26/ceph-mon时钟偏移问题/">ceph mon时钟偏移问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/26/GPG-key-retrieval-failure/">GPG key retrieval failure</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/25/mac上实现vim的markdown预览/">mac上实现vim的markdown预览</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/23/ceph日志迁移/">ceph日志迁移</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/11/cpu拓扑结构/">cpu拓扑及ceph使用时的优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/07/firewalld和iptables/">firewalld和iptables</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/07/S-M-A-R-T-磁盘健康状态监测工具/">S.M.A.R.T--磁盘健康状态监测工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/04/iterm2配色/">iterm2配色--zsh & oh-my-zsh</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/03/nginx使用和配置/">nginx使用和配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/02/iterm2快捷键的使用/">iterm2快捷键的使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/02/VSM部署/">VSM部署</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/常用git命令清单/">常用git命令清单</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/理解socket编程/">理解socket编程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/cow和row快照机制的区别/">cow和row快照机制的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/Machine-Learning-Yearning-5、6/">Machine Learning Yearning(5、6、7)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/03/Machine-Learning-Yearning-3、4/">Machine Learning Yearning(3、4)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/02/Machine-Learning-Yearning-开篇、1、2/">Machine Learning Yearning(开篇、1、2)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/01/异步IO/">异步IO</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/23/Bluestore调研/">Bluestore调研</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/23/RocksDB相比LevelDB的新特性/">RocksDB相比LevelDB的新特性</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/20/Kernel modules (简体中文)/">Kernel modules (简体中文)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/Linux命令——pgrep和pkill/">Linux命令——pgrep和pkill</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/16/Linux命令——strace/">Linux命令——strace</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/10/获取每个osd的PG数/">获取每个osd的PG数</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/10/RBD-相关操作/">RBD 相关操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/07/在Kraken-release版本上测试Ceph-BlueStore/">在Kraken release版本上测试Ceph BlueStore</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/04/用户态和内核态/">用户态和内核态</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/04/ceph升级到kraken版本/">ceph升级到kraken版本</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/03/Dm-cache-vs-Bcache/">Dm-cache vs Bcache</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/03/Flashcache-vs-Cache-tier/">Flashcache vs Cache tier</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/25/Linux命令——parted/">Linux命令——parted</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/25/认识SSD/">认识SSD</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/24/Ceph-KRAKEN(V11.2.0)/">Ceph — V11.2.0 KRAKEN(译)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/24/Crushmap学习/">Crushmap学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/Ceph中严重数据不一致性BUG/">Ceph中严重数据不一致性BUG</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/块存储的世界/">块存储的世界</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/17/Linux命令——uptime/">Linux命令——uptime</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/dd磁盘命令小记/">dd磁盘命令小记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/解决calamari无法获取集群hosts信息的BUG/">解决calamari无法获取集群hosts信息的BUG</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/ubuntu下配置邮件发送/">ubuntu下配置邮件发送</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/ubuntu下系统打包/">ubuntu下系统打包</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux命令——history及其优化/">Linux命令——history及其优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux下利用screen进行屏幕协作/">Linux下利用screen进行屏幕协作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux命令——crontab/">Linux命令——crontab</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/06/hexo的搭建/">Mac上hexo博客的搭建</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2017 夏天的风
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
