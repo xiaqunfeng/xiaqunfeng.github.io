@@ -4,6 +4,129 @@
   
     
     <entry>
+      <title><![CDATA[XFS vs EXT4]]></title>
+      <url>http://xiaqunfeng.cc/2017/07/06/XFS-vs-EXT4/</url>
+      <content type="html"><![CDATA[<p>ceph默认的文件系统是XFS，centos7之前的版本默认文件系统是EXT4，现在是XFS，这里对比了一下，然后针对4k大小的随机读写进行了小小的测试。<br><a id="more"></a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Linux操作系统有很多不同的文件系统选择，所有现有的默认文件系统都是ext4。 通常文件系统被用来处理当程序不再使用信息之后如何保存信息，如何管理信息的可访问性，其他信息（元数据）与数据本身如何相关联等。</p>
+<h2 id="EXT4"><a href="#EXT4" class="headerlink" title="EXT4"></a>EXT4</h2><p>Ext4是第四代扩展文件系统的缩写，它是2008年推出的。它是一个真正可靠的文件系统，它几乎在过去几年的大部分发行版中一直是默认选项，它是由比较老的代码生成的。它是一个日志文件系统，意味着它会对文件在磁盘中的位置以及任何其它对磁盘的更改做记录。如果系统崩溃，得益于journal技术，文件系统很少会损坏。</p>
+<p>最大单个文件大小可以从16 GB到16 TB<br>最大文件系统大小为1EB（exabyte）<br>最大值包含64,000个子目录（ext3中的32,000个）</p>
+<h2 id="XFS"><a href="#XFS" class="headerlink" title="XFS"></a>XFS</h2><p>XFS是由SGI为其IRIX平台设计的高性能64位日志文件系统。 XFS具有各种改进，使其能够在文件系统群体列表中脱颖而出，例如用于元数据操作的日志记录，可扩展/并行I / O，挂起/恢复I / O，在线碎片整理，延迟性能分配，等等</p>
+<p>大概在2002年，XFS被合入Linux内核，2009年RHEL Linux版本5.4使用了XFS文件系统。 由于其高性能，架构可扩展性和鲁棒性，XFS一直是很多企业系统的首选，特别是拥有大量数据的企业系统。 现在，RHEL / CentOS 7和Oracle Linux使用XFS作为其默认文件系统。</p>
+<p>最大单个文件大小可以是16 TB到16 Exabytes<br>最大文件系统大小为8EB（exabyte）<br>缺点：XFS文件系统不能缩小，当删除大量文件时会性能下降。</p>
+<h2 id="更多对比"><a href="#更多对比" class="headerlink" title="更多对比"></a>更多对比</h2><ul>
+<li>ext4不支持透明压缩、重复数据删除或者透明加密。技术上支持了快照，但该功能还处于实验性阶段。xfs也不能压缩，XFS 是基于B+ Ttree 管理元数据，即将支持reflink, dedupe等高级特性。</li>
+<li>Ext4受限制于磁盘结构和兼容问题，可扩展性和scalability不如XFS。</li>
+<li>虽然Ext4 目录索引采用了Hash Index Tree, 但是依然限制高度为2。</li>
+<li>由于历史磁盘结构原因Ext4 的inode 个数限制(32位数)最多只能有大概40多亿文件。而且Ext4的单个文件大小最大只能支持到16T(4K block size) ，目前来说已经是瓶颈。XFS使用64位管理空间，文件系统规模可以达到EB级别。</li>
+</ul>
+<h2 id="性能测试"><a href="#性能测试" class="headerlink" title="性能测试"></a>性能测试</h2><p>测试了一下4k随机读写的性能，direct=1，numjobs=20，iodepth=128</p>
+<p>磁盘信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Disk /dev/sdc1: 4000.8 GB, 4000785104896 bytes, 7814033408 sectors</div><div class="line">Units = sectors of 1 * 512 = 512 bytes</div><div class="line">Sector size (logical/physical): 512 bytes / 512 bytes</div><div class="line">I/O size (minimum/optimal): 512 bytes / 512 bytes</div></pre></td></tr></table></figure>
+<p>测试数据</p>
+<table>
+<thead>
+<tr>
+<th>文件系统</th>
+<th>4k-randread</th>
+<th>4k-read</th>
+<th>4k-randwrite</th>
+<th>4k-write</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>XFS</td>
+<td>iops=426</td>
+<td>iops=42773</td>
+<td>iops=313</td>
+<td>iops=24732</td>
+</tr>
+<tr>
+<td>EXT4</td>
+<td>iops=430</td>
+<td>iops=41636</td>
+<td>iops=315</td>
+<td>iops=19095</td>
+</tr>
+</tbody>
+</table>
+<p>在4k这个量级上IOPS基本没啥区别，4k随机写XFS略好于EXT4。</p>
+<p>性能方面的对比：<a href="http://www.cnblogs.com/tommyli/p/3201047.html" target="_blank" rel="external">ext3，ext4，xfs和btrfs文件系统性能对比</a></p>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><table>
+<thead>
+<tr>
+<th><strong>Task</strong></th>
+<th><strong>ext3/4</strong></th>
+<th><strong>XFS</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Create a file system</td>
+<td>mkfs.ext4 or mkfs.ext3</td>
+<td>mkfs.xfs</td>
+</tr>
+<tr>
+<td>File system check</td>
+<td>e2fsck</td>
+<td>xfs_repair</td>
+</tr>
+<tr>
+<td>Resizing a file system</td>
+<td>resize2fs</td>
+<td>xfs_growfs</td>
+</tr>
+<tr>
+<td>Save an image of a file system</td>
+<td>e2image</td>
+<td>xfs_metadump and xfs_mdrestore</td>
+</tr>
+<tr>
+<td>Label or tune a file system</td>
+<td>tune2fs</td>
+<td>xfs_admin</td>
+</tr>
+<tr>
+<td>Backup a file system</td>
+<td>dump and restore</td>
+<td>xfsdump and xfsrestore</td>
+</tr>
+</tbody>
+</table>
+<h2 id="通用工具"><a href="#通用工具" class="headerlink" title="通用工具"></a>通用工具</h2><table>
+<thead>
+<tr>
+<th><strong>Task</strong></th>
+<th><strong>ext4</strong></th>
+<th><strong>XFS</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Quota</td>
+<td>quota</td>
+<td>xfs_quota</td>
+</tr>
+<tr>
+<td>File mapping</td>
+<td>filefrag</td>
+<td>xfs_bmap</td>
+</tr>
+</tbody>
+</table>
+<p>文件系统之间更多的参数和功能的对比：<a href="https://en.wikipedia.org/wiki/Comparison_of_file_systems" target="_blank" rel="external">Comparison of file systems</a></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[ceph luminous新命令探索]]></title>
       <url>http://xiaqunfeng.cc/2017/07/06/ceph-luminous%E6%96%B0%E5%91%BD%E4%BB%A4%E6%8E%A2%E7%B4%A2/</url>
       <content type="html"><![CDATA[<p>在luminous版本中有好多新命令，来逐一探索一下。<br><a id="more"></a></p>
@@ -1030,9 +1153,9 @@
         
         <tags>
             
-            <tag> Linux </tag>
-            
             <tag> centos </tag>
+            
+            <tag> Linux </tag>
             
         </tags>
         
@@ -3686,14 +3809,14 @@
     
     <entry>
       <title></title>
-      <url>http://xiaqunfeng.cc/googlea245ce220ad05de3.html</url>
-      <content type="html"><![CDATA[google-site-verification: googlea245ce220ad05de3.html]]></content>
+      <url>http://xiaqunfeng.cc/baidu_verify_UL74CvGIA2.html</url>
+      <content type="html"><![CDATA[UL74CvGIA2]]></content>
     </entry>
     
     <entry>
       <title></title>
-      <url>http://xiaqunfeng.cc/baidu_verify_UL74CvGIA2.html</url>
-      <content type="html"><![CDATA[UL74CvGIA2]]></content>
+      <url>http://xiaqunfeng.cc/googlea245ce220ad05de3.html</url>
+      <content type="html"><![CDATA[google-site-verification: googlea245ce220ad05de3.html]]></content>
     </entry>
     
     <entry>
@@ -3701,6 +3824,9 @@
       <url>http://xiaqunfeng.cc/about/index.html</url>
       <content type="html"><![CDATA[<p align="center"><strong>关注ceph、分布式存储、openstack、容器、机器学习</strong></p>
 
+<blockquote>
+<p>本博客为个人学习总结随笔，文中所有命令和代码都经过亲自试验。<br>有文章非特殊标注皆为原创，转载请注明出处。</p>
+</blockquote>
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果觉得该博客文章对您有所帮助，欢迎小额赞助和鼓励。 </p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 ]]></content>
     </entry>

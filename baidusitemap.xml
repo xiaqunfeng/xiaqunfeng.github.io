@@ -4,6 +4,24 @@
 
     
   <url>
+    <loc>http://xiaqunfeng.cc/2017/07/06/XFS-vs-EXT4/</loc>
+    <lastmod>2017-07-06T09:05:19.000Z</lastmod>
+    <data>
+        <display>
+        <title>XFS vs EXT4</title>
+        <pubTime>2017-07-06T08:55:54.000Z</pubTime>
+        
+        <tag>Linux</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+    
+  <url>
     <loc>http://xiaqunfeng.cc/2017/07/06/ceph-luminous%E6%96%B0%E5%91%BD%E4%BB%A4%E6%8E%A2%E7%B4%A2/</loc>
     <lastmod>2017-07-06T06:38:59.000Z</lastmod>
     <data>
@@ -281,7 +299,6 @@
     </url>
 
     
-    
   <url>
     <loc>http://xiaqunfeng.cc/2017/05/02/VSM%E9%83%A8%E7%BD%B2/</loc>
     <lastmod>2017-05-10T01:27:01.000Z</lastmod>
@@ -324,9 +341,9 @@
         <title>firewalld和iptables</title>
         <pubTime>2017-05-07T08:08:01.000Z</pubTime>
         
-        <tag>Linux</tag>
-         
         <tag>centos</tag>
+         
+        <tag>Linux</tag>
          
          
            
