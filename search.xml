@@ -4,6 +4,39 @@
   
     
     <entry>
+      <title><![CDATA[centos7上安装python3]]></title>
+      <url>http://xiaqunfeng.cc/2017/07/07/centos7%E4%B8%8A%E5%AE%89%E8%A3%85python3/</url>
+      <content type="html"><![CDATA[<p>之前一直使用python2，现在转python3，安装了一下，记录之。<br><a id="more"></a></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>python所有版本的下载地址: <a href="https://www.python.org/ftp/python/" target="_blank" rel="external">https://www.python.org/ftp/python/</a></p>
+<p>最新的已经到3.6.2版本了，不过还是RC，这里安装3.6.1<br>有两个文件可以选择<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Python-3.6.1.tar.xz</div><div class="line">Python-3.6.1.tgz</div></pre></td></tr></table></figure></p>
+<p>两种都可以</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">wget https://www.python.org/ftp/python/3.6.1/Python-3.6.1.tar.xz</div><div class="line">tar -zxvf Python-3.6.1.tar.xz</div><div class="line">cd Python-3.6.1</div><div class="line">./configure --prefix=/usr/local/python3</div><div class="line">make &amp;&amp; make install</div></pre></td></tr></table></figure>
+<p>此时两个版本共存，默认是2.7.5版本，可以通过 <code>python3</code> 命令来使用Python 3</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># python --version</div><div class="line">Python 2.7.5</div></pre></td></tr></table></figure>
+<h2 id="修改默认为python-3"><a href="#修改默认为python-3" class="headerlink" title="修改默认为python 3"></a>修改默认为python 3</h2><blockquote>
+<p>不推荐这么做，直接使用命令 python3 来调用挺好的</p>
+</blockquote>
+<p>1、首先备份原先的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mv /usr/bin/python /usr/bin/python.bak</div></pre></td></tr></table></figure></p>
+<p>2、创建python3的软链接<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ln -s /usr/local/python3/bin/python3 /usr/bin/python</div></pre></td></tr></table></figure></p>
+<p>此时python3为默认版本了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># python --version</div><div class="line">Python 3.6.1</div></pre></td></tr></table></figure>
+<h3 id="yum-问题"><a href="#yum-问题" class="headerlink" title="yum 问题"></a>yum 问题</h3><p>yum使用Python 2，默认 <code>python</code> 替换Python 3后无法正常工作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># yum</div><div class="line">  File &quot;/usr/bin/yum&quot;, line 30</div><div class="line">    except KeyboardInterrupt, e:</div><div class="line">                            ^</div><div class="line">SyntaxError: invalid syntax</div></pre></td></tr></table></figure>
+<p>修改配置文件：<code>/usr/bin/yum</code></p>
+<p>将默认的python替换为python2.7，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#!/usr/bin/python</div><div class="line">替换为</div><div class="line">#!/usr/bin/python2.7</div></pre></td></tr></table></figure>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> centos </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[XFS vs EXT4]]></title>
       <url>http://xiaqunfeng.cc/2017/07/06/XFS-vs-EXT4/</url>
       <content type="html"><![CDATA[<p>ceph默认的文件系统是XFS，centos7之前的版本默认文件系统是EXT4，现在是XFS，这里对比了一下，然后针对4k大小的随机读写进行了小小的测试。<br><a id="more"></a></p>
@@ -3809,14 +3842,20 @@
     
     <entry>
       <title></title>
+      <url>http://xiaqunfeng.cc/googlea245ce220ad05de3.html</url>
+      <content type="html"><![CDATA[google-site-verification: googlea245ce220ad05de3.html]]></content>
+    </entry>
+    
+    <entry>
+      <title></title>
       <url>http://xiaqunfeng.cc/baidu_verify_UL74CvGIA2.html</url>
       <content type="html"><![CDATA[UL74CvGIA2]]></content>
     </entry>
     
     <entry>
-      <title></title>
-      <url>http://xiaqunfeng.cc/googlea245ce220ad05de3.html</url>
-      <content type="html"><![CDATA[google-site-verification: googlea245ce220ad05de3.html]]></content>
+      <title><![CDATA[tags]]></title>
+      <url>http://xiaqunfeng.cc/tags/index.html</url>
+      <content type="html"></content>
     </entry>
     
     <entry>
@@ -3829,12 +3868,6 @@
 </blockquote>
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果该博客文章对您有所帮助，感谢一杯咖啡的鼓励。 </p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 ]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[tags]]></title>
-      <url>http://xiaqunfeng.cc/tags/index.html</url>
-      <content type="html"></content>
     </entry>
     
   
