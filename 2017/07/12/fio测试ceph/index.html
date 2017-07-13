@@ -15,22 +15,16 @@
 
 
 
-<meta name="description" content="包含三块内容：fio测试RBD，fio测试ceph filestore，fio测试ceph bluestore。
-fio测试RBDfio测试工具扩展了一个对 librbd 的支持模块，并使用您选择的IO模式测试Ceph RBD集群。安装librbd开发包（例如librbd-dev或librbd-dev和依赖关系），或者将库及其头放在指定位置即可。
-安装fio及依赖包123456# git clon">
+<meta name="description" content="包含三块内容：fio测试RBD，fio测试ceph filestore，fio测试ceph bluestore。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="fio测试ceph">
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/07/12/fio测试ceph/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="包含三块内容：fio测试RBD，fio测试ceph filestore，fio测试ceph bluestore。
-fio测试RBDfio测试工具扩展了一个对 librbd 的支持模块，并使用您选择的IO模式测试Ceph RBD集群。安装librbd开发包（例如librbd-dev或librbd-dev和依赖关系），或者将库及其头放在指定位置即可。
-安装fio及依赖包123456# git clon">
-<meta property="og:updated_time" content="2017-07-12T07:40:09.000Z">
+<meta property="og:description" content="包含三块内容：fio测试RBD，fio测试ceph filestore，fio测试ceph bluestore。">
+<meta property="og:updated_time" content="2017-07-13T07:07:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="fio测试ceph">
-<meta name="twitter:description" content="包含三块内容：fio测试RBD，fio测试ceph filestore，fio测试ceph bluestore。
-fio测试RBDfio测试工具扩展了一个对 librbd 的支持模块，并使用您选择的IO模式测试Ceph RBD集群。安装librbd开发包（例如librbd-dev或librbd-dev和依赖关系），或者将库及其头放在指定位置即可。
-安装fio及依赖包123456# git clon">
+<meta name="twitter:description" content="包含三块内容：fio测试RBD，fio测试ceph filestore，fio测试ceph bluestore。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -289,7 +283,7 @@ fio测试RBDfio测试工具扩展了一个对 librbd 的支持模块，并使用
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>包含三块内容：fio测试RBD，fio测试ceph filestore，fio测试ceph bluestore。</p>
+        <p>包含三块内容：fio测试RBD，fio测试ceph filestore，fio测试ceph bluestore。<br><a id="more"></a></p>
 <h2 id="fio测试RBD"><a href="#fio测试RBD" class="headerlink" title="fio测试RBD"></a>fio测试RBD</h2><p>fio测试工具扩展了一个对 <code>librbd</code> 的支持模块，并使用您选择的IO模式测试Ceph RBD集群。安装librbd开发包（例如librbd-dev或librbd-dev和依赖关系），或者将库及其头放在指定位置即可。</p>
 <h3 id="安装fio及依赖包"><a href="#安装fio及依赖包" class="headerlink" title="安装fio及依赖包"></a>安装fio及依赖包</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># git clone git://git.kernel.dk/fio.git</div><div class="line"># cd fio/</div><div class="line"># ./configure</div><div class="line">...</div><div class="line">Rados Block Device engine     no</div><div class="line">...</div></pre></td></tr></table></figure>
 <p>这里显示不支持RBD engine，configure检查编译环境缺少依赖导致的，安装 <code>ceph-devel</code> 包即可。</p>
@@ -318,7 +312,8 @@ fio测试RBDfio测试工具扩展了一个对 librbd 的支持模块，并使用
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># rbd map rbd/fio_test</div><div class="line">/dev/rbd0</div><div class="line"># mkfs.xfs /dev/rbd0 -f</div></pre></td></tr></table></figure>
 <p>3、撰写 job file：<code>rbd.fio</code></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">[global]</div><div class="line">ioengine=libaio</div><div class="line">direct=1</div><div class="line">thread=1</div><div class="line">runtime=100</div><div class="line">size=100G</div><div class="line">group_reporting</div><div class="line">ramp_time=6</div><div class="line">userspace_reap</div><div class="line">numjobs=1</div><div class="line">iodepth=128</div><div class="line">time_based</div><div class="line"></div><div class="line">[randwrite-4k]</div><div class="line">filename=/dev/rbd0</div><div class="line">bs=4k</div><div class="line">rw=randwrite</div><div class="line">rwmixwrite=20</div><div class="line">stonewall</div></pre></td></tr></table></figure>
-<h2 id="fio测试filestore"><a href="#fio测试filestore" class="headerlink" title="fio测试filestore"></a>fio测试filestore</h2>
+<h2 id="fio测试filestore"><a href="#fio测试filestore" class="headerlink" title="fio测试filestore"></a>fio测试filestore</h2><p>TODO</p>
+
       
     </div>
     
@@ -329,7 +324,7 @@ fio测试RBDfio测试工具扩展了一个对 librbd 的支持模块，并使用
         <p><span>本文标题:</span><a href="/2017/07/12/fio测试ceph/">fio测试ceph</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
         <p><span>发布时间:</span>2017-07-12, 11:17:04</p>
-        <p><span>最后更新:</span>2017-07-12, 15:40:09</p>
+        <p><span>最后更新:</span>2017-07-13, 15:07:14</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/07/12/fio测试ceph/" title="fio测试ceph">http://xiaqunfeng.cc/2017/07/12/fio测试ceph/</a>
             <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/07/12/fio测试ceph/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
