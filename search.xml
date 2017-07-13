@@ -4,6 +4,49 @@
   
     
     <entry>
+      <title><![CDATA[fio测试ceph]]></title>
+      <url>http://xiaqunfeng.cc/2017/07/12/fio%E6%B5%8B%E8%AF%95ceph/</url>
+      <content type="html"><![CDATA[<p>包含三块内容：fio测试RBD，fio测试ceph filestore，fio测试ceph bluestore。</p>
+<h2 id="fio测试RBD"><a href="#fio测试RBD" class="headerlink" title="fio测试RBD"></a>fio测试RBD</h2><p>fio测试工具扩展了一个对 <code>librbd</code> 的支持模块，并使用您选择的IO模式测试Ceph RBD集群。安装librbd开发包（例如librbd-dev或librbd-dev和依赖关系），或者将库及其头放在指定位置即可。</p>
+<h3 id="安装fio及依赖包"><a href="#安装fio及依赖包" class="headerlink" title="安装fio及依赖包"></a>安装fio及依赖包</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># git clone git://git.kernel.dk/fio.git</div><div class="line"># cd fio/</div><div class="line"># ./configure</div><div class="line">...</div><div class="line">Rados Block Device engine     no</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>这里显示不支持RBD engine，configure检查编译环境缺少依赖导致的，安装 <code>ceph-devel</code> 包即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install ceph-devel -y</div></pre></td></tr></table></figure>
+<p>重新编译</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># ./configure</div><div class="line">...</div><div class="line">Rados Block Device engine     yes</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>查看当前 fio 已支持的 IO 引擎</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"># fio --enghelp</div><div class="line">Available IO engines:</div><div class="line">	cpuio</div><div class="line">	mmap</div><div class="line">	sync</div><div class="line">	psync</div><div class="line">	vsync</div><div class="line">	pvsync</div><div class="line">	null</div><div class="line">	net</div><div class="line">	netsplice</div><div class="line">	libaio</div><div class="line">	rdma</div><div class="line">	posixaio</div><div class="line">	falloc</div><div class="line">	e4defrag</div><div class="line">	splice</div><div class="line">	rbd</div><div class="line">	mtd</div><div class="line">	sg</div><div class="line">	binject</div></pre></td></tr></table></figure>
+<p>此时，已支持 RBD engine。</p>
+<h3 id="测试librbd"><a href="#测试librbd" class="headerlink" title="测试librbd"></a>测试librbd</h3><p>1、创建一个image</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rbd -p rbd create --size 2048 fio_test</div></pre></td></tr></table></figure>
+<p>2、撰写 job file：<code>rbd.fio</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">######################################################################</div><div class="line"># Example test for the RBD engine.</div><div class="line">#</div><div class="line"># Runs a 4k random write test agains a RBD via librbd</div><div class="line">#</div><div class="line"># NOTE: Make sure you have either a RBD named &apos;fio_test&apos; or change</div><div class="line">#       the rbdname parameter.</div><div class="line">######################################################################</div><div class="line">[global]</div><div class="line">#logging</div><div class="line">#write_iops_log=write_iops_log</div><div class="line">#write_bw_log=write_bw_log</div><div class="line">#write_lat_log=write_lat_log</div><div class="line">ioengine=rbd</div><div class="line">clientname=admin</div><div class="line">pool=rbd</div><div class="line">rbdname=fio_test</div><div class="line">invalidate=0    # mandatory</div><div class="line">rw=randwrite</div><div class="line">bs=4k</div><div class="line"></div><div class="line">[rbd_iodepth32]</div><div class="line">iodepth=32</div></pre></td></tr></table></figure>
+<p>以上 job file 将执行整个RBD大小的100％随机写入测试（将通过librbd确定），Ceph用户 <code>admin</code> 使用Ceph 默认 pool <code>rbd</code>和刚刚创建的空的 RBD fio_test，写的 blocksize 为 4k 和 iodepth 为32 。 引擎正在使用异步IO。</p>
+<p>当前实施限制：</p>
+<ul>
+<li>invalidate = 0 现在是强制需要的，engine 现在没有这个会返回失败。 </li>
+<li>测试完成后 <code>rbd</code> 引擎不会被清除。完成测试运行后，给定的RBD将被填充。（我们现在使用它进行预填充测试，并在需要时重新创建RBD。）</li>
+</ul>
+<p>部分参考：<a href="http://telekomcloud.github.io/ceph/2014/02/26/ceph-performance-analysis_fio_rbd.html" target="_blank" rel="external">Ceph Performance Analysis: fio and RBD</a></p>
+<p>3、测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">fio rbd.fio</div></pre></td></tr></table></figure>
+<h3 id="测试kernel-RBD"><a href="#测试kernel-RBD" class="headerlink" title="测试kernel RBD"></a>测试kernel RBD</h3><p>1、创建一个image</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rbd -p rbd create --size 2048 fio_test</div></pre></td></tr></table></figure>
+<p>2、将image map到本地</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># rbd map rbd/fio_test</div><div class="line">/dev/rbd0</div><div class="line"># mkfs.xfs /dev/rbd0 -f</div></pre></td></tr></table></figure>
+<p>3、撰写 job file：<code>rbd.fio</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">[global]</div><div class="line">ioengine=libaio</div><div class="line">direct=1</div><div class="line">thread=1</div><div class="line">runtime=100</div><div class="line">size=100G</div><div class="line">group_reporting</div><div class="line">ramp_time=6</div><div class="line">userspace_reap</div><div class="line">numjobs=1</div><div class="line">iodepth=128</div><div class="line">time_based</div><div class="line"></div><div class="line">[randwrite-4k]</div><div class="line">filename=/dev/rbd0</div><div class="line">bs=4k</div><div class="line">rw=randwrite</div><div class="line">rwmixwrite=20</div><div class="line">stonewall</div></pre></td></tr></table></figure>
+<h2 id="fio测试filestore"><a href="#fio测试filestore" class="headerlink" title="fio测试filestore"></a>fio测试filestore</h2>]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[centos7上安装python3]]></title>
       <url>http://xiaqunfeng.cc/2017/07/07/centos7%E4%B8%8A%E5%AE%89%E8%A3%85python3/</url>
       <content type="html"><![CDATA[<p>之前一直使用python2，现在转python3，安装了一下，记录之。<br><a id="more"></a></p>
@@ -3853,12 +3896,6 @@
     </entry>
     
     <entry>
-      <title><![CDATA[tags]]></title>
-      <url>http://xiaqunfeng.cc/tags/index.html</url>
-      <content type="html"></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[关于我]]></title>
       <url>http://xiaqunfeng.cc/about/index.html</url>
       <content type="html"><![CDATA[<p align="center"><strong>关注ceph、分布式存储、openstack、容器、机器学习</strong></p>
@@ -3868,6 +3905,12 @@
 </blockquote>
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果该博客文章对您有所帮助，感谢一杯咖啡的鼓励。 </p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 ]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[tags]]></title>
+      <url>http://xiaqunfeng.cc/tags/index.html</url>
+      <content type="html"></content>
     </entry>
     
   
