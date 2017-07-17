@@ -15,18 +15,16 @@
 
 
 
-<meta name="description" content="有时候在vim下创建了一个markdown文件，比如 README.md ，因为不能实时预览，所以要离开vim，用编辑器去编辑，比较麻烦。所以这里配置使能在vim编辑器上预览markdown文件。">
+<meta name="description" content="前一篇文章讲了整个ceph的部署全过程，不过是基于ubuntu的，这里基于centos再分享一下部署过程。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mac上实现vim的markdown预览">
-<meta property="og:url" content="http://xiaqunfeng.cc/2017/05/25/mac上实现vim的markdown预览/index.html">
+<meta property="og:title" content="centos下ceph部署">
+<meta property="og:url" content="http://xiaqunfeng.cc/2017/07/17/centos下ceph部署/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="有时候在vim下创建了一个markdown文件，比如 README.md ，因为不能实时预览，所以要离开vim，用编辑器去编辑，比较麻烦。所以这里配置使能在vim编辑器上预览markdown文件。">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/markdown-preview.png">
-<meta property="og:updated_time" content="2017-06-16T06:27:11.000Z">
+<meta property="og:description" content="前一篇文章讲了整个ceph的部署全过程，不过是基于ubuntu的，这里基于centos再分享一下部署过程。">
+<meta property="og:updated_time" content="2017-07-17T10:35:26.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mac上实现vim的markdown预览">
-<meta name="twitter:description" content="有时候在vim下创建了一个markdown文件，比如 README.md ，因为不能实时预览，所以要离开vim，用编辑器去编辑，比较麻烦。所以这里配置使能在vim编辑器上预览markdown文件。">
-<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/markdown-preview.png">
+<meta name="twitter:title" content="centos下ceph部署">
+<meta name="twitter:description" content="前一篇文章讲了整个ceph的部署全过程，不过是基于ubuntu的，这里基于centos再分享一下部署过程。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>mac上实现vim的markdown预览 | 夏天的风的博客</title>
+<title>centos下ceph部署 | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -245,11 +243,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-mac上实现vim的markdown预览" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-centos下ceph部署" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/05/25/mac上实现vim的markdown预览/" class="article-date">
-      <time datetime="2017-05-25T02:11:55.000Z" itemprop="datePublished">2017-05-25</time>
+      <a href="/2017/07/17/centos下ceph部署/" class="article-date">
+      <time datetime="2017-07-17T10:27:42.000Z" itemprop="datePublished">2017-07-17</time>
 </a>
 
 
@@ -264,7 +262,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      mac上实现vim的markdown预览
+      centos下ceph部署
     </h1>
   
 
@@ -275,7 +273,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mac/">mac</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/centos/">centos</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -285,39 +283,41 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>有时候在vim下创建了一个markdown文件，比如 <code>README.md</code> ，因为不能实时预览，所以要离开vim，用编辑器去编辑，比较麻烦。所以这里配置使能在vim编辑器上预览markdown文件。<br><a id="more"></a></p>
-<p>这里分享两个插件</p>
-<h2 id="vim-instant-markdown"><a href="#vim-instant-markdown" class="headerlink" title="vim-instant-markdown"></a><strong>vim-instant-markdown</strong></h2><h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>github：<a href="https://github.com/suan/vim-instant-markdown" target="_blank" rel="external">https://github.com/suan/vim-instant-markdown</a></p>
-<p>下载zip文件，解压</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ls vim-instant-markdown-master/</div><div class="line">CHANGELOG.md README.md    after</div></pre></td></tr></table></figure>
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>注意：需要依赖 node.js 和 npm</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">brew install npm</div><div class="line">sudo npm -g install instant-markdown-d</div></pre></td></tr></table></figure>
-<h3 id="拷贝文件"><a href="#拷贝文件" class="headerlink" title="拷贝文件"></a>拷贝文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo mkdir -pv ~/.vim/after/ftplugin/markdown/</div><div class="line">sudo cp after/ftplugin/markdown/instant-markdown.vim ~/.vim/after/ftplugin/markdown/</div></pre></td></tr></table></figure>
-<p>注意：保证在 <code>~/.vimrc</code> 中 <code>filetype plugin on</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">filetype plugin indent on     &quot; required!</div></pre></td></tr></table></figure>
+        <p>前一篇文章讲了整个ceph的部署全过程，不过是基于ubuntu的，这里基于centos再分享一下部署过程。<br><a id="more"></a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>系统环境：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># cat /etc/redhat-release</div><div class="line">CentOS Linux release 7.3.1611 (Core)</div><div class="line"># uname -r</div><div class="line">3.10.0-514.16.1.el7.x86_64</div></pre></td></tr></table></figure>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><p><strong>1、关闭防火墙和selinux</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># systemctl stop firewalld </div><div class="line"># systemctl disable firewalld</div><div class="line"># sed -i &apos;s/SELINUX=enforcing/SELINUX=disabled/g&apos; /etc/selinux/config</div><div class="line"># setenforce 0</div></pre></td></tr></table></figure>
+<p><strong>2、打开ceph需要的端口</strong></p>
+<p>如果关闭了防火墙，这里就不需要打开端口了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># firewall-cmd --zone=public --add-port=6789/tcp --permanent</div><div class="line"># firewall-cmd --zone=public --add-port=6800-7100/tcp --permanent</div><div class="line"># firewall-cmd --reload</div></pre></td></tr></table></figure>
+<p><strong>3、安装EPEL软件源</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># rpm -Uvh https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm</div><div class="line"># yum -y update</div><div class="line"># yum -y upgrade</div></pre></td></tr></table></figure>
+<p><strong>4、安装 ntp 时间同步</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install ntp ntpdate ntp-doc</div></pre></td></tr></table></figure>
+<p><strong>5、设置免密登录</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ssh-keygen</div><div class="line">ssh-copy-id XXX</div></pre></td></tr></table></figure>
+<p><strong>6、使用国内源安装ceph</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># rpm -Uvh http://mirrors.163.com/ceph/rpm-kraken/el7/noarch/ceph-release-1-1.el7.noarch.rpm</div><div class="line"># yum update -y</div></pre></td></tr></table></figure>
+<p><strong>7、安装ceph-deploy</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># rpm -Uvh http://mirrors.163.com/ceph/rpm-kraken/el7/noarch/ceph-deploy-1.5.37-0.noarch.rpm </div><div class="line"># yum update -y</div></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># yum install ceph-deploy -y</div></pre></td></tr></table></figure>
+<p><strong>8、让ceph-deploy使用国内源安装ceph</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">export CEPH_DEPLOY_REPO_URL=http://mirrors.163.com/ceph/rpm-kraken/el7</div><div class="line">export CEPH_DEPLOY_GPG_URL=http://mirrors.163.com/ceph/keys/release.asc</div></pre></td></tr></table></figure>
+<p><strong>9、安装ceph</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph-deploy install ceph0 ceph1 ceph2</div></pre></td></tr></table></figure>
+<p><strong>10、mon安装</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph-deploy mon create-initial</div></pre></td></tr></table></figure>
 <blockquote>
-<p>一般是on的，特别是之前配置过vim插件的时候，已经打开了。</p>
+<p>OSD安装和ubuntu上一样</p>
 </blockquote>
-<h2 id="markdown-preview-vim"><a href="#markdown-preview-vim" class="headerlink" title="markdown-preview.vim"></a><strong>markdown-preview.vim</strong></h2><p>Github：<a href="https://github.com/iamcco/markdown-preview.vim" target="_blank" rel="external">https://github.com/iamcco/markdown-preview.vim</a></p>
-<p>相比较上面一种方法，这种比较轻量级，推荐此方法。</p>
-<h3 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h3><p>第一步：在 <code>~/.vimrc</code> 中的插件部分添加如下代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Plug &apos;iamcco/markdown-preview.vim&apos;</div></pre></td></tr></table></figure>
-<p>第二步：安装插件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo vim		# 或者：sudo mvim</div><div class="line">:BundleInstall</div></pre></td></tr></table></figure>
-<h3 id="设置chrome为预览浏览器"><a href="#设置chrome为预览浏览器" class="headerlink" title="设置chrome为预览浏览器"></a>设置chrome为预览浏览器</h3><p>在 <code>~/.vimrc</code> 的末尾添加如下配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">let g:mkdp_path_to_chrome = &quot;open -a Google\\ Chrome&quot;</div></pre></td></tr></table></figure>
-<h3 id="预览"><a href="#预览" class="headerlink" title="预览"></a>预览</h3><p>在编辑markdown的vim界面上敲如下命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">:MarkdownPreview</div></pre></td></tr></table></figure>
-<p>这时候就会在浏览器中出现markdown的预览界面</p>
-<h3 id="退出预览"><a href="#退出预览" class="headerlink" title="退出预览"></a>退出预览</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">:MarkdownPreviewStop</div></pre></td></tr></table></figure>
-<p>文件退出vim编辑的时候也会自动关闭和退出预览。</p>
-<h2 id="zsh"><a href="#zsh" class="headerlink" title="zsh"></a>zsh</h2><p>如果不是用mac自带的bash，而是自己装的zsh，需要注意以下两点：</p>
-<p>1、保证在安装 instant-markdown-d 的时候添加了选项 <code>npm -g install</code></p>
-<p>2、在 <code>~/.vimrc</code> 的末尾添加以下内容</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">set shell=bash\ -i</div></pre></td></tr></table></figure>
-<h2 id="效果展示"><a href="#效果展示" class="headerlink" title="效果展示"></a>效果展示</h2><p>第二种方法较第一种比较轻量级，而且不需要依赖node.js，不需要下载外部依赖，只需要支持python2/3就可以了，同时支持滚动。</p>
-<p>这种配置在配合 mvim + hexo + markdown 的时候特别爽，可以实时显示，都省了先执行<code>hexo s</code>，然后登陆<code>localhost:4000</code> 去查看了。</p>
-<p>本篇博客的实时预览截图如下：（可以看到，端口为9183）<br><img src="http://oow6unnib.bkt.clouddn.com/markdown-preview.png" alt="markdown-preview"></p>
+<h2 id="几个启动方式的不同"><a href="#几个启动方式的不同" class="headerlink" title="几个启动方式的不同"></a>几个启动方式的不同</h2><p>先列举两个：</p>
+<p>1、启动mon</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">systemctl start ceph-mon@ceph0.service</div></pre></td></tr></table></figure>
+<p>2、启动osd</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">systemctl start ceph-osd@&#123;osd-num&#125;</div></pre></td></tr></table></figure>
+<p>更多cento 7 上操纵集群命令详见文章：<a href="http://xiaqunfeng.cc/2017/06/16/centos-7%E4%B8%8B%E6%93%8D%E7%BA%B5ceph%E8%BF%9B%E7%A8%8B/">centos 7下操纵ceph进程</a></p>
 
       
     </div>
@@ -326,13 +326,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/05/25/mac上实现vim的markdown预览/">mac上实现vim的markdown预览</a></p>
+        <p><span>本文标题:</span><a href="/2017/07/17/centos下ceph部署/">centos下ceph部署</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-05-25, 10:11:55</p>
-        <p><span>最后更新:</span>2017-06-16, 14:27:11</p>
+        <p><span>发布时间:</span>2017-07-17, 18:27:42</p>
+        <p><span>最后更新:</span>2017-07-17, 18:35:26</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/05/25/mac上实现vim的markdown预览/" title="mac上实现vim的markdown预览">http://xiaqunfeng.cc/2017/05/25/mac上实现vim的markdown预览/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/05/25/mac上实现vim的markdown预览/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/07/17/centos下ceph部署/" title="centos下ceph部署">http://xiaqunfeng.cc/2017/07/17/centos下ceph部署/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/07/17/centos下ceph部署/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -344,16 +344,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/05/26/GPG-key-retrieval-failure/">
-                    GPG key retrieval failure
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/05/23/ceph日志迁移/">
-                    ceph日志迁移
+                <a href="/2017/07/17/ceph部署完全手册/">
+                    ceph部署完全手册
                 </a>
             </div>
         
@@ -365,7 +359,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#vim-instant-markdown"><span class="toc-number">1.</span> <span class="toc-text">vim-instant-markdown</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#下载"><span class="toc-number">1.1.</span> <span class="toc-text">下载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装"><span class="toc-number">1.2.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#拷贝文件"><span class="toc-number">1.3.</span> <span class="toc-text">拷贝文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#markdown-preview-vim"><span class="toc-number">2.</span> <span class="toc-text">markdown-preview.vim</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装-1"><span class="toc-number">2.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#设置chrome为预览浏览器"><span class="toc-number">2.2.</span> <span class="toc-text">设置chrome为预览浏览器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#预览"><span class="toc-number">2.3.</span> <span class="toc-text">预览</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#退出预览"><span class="toc-number">2.4.</span> <span class="toc-text">退出预览</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#zsh"><span class="toc-number">3.</span> <span class="toc-text">zsh</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#效果展示"><span class="toc-number">4.</span> <span class="toc-text">效果展示</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-number">2.</span> <span class="toc-text">步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#几个启动方式的不同"><span class="toc-number">3.</span> <span class="toc-text">几个启动方式的不同</span></a></li></ol>
         
     </div>
     <style>
@@ -401,7 +395,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"mac上实现vim的markdown预览　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"centos下ceph部署　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -420,8 +414,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.cc/2017/05/25/mac上实现vim的markdown预览/';
-            this.page.identifier = '2017/05/25/mac上实现vim的markdown预览/';
+            this.page.url = 'http://xiaqunfeng.cc/2017/07/17/centos下ceph部署/';
+            this.page.identifier = '2017/07/17/centos下ceph部署/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -443,15 +437,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/05/26/GPG-key-retrieval-failure/" title="上一篇: GPG key retrieval failure">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/05/23/ceph日志迁移/" title="下一篇: ceph日志迁移">
+            <a href="/2017/07/17/ceph部署完全手册/" title="下一篇: ceph部署完全手册">
                 <i class="fa fa-angle-right"></i>
             </a>
         
