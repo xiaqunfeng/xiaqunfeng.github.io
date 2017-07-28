@@ -15,18 +15,20 @@
 
 
 
-<meta name="description" content="介绍了一下公有云和私有云的区别，以及该如何选择。">
+<meta name="description" content="对较大的RBD image采用两种方法进行移除实验，并给出结果对比。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="公有云和私有云的区别">
-<meta property="og:url" content="http://xiaqunfeng.cc/2017/06/16/公有云和私有云的区别/index.html">
+<meta property="og:title" content="Remove Big RBD Image">
+<meta property="og:url" content="http://xiaqunfeng.cc/2017/07/28/Remove-Big-RBD-Image/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="介绍了一下公有云和私有云的区别，以及该如何选择。">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/public-private-cloud.jpg">
-<meta property="og:updated_time" content="2017-06-16T07:13:35.000Z">
+<meta property="og:description" content="对较大的RBD image采用两种方法进行移除实验，并给出结果对比。">
+<meta property="og:image" content="http://cephnotes.ksperis.com/images/img012.png">
+<meta property="og:image" content="http://cephnotes.ksperis.com/images/img010.png">
+<meta property="og:image" content="http://cephnotes.ksperis.com/images/img011.png">
+<meta property="og:updated_time" content="2017-07-28T02:57:45.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="公有云和私有云的区别">
-<meta name="twitter:description" content="介绍了一下公有云和私有云的区别，以及该如何选择。">
-<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/public-private-cloud.jpg">
+<meta name="twitter:title" content="Remove Big RBD Image">
+<meta name="twitter:description" content="对较大的RBD image采用两种方法进行移除实验，并给出结果对比。">
+<meta name="twitter:image" content="http://cephnotes.ksperis.com/images/img012.png">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +60,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>公有云和私有云的区别 | 夏天的风的博客</title>
+<title>Remove Big RBD Image | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -245,11 +247,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-公有云和私有云的区别" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Remove-Big-RBD-Image" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/06/16/公有云和私有云的区别/" class="article-date">
-      <time datetime="2017-06-16T06:38:40.000Z" itemprop="datePublished">2017-06-16</time>
+      <a href="/2017/07/28/Remove-Big-RBD-Image/" class="article-date">
+      <time datetime="2017-07-28T01:50:45.000Z" itemprop="datePublished">2017-07-28</time>
 </a>
 
 
@@ -264,7 +266,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      公有云和私有云的区别
+      Remove Big RBD Image
     </h1>
   
 
@@ -275,7 +277,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cloud/">cloud</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -285,15 +287,35 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>介绍了一下公有云和私有云的区别，以及该如何选择。<br><a id="more"></a></p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/public-private-cloud.jpg" alt="public-private-cloud"></p>
-<h2 id="私有云"><a href="#私有云" class="headerlink" title="私有云"></a>私有云</h2><p>这是一个可以存在于公司的托管数据中心的云主机解决方案，所有信息都在专用防火墙后面。一般来说，公司已经选择为其数据中心付出了相当大的代价，并仍然希望使用其已建立的基础设施。这是一个主要的优势，也是私有云与公共云的辩论在这个特定主题上如此激烈的一个重要原因。</p>
-<p>然而，私有云的一个重大问题是维护、更新和整体管理数据中心所需的资源属于公司本身。这是在选择私有云时通常不能正确计算的费用。维护包括：一旦旧的服务器被不堪重负或过期，必须购买新的服务器，并通过公司本身来整合最新的技术。</p>
-<p>当然，由于私有云的资源基本上与系统外的任何人都不共享，因此维护安全性要容易得多，这可能是选择公有云与私有云时的决定因素。</p>
-<h2 id="公有云"><a href="#公有云" class="headerlink" title="公有云"></a>公有云</h2><p>公有云是在其网站上托管大量企业、个人和组织的公共云。公有云管理系统提供的最大优势是，企业或组织无需负责，由主办公司接管。你的所有数据都由提供商存储在他们的数据中心，并负责管理和更新。</p>
-<p>这样做的优势是相当大的，因为这显著的降低了存储信息的成本。这对于没有广泛且已到位的基础设施的公司也是有利的。此外，降低了测试和推出新产品的交付时间。</p>
-<p>然而，与私有云系统相比最大的缺点是缺乏安全性。这就是为什么许多企业正在讨论对公有、私有云计算的倾向，即使意味着更大的费用，也会倾向于安全。虽然公共云系统确实具有广泛的安全性，事实上，由于增加的公司数量是相当大的担忧，所以系统的任何攻击，违规或崩溃都会更大。</p>
-<p>应该注意的是，每个公司的数据都是分开的，尽管过去几年的头条新闻中，公有云系统的安全漏洞也比较少见。这就是为什么在公有云 vs 私有云的辩论中，答案往往会归结为公司的需求和预算。</p>
+        <p>对较大的RBD image采用两种方法进行移除实验，并给出结果对比。<br><a id="more"></a></p>
+<p>创建一个容量疯狂大的磁盘很有趣，但是有一点难移除。</p>
+<p><img src="http://cephnotes.ksperis.com/images/img012.png" alt="img"></p>
+<p>这里有一个移除特别大image的小技巧（谨慎使用！），使用 <code>rm rbd</code> 命令（如果image没有初始化，或者没有填充满）。</p>
+<h2 id="Image-format-1"><a href="#Image-format-1" class="headerlink" title="Image format 1 :"></a>Image format 1 :</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ rbd info rbdbigsize</div><div class="line">rbd image &apos;rbdbigsize&apos;:</div><div class="line">    size 1862 PB in 500000000000 objects</div><div class="line">    order 22 (4096 kB objects)</div><div class="line">    block_name_prefix: rb.0.47aa.74b0dc51</div><div class="line">    format: 1</div></pre></td></tr></table></figure>
+<p>删除头文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ rados -p rbd rm rbdbigsize.rbd</div></pre></td></tr></table></figure>
+<p>删除所有rbd数据：(这可能需要一些时间，取决于块设备上已经使用的空间)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ rados -p rbd ls | grep &apos;^rb.0.47aa.74b0dc51&apos; | xargs -n 200  rados -p rbd rm</div></pre></td></tr></table></figure>
+<p>最后，从rbd list中删除：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ rbd rm rbdbigsize</div><div class="line">2014-06-12 16:27:20.838596 7fd86dff3760 -1 librbd::ImageCtx: error finding header: (2) No such file or directory</div><div class="line">Removing image: 100% complete...done.</div></pre></td></tr></table></figure>
+<h2 id="Image-format-2"><a href="#Image-format-2" class="headerlink" title="Image format 2 :"></a>Image format 2 :</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$  rbd info rbdbigsize</div><div class="line">rbd image &apos;rbdbigsize&apos;:</div><div class="line">        size 1024 TB in 268435456 objects</div><div class="line">        order 22 (4096 kB objects)</div><div class="line">        block_name_prefix: rbd_data.81d12ae8944a</div><div class="line">        format: 2</div><div class="line">        features: layering</div></pre></td></tr></table></figure>
+<p>删除头文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ rados -p rbd rm rbd_id.rbdbigsize </div><div class="line">$ rados -p rbd rm rbd_header.81d12ae8944a</div></pre></td></tr></table></figure>
+<p>删除所有rbd 数据:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ rados -p rbd ls | grep &apos;^rbd_data.81d12ae8944a.&apos; | xargs -n 200  rados -p rbd rm</div></pre></td></tr></table></figure>
+<p>从 rbd list中删除 :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ rbd rm rbdbigsize</div><div class="line">2014-06-12 17:37:24.483587 7f413506c760 -1 librbd::ImageCtx: error finding header: (2) No such file or directory</div><div class="line">Removing image: 100% complete...done.</div></pre></td></tr></table></figure>
+<h2 id="时间对比"><a href="#时间对比" class="headerlink" title="时间对比"></a>时间对比</h2><p>1PB 已格式化块设备删除时间示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ rbd create rbdbigsize --size=1073741824 --image-format=2</div><div class="line">$ rbd map rbdbigsize</div><div class="line">$ mkfs.xfs /dev/rbd0</div><div class="line">$ rbd unmap /dev/rbd0</div><div class="line"></div><div class="line">$ rados -p rbd ls | grep &apos;^rbd_data.81d12ae8944a.&apos; | wc -l</div><div class="line">1536</div></pre></td></tr></table></figure>
+<p>块设备仅由 1536 个块组成，可以通过 <code>rados rm</code> 快速删除：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ time rados -p rbd ls | grep &apos;^rbd_data.81d12ae8944a.&apos; | xargs -n 200  rados -p rbd rm</div><div class="line">real    0m10.073s</div><div class="line">user    0m1.244s</div><div class="line">sys 0m0.228s</div></pre></td></tr></table></figure>
+<p>对比：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ time rbd rm rbdbigsize</div><div class="line">Removing image: 100% complete...done.</div><div class="line"></div><div class="line">real    1123m5.409s</div><div class="line">user    686m19.924s</div><div class="line">sys     229m56.596s</div></pre></td></tr></table></figure>
+<p><img src="http://cephnotes.ksperis.com/images/img010.png" alt="img"></p>
+<h2 id="Fully-initialized-image"><a href="#Fully-initialized-image" class="headerlink" title="Fully initialized image :"></a>Fully initialized image :</h2><p>当然，删除一个完全初始化的 image 使用 <code>rbd rm</code> 更快</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">$ rbd create rbdbigsize --size 1048576</div><div class="line">$ rbd map rbdbigsize; dd if=/dev/zero of=/dev/rbd0; rbd unmap /dev/rbd0;</div><div class="line">$ time (rados -p rbd ls | grep `rbd info rbdbigsize | grep block_name_prefix | grep -o &apos;rb.*$&apos;` | xargs -n 200  rados -p rbd rm; rados -p rbd rm rbdbigsize.rbd; rbd rm rbdbigsize)</div><div class="line"></div><div class="line">real    143m6.373s</div><div class="line">user    2m49.100s</div><div class="line">sys     0m22.080s</div><div class="line"></div><div class="line"></div><div class="line">$ rbd create rbdbigsize --size 1048576</div><div class="line">$ rbd map rbdbigsize; dd if=/dev/zero of=/dev/rbd0; rbd unmap /dev/rbd0;</div><div class="line">$ time rbd rm rbdbigsize</div><div class="line"></div><div class="line">real   88m44.121s</div><div class="line">user    1m5.464s</div><div class="line">sys     0m25.244s</div></pre></td></tr></table></figure>
+<p><img src="http://cephnotes.ksperis.com/images/img011.png" alt="img"></p>
+<p>本文为译文，原文链接：<a href="http://cephnotes.ksperis.com/blog/2014/07/04/remove-big-rbd-image" target="_blank" rel="external">Remove Big RBD Image</a></p>
 
       
     </div>
@@ -302,13 +324,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/06/16/公有云和私有云的区别/">公有云和私有云的区别</a></p>
+        <p><span>本文标题:</span><a href="/2017/07/28/Remove-Big-RBD-Image/">Remove Big RBD Image</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-06-16, 14:38:40</p>
-        <p><span>最后更新:</span>2017-06-16, 15:13:35</p>
+        <p><span>发布时间:</span>2017-07-28, 09:50:45</p>
+        <p><span>最后更新:</span>2017-07-28, 10:57:45</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/06/16/公有云和私有云的区别/" title="公有云和私有云的区别">http://xiaqunfeng.cc/2017/06/16/公有云和私有云的区别/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/06/16/公有云和私有云的区别/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/07/28/Remove-Big-RBD-Image/" title="Remove Big RBD Image">http://xiaqunfeng.cc/2017/07/28/Remove-Big-RBD-Image/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/07/28/Remove-Big-RBD-Image/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -320,16 +342,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/06/23/wget批量下载http目录及文件/">
-                    wget批量下载http目录及文件
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/06/16/centos-7下操纵ceph进程/">
-                    centos 7下操纵ceph进程
+                <a href="/2017/07/17/centos下ceph部署/">
+                    centos下ceph部署
                 </a>
             </div>
         
@@ -341,7 +357,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#私有云"><span class="toc-number">1.</span> <span class="toc-text">私有云</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#公有云"><span class="toc-number">2.</span> <span class="toc-text">公有云</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Image-format-1"><span class="toc-number">1.</span> <span class="toc-text">Image format 1 :</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Image-format-2"><span class="toc-number">2.</span> <span class="toc-text">Image format 2 :</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#时间对比"><span class="toc-number">3.</span> <span class="toc-text">时间对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Fully-initialized-image"><span class="toc-number">4.</span> <span class="toc-text">Fully initialized image :</span></a></li></ol>
         
     </div>
     <style>
@@ -377,7 +393,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"公有云和私有云的区别　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"Remove Big RBD Image　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -396,8 +412,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.cc/2017/06/16/公有云和私有云的区别/';
-            this.page.identifier = '2017/06/16/公有云和私有云的区别/';
+            this.page.url = 'http://xiaqunfeng.cc/2017/07/28/Remove-Big-RBD-Image/';
+            this.page.identifier = '2017/07/28/Remove-Big-RBD-Image/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -419,15 +435,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/06/23/wget批量下载http目录及文件/" title="上一篇: wget批量下载http目录及文件">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/06/16/centos-7下操纵ceph进程/" title="下一篇: centos 7下操纵ceph进程">
+            <a href="/2017/07/17/centos下ceph部署/" title="下一篇: centos下ceph部署">
                 <i class="fa fa-angle-right"></i>
             </a>
         

@@ -4,6 +4,49 @@
   
     
     <entry>
+      <title><![CDATA[Remove Big RBD Image]]></title>
+      <url>http://xiaqunfeng.cc/2017/07/28/Remove-Big-RBD-Image/</url>
+      <content type="html"><![CDATA[<p>对较大的RBD image采用两种方法进行移除实验，并给出结果对比。<br><a id="more"></a></p>
+<p>创建一个容量疯狂大的磁盘很有趣，但是有一点难移除。</p>
+<p><img src="http://cephnotes.ksperis.com/images/img012.png" alt="img"></p>
+<p>这里有一个移除特别大image的小技巧（谨慎使用！），使用 <code>rm rbd</code> 命令（如果image没有初始化，或者没有填充满）。</p>
+<h2 id="Image-format-1"><a href="#Image-format-1" class="headerlink" title="Image format 1 :"></a>Image format 1 :</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ rbd info rbdbigsize</div><div class="line">rbd image &apos;rbdbigsize&apos;:</div><div class="line">    size 1862 PB in 500000000000 objects</div><div class="line">    order 22 (4096 kB objects)</div><div class="line">    block_name_prefix: rb.0.47aa.74b0dc51</div><div class="line">    format: 1</div></pre></td></tr></table></figure>
+<p>删除头文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ rados -p rbd rm rbdbigsize.rbd</div></pre></td></tr></table></figure>
+<p>删除所有rbd数据：(这可能需要一些时间，取决于块设备上已经使用的空间)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ rados -p rbd ls | grep &apos;^rb.0.47aa.74b0dc51&apos; | xargs -n 200  rados -p rbd rm</div></pre></td></tr></table></figure>
+<p>最后，从rbd list中删除：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ rbd rm rbdbigsize</div><div class="line">2014-06-12 16:27:20.838596 7fd86dff3760 -1 librbd::ImageCtx: error finding header: (2) No such file or directory</div><div class="line">Removing image: 100% complete...done.</div></pre></td></tr></table></figure>
+<h2 id="Image-format-2"><a href="#Image-format-2" class="headerlink" title="Image format 2 :"></a>Image format 2 :</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$  rbd info rbdbigsize</div><div class="line">rbd image &apos;rbdbigsize&apos;:</div><div class="line">        size 1024 TB in 268435456 objects</div><div class="line">        order 22 (4096 kB objects)</div><div class="line">        block_name_prefix: rbd_data.81d12ae8944a</div><div class="line">        format: 2</div><div class="line">        features: layering</div></pre></td></tr></table></figure>
+<p>删除头文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ rados -p rbd rm rbd_id.rbdbigsize </div><div class="line">$ rados -p rbd rm rbd_header.81d12ae8944a</div></pre></td></tr></table></figure>
+<p>删除所有rbd 数据:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ rados -p rbd ls | grep &apos;^rbd_data.81d12ae8944a.&apos; | xargs -n 200  rados -p rbd rm</div></pre></td></tr></table></figure>
+<p>从 rbd list中删除 :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ rbd rm rbdbigsize</div><div class="line">2014-06-12 17:37:24.483587 7f413506c760 -1 librbd::ImageCtx: error finding header: (2) No such file or directory</div><div class="line">Removing image: 100% complete...done.</div></pre></td></tr></table></figure>
+<h2 id="时间对比"><a href="#时间对比" class="headerlink" title="时间对比"></a>时间对比</h2><p>1PB 已格式化块设备删除时间示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ rbd create rbdbigsize --size=1073741824 --image-format=2</div><div class="line">$ rbd map rbdbigsize</div><div class="line">$ mkfs.xfs /dev/rbd0</div><div class="line">$ rbd unmap /dev/rbd0</div><div class="line"></div><div class="line">$ rados -p rbd ls | grep &apos;^rbd_data.81d12ae8944a.&apos; | wc -l</div><div class="line">1536</div></pre></td></tr></table></figure>
+<p>块设备仅由 1536 个块组成，可以通过 <code>rados rm</code> 快速删除：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ time rados -p rbd ls | grep &apos;^rbd_data.81d12ae8944a.&apos; | xargs -n 200  rados -p rbd rm</div><div class="line">real    0m10.073s</div><div class="line">user    0m1.244s</div><div class="line">sys 0m0.228s</div></pre></td></tr></table></figure>
+<p>对比：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ time rbd rm rbdbigsize</div><div class="line">Removing image: 100% complete...done.</div><div class="line"></div><div class="line">real    1123m5.409s</div><div class="line">user    686m19.924s</div><div class="line">sys     229m56.596s</div></pre></td></tr></table></figure>
+<p><img src="http://cephnotes.ksperis.com/images/img010.png" alt="img"></p>
+<h2 id="Fully-initialized-image"><a href="#Fully-initialized-image" class="headerlink" title="Fully initialized image :"></a>Fully initialized image :</h2><p>当然，删除一个完全初始化的 image 使用 <code>rbd rm</code> 更快</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">$ rbd create rbdbigsize --size 1048576</div><div class="line">$ rbd map rbdbigsize; dd if=/dev/zero of=/dev/rbd0; rbd unmap /dev/rbd0;</div><div class="line">$ time (rados -p rbd ls | grep `rbd info rbdbigsize | grep block_name_prefix | grep -o &apos;rb.*$&apos;` | xargs -n 200  rados -p rbd rm; rados -p rbd rm rbdbigsize.rbd; rbd rm rbdbigsize)</div><div class="line"></div><div class="line">real    143m6.373s</div><div class="line">user    2m49.100s</div><div class="line">sys     0m22.080s</div><div class="line"></div><div class="line"></div><div class="line">$ rbd create rbdbigsize --size 1048576</div><div class="line">$ rbd map rbdbigsize; dd if=/dev/zero of=/dev/rbd0; rbd unmap /dev/rbd0;</div><div class="line">$ time rbd rm rbdbigsize</div><div class="line"></div><div class="line">real   88m44.121s</div><div class="line">user    1m5.464s</div><div class="line">sys     0m25.244s</div></pre></td></tr></table></figure>
+<p><img src="http://cephnotes.ksperis.com/images/img011.png" alt="img"></p>
+<p>本文为译文，原文链接：<a href="http://cephnotes.ksperis.com/blog/2014/07/04/remove-big-rbd-image" target="_blank" rel="external">Remove Big RBD Image</a></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[centos下ceph部署]]></title>
       <url>http://xiaqunfeng.cc/2017/07/17/centos%E4%B8%8Bceph%E9%83%A8%E7%BD%B2/</url>
       <content type="html"><![CDATA[<p>前一篇文章讲了整个ceph的部署全过程，不过是基于ubuntu的，这里基于centos再分享一下部署过程。<br><a id="more"></a></p>
@@ -4121,14 +4164,14 @@
     
     <entry>
       <title></title>
-      <url>http://xiaqunfeng.cc/baidu_verify_UL74CvGIA2.html</url>
-      <content type="html"><![CDATA[UL74CvGIA2]]></content>
+      <url>http://xiaqunfeng.cc/googlea245ce220ad05de3.html</url>
+      <content type="html"><![CDATA[google-site-verification: googlea245ce220ad05de3.html]]></content>
     </entry>
     
     <entry>
       <title></title>
-      <url>http://xiaqunfeng.cc/googlea245ce220ad05de3.html</url>
-      <content type="html"><![CDATA[google-site-verification: googlea245ce220ad05de3.html]]></content>
+      <url>http://xiaqunfeng.cc/baidu_verify_UL74CvGIA2.html</url>
+      <content type="html"><![CDATA[UL74CvGIA2]]></content>
     </entry>
     
     <entry>
