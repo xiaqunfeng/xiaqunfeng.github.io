@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="夏天的风" />
+
+
+
+<meta name="description" content="从PG的命名开始介绍，利用一个对象详细演练PG各个状态的变化，并介绍PG状态列表及意义。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ceph placement group">
+<meta property="og:url" content="http://xiaqunfeng.cc/2017/07/28/ceph-placement-group/index.html">
+<meta property="og:site_name" content="夏天的风的博客">
+<meta property="og:description" content="从PG的命名开始介绍，利用一个对象详细演练PG各个状态的变化，并介绍PG状态列表及意义。">
+<meta property="og:updated_time" content="2017-07-28T07:44:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ceph placement group">
+<meta name="twitter:description" content="从PG的命名开始介绍，利用一个对象详细演练PG各个状态的变化，并介绍PG状态列表及意义。">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/red_apple.ico">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>ceph placement group | 夏天的风的博客</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?2eeeeb98562c97f7d79f13899ec599cd";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/stark.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">夏天的风</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">好记性不如烂笔头😝</p>
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" href="https://github.com/xiaqunfeng" title="GitHub"></a>
+                            
+                                <a class="fa CSDN" href="http://blog.csdn.net/xiaqunfeng123" title="CSDN"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/centos/">centos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ceph/">ceph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/">machine learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rocksdb/">rocksdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/storage/">storage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">夏天的风</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/stark.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">夏天的风</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">好记性不如烂笔头😝</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/xiaqunfeng" title="GitHub"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://blog.csdn.net/xiaqunfeng123" title="CSDN"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-ceph-placement-group" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/28/ceph-placement-group/" class="article-date">
+      <time datetime="2017-07-28T07:20:25.000Z" itemprop="datePublished">2017-07-28</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ceph placement group
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>从PG的命名开始介绍，利用一个对象详细演练PG各个状态的变化，并介绍PG状态列表及意义。<br><a id="more"></a></p>
+<h2 id="PG命名"><a href="#PG命名" class="headerlink" title="PG命名"></a>PG命名</h2><h3 id="PG唯一标识符"><a href="#PG唯一标识符" class="headerlink" title="PG唯一标识符"></a>PG唯一标识符</h3><p>归置组 ID 包含存储池号（不是存储池名字），后面跟一个点（ . ），然后是归置组 ID，一个十六进制数字。用 <code>ceph osd lspools</code> 可查看存储池号及其名字，默认存储池rbd 对应的存储池号是 0  。完整的归置组 ID 格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;pool-num&#125;.&#123;pg-id&#125;</div></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">0.1f</div></pre></td></tr></table></figure>
+<p>系统默认生成的<code>rbd</code>池的id号为<code>0</code>，所以 rbd 池内的所有PG都会以<code>0.</code>开头。</p>
+<h3 id="查看osd目录里pg"><a href="#查看osd目录里pg" class="headerlink" title="查看osd目录里pg"></a>查看osd目录里pg</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># ls /var/lib/ceph/osd/ceph-0/</div><div class="line">activate.monmap  ceph_fsid        fsid             journal_uuid     magic            store_version    systemd          whoami</div><div class="line">active           current/         journal          keyring          ready            superblock       type</div></pre></td></tr></table></figure>
+<p><code>osd.0</code>下<code>current</code>目录的内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ls /var/lib/ceph/osd/ceph-0/current/</div><div class="line">0.0_head   0.1d_head  0.34_head  0.45_head  0.4e_head</div></pre></td></tr></table></figure>
+<p>每个OSD的<code>current</code>目录下都保存了部分的PG，而rbd池的PG以<code>0.xxx_head</code>的目录形式存在！</p>
+<h2 id="PG状态"><a href="#PG状态" class="headerlink" title="PG状态"></a>PG状态</h2><p>查看所有归置组状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph pg stat</div><div class="line">v614916: 128 pgs: 128 active+clean; 27194 kB data, 185 MB used, 15141 MB / 15326 MB avail; 56023 B/s rd, 0 B/s wr, 89 op/s</div></pre></td></tr></table></figure>
+<p>有一些问题的状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph pg stat</div><div class="line">v2167: 120 pgs: 120 active+undersized+degraded; 1799 bytes data, 86476 kB used, 10133 MB / 10217 MB avail; 173/519 objects degraded (33.333%)</div></pre></td></tr></table></figure>
+<p>或者这样的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph pg stat</div><div class="line">v1468117: 5440 pgs: 4 active+clean+scrubbing+deep, 77 active+remapped+backfilling, 5359 active+clean; 33452 GB data, 68799 GB used, 43742 GB / 109 TB avail; 134 kB/s rd, 154 op/s; 6668502/138960328 objects misplaced (4.799%); 40810 kB/s, 81 objects/s recovering</div></pre></td></tr></table></figure>
+<h2 id="获取PG列表"><a href="#获取PG列表" class="headerlink" title="获取PG列表"></a>获取PG列表</h2><p>用下列命令获取归置组列表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph pg dump</div></pre></td></tr></table></figure>
+<p>你也可以让它输出到 JSON 格式，并保存到文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph pg dump -o &#123;filename&#125; --format=json</div></pre></td></tr></table></figure>
+<p>要查询某个归置组，用下列命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph pg &#123;poolnum&#125;.&#123;pg-id&#125; query</div></pre></td></tr></table></figure>
+<p>Ceph 会输出成 JSON 格式</p>
+<h2 id="写一个object"><a href="#写一个object" class="headerlink" title="写一个object"></a>写一个object</h2><p>1、新建一个文件，内容如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># cat xinfanyang.txt</div><div class="line">xin fan yang have delicious food</div></pre></td></tr></table></figure>
+<p>2、查看数据在pool中默认保存的份数、最小保存份数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># ceph osd pool get rbd size</div><div class="line">size: 3</div><div class="line"># ceph osd pool get rbd min_size</div><div class="line">min_size: 2</div></pre></td></tr></table></figure>
+<p>3、写一个文件，在集群中保存对象名为 <code>xfy</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># rados -p rbd put xfy xinfanyang.txt</div></pre></td></tr></table></figure>
+<p>4、查看文件保存的位置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd map rbd xfy</div><div class="line">osdmap e47 pool &apos;rbd&apos; (0) object &apos;xfy&apos; -&gt; pg 0.c76c82f (0.2f) -&gt; up ([1,2,0], p1) acting ([1,2,0], p1)</div></pre></td></tr></table></figure>
+<p>文件保存在pg（0.2f）中，pg位于OSD的[1，2，0]中，其中OSD1是主，其他是从。</p>
+<p>5、查看内容</p>
+<p>在三台机器的三个OSD上，输出内容一致。举例 osd.2，内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># ll /var/lib/ceph/osd/ceph-2/current/0.2f*</div><div class="line">/var/lib/ceph/osd/ceph-2/current/0.2f_head:</div><div class="line">总用量 4</div><div class="line">-rw-r--r--. 1 ceph ceph  0 6月  21 15:45 __head_0000002F__0</div><div class="line">-rw-r--r--. 1 ceph ceph 33 7月  27 19:35 xfy__head_0C76C82F__0</div><div class="line"></div><div class="line">/var/lib/ceph/osd/ceph-2/current/0.2f_TEMP:</div><div class="line">总用量 0</div></pre></td></tr></table></figure>
+<p>实际对象内容存在 <code>xfy__head_0C76C82F__0</code> 中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># cat /var/lib/ceph/osd/ceph-2/current/0.2f_head/xfy__head_0C76C82F__0</div><div class="line">xin fan yang have delicious food</div></pre></td></tr></table></figure>
+<p>osd分布</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># ceph osd tree</div><div class="line">ID WEIGHT  TYPE NAME       UP/DOWN REWEIGHT PRIMARY-AFFINITY</div><div class="line">-1 0.05457 root default</div><div class="line">-2 0.01819     host ceph-1</div><div class="line"> 0 0.00909         osd.0        up  1.00000          1.00000</div><div class="line"> 3 0.00909         osd.3        up  1.00000          1.00000</div><div class="line">-3 0.01819     host ceph-0</div><div class="line"> 2 0.00909         osd.2        up  1.00000          1.00000</div><div class="line"> 4 0.00909         osd.4        up  1.00000          1.00000</div><div class="line">-4 0.01819     host ceph-2</div><div class="line"> 1 0.00909         osd.1        up  1.00000          1.00000</div><div class="line"> 5 0.00909         osd.5        up  1.00000          1.00000</div></pre></td></tr></table></figure>
+<h2 id="PG状态变化"><a href="#PG状态变化" class="headerlink" title="PG状态变化"></a>PG状态变化</h2><p><strong>1、查看 pg[0.2f] 的状态</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph pg dump_stuck |egrep ^0.2f</div><div class="line">ok</div></pre></td></tr></table></figure>
+<p><strong>2、挂掉一台机器挂</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># systemctl stop ceph-osd@2</div></pre></td></tr></table></figure>
+<p>这时降为两副本了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd map rbd xfy</div><div class="line">osdmap e54 pool &apos;rbd&apos; (0) object &apos;xfy&apos; -&gt; pg 0.c76c82f (0.2f) -&gt; up ([1,0], p1) acting ([1,0], p1)</div></pre></td></tr></table></figure>
+<p>查看pg状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># ceph pg dump_stuck |egrep ^0.2f</div><div class="line">ok</div><div class="line">0.0	active+undersized+degraded	[1,0]	1	[1,0]	1</div></pre></td></tr></table></figure>
+<p>因为之前设置的最小副本数是2，所以没影响，可以正常读取</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># rados -p rbd get xfy 111</div><div class="line"># cat 111</div><div class="line">xin fan yang have delicious food</div></pre></td></tr></table></figure>
+<p><strong>3、osd out</strong></p>
+<p>将 osd.2 out</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd out 2</div><div class="line">marked out osd.2.</div></pre></td></tr></table></figure>
+<p>如果osd out出集群了，那么 crush 算法就会重新分配一个osd进来</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd map rbd xfy</div><div class="line">osdmap e103 pool &apos;rbd&apos; (0) object &apos;xfy&apos; -&gt; pg 0.c76c82f (0.2f) -&gt; up ([1,0,4], p1) acting ([1,0,4], p1)</div></pre></td></tr></table></figure>
+<p>当然，也可以不out，默认 600s 后自动out，具体时间可调，默认配置如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph daemon osd.1 config show | grep mon_osd_down_out_interval</div><div class="line">    &quot;mon_osd_down_out_interval&quot;: &quot;600&quot;,</div></pre></td></tr></table></figure>
+<p>重新将 osd.2 加入集群</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd in 2</div><div class="line">marked in osd.2.</div></pre></td></tr></table></figure>
+<p>这时候该对象的分布</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd map rbd xfy</div><div class="line">osdmap e117 pool &apos;rbd&apos; (0) object &apos;xfy&apos; -&gt; pg 0.c76c82f (0.2f) -&gt; up ([1,0], p1) acting ([1,0,4], p1)</div></pre></td></tr></table></figure>
+<p>可以看到，pg最终的分布是 [1,0]，当前的acting分布是 [1,0,4]</p>
+<p><strong>4、挂掉两台机器</strong></p>
+<p>down掉主副本所在的 osd.1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># systemctl stop ceph-osd@1</div></pre></td></tr></table></figure>
+<p>此时只有一个副本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd map rbd xfy</div><div class="line">osdmap e56 pool &apos;rbd&apos; (0) object &apos;xfy&apos; -&gt; pg 0.c76c82f (0.2f) -&gt; up ([0], p0) acting ([0], p0)</div></pre></td></tr></table></figure>
+<p>查看pg状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># ceph pg dump_stuck |egrep ^0.2f</div><div class="line">ok</div><div class="line">0.2f    undersized+degraded+peered   [0]          0    [0]              0</div></pre></td></tr></table></figure>
+<p>此时再去get这个对象的话，会一直得不到返回</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># rados -p rbd get xfy 222</div><div class="line">...							// 一直在等待</div></pre></td></tr></table></figure>
+<blockquote>
+<p>原因：当对象的副本数小于设定的最小数（min_size）时，ceph不响应对应object的IO请求</p>
+</blockquote>
+<p><strong>5、启动 osd.1</strong> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># systemctl start ceph-osd@1</div></pre></td></tr></table></figure>
+<p>此时，会发现，上面卡着的那个命令返回了，并且得到的内容正确。</p>
+<p>查看当前pg分布</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd map rbd xfy</div><div class="line">osdmap e76 pool &apos;rbd&apos; (0) object &apos;xfy&apos; -&gt; pg 0.c76c82f (0.2f) -&gt; up ([1,4], p1) acting ([1,4], p1)</div></pre></td></tr></table></figure>
+<p>pg状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># ceph pg dump_stuck |egrep ^0.2f</div><div class="line">ok</div><div class="line">0.2f    active+undersized+degraded [1,4]          1   [1,4]              1</div></pre></td></tr></table></figure>
+<p>注意，这里一个有意思的事情是，在第三步的时候只有一个副本在 osd.0 上，因为 osd.1 是主副本</p>
+<p>启动的时候，4 作为临时pg加入，然后等 1 恢复完以后</p>
+<p><strong>6、启动 osd.2</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># systemctl start ceph-osd@2</div></pre></td></tr></table></figure>
+<p>此时，pg 映射恢复正常</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd map rbd xfy</div><div class="line">osdmap e83 pool &apos;rbd&apos; (0) object &apos;xfy&apos; -&gt; pg 0.c76c82f (0.2f) -&gt; up ([1,2,0], p1) acting ([1,2,0], p1)</div></pre></td></tr></table></figure>
+<p>pg的状态开始变化</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># ceph pg dump_stuck |egrep ^0.2f</div><div class="line">ok</div><div class="line">0.2f               active+remapped [1,2]          1 [1,2,4]              1</div></pre></td></tr></table></figure>
+<p>直至OK</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph pg dump_stuck |egrep ^0.2f</div><div class="line">ok</div></pre></td></tr></table></figure>
+<h2 id="PG修复"><a href="#PG修复" class="headerlink" title="PG修复"></a>PG修复</h2><p><strong>1、我修改一下 osd.1 中对象 xfy 主副本的内容</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># cat /var/lib/ceph/osd/ceph-2/current/0.2f_head/xfy__head_0C76C82F__0</div><div class="line">xin fan yang have delicious food</div><div class="line">// 改为</div><div class="line"># cat /var/lib/ceph/osd/ceph-2/current/0.2f_head/xfy__head_0C76C82F__0</div><div class="line">xin fan yang have food</div></pre></td></tr></table></figure>
+<p>2、扫描这个PG</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph pg scrub 0.2f</div><div class="line">instructing pg 0.2f on osd.1 to scrub</div></pre></td></tr></table></figure>
+<p><strong>3、读这个对象</strong></p>
+<p>这时候会不会发生读到改过的错误内容呢？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># rados -p rbd get xfy 333</div><div class="line"># cat 333</div><div class="line">xin fan yang have delicious food</div></pre></td></tr></table></figure>
+<p>并没有，读到的仍然是正确的内容</p>
+<p><strong>4、查看ceph状态</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># ceph -s</div><div class="line">    cluster 4c7ec5af-cbd3-40fd-8c96-0615c77660d4</div><div class="line">     health HEALTH_ERR</div><div class="line">            1 pgs inconsistent</div><div class="line">            1 scrub errors</div><div class="line">  ...</div></pre></td></tr></table></figure>
+<p>报的错误是：有一个pg inconsistent，就是内容不一致。那么具体是哪个pg scurb errors了呢？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># ceph health detail</div><div class="line">HEALTH_ERR 1 pgs inconsistent; 1 scrub errors</div><div class="line">pg 0.2f is active+clean+inconsistent, acting [1,2,0]</div><div class="line">1 scrub errors</div></pre></td></tr></table></figure>
+<p>可以看到，正是我们修改的那个pg</p>
+<p><strong>5、修复PG</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph pg repair 0.2f</div><div class="line">instructing pg 0.2f on osd.1 to repair</div></pre></td></tr></table></figure>
+<p><strong>6、此时内容已被纠正过来</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># cat  /var/lib/ceph/osd/ceph-1/current/0.2f_head/xfy__head_0C76C82F__0</div><div class="line">xin fan yang have delicious food</div></pre></td></tr></table></figure>
+<p>此时，集群状态OK</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph health detail</div><div class="line">HEALTH_OK</div></pre></td></tr></table></figure>
+<h2 id="PG状态列表"><a href="#PG状态列表" class="headerlink" title="PG状态列表"></a>PG状态列表</h2><p><strong>1、peering</strong></p>
+<p>Ceph 为归置组建立互联时，会让存储归置组副本的 OSD 之间就其中的对象和元数据状态达成一致。 Ceph 完成了互联，也就意味着存储着归置组的 OSD 就其当前状态达成了一致。然而，互联过程的完成并不能表明各副本都有了数据的最新版本。</p>
+<p><strong>2、active</strong></p>
+<p>peering完成后，一归置组状态会变为 active 。 active 状态意味着数据已完好地保存到了主归置组和副本归置组。</p>
+<p><strong>3、clean</strong></p>
+<p>某一归置组处于 clean 状态时，主 OSD 和副本 OSD 已成功互联，并且没有偏离的归置组。 Ceph 已把归置组中的对象复制了规定次数。</p>
+<p><strong>4、degraded</strong></p>
+<p>当客户端向主 OSD 写入数据时，由主 OSD 负责把数据副本写入其余副本 OSD 。主 OSD 把对象写入存储器后，在副本 OSD 创建完对象副本并报告给主 OSD 之前，主 OSD 会一直停留在 degraded 状态。</p>
+<ul>
+<li>归置组状态可以处于 active+degraded 状态，原因在于一 OSD 即使尚未持有所有对象也可以处于 active 状态。如果一 OSD 挂了， Ceph 会把分配到此 OSD 的归置组都标记为 degraded ；那个 OSD 重生后，它们必须重新互联。然而，客户端仍可以向处于 degraded 状态的归置组写入新对象，只要它还在 active 状态。</li>
+<li>如果一 OSD 挂了，且老是处于 degraded 状态， Ceph 会把 down 的 OSD 标记为在集群外（ out ）、并把那个 down 掉的 OSD 上的数据重映射到其它 OSD 。从标记为 down 到 out 的时间间隔由 mon osd down out interval 控制，默认是 300 秒。</li>
+<li>归置组也会被降级（ degraded ），因为 Ceph 找不到本应存在于此归置组中的一或多个对象，这时，你不能读写找不到的对象，但仍能访问位于降级归置组中的其它对象。</li>
+</ul>
+<p><strong>5、recovering</strong></p>
+<p>Ceph 被设计为可容错，可抵御一定规模的软、硬件问题。当某 OSD 挂了（ down ）时，其内的归置组会落后于别的归置组副本；此 OSD 重生（ up ）时，归置组内容必须更新到当前状态；在此期间， OSD 处于 recovering 状态。</p>
+<blockquote>
+<p>恢复并非总是这些小事，因为一次硬件失败可能牵连多个 OSD 。比如一个机柜或房间的网络交换机失败了，这会导致多个主机上的 OSD 落后于集群的当前状态，故障恢复后每一个 OSD 都必须恢复。</p>
+</blockquote>
+<p>Ceph 提供了几个选项来均衡资源竞争，如新服务请求、恢复数据对象和恢复归置组到当前状态。</p>
+<ul>
+<li><code>osd recovery delay start</code> 选项允许一 OSD 在开始恢复进程前，先重启、重建互联、甚至处理一些重放请求；</li>
+<li><code>osd recovery threads</code> 选项限制恢复进程的线程数，默认为 1 线程； </li>
+<li><code>osd recovery thread timeout</code> 设置线程超时，因为多个 OSD 可能交替失败、重启和重建互联； </li>
+<li><code>osd recovery max active</code> 选项限制一 OSD 最多同时接受多少请求，以防它压力过大而不能正常服务； </li>
+<li><code>osd recovery max chunk</code> 选项限制恢复数据块尺寸，以防网络拥塞。</li>
+</ul>
+<p><strong>6、backfilling</strong></p>
+<p>有新 OSD 加入集群时， CRUSH 会把现有集群内的部分归置组重分配给它。强制新 OSD 立即接受重分配的归置组会使之过载，用归置组回填可使这个过程在后台开始。只要回填顺利完成，新 OSD 就可以对外服务了。</p>
+<p>在回填运转期间，你可能见到以下几种状态之一： </p>
+<ul>
+<li>backfill_wait 表明一回填操作在等待时机，尚未开始； </li>
+<li>backfill 表明一回填操作正在进行； </li>
+<li>backfill_too_full 表明需要进行回填，但是因存储空间不足而不能完成。</li>
+<li>incomplete 状态表明某归置组不能回填</li>
+</ul>
+<p>Ceph 提供了多个选项来解决重分配归置组给一 OSD （特别是新 OSD ）时相关的负载问题。</p>
+<ul>
+<li>默认，<code>osd_max_backfills</code> 把双向的回填并发量都设置为 10 ； </li>
+<li><code>osd backfill full \ ratio</code> 可让一 OSD 在接近占满率（默认 85% ）时拒绝回填请求，如果一 OSD 拒绝了回填请求，在 <code>osd backfill retry interval</code> 间隔之后将重试（默认 10 秒）； </li>
+<li>OSD 也能用 <code>osd backfill scan min</code> 和 <code>osd backfill scan max</code> 来管理扫描间隔（默认 64 和 512 ）。</li>
+</ul>
+<p><strong>7、remapped</strong></p>
+<p>负责维护某一归置组的 Acting Set 变更时，数据要从旧集合迁移到新的。新的主 OSD 要花费一些时间才能提供服务，所以老的主 OSD 还要持续提供服务、直到归置组迁移完。数据迁移完后，运行图会包含新 acting set 里的主 OSD 。</p>
+<p><strong>8、stale</strong></p>
+<p>虽然 Ceph 用心跳来保证主机和守护进程在运行，但是 ceph-osd 仍有可能进入 stuck 状态，它们没有按时报告其状态（如网络瞬断）。默认， OSD 守护进程每半秒（ 0.5 ）会一次报告其归置组、出流量、引导和失败统计状态，此频率高于心跳阀值。如果一归置组的主 OSD 所在的 acting set 没能向监视器报告、或者其它监视器已经报告了那个主 OSD 已 down ，监视器们就会把此归置组标记为 stale 。</p>
+<blockquote>
+<p>启动集群时，会经常看到 stale 状态，直到互联完成。集群运行一阵后，如果还能看到有归置组位于 stale 状态，就说明那些归置组的主 OSD 挂了（ down ）、或没在向监视器报告统计信息。</p>
+</blockquote>
+<p><strong>9、undersized</strong></p>
+<p>PG的副本数比pool的配置中副本数少。</p>
+<p>可以通过如下命令查看指定pool的副本数，默认是3。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># ceph osd pool get &#123;poolname&#125; size</div></pre></td></tr></table></figure>
+<p><strong>10、peered</strong></p>
+<p>PG已经peered，但是副本数少于pool配置中指定的最小副本数，不能向client提供IO操作。在这种状态下会出发 recovery 操作，所以 pg 最终会愈合到最小副本数。</p>
+<p>可通过如下命令得到指定pool的最小副本数，默认是2。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># ceph osd pool get &#123;poolname&#125; min_size</div></pre></td></tr></table></figure>
+<p><strong>11、incomplete</strong></p>
+<p>ceph检测到一个PG缺少可能已经发生的写入信息，或没有任何健康的副本。如果看到此状态，请尝试启动任何可能包含所需信息的失败的OSD，或暂时调整min_size以允许恢复。</p>
+<p><strong>其他：</strong></p>
+<p>一个归置组状态不是 active+clean 时未必有问题。一般来说，归置组卡住时 Ceph 的自修复功能往往无能为力，卡住的状态细分为：</p>
+<ul>
+<li>Unclean: 归置组里有些对象的副本数未达到期望次数，它们应该在恢复中；</li>
+<li>Inactive: 归置组不能处理读写请求，因为它们在等着一个持有最新数据的 OSD 回到 up 状态；</li>
+<li>Stale: 归置组们处于一种未知状态，因为存储它们的 OSD 有一阵子没向监视器报告了（由 mon osd report timeout 配置）。</li>
+</ul>
+<p>找出卡住的归置组</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph pg dump_stuck [unclean|inactive|stale|undersized|degraded]</div></pre></td></tr></table></figure>
+<p>PG的命名，利用一个对象演练PG状态的变化，并详细介绍PG状态及意义。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/07/28/ceph-placement-group/">ceph placement group</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
+        <p><span>发布时间:</span>2017-07-28, 15:20:25</p>
+        <p><span>最后更新:</span>2017-07-28, 15:44:40</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/07/28/ceph-placement-group/" title="ceph placement group">http://xiaqunfeng.cc/2017/07/28/ceph-placement-group/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/07/28/ceph-placement-group/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/07/28/Remove-Big-RBD-Image/">
+                    Remove Big RBD Image
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#PG命名"><span class="toc-number">1.</span> <span class="toc-text">PG命名</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PG唯一标识符"><span class="toc-number">1.1.</span> <span class="toc-text">PG唯一标识符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看osd目录里pg"><span class="toc-number">1.2.</span> <span class="toc-text">查看osd目录里pg</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PG状态"><span class="toc-number">2.</span> <span class="toc-text">PG状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#获取PG列表"><span class="toc-number">3.</span> <span class="toc-text">获取PG列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#写一个object"><span class="toc-number">4.</span> <span class="toc-text">写一个object</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PG状态变化"><span class="toc-number">5.</span> <span class="toc-text">PG状态变化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PG修复"><span class="toc-number">6.</span> <span class="toc-text">PG修复</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PG状态列表"><span class="toc-number">7.</span> <span class="toc-text">PG状态列表</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"ceph placement group　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section id="comments">
+    <style> aside.comment-bar { margin: auto 30px; }</style>
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function(){
+            this.page.url = 'http://xiaqunfeng.cc/2017/07/28/ceph-placement-group/';
+            this.page.identifier = '2017/07/28/ceph-placement-group/';
+        };
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = '//null.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+</section>
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/07/28/Remove-Big-RBD-Image/" title="下一篇: Remove Big RBD Image">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/07/28/ceph-placement-group/">ceph placement group</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/28/Remove-Big-RBD-Image/">Remove Big RBD Image</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/17/centos下ceph部署/">centos下ceph部署</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/17/ceph部署完全手册/">ceph部署完全手册</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/12/fio测试ceph/">fio测试ceph</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/07/centos7上安装python3/">centos7上安装python3</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/06/XFS-vs-EXT4/">XFS vs EXT4</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/06/ceph-luminous新命令探索/">ceph luminous新命令探索</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/04/ceph-Luminous新功能之crush-class/">ceph Luminous新功能之crush class</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/29/ceph-Luminous初探/">ceph Luminous dashboard初探</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/28/Ceph-v12-1-0-Luminous-RC-released/">Ceph v12.1.0 Luminous RC released</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/23/wget批量下载http目录及文件/">wget批量下载http目录及文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/16/公有云和私有云的区别/">公有云和私有云的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/16/centos-7下操纵ceph进程/">centos 7下操纵ceph进程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/15/vim移动光标/">vim移动光标</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/07/Map-RBD-Devices-on-NBD/">Map RBD Devices on NBD</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/06/ceph-rbd-map-failed/">ceph rbd map failed</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/26/ceph-mon时钟偏移问题/">ceph mon时钟偏移问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/26/GPG-key-retrieval-failure/">GPG key retrieval failure</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/25/mac上实现vim的markdown预览/">mac上实现vim的markdown预览</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/23/ceph日志迁移/">ceph日志迁移</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/11/cpu拓扑结构/">cpu拓扑及ceph使用时的优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/07/firewalld和iptables/">firewalld和iptables</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/07/S-M-A-R-T-磁盘健康状态监测工具/">S.M.A.R.T--磁盘健康状态监测工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/04/iterm2配色/">iterm2配色--zsh & oh-my-zsh</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/03/nginx使用和配置/">nginx使用和配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/02/iterm2快捷键的使用/">iterm2快捷键的使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/02/VSM部署/">VSM部署</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/常用git命令清单/">常用git命令清单</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/理解socket编程/">理解socket编程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/cow和row快照机制的区别/">cow和row快照机制的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/Machine-Learning-Yearning-5、6/">Machine Learning Yearning(5、6、7)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/03/Machine-Learning-Yearning-3、4/">Machine Learning Yearning(3、4)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/02/Machine-Learning-Yearning-开篇、1、2/">Machine Learning Yearning(开篇、1、2)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/01/异步IO/">异步IO</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/23/Bluestore调研/">Bluestore调研</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/23/RocksDB相比LevelDB的新特性/">RocksDB相比LevelDB的新特性</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/20/Kernel modules (简体中文)/">Kernel modules (简体中文)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/Linux命令——pgrep和pkill/">Linux命令——pgrep和pkill</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/16/Linux命令——strace/">Linux命令——strace</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/10/获取每个osd的PG数/">获取每个osd的PG数</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/10/RBD-相关操作/">RBD 相关操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/07/在Kraken-release版本上测试Ceph-BlueStore/">在Kraken release版本上测试Ceph BlueStore</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/04/用户态和内核态/">用户态和内核态</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/04/ceph升级到kraken版本/">ceph升级到kraken版本</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/03/Dm-cache-vs-Bcache/">Dm-cache vs Bcache</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/03/Flashcache-vs-Cache-tier/">Flashcache vs Cache tier</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/25/Linux命令——parted/">Linux命令——parted</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/25/认识SSD/">认识SSD</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/24/Ceph-KRAKEN(V11.2.0)/">Ceph — V11.2.0 KRAKEN(译)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/24/Crushmap学习/">Crushmap学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/Ceph中严重数据不一致性BUG/">Ceph中严重数据不一致性BUG</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/块存储的世界/">块存储的世界</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/17/Linux命令——uptime/">Linux命令——uptime</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/dd磁盘命令小记/">dd磁盘命令小记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/解决calamari无法获取集群hosts信息的BUG/">解决calamari无法获取集群hosts信息的BUG</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/ubuntu下配置邮件发送/">ubuntu下配置邮件发送</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/ubuntu下系统打包/">ubuntu下系统打包</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux命令——history及其优化/">Linux命令——history及其优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux下利用screen进行屏幕协作/">Linux下利用screen进行屏幕协作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux命令——crontab/">Linux命令——crontab</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/06/hexo的搭建/">Mac上hexo博客的搭建</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2017 夏天的风
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
