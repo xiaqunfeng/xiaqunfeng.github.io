@@ -492,7 +492,7 @@
 <h3 id="ceph-osd-purge"><a href="#ceph-osd-purge" class="headerlink" title="ceph osd purge"></a>ceph osd purge</h3><p>功能：</p>
 <p>将从集群中删除OSD的所有痕迹，包括其cephx加密密钥，dm-crypt lockbox秘钥，OSD ID和crush map entry。</p>
 <p>命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">osd purge &lt;osdname (id|osd.id)&gt; &#123;--yes-i-really-mean-it&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph osd purge &lt;osdname (id|osd.id)&gt; &#123;--yes-i-really-mean-it&#125;</div></pre></td></tr></table></figure>
 <p>解释：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">purge all osd data from the monitors. Combines `osd destroy`, `osd rm`, and `osd crush rm`</div></pre></td></tr></table></figure>
 <p>示例：</p>

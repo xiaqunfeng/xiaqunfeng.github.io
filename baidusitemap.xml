@@ -4,6 +4,23 @@
 
     
   <url>
+    <loc>http://xiaqunfeng.cc/2017/07/06/ceph-luminous%E6%96%B0%E5%91%BD%E4%BB%A4%E6%8E%A2%E7%B4%A2/</loc>
+    <lastmod>2017-07-26T03:17:21.000Z</lastmod>
+    <data>
+        <display>
+        <title>ceph luminous新命令探索</title>
+        <pubTime>2017-07-06T06:27:33.000Z</pubTime>
+        
+        <tag>ceph</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://xiaqunfeng.cc/2017/07/17/centos%E4%B8%8Bceph%E9%83%A8%E7%BD%B2/</loc>
     <lastmod>2017-07-17T10:35:26.000Z</lastmod>
     <data>
@@ -85,23 +102,6 @@
         <pubTime>2017-07-06T08:55:54.000Z</pubTime>
         
         <tag>Linux</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/07/06/ceph-luminous%E6%96%B0%E5%91%BD%E4%BB%A4%E6%8E%A2%E7%B4%A2/</loc>
-    <lastmod>2017-07-06T06:38:59.000Z</lastmod>
-    <data>
-        <display>
-        <title>ceph luminous新命令探索</title>
-        <pubTime>2017-07-06T06:27:33.000Z</pubTime>
-        
-        <tag>ceph</tag>
          
          
            

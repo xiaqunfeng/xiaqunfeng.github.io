@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://xiaqunfeng.cc/2017/07/06/ceph-luminous%E6%96%B0%E5%91%BD%E4%BB%A4%E6%8E%A2%E7%B4%A2/</loc>
+    
+    <lastmod>2017-07-26T03:17:21.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://xiaqunfeng.cc/2017/07/17/centos%E4%B8%8Bceph%E9%83%A8%E7%BD%B2/</loc>
     
     <lastmod>2017-07-17T10:35:26.000Z</lastmod>
@@ -40,13 +47,6 @@
     <loc>http://xiaqunfeng.cc/2017/07/06/XFS-vs-EXT4/</loc>
     
     <lastmod>2017-07-06T09:05:19.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/07/06/ceph-luminous%E6%96%B0%E5%91%BD%E4%BB%A4%E6%8E%A2%E7%B4%A2/</loc>
-    
-    <lastmod>2017-07-06T06:38:59.000Z</lastmod>
     
   </url>
   

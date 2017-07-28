@@ -21,7 +21,7 @@
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/07/06/ceph-luminous新命令探索/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="在luminous版本中有好多新命令，来逐一探索一下。">
-<meta property="og:updated_time" content="2017-07-06T06:38:59.000Z">
+<meta property="og:updated_time" content="2017-07-26T03:17:21.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ceph luminous新命令探索">
 <meta name="twitter:description" content="在luminous版本中有好多新命令，来逐一探索一下。">
@@ -33,7 +33,7 @@
 
 
 
-    <link rel="shortcut icon" href="/apple2.ico">
+    <link rel="shortcut icon" href="/red_apple.ico">
 
 
 
@@ -334,7 +334,7 @@
 <h3 id="ceph-osd-purge"><a href="#ceph-osd-purge" class="headerlink" title="ceph osd purge"></a>ceph osd purge</h3><p>功能：</p>
 <p>将从集群中删除OSD的所有痕迹，包括其cephx加密密钥，dm-crypt lockbox秘钥，OSD ID和crush map entry。</p>
 <p>命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">osd purge &lt;osdname (id|osd.id)&gt; &#123;--yes-i-really-mean-it&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph osd purge &lt;osdname (id|osd.id)&gt; &#123;--yes-i-really-mean-it&#125;</div></pre></td></tr></table></figure>
 <p>解释：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">purge all osd data from the monitors. Combines `osd destroy`, `osd rm`, and `osd crush rm`</div></pre></td></tr></table></figure>
 <p>示例：</p>
@@ -389,7 +389,7 @@
         <p><span>本文标题:</span><a href="/2017/07/06/ceph-luminous新命令探索/">ceph luminous新命令探索</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
         <p><span>发布时间:</span>2017-07-06, 14:27:33</p>
-        <p><span>最后更新:</span>2017-07-06, 14:38:59</p>
+        <p><span>最后更新:</span>2017-07-26, 11:17:21</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/07/06/ceph-luminous新命令探索/" title="ceph luminous新命令探索">http://xiaqunfeng.cc/2017/07/06/ceph-luminous新命令探索/</a>
             <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/07/06/ceph-luminous新命令探索/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
