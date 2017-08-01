@@ -4,6 +4,106 @@
   
     
     <entry>
+      <title><![CDATA[ceph peering过程分析]]></title>
+      <url>http://xiaqunfeng.cc/2017/08/01/ceph-peering%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/</url>
+      <content type="html"><![CDATA[<p>总结分析peering过程中的一些笔记，介绍peering的各个阶段和状态转换。<br><a id="more"></a></p>
+<p>peering过程使得一个PG内的OSD达成一个一致状态。当主从副本达成一个一致状态后，PG处于active状态，peering过程的状态就结束了。但此时该PG的三个OSD的数据副本上的数据并非完全一致。</p>
+<p>互为副本的副本数个 PG 的元数据达到一致的过程。官方解释</p>
+<blockquote>
+<p>the process of bringing all of the OSDs that store a Placement Group (PG) into agreement about the state of all of the objects (and their metadata) in that PG. Note that agreeing on the state does not mean that they all have the latest contents.</p>
+</blockquote>
+<h2 id="触发场景"><a href="#触发场景" class="headerlink" title="触发场景"></a>触发场景</h2><p>当系统初始化时，OSD重新启动导致PG重新加载，或者PG创建时，PG会发生一次peering过程。</p>
+<p>当有OSD失效，OSD的增加或者删除等导致PG的acting set发生了变化，该PG就会重新发起一次peering过程。</p>
+<h2 id="一些概念"><a href="#一些概念" class="headerlink" title="一些概念"></a>一些概念</h2><p>acting set 和 up set</p>
+<p>临时 PG</p>
+<p>权威日志olog</p>
+<p>up_thru</p>
+<h2 id="peering状态转换图"><a href="#peering状态转换图" class="headerlink" title="peering状态转换图"></a>peering状态转换图</h2><h3 id="状态转换"><a href="#状态转换" class="headerlink" title="状态转换"></a>状态转换</h3><p><img src="http://oow6unnib.bkt.clouddn.com/FullSizeRender%204.jpg" alt="FullSizeRender 4"></p>
+<p>过程如下：</p>
+<ul>
+<li><p>当进入primary/peering状态后，就进入默认子状态getinfo中</p>
+</li>
+<li><p>状态getinfo接收事件gotinfo后，转移到getlog状态中</p>
+</li>
+<li><p>如果状态getlog接收到isIncomplete事件后，跳转到incomplete状态</p>
+</li>
+<li><p>如果getlog接收到事件gotlog后，就转入getmissing状态</p>
+</li>
+<li><p>状态getmissing接收到事件activate事件，转入状态active</p>
+</li>
+</ul>
+<h2 id="三个阶段"><a href="#三个阶段" class="headerlink" title="三个阶段"></a>三个阶段</h2><p>由状态转换过程可知，peering过程基本分为以下三个步骤</p>
+<ul>
+<li><strong>步骤一：GetInfo</strong></li>
+</ul>
+<p>​    PG的主OSD通过发送消息获取所有从OSD的pg_info信息。</p>
+<ul>
+<li><strong>步骤二：GetLog</strong></li>
+</ul>
+<p>​    根据各个副本获取的pg_info信息的比较，选择一个拥有权威日志的OSD。如果主OSD不是拥有权威日志的OSD，就从该OSD上拉取权威日志。主OSD完成拉取权威日志后也就拥有了权威日志。</p>
+<ul>
+<li><strong>步骤三：GetMissing</strong></li>
+</ul>
+<p>​    主OSD拉取其他OSD的PG日志。通过与本地权威日志的比较，来计算该OSD上缺失的object信息，作为后续recover操作过程的依据。</p>
+<p>最后通过active操作激活主OSD，并发送notify通知消息，激活相应的从OSD。</p>
+<h3 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h3><p> <img src="http://oow6unnib.bkt.clouddn.com/peering.png" alt="peering"></p>
+<h2 id="GetInfo"><a href="#GetInfo" class="headerlink" title="GetInfo"></a>GetInfo</h2><p>获取该PG在其他OSD上的 pg_info 信息。</p>
+<p>其他OSD：当前PG的活跃OSD，以及past interval期间该PG所有处于up 状态的OSD。</p>
+<p>Past_interval 是 epoch 的一个序列。在该序列内一个PG的 acting set 和 up set不会变化。current_interval 也是一个特殊的 past_interval，它是当前最新的一个没有变化的序列。</p>
+<ul>
+<li><p>1、调用函数 generate_past_intervals 计算 past intervals 的值</p>
+<p>​选取一个epoch区间，对区间内的每个epoch计算其对应的acting set、acting primary、up set、up primary，将相同的结果作为一个interval（一个interval中 acting set 和up set 不会变化）；</p>
+<p>​判断每个interval，将up状态的osd加入到prior set；同时将当前的（current interval）acting set和up set加入到prior set；</p>
+</li>
+<li><p>2、调用函数 build_prior 构造获取 pg_info_t 信息的OSD 列表</p>
+<p>​向prior_set中的每个up状态的osd发送Query INFO请求，并等待接收应答，将接收到的请求保存到peer_info中；</p>
+</li>
+<li><p>3、调用函数 get_infos 给参与的OSD 发送获取请求</p>
+<p>​收到最后一个应答后，状态机post event到GotInfo状态；如果在此期间有一个接收请求的osd down掉，这个PG的状态将持续等待，直到对应的osd恢复；</p>
+</li>
+</ul>
+<h2 id="GetLog"><a href="#GetLog" class="headerlink" title="GetLog"></a>GetLog</h2><p>当PG的主OSD获取到所有从OSD，以及past interval期间的所有参与该PG且目前仍处于active状态的OSD的 pg_info 信息后，就跳转到 GetLog 状态。</p>
+<ul>
+<li>1、遍历peer_info，查找best info，将其作为authoritative log；将acting set/peer_info中将处于complete状态的pg以及up set的所有pg存入acting_backfill；</li>
+<li>2、如果计算出的authoritative log对应的pg是自身，直接post event到GotLog；否则，向其所在的osd发送Query Log请求；</li>
+<li>3、接收请求的osd应答，并将获取的log merge到本地，状态机post event到GetMissing；如果收不到应答，状态将持续等待；</li>
+</ul>
+<h3 id="olog的选择"><a href="#olog的选择" class="headerlink" title="olog的选择"></a>olog的选择</h3><p>函数 find_best_info 选取拥有权威日志的OSD：必须是非 incomplete 的OSD，必须拥有最大的 last_epoch_strated，其他选择优先顺序如下：</p>
+<p>1、具有最新的 last_update 的OSD；</p>
+<p>2、如果条件 1 相同，选择日志更长的；</p>
+<p>3、如果 1、2条件都相同，选择当前的主OSD；</p>
+<p>经过该阶段，PG的主OSD已经获取了权威日志，以及pg_info的权威信息。</p>
+<h2 id="GetMissing"><a href="#GetMissing" class="headerlink" title="GetMissing"></a>GetMissing</h2><p>首先拉取各个从OSD上的有效日志</p>
+<p>用主OSD上的权威日志与各个从OSD日志进行对比，计算出各个从OSD上不一致的对象并保存在对应的 pg_missing_t 结构中，作为后续数据修复的依据。</p>
+<p>主OSD上不一致的对象信息，已经在合并权威日志的过程中计算过了。</p>
+<ul>
+<li>1、遍历acting_backfill，向与primary pg log有交集的pg所在的osd发送Query Log请求；将剩余没有交集的pg放入peer_missing，生成missing set用于后续recovery；</li>
+<li>2、将收到的每一个应答merge到本地，如果在此期间有osd down掉，这个PG的状态将持续等待；收到所有的应答后，当前pg的状态机进入Activate状态，peering过程结束；</li>
+</ul>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>整个peering过程主要分为三个阶段，GetInfo -&gt; GetLog -&gt; GetMissing</p>
+<ul>
+<li>首先向prior set、acting set、up set中的每个osd请求pg infos, 选出authoritative log对应的pg</li>
+<li>其次向authoritative log所在的osd请求authoritative log</li>
+<li>最后获取recovery过程需要的missing set</li>
+</ul>
+<p>peering时间的长短并不可控，主要是在于请求的osd是否能够及时响应；如果这个阶段某个osd down掉，很可能导致部分pg一直处在peering状态，即所有分布到这个pg上的IO都会阻塞。</p>
+<h3 id="后续active操作"><a href="#后续active操作" class="headerlink" title="后续active操作"></a>后续active操作</h3><p>getmissing操作成功后，就跳转到activate状态。到本阶段为止，peering的主要工作已完成，这里是后续处理，激活各个副本。</p>
+<h2 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h2><p>为了减少peering过程对client造成的影响，社区提出Faster Peering，该plan主要有以下两点：</p>
+<p>1）向最近prior set interval中的osd请求log+missing，跳过GetLog阶段；</p>
+<p>2）向acting set和up set中的osd请求log+missing，跳过GetMissing阶段；</p>
+<p>部分参考资料：<a href="https://www.ustack.com/blog/ceph%EF%BC%8Dpg-peering/" target="_blank" rel="external">Ceph：pg peering过程分析</a></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[ceph placement group]]></title>
       <url>http://xiaqunfeng.cc/2017/07/28/ceph-placement-group/</url>
       <content type="html"><![CDATA[<p>从PG的命名开始介绍，利用一个对象详细演练PG各个状态的变化，并介绍PG状态列表及意义。<br><a id="more"></a></p>
@@ -182,7 +282,6 @@
 </ul>
 <p>找出卡住的归置组</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph pg dump_stuck [unclean|inactive|stale|undersized|degraded]</div></pre></td></tr></table></figure>
-<p>PG的命名，利用一个对象演练PG状态的变化，并详细介绍PG状态及意义。</p>
 ]]></content>
       
         
@@ -4369,12 +4468,6 @@
     </entry>
     
     <entry>
-      <title><![CDATA[tags]]></title>
-      <url>http://xiaqunfeng.cc/tags/index.html</url>
-      <content type="html"></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[关于我]]></title>
       <url>http://xiaqunfeng.cc/about/index.html</url>
       <content type="html"><![CDATA[<p align="center"><strong>关注ceph、分布式存储、openstack、容器、机器学习</strong></p>
@@ -4384,6 +4477,12 @@
 </blockquote>
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果该博客文章对您有所帮助，感谢一杯咖啡的鼓励。 </p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 ]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[tags]]></title>
+      <url>http://xiaqunfeng.cc/tags/index.html</url>
+      <content type="html"></content>
     </entry>
     
   
