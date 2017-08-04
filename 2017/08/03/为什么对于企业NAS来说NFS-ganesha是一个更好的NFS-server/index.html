@@ -21,7 +21,7 @@
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/08/03/为什么对于企业NAS来说NFS-ganesha是一个更好的NFS-server/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="如题，介绍了ganesha，同时对比了用户态下的nfs server(ganesha)和内核态下传统nfs server。">
-<meta property="og:updated_time" content="2017-08-04T03:01:51.000Z">
+<meta property="og:updated_time" content="2017-08-04T03:36:01.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="为什么对于企业NAS来说NFS-ganesha是一个更好的NFS server">
 <meta name="twitter:description" content="如题，介绍了ganesha，同时对比了用户态下的nfs server(ganesha)和内核态下传统nfs server。">
@@ -295,8 +295,7 @@
 <p>8、不感知集群管理</p>
 <p>同时拥有一个小但是在成长中的社区</p>
 <p>积极参与者有：IBM, Panasas, Redhat, LinuxBox, CES</p>
-<p>##Enterprise NAS </p>
-<p>1、通过集群配置可靠、冗余和故障安全。</p>
+<h2 id="Enterprise-NAS"><a href="#Enterprise-NAS" class="headerlink" title="Enterprise NAS"></a>Enterprise NAS</h2><p>1、通过集群配置可靠、冗余和故障安全。</p>
 <p>2、通过多个协议服务结构化和非机构化数据。</p>
 <p>3、在容量和性能上可扩展</p>
 <ul>
@@ -318,26 +317,16 @@
 </ul>
 <p>2、为什么用户空间更好</p>
 <ul>
-<li><p>用户空间比内核空间更灵活</p>
-</li>
-<li><p>实现 restarts, failover, failback 更容易</p>
-</li>
-<li><p>不需要实现系统调用</p>
-</li>
-<li><p>和用户空间的服务的交互没有 up-calls </p>
-</li>
-<li><p>clustering变得自然而简单</p>
-</li>
-<li><p>有针对性和侵略性的缓存功能</p>
-</li>
-<li><p>灵活和插件式的 FSAL（可以利用的 FS 的特定功能）</p>
-</li>
-<li><p>可以通过支持通用的 DLM 分布式锁管理来支持 multi-Protocol</p>
-</li>
-<li><p>易于实现的 multi-tenancy</p>
-</li>
-<li><p>易于监控和控制资源消耗，甚至扩展至强制执行QoS</p>
-</li>
+<li>用户空间比内核空间更灵活</li>
+<li>实现 restarts, failover, failback 更容易</li>
+<li>不需要实现系统调用</li>
+<li>和用户空间的服务的交互没有 up-calls </li>
+<li>clustering变得自然而简单</li>
+<li>有针对性和侵略性的缓存功能</li>
+<li>灵活和插件式的 FSAL（可以利用的 FS 的特定功能）</li>
+<li>可以通过支持通用的 DLM 分布式锁管理来支持 multi-Protocol</li>
+<li>易于实现的 multi-tenancy</li>
+<li>易于监控和控制资源消耗，甚至扩展至强制执行QoS</li>
 <li>可管理性和调试能力是重要的加分项</li>
 </ul>
 <p>3、内核服务没有优点吗？优点在这</p>
@@ -414,7 +403,7 @@
         <p><span>本文标题:</span><a href="/2017/08/03/为什么对于企业NAS来说NFS-ganesha是一个更好的NFS-server/">为什么对于企业NAS来说NFS-ganesha是一个更好的NFS server</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
         <p><span>发布时间:</span>2017-08-03, 19:57:19</p>
-        <p><span>最后更新:</span>2017-08-04, 11:01:51</p>
+        <p><span>最后更新:</span>2017-08-04, 11:36:01</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/08/03/为什么对于企业NAS来说NFS-ganesha是一个更好的NFS-server/" title="为什么对于企业NAS来说NFS-ganesha是一个更好的NFS server">http://xiaqunfeng.cc/2017/08/03/为什么对于企业NAS来说NFS-ganesha是一个更好的NFS-server/</a>
             <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/08/03/为什么对于企业NAS来说NFS-ganesha是一个更好的NFS-server/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -444,7 +433,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#What-is-NFS-Ganesha"><span class="toc-number">1.</span> <span class="toc-text">What is NFS-Ganesha?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Kernel-vs-User-Space-Server"><span class="toc-number">2.</span> <span class="toc-text">Kernel vs User Space Server</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Clustering-with-NFS-Ganesha"><span class="toc-number">3.</span> <span class="toc-text">Clustering with NFS-Ganesha</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cluster-Manager-Abstraction-Layer-CMAL"><span class="toc-number">4.</span> <span class="toc-text">Cluster Manager Abstraction Layer (CMAL)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cluster-DRC"><span class="toc-number">5.</span> <span class="toc-text">Cluster DRC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Failover-IP-Move"><span class="toc-number">6.</span> <span class="toc-text">Failover/IP Move</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Distributed-Lock-manager"><span class="toc-number">7.</span> <span class="toc-text">Distributed Lock manager</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FSAL-Enhancements-and-new-features"><span class="toc-number">8.</span> <span class="toc-text">FSAL Enhancements and new features</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NFS-Ganesha-links"><span class="toc-number">9.</span> <span class="toc-text">NFS-Ganesha links</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#What-is-NFS-Ganesha"><span class="toc-number">1.</span> <span class="toc-text">What is NFS-Ganesha?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Enterprise-NAS"><span class="toc-number">2.</span> <span class="toc-text">Enterprise NAS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Kernel-vs-User-Space-Server"><span class="toc-number">3.</span> <span class="toc-text">Kernel vs User Space Server</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Clustering-with-NFS-Ganesha"><span class="toc-number">4.</span> <span class="toc-text">Clustering with NFS-Ganesha</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cluster-Manager-Abstraction-Layer-CMAL"><span class="toc-number">5.</span> <span class="toc-text">Cluster Manager Abstraction Layer (CMAL)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cluster-DRC"><span class="toc-number">6.</span> <span class="toc-text">Cluster DRC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Failover-IP-Move"><span class="toc-number">7.</span> <span class="toc-text">Failover/IP Move</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Distributed-Lock-manager"><span class="toc-number">8.</span> <span class="toc-text">Distributed Lock manager</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FSAL-Enhancements-and-new-features"><span class="toc-number">9.</span> <span class="toc-text">FSAL Enhancements and new features</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NFS-Ganesha-links"><span class="toc-number">10.</span> <span class="toc-text">NFS-Ganesha links</span></a></li></ol>
         
     </div>
     <style>
