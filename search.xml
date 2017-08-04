@@ -4,6 +4,140 @@
   
     
     <entry>
+      <title><![CDATA[为什么对于企业NAS来说NFS-ganesha是一个更好的NFS server]]></title>
+      <url>http://xiaqunfeng.cc/2017/08/03/%E4%B8%BA%E4%BB%80%E4%B9%88%E5%AF%B9%E4%BA%8E%E4%BC%81%E4%B8%9ANAS%E6%9D%A5%E8%AF%B4NFS-ganesha%E6%98%AF%E4%B8%80%E4%B8%AA%E6%9B%B4%E5%A5%BD%E7%9A%84NFS-server/</url>
+      <content type="html"><![CDATA[<p>如题，介绍了ganesha，同时对比了用户态下的nfs server(ganesha)和内核态下传统nfs server。<br><a id="more"></a></p>
+<h2 id="What-is-NFS-Ganesha"><a href="#What-is-NFS-Ganesha" class="headerlink" title="What is NFS-Ganesha?"></a>What is NFS-Ganesha?</h2><p>1、是NFS server用户态层面的实现</p>
+<p>支持 NFS V2, V3, V4, V4.1, V4.2</p>
+<p>2、可以管理庞大的元数据和数据缓存</p>
+<p>3、能够访问不同的数据集</p>
+<p>4、规定开发 FS 的具体特性</p>
+<p>5、能够同时为多个不同类型的文件系统服务</p>
+<p>6、能够同时服务多个协议</p>
+<p>7、可以作为一个 Proxy server 并导出一个远端的 NFSv4 server</p>
+<p>8、不感知集群管理</p>
+<p>同时拥有一个小但是在成长中的社区</p>
+<p>积极参与者有：IBM, Panasas, Redhat, LinuxBox, CES</p>
+<p>##Enterprise NAS </p>
+<p>1、通过集群配置可靠、冗余和故障安全。</p>
+<p>2、通过多个协议服务结构化和非机构化数据。</p>
+<p>3、在容量和性能上可扩展</p>
+<ul>
+<li>灵活的 scale-up 和 scale-out</li>
+<li>能够支持大量客户端</li>
+</ul>
+<p>4、企业级特性：tiering, de-dup, multi-tenancy, multi-protocol 等</p>
+<p>5、灵活的运行在多个平台并服务于异构数据集</p>
+<p>6、支持复杂的安全配置</p>
+<p>7、QoS - 服务质量（Quality of Service）</p>
+<h2 id="Kernel-vs-User-Space-Server"><a href="#Kernel-vs-User-Space-Server" class="headerlink" title="Kernel vs User Space Server"></a>Kernel vs User Space Server</h2><p>1、内核级服务需要提供更多的up-calls</p>
+<ul>
+<li>Mounted和exportfs信息</li>
+<li>ID映射</li>
+<li>GSS API</li>
+<li>客户端ID跟踪</li>
+<li>Statd 相互作用</li>
+<li>集群相关的服务</li>
+</ul>
+<p>2、为什么用户空间更好</p>
+<ul>
+<li><p>用户空间比内核空间更灵活</p>
+</li>
+<li><p>实现 restarts, failover, failback 更容易</p>
+</li>
+<li><p>不需要实现系统调用</p>
+</li>
+<li><p>和用户空间的服务的交互没有 up-calls </p>
+</li>
+<li><p>clustering变得自然而简单</p>
+</li>
+<li><p>有针对性和侵略性的缓存功能</p>
+</li>
+<li><p>灵活和插件式的 FSAL（可以利用的 FS 的特定功能）</p>
+</li>
+<li><p>可以通过支持通用的 DLM 分布式锁管理来支持 multi-Protocol</p>
+</li>
+<li><p>易于实现的 multi-tenancy</p>
+</li>
+<li><p>易于监控和控制资源消耗，甚至扩展至强制执行QoS</p>
+</li>
+<li>可管理性和调试能力是重要的加分项</li>
+</ul>
+<p>3、内核服务没有优点吗？优点在这</p>
+<ul>
+<li>文件句柄：最近才有的主要优势，现在有了开放式的支持</li>
+<li>性能：用户空间差一点，但可以通过集群FS，积极缓存，自定义RPC，以及积极的线程/并行执行来抵消</li>
+<li>所有权/权限：每一个处理都通过 setfsuid。但是其他可能需要执行多个系统调用或特殊的 FS 接口来实现，如VFS，Luster，GPFS，但实CEPH，Gluster 可以接受lib库实现</li>
+<li>多次系统调用由于WCC的原因需要 perform, write/getattr</li>
+<li>没有重复的缓存和零拷贝读写，降低了复杂性</li>
+</ul>
+<h2 id="Clustering-with-NFS-Ganesha"><a href="#Clustering-with-NFS-Ganesha" class="headerlink" title="Clustering with NFS-Ganesha"></a>Clustering with NFS-Ganesha</h2><p>1、建议 Cluster Manager Abstraction Layer (CMAL) ，使集群不感知</p>
+<p>2、故障转移和IP移动处理</p>
+<p>3、集群感知DRC</p>
+<p>4、跨集群的DLM</p>
+<p>5、集群范围的宽限期管理</p>
+<h2 id="Cluster-Manager-Abstraction-Layer-CMAL"><a href="#Cluster-Manager-Abstraction-Layer-CMAL" class="headerlink" title="Cluster Manager Abstraction Layer (CMAL)"></a>Cluster Manager Abstraction Layer (CMAL)</h2><p>1、为集群管理提供了一个抽象的支持</p>
+<p>2、管理集群节点中节点内的通信</p>
+<p>3、通用性足以实现 cDRC, DLM等特性的多个集群交互</p>
+<p>4、集群管理不可知。容易插入任何集群管理中</p>
+<p>5、模仿FSAL</p>
+<p>6、CMAL层将具有基于集群管理的功能指针</p>
+<p>7、能够提供pNFS配置文件中DS和MDS节点间的集群通信</p>
+<h2 id="Cluster-DRC"><a href="#Cluster-DRC" class="headerlink" title="Cluster DRC"></a>Cluster DRC</h2><p>1、DRC帮助server识别非幂等操作的重复请求，并进行相应处理</p>
+<p>2、识别back-up节点以备份DRC，或在集群/中心位置的所有节点上备份</p>
+<p>3、通过CMAL存储和获取DRC entries</p>
+<p>4、接口</p>
+<ul>
+<li>init_drc_cmal(server-ip)：初始化CMAL接口，设置server-ip的备份节点。</li>
+<li>add_drc_entry(xid, entry, server-ip)：在集群中存储DRC entry。</li>
+<li>retrieve_drc_entries(server-ip)：检索特定服务节点的所有entry</li>
+<li>shutdown_drc_cmal(server-ip)：关闭指定 server-ip 的CMAL接口</li>
+</ul>
+<h2 id="Failover-IP-Move"><a href="#Failover-IP-Move" class="headerlink" title="Failover/IP Move"></a>Failover/IP Move</h2><p>1、NLM使其非常复杂，但NFS-Ganesha架构面临挑战。</p>
+<p>2、在第一次加锁和最后一次解锁时，Ganesha调用集群管理提供的接口去register(monitor)/unregister(unmonitor) the client-ip, server-ip pair</p>
+<p>3、当IP被移动（手动或者失败），CM发送 sm_notify 给影响 server-ip的客户端</p>
+<p>4、CM为相应的服务器节点生成事件，release-ip，take-ip，所以状态应该从源节点释放，在目的节点获取</p>
+<p>5、根据锁的粒度，相应的锁/文件系统，或者整个集群应该优雅的进入</p>
+<h2 id="Distributed-Lock-manager"><a href="#Distributed-Lock-manager" class="headerlink" title="Distributed Lock manager"></a>Distributed Lock manager</h2><p>1、NFS-Ganesha的架构支持DLM</p>
+<p>DLM可以用不同的方式实现</p>
+<p>2、允许管理集群范围锁</p>
+<p>3、通过 NFS, CIFS和其他协议共享状态管理</p>
+<p>4、最小化失败带来影响的能力（Targeted Grace）</p>
+<h2 id="FSAL-Enhancements-and-new-features"><a href="#FSAL-Enhancements-and-new-features" class="headerlink" title="FSAL Enhancements and new features"></a>FSAL Enhancements and new features</h2><p>1、动态exports</p>
+<p>2、delegations</p>
+<p>3、FSAL 增强</p>
+<ul>
+<li>支持ACL</li>
+<li>开放升级支持</li>
+<li>解决POSIX语义</li>
+<li>用户libraries可以轻松插入（protecTIER, GlusterFS）</li>
+<li>可堆叠的FSALs</li>
+<li>PseudoFS作为FSAL的第一个类</li>
+</ul>
+<p>4、LTTng集成</p>
+<p>5、通过libmooshika支持RDMA</p>
+<h2 id="NFS-Ganesha-links"><a href="#NFS-Ganesha-links" class="headerlink" title="NFS-Ganesha links"></a>NFS-Ganesha links</h2><p>1、NFS-Ganesha is available under the terms of the LGPLv3 license.<br>2、NFS-Ganesha Project homepage on github<br> <a href="https://github.com/nfs-ganesha/nfs-ganesha/wiki" target="_blank" rel="external">https://github.com/nfs-ganesha/nfs-ganesha/wiki</a><br>3、Github:<br> <a href="https://github.com/nfs-ganesha/nfs-ganesh" target="_blank" rel="external">https://github.com/nfs-ganesha/nfs-ganesh</a><br>4、Download page<br> <a href="http://sourceforge.net/projects/nfs-ganesha/files" target="_blank" rel="external">http://sourceforge.net/projects/nfs-ganesha/files</a><br>5、Mailing lists</p>
+<ul>
+<li> nfs-ganesha-devel@lists.sourceforge.net</li>
+<li> nfs-ganesha-support@lists.sourceforge.net</li>
+<li> nfs-ganesha-announce@lists.sourceforge.net</li>
+</ul>
+<p>本文翻译自：<a href="http://events.linuxfoundation.org/sites/events/files/slides/Collab14_nfsGanesha.pdf" target="_blank" rel="external">Why is it a better NFS server for Enterprise NAS</a></p>
+<blockquote>
+<p>部分晦涩的地方直接引用英文原文</p>
+</blockquote>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> ganesha </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[ceph peering过程分析]]></title>
       <url>http://xiaqunfeng.cc/2017/08/01/ceph-peering%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/</url>
       <content type="html"><![CDATA[<p>总结分析peering过程中的一些笔记，介绍peering的各个阶段和状态转换。<br><a id="more"></a></p>

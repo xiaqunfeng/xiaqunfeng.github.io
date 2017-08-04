@@ -15,16 +15,16 @@
 
 
 
-<meta name="description" content="dd是经常使用的命令了，方便快捷，这里闲来小总结一下，以及怎样测出最真实的写入速度。">
+<meta name="description" content="如题，介绍了ganesha，同时对比了用户态下的nfs server(ganesha)和内核态下传统nfs server。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="dd磁盘命令小记">
-<meta property="og:url" content="http://xiaqunfeng.cc/2017/01/12/dd磁盘命令小记/index.html">
+<meta property="og:title" content="为什么对于企业NAS来说NFS-ganesha是一个更好的NFS server">
+<meta property="og:url" content="http://xiaqunfeng.cc/2017/08/03/为什么对于企业NAS来说NFS-ganesha是一个更好的NFS-server/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="dd是经常使用的命令了，方便快捷，这里闲来小总结一下，以及怎样测出最真实的写入速度。">
-<meta property="og:updated_time" content="2017-01-12T12:30:49.000Z">
+<meta property="og:description" content="如题，介绍了ganesha，同时对比了用户态下的nfs server(ganesha)和内核态下传统nfs server。">
+<meta property="og:updated_time" content="2017-08-04T03:01:51.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="dd磁盘命令小记">
-<meta name="twitter:description" content="dd是经常使用的命令了，方便快捷，这里闲来小总结一下，以及怎样测出最真实的写入速度。">
+<meta name="twitter:title" content="为什么对于企业NAS来说NFS-ganesha是一个更好的NFS server">
+<meta name="twitter:description" content="如题，介绍了ganesha，同时对比了用户态下的nfs server(ganesha)和内核态下传统nfs server。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -56,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>dd磁盘命令小记 | 夏天的风的博客</title>
+<title>为什么对于企业NAS来说NFS-ganesha是一个更好的NFS server | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -243,11 +243,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-dd磁盘命令小记" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-为什么对于企业NAS来说NFS-ganesha是一个更好的NFS-server" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/01/12/dd磁盘命令小记/" class="article-date">
-      <time datetime="2017-01-12T12:30:49.000Z" itemprop="datePublished">2017-01-12</time>
+      <a href="/2017/08/03/为什么对于企业NAS来说NFS-ganesha是一个更好的NFS-server/" class="article-date">
+      <time datetime="2017-08-03T11:57:19.000Z" itemprop="datePublished">2017-08-03</time>
 </a>
 
 
@@ -262,7 +262,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      dd磁盘命令小记
+      为什么对于企业NAS来说NFS-ganesha是一个更好的NFS server
     </h1>
   
 
@@ -273,7 +273,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ganesha/">ganesha</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -283,90 +283,126 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>dd是经常使用的命令了，方便快捷，这里闲来小总结一下，以及怎样测出最真实的写入速度。<br><a id="more"></a></p>
-<h2 id="命令的使用"><a href="#命令的使用" class="headerlink" title="命令的使用"></a>命令的使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"># dd --help</div><div class="line">Usage: dd [OPERAND]...</div><div class="line">  or:  dd OPTION</div><div class="line">Copy a file, converting and formatting according to the operands.</div><div class="line"></div><div class="line">  bs=BYTES        read and write up to BYTES bytes at a time</div><div class="line">  cbs=BYTES       convert BYTES bytes at a time</div><div class="line">  conv=CONVS      convert the file as per the comma separated symbol list</div><div class="line">  count=N         copy only N input blocks</div><div class="line">  ibs=BYTES       read up to BYTES bytes at a time (default: 512)</div><div class="line">  if=FILE         read from FILE instead of stdin</div><div class="line">  iflag=FLAGS     read as per the comma separated symbol list</div><div class="line">  obs=BYTES       write BYTES bytes at a time (default: 512)</div><div class="line">  of=FILE         write to FILE instead of stdout</div><div class="line">  oflag=FLAGS     write as per the comma separated symbol list</div><div class="line">  seek=N          skip N obs-sized blocks at start of output</div><div class="line">  skip=N          skip N ibs-sized blocks at start of input</div><div class="line">  status=WHICH    WHICH info to suppress outputting to stderr;</div><div class="line">                  &apos;noxfer&apos; suppresses transfer stats, &apos;none&apos; suppresses all</div></pre></td></tr></table></figure>
-<p><strong>翻译</strong></p>
-<table>
-<thead>
-<tr>
-<th>选项</th>
-<th>意义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>bs</td>
-<td>同时设置读写块的大小为 bytes ，可代替 ibs 和 obs</td>
-</tr>
-<tr>
-<td>cbs</td>
-<td>一次转换 bytes 个字节，即转换缓冲区大小</td>
-</tr>
-<tr>
-<td>conv</td>
-<td>转换参数</td>
-</tr>
-<tr>
-<td>count</td>
-<td>复制的块数</td>
-</tr>
-<tr>
-<td>ibs</td>
-<td>一次读入 bytes 个字节(即一个块大小为 bytes 个字节)</td>
-</tr>
-<tr>
-<td>if</td>
-<td>输入文件 或 设备名称</td>
-</tr>
-<tr>
-<td>iflag</td>
-<td>按照逗号来分隔读参数</td>
-</tr>
-<tr>
-<td>obs</td>
-<td>一次写 bytes 个字节(即一个块大小为 bytes 个字节)</td>
-</tr>
-<tr>
-<td>of</td>
-<td>输出文件 或 设备名称</td>
-</tr>
-<tr>
-<td>oflag</td>
-<td>按照逗号来分隔写参数</td>
-</tr>
-<tr>
-<td>seek</td>
-<td>从输出文件开头跳过 blocks 个块后再开始复制</td>
-</tr>
-<tr>
-<td>skip</td>
-<td>从输入文件开头跳过 blocks 个块后再开始复制</td>
-</tr>
-</tbody>
-</table>
-<p>查看版本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dd --version</div></pre></td></tr></table></figure>
-<h2 id="磁盘读写"><a href="#磁盘读写" class="headerlink" title="磁盘读写"></a>磁盘读写</h2><p><strong>两个特殊的设备</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/dev/null：伪设备，相当于黑洞，of到该设备不会产生IO</div><div class="line">/dev/zero：伪设备，它只产生空字符流，对它不会产生IO</div></pre></td></tr></table></figure>
-<p><strong>1、测试磁盘写能力</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dd if=/dev/zero of=/test.a bs=8k count=10000</div></pre></td></tr></table></figure>
-<p>IO都集中在of文件中，of文件只用于写，相当于测试磁盘的写能力。</p>
-<p><strong>2、测试磁盘读能力</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dd if=/dev/sdb1 of=/dev/null bs=8k count=10000</div></pre></td></tr></table></figure>
-<p>IO只发生在/dev/sdb1上，相当于测试磁盘的读能力。</p>
-<p><strong>3、测试同时读写能力</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dd if=/dev/sdb1 of=/test.a bs=8k count=10000</div></pre></td></tr></table></figure>
-<p>一个是物理分区，一个是实际的文件，对它们的读写都会产生IO，如果它们都在一个磁盘中，该命令就相当于测试磁盘的同时读写能力。</p>
-<h2 id="几种测试写磁盘的区别"><a href="#几种测试写磁盘的区别" class="headerlink" title="几种测试写磁盘的区别"></a>几种测试写磁盘的区别</h2><p>先给出四种测试方式的结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"># dd if=/dev/zero of=test bs=1M count=128</div><div class="line">128+0 records in</div><div class="line">128+0 records out</div><div class="line">134217728 bytes (134 MB) copied, 0.116559 s, 1.2 GB/s</div><div class="line"></div><div class="line"># dd if=/dev/zero of=test bs=1M count=128 ; sync</div><div class="line">128+0 records in</div><div class="line">128+0 records out</div><div class="line">134217728 bytes (134 MB) copied, 0.125106 s, 1.1 GB/s</div><div class="line"></div><div class="line"># dd if=/dev/zero of=test bs=1M count=128 conv=fdatasync</div><div class="line">128+0 records in</div><div class="line">128+0 records out</div><div class="line">134217728 bytes (134 MB) copied, 1.76802 s, 75.9 MB/s</div><div class="line"></div><div class="line"># dd if=/dev/zero of=test bs=1M count=128 oflag=dsync</div><div class="line">128+0 records in</div><div class="line">128+0 records out</div><div class="line">134217728 bytes (134 MB) copied, 4.91353 s, 27.3 MB/s</div></pre></td></tr></table></figure>
-<p>1、<code>dd if=/dev/zero of=test bs=1M count=128</code></p>
-<p>没有加任何参数，命令只是单纯地把这128MB的数据读到内存缓冲当中，dd命令完成前并没有让系统真正把文件写到磁盘上。所以得到的是一个超级快的速度。直到dd完成后系统才开始真正往磁盘上写数据,但这个速度你是看不到了。</p>
-<p>2、<code>dd if=/dev/zero of=test bs=1M count=128 ; sync</code></p>
-<p>这事先后两个独立的命令。当sync命令准备开始往磁盘上真正写入数据的时候，前面dd命令已经把错误的“写入速度”值显示在屏幕上了。所以得到的不是真正的写入速度。</p>
-<p><strong>3、<code>dd if=/dev/zero of=test bs=1M count=128 conv=fdatasync</code></strong></p>
-<p>加入参数 <code>conv=fdatasync</code> 后，dd命令执行到最后会真正执行一次“同步(sync)”操作，所以这时候得到的是读取这128M数据到内存并写入到磁盘上所需的时间，这样算出来的时间才是<strong>比较符合实际</strong>的。这种方式最接近计算机实际操作，所以测出来的数据最有参考价值。</p>
-<p>4、<code>dd if=/dev/zero of=test bs=1M count=128 oflag=dsync</code></p>
-<p>加入参数 <code>oflag=dsync</code> 后，dd在执行时每次都会进行同步写入操作。这条命令每次读取1M后就要先把这1M写入磁盘，然后再读取下面这1M，一共重复128次。这是最慢的一种方式，因为基本上没有用到写缓存(write cache)。</p>
+        <p>如题，介绍了ganesha，同时对比了用户态下的nfs server(ganesha)和内核态下传统nfs server。<br><a id="more"></a></p>
+<h2 id="What-is-NFS-Ganesha"><a href="#What-is-NFS-Ganesha" class="headerlink" title="What is NFS-Ganesha?"></a>What is NFS-Ganesha?</h2><p>1、是NFS server用户态层面的实现</p>
+<p>支持 NFS V2, V3, V4, V4.1, V4.2</p>
+<p>2、可以管理庞大的元数据和数据缓存</p>
+<p>3、能够访问不同的数据集</p>
+<p>4、规定开发 FS 的具体特性</p>
+<p>5、能够同时为多个不同类型的文件系统服务</p>
+<p>6、能够同时服务多个协议</p>
+<p>7、可以作为一个 Proxy server 并导出一个远端的 NFSv4 server</p>
+<p>8、不感知集群管理</p>
+<p>同时拥有一个小但是在成长中的社区</p>
+<p>积极参与者有：IBM, Panasas, Redhat, LinuxBox, CES</p>
+<p>##Enterprise NAS </p>
+<p>1、通过集群配置可靠、冗余和故障安全。</p>
+<p>2、通过多个协议服务结构化和非机构化数据。</p>
+<p>3、在容量和性能上可扩展</p>
+<ul>
+<li>灵活的 scale-up 和 scale-out</li>
+<li>能够支持大量客户端</li>
+</ul>
+<p>4、企业级特性：tiering, de-dup, multi-tenancy, multi-protocol 等</p>
+<p>5、灵活的运行在多个平台并服务于异构数据集</p>
+<p>6、支持复杂的安全配置</p>
+<p>7、QoS - 服务质量（Quality of Service）</p>
+<h2 id="Kernel-vs-User-Space-Server"><a href="#Kernel-vs-User-Space-Server" class="headerlink" title="Kernel vs User Space Server"></a>Kernel vs User Space Server</h2><p>1、内核级服务需要提供更多的up-calls</p>
+<ul>
+<li>Mounted和exportfs信息</li>
+<li>ID映射</li>
+<li>GSS API</li>
+<li>客户端ID跟踪</li>
+<li>Statd 相互作用</li>
+<li>集群相关的服务</li>
+</ul>
+<p>2、为什么用户空间更好</p>
+<ul>
+<li><p>用户空间比内核空间更灵活</p>
+</li>
+<li><p>实现 restarts, failover, failback 更容易</p>
+</li>
+<li><p>不需要实现系统调用</p>
+</li>
+<li><p>和用户空间的服务的交互没有 up-calls </p>
+</li>
+<li><p>clustering变得自然而简单</p>
+</li>
+<li><p>有针对性和侵略性的缓存功能</p>
+</li>
+<li><p>灵活和插件式的 FSAL（可以利用的 FS 的特定功能）</p>
+</li>
+<li><p>可以通过支持通用的 DLM 分布式锁管理来支持 multi-Protocol</p>
+</li>
+<li><p>易于实现的 multi-tenancy</p>
+</li>
+<li><p>易于监控和控制资源消耗，甚至扩展至强制执行QoS</p>
+</li>
+<li>可管理性和调试能力是重要的加分项</li>
+</ul>
+<p>3、内核服务没有优点吗？优点在这</p>
+<ul>
+<li>文件句柄：最近才有的主要优势，现在有了开放式的支持</li>
+<li>性能：用户空间差一点，但可以通过集群FS，积极缓存，自定义RPC，以及积极的线程/并行执行来抵消</li>
+<li>所有权/权限：每一个处理都通过 setfsuid。但是其他可能需要执行多个系统调用或特殊的 FS 接口来实现，如VFS，Luster，GPFS，但实CEPH，Gluster 可以接受lib库实现</li>
+<li>多次系统调用由于WCC的原因需要 perform, write/getattr</li>
+<li>没有重复的缓存和零拷贝读写，降低了复杂性</li>
+</ul>
+<h2 id="Clustering-with-NFS-Ganesha"><a href="#Clustering-with-NFS-Ganesha" class="headerlink" title="Clustering with NFS-Ganesha"></a>Clustering with NFS-Ganesha</h2><p>1、建议 Cluster Manager Abstraction Layer (CMAL) ，使集群不感知</p>
+<p>2、故障转移和IP移动处理</p>
+<p>3、集群感知DRC</p>
+<p>4、跨集群的DLM</p>
+<p>5、集群范围的宽限期管理</p>
+<h2 id="Cluster-Manager-Abstraction-Layer-CMAL"><a href="#Cluster-Manager-Abstraction-Layer-CMAL" class="headerlink" title="Cluster Manager Abstraction Layer (CMAL)"></a>Cluster Manager Abstraction Layer (CMAL)</h2><p>1、为集群管理提供了一个抽象的支持</p>
+<p>2、管理集群节点中节点内的通信</p>
+<p>3、通用性足以实现 cDRC, DLM等特性的多个集群交互</p>
+<p>4、集群管理不可知。容易插入任何集群管理中</p>
+<p>5、模仿FSAL</p>
+<p>6、CMAL层将具有基于集群管理的功能指针</p>
+<p>7、能够提供pNFS配置文件中DS和MDS节点间的集群通信</p>
+<h2 id="Cluster-DRC"><a href="#Cluster-DRC" class="headerlink" title="Cluster DRC"></a>Cluster DRC</h2><p>1、DRC帮助server识别非幂等操作的重复请求，并进行相应处理</p>
+<p>2、识别back-up节点以备份DRC，或在集群/中心位置的所有节点上备份</p>
+<p>3、通过CMAL存储和获取DRC entries</p>
+<p>4、接口</p>
+<ul>
+<li>init_drc_cmal(server-ip)：初始化CMAL接口，设置server-ip的备份节点。</li>
+<li>add_drc_entry(xid, entry, server-ip)：在集群中存储DRC entry。</li>
+<li>retrieve_drc_entries(server-ip)：检索特定服务节点的所有entry</li>
+<li>shutdown_drc_cmal(server-ip)：关闭指定 server-ip 的CMAL接口</li>
+</ul>
+<h2 id="Failover-IP-Move"><a href="#Failover-IP-Move" class="headerlink" title="Failover/IP Move"></a>Failover/IP Move</h2><p>1、NLM使其非常复杂，但NFS-Ganesha架构面临挑战。</p>
+<p>2、在第一次加锁和最后一次解锁时，Ganesha调用集群管理提供的接口去register(monitor)/unregister(unmonitor) the client-ip, server-ip pair</p>
+<p>3、当IP被移动（手动或者失败），CM发送 sm_notify 给影响 server-ip的客户端</p>
+<p>4、CM为相应的服务器节点生成事件，release-ip，take-ip，所以状态应该从源节点释放，在目的节点获取</p>
+<p>5、根据锁的粒度，相应的锁/文件系统，或者整个集群应该优雅的进入</p>
+<h2 id="Distributed-Lock-manager"><a href="#Distributed-Lock-manager" class="headerlink" title="Distributed Lock manager"></a>Distributed Lock manager</h2><p>1、NFS-Ganesha的架构支持DLM</p>
+<p>DLM可以用不同的方式实现</p>
+<p>2、允许管理集群范围锁</p>
+<p>3、通过 NFS, CIFS和其他协议共享状态管理</p>
+<p>4、最小化失败带来影响的能力（Targeted Grace）</p>
+<h2 id="FSAL-Enhancements-and-new-features"><a href="#FSAL-Enhancements-and-new-features" class="headerlink" title="FSAL Enhancements and new features"></a>FSAL Enhancements and new features</h2><p>1、动态exports</p>
+<p>2、delegations</p>
+<p>3、FSAL 增强</p>
+<ul>
+<li>支持ACL</li>
+<li>开放升级支持</li>
+<li>解决POSIX语义</li>
+<li>用户libraries可以轻松插入（protecTIER, GlusterFS）</li>
+<li>可堆叠的FSALs</li>
+<li>PseudoFS作为FSAL的第一个类</li>
+</ul>
+<p>4、LTTng集成</p>
+<p>5、通过libmooshika支持RDMA</p>
+<h2 id="NFS-Ganesha-links"><a href="#NFS-Ganesha-links" class="headerlink" title="NFS-Ganesha links"></a>NFS-Ganesha links</h2><p>1、NFS-Ganesha is available under the terms of the LGPLv3 license.<br>2、NFS-Ganesha Project homepage on github<br> <a href="https://github.com/nfs-ganesha/nfs-ganesha/wiki" target="_blank" rel="external">https://github.com/nfs-ganesha/nfs-ganesha/wiki</a><br>3、Github:<br> <a href="https://github.com/nfs-ganesha/nfs-ganesh" target="_blank" rel="external">https://github.com/nfs-ganesha/nfs-ganesh</a><br>4、Download page<br> <a href="http://sourceforge.net/projects/nfs-ganesha/files" target="_blank" rel="external">http://sourceforge.net/projects/nfs-ganesha/files</a><br>5、Mailing lists</p>
+<ul>
+<li> nfs-ganesha-devel@lists.sourceforge.net</li>
+<li> nfs-ganesha-support@lists.sourceforge.net</li>
+<li> nfs-ganesha-announce@lists.sourceforge.net</li>
+</ul>
+<p>本文翻译自：<a href="http://events.linuxfoundation.org/sites/events/files/slides/Collab14_nfsGanesha.pdf" target="_blank" rel="external">Why is it a better NFS server for Enterprise NAS</a></p>
+<blockquote>
+<p>部分晦涩的地方直接引用英文原文</p>
+</blockquote>
 
       
     </div>
@@ -375,13 +411,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/01/12/dd磁盘命令小记/">dd磁盘命令小记</a></p>
+        <p><span>本文标题:</span><a href="/2017/08/03/为什么对于企业NAS来说NFS-ganesha是一个更好的NFS-server/">为什么对于企业NAS来说NFS-ganesha是一个更好的NFS server</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-01-12, 20:30:49</p>
-        <p><span>最后更新:</span>2017-01-12, 20:30:49</p>
+        <p><span>发布时间:</span>2017-08-03, 19:57:19</p>
+        <p><span>最后更新:</span>2017-08-04, 11:01:51</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/01/12/dd磁盘命令小记/" title="dd磁盘命令小记">http://xiaqunfeng.cc/2017/01/12/dd磁盘命令小记/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/01/12/dd磁盘命令小记/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/08/03/为什么对于企业NAS来说NFS-ganesha是一个更好的NFS-server/" title="为什么对于企业NAS来说NFS-ganesha是一个更好的NFS server">http://xiaqunfeng.cc/2017/08/03/为什么对于企业NAS来说NFS-ganesha是一个更好的NFS-server/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/08/03/为什么对于企业NAS来说NFS-ganesha是一个更好的NFS-server/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -393,16 +429,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/01/17/Linux命令——uptime/">
-                    Linux命令——uptime
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/01/12/解决calamari无法获取集群hosts信息的BUG/">
-                    解决calamari无法获取集群hosts信息的BUG
+                <a href="/2017/08/01/ceph-peering过程分析/">
+                    ceph peering过程分析
                 </a>
             </div>
         
@@ -414,7 +444,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#命令的使用"><span class="toc-number">1.</span> <span class="toc-text">命令的使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#磁盘读写"><span class="toc-number">2.</span> <span class="toc-text">磁盘读写</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#几种测试写磁盘的区别"><span class="toc-number">3.</span> <span class="toc-text">几种测试写磁盘的区别</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#What-is-NFS-Ganesha"><span class="toc-number">1.</span> <span class="toc-text">What is NFS-Ganesha?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Kernel-vs-User-Space-Server"><span class="toc-number">2.</span> <span class="toc-text">Kernel vs User Space Server</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Clustering-with-NFS-Ganesha"><span class="toc-number">3.</span> <span class="toc-text">Clustering with NFS-Ganesha</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cluster-Manager-Abstraction-Layer-CMAL"><span class="toc-number">4.</span> <span class="toc-text">Cluster Manager Abstraction Layer (CMAL)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cluster-DRC"><span class="toc-number">5.</span> <span class="toc-text">Cluster DRC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Failover-IP-Move"><span class="toc-number">6.</span> <span class="toc-text">Failover/IP Move</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Distributed-Lock-manager"><span class="toc-number">7.</span> <span class="toc-text">Distributed Lock manager</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FSAL-Enhancements-and-new-features"><span class="toc-number">8.</span> <span class="toc-text">FSAL Enhancements and new features</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NFS-Ganesha-links"><span class="toc-number">9.</span> <span class="toc-text">NFS-Ganesha links</span></a></li></ol>
         
     </div>
     <style>
@@ -450,7 +480,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"dd磁盘命令小记　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"为什么对于企业NAS来说NFS-ganesha是一个更好的NFS server　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -469,8 +499,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.cc/2017/01/12/dd磁盘命令小记/';
-            this.page.identifier = '2017/01/12/dd磁盘命令小记/';
+            this.page.url = 'http://xiaqunfeng.cc/2017/08/03/为什么对于企业NAS来说NFS-ganesha是一个更好的NFS-server/';
+            this.page.identifier = '2017/08/03/为什么对于企业NAS来说NFS-ganesha是一个更好的NFS-server/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -492,15 +522,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/01/17/Linux命令——uptime/" title="上一篇: Linux命令——uptime">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/01/12/解决calamari无法获取集群hosts信息的BUG/" title="下一篇: 解决calamari无法获取集群hosts信息的BUG">
+            <a href="/2017/08/01/ceph-peering过程分析/" title="下一篇: ceph peering过程分析">
                 <i class="fa fa-angle-right"></i>
             </a>
         
