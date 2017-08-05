@@ -15,20 +15,16 @@
 
 
 
-<meta name="description" content="这是之前关注bluestore时写的调研文章，主要介绍了bluestore的架构、存储模型、IO、元数据等，以及优势。现在ceph已经出到K版本了，虽然未在生产中实践，但已经可用。">
+<meta name="description" content="python3 OS 模块学习笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Bluestore调研">
-<meta property="og:url" content="http://xiaqunfeng.cc/2017/02/23/Bluestore调研/index.html">
+<meta property="og:title" content="python3 OS module">
+<meta property="og:url" content="http://xiaqunfeng.cc/2017/08/05/python3-OS-module/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="这是之前关注bluestore时写的调研文章，主要介绍了bluestore的架构、存储模型、IO、元数据等，以及优势。现在ceph已经出到K版本了，虽然未在生产中实践，但已经可用。">
-<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/Bluestore%E6%9E%B6%E6%9E%84%E5%9B%BE.png">
-<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/Bluestore%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B.png">
-<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
-<meta property="og:updated_time" content="2017-02-23T08:41:11.000Z">
+<meta property="og:description" content="python3 OS 模块学习笔记">
+<meta property="og:updated_time" content="2017-08-05T02:38:38.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Bluestore调研">
-<meta name="twitter:description" content="这是之前关注bluestore时写的调研文章，主要介绍了bluestore的架构、存储模型、IO、元数据等，以及优势。现在ceph已经出到K版本了，虽然未在生产中实践，但已经可用。">
-<meta name="twitter:image" content="http://ojet8bprn.bkt.clouddn.com/Bluestore%E6%9E%B6%E6%9E%84%E5%9B%BE.png">
+<meta name="twitter:title" content="python3 OS module">
+<meta name="twitter:description" content="python3 OS 模块学习笔记">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -60,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Bluestore调研 | 夏天的风的博客</title>
+<title>python3 OS module | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -247,11 +243,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-Bluestore调研" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-python3-OS-module" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/02/23/Bluestore调研/" class="article-date">
-      <time datetime="2017-02-23T08:30:39.000Z" itemprop="datePublished">2017-02-23</time>
+      <a href="/2017/08/05/python3-OS-module/" class="article-date">
+      <time datetime="2017-08-05T02:36:11.000Z" itemprop="datePublished">2017-08-05</time>
 </a>
 
 
@@ -266,7 +262,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Bluestore调研
+      python3 OS module
     </h1>
   
 
@@ -277,7 +273,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -287,73 +283,76 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>这是之前关注bluestore时写的调研文章，主要介绍了bluestore的架构、存储模型、IO、元数据等，以及优势。现在ceph已经出到K版本了，虽然未在生产中实践，但已经可用。<br><a id="more"></a></p>
-<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>​    Ceph是一种软件定义存储解决方案，因此Ceph的主要目标是保障存储数据的安全。为了达到数据安全的目的，我们需要原子特性。目前没有一种文件存储系统能够提供写和更新操作的原子特性（Btrfs拥有原子特性的事务, 这是人们为了解决上述问题作出的尝试，但事实上并不成功）。</p>
-<p>​    Ceph开发者不得不探索其他的解决方案。这个解决方案就是大家非常熟悉的Ceph日志。ceph后端的存储引擎目前使用的是filestore，写采用的是WAL的方式，但是写前记录日志这种技术有一个主要缺陷就是它把你的硬盘性能降低到原来的二分之一（仅当日志和OSD数据共享同一个硬盘时），因为filestore在写数据前需要先写journal，所以有一倍的写放大。</p>
-<p>​    同时filestore一开始只是对于机械盘进行设计的，没有专门针对ssd做优化考虑。bluestore的初衷就是为了减少写放大，并针对ssd做优化，而且直接管理裸盘，从理论上进一步减少文件系统如ext4/xfs等部分的开销。</p>
-<h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><p> <img src="http://ojet8bprn.bkt.clouddn.com/Bluestore%E6%9E%B6%E6%9E%84%E5%9B%BE.png" alt="bluestore架构图"></p>
-<table>
-<thead>
-<tr>
-<th>模块名称</th>
-<th>模块功能</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>RocksDB</td>
-<td>存储预写式日志、数据对象元数据、Ceph的omap数据信息、以及分配器的元数据（分配器负责决定真正的数据应在什么地方存储）</td>
-</tr>
-<tr>
-<td>BlueRocksEnv</td>
-<td>与RocksDB交互的接口</td>
-</tr>
-<tr>
-<td>BlueFS</td>
-<td>小的文件系统，解决元数据、文件空间及磁盘空间的分配和管理，并实现了rocksdb::Env 接口(存储RocksDB日志和sst文件)。因为rocksdb常规来说是运行在文件系统的顶层，下面是BlueFS。 它是数据存储后端层，RocksDB的数据和BlueStore中的真正数据被存储在同一个块物理设备</td>
-</tr>
-<tr>
-<td>HDD</td>
-<td>物理块设备，存储实际的数据</td>
-</tr>
-</tbody>
-</table>
-<p>​    rocksdb本身是基于文件系统的，不是直接操作裸设备。它将系统相关的处理抽象成Env，用户可用实现相应的接口（<em>rocksdb默认的Env是PosixEnv，直接对接本地文件系统</em>）。</p>
-<p>​    BlueRocksEnv是bluestore实现的一个类，继承自rocksdb::EnvWrapper，来为rocksdb提供底层系统的封装。</p>
-<p>​    为了对接BlueRocksEnv，实现了一个小的文件系统BlueFS，只实现rocksdb Env需要的接口。所有的元数据的修改都记录在BlueFS的日志中，也就是对于BlueFS，元数据的持久化保存在日志中。在系统启动mount这个文件系统时，只需replay日志，就可将所有的元数据都加载到内存中。BluesFS的数据和日志文件都通过块设备保存到裸设备上（<em>BlueFS和BlueStore可以共享裸设备，也可以分别指定不同的设备</em>）。</p>
-<p>​    bluestore不使用本地文件系统，直接接管裸设备，并且只使用一个原始分区，HDD所在的物理块设备实现在用户态下使用linux aio直接对裸设备进行I/O操作。</p>
+        <p>python3 OS 模块学习笔记<br><a id="more"></a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>使用的时候需要导入OS模块</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">import os</div></pre></td></tr></table></figure>
+<h2 id="os-path"><a href="#os-path" class="headerlink" title="os.path"></a>os.path</h2><p>1、<strong>os.path.split(path)  </strong></p>
+<p>功能：将path分割成目录和文件名二元组返回</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; os.path.split(&apos;test/iostat.jpg&apos;)</div><div class="line">(&apos;test&apos;, &apos;iostat.jpg&apos;)</div></pre></td></tr></table></figure>
+<p>2、<strong>os.path.dirname(path) </strong></p>
+<p>功能：返回path的目录名。其实就是os.path.split(path)的第一个元素。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; os.path.dirname(&apos;test/iostat.jpg&apos;)</div><div class="line">&apos;test&apos;</div></pre></td></tr></table></figure>
+<p>3、<strong>os.path.basename(path)</strong></p>
+<p>功能：返回path最后的文件名。即os.path.split(path)的第二个元素。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; os.path.basename(&apos;test/iostat.jpg&apos;)</div><div class="line">&apos;iostat.jpg&apos;</div></pre></td></tr></table></figure>
+<p>4、<strong>.os.path.splitext(path)</strong></p>
+<p>功能：分离文件名与扩展名。默认返回(fname,fextension)元组，可做分片操作。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; os.path.splitext(&apos;test/iostat.jpg&apos;)</div><div class="line">(&apos;test/iostat&apos;, &apos;.jpg&apos;)</div></pre></td></tr></table></figure>
+<p>5、<strong>os.path.join(path1[, path2[, …]])</strong></p>
+<p>功能：将多个路径组合后返回，第一个绝对路径之前的参数将被忽略。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; os.path.join(&apos;test/iostat.jpg&apos;)</div><div class="line">&apos;test/iostat.jpg&apos;</div><div class="line">&gt;&gt;&gt;</div><div class="line">&gt;&gt;&gt; os.path.join(&apos;test/iostat.jpg&apos;, &apos;hahaha&apos;)</div><div class="line">&apos;test/iostat.jpg/hahaha&apos;</div><div class="line">&gt;&gt;&gt;</div><div class="line">&gt;&gt;&gt; os.path.join(&apos;test&apos;, &apos;hello&apos;)</div><div class="line">&apos;test/hello&apos;</div></pre></td></tr></table></figure>
+<p>6、<strong>os.path.isdir(path)</strong></p>
+<p>功能：如果path是一个存在的目录，则返回True。否则返回False。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; os.path.isdir(&apos;test&apos;)</div><div class="line">True</div><div class="line">&gt;&gt;&gt; os.path.isdir(&apos;xqf&apos;)</div><div class="line">False</div></pre></td></tr></table></figure>
+<p>7、<strong>os.path.isfile(path)</strong></p>
+<p>功能：如果path是一个存在的文件，返回True。否则返回False。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; os.path.isfile(&apos;test/iostat.jpg&apos;)</div><div class="line">True</div><div class="line">&gt;&gt;&gt; os.path.isfile(&apos;test/hello.jpg&apos;)</div><div class="line">False</div></pre></td></tr></table></figure>
+<p>8、<strong>os.path.abspath(path)</strong>   </p>
+<p>功能：返回path规范化的绝对路径。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; os.path.abspath(&apos;test/hello.jpg&apos;)</div><div class="line">&apos;/Users/xiaqunfeng/python/show-me-the-code/0005/test/hello.jpg&apos;</div></pre></td></tr></table></figure>
 <blockquote>
-<p>读：目前块设备的读操作是同步的；</p>
-<p>写：由于操作系统支持的aio操作只支持directIO，所以对BlockDevice的写操作直接写入磁盘，并且需要按照page对齐。其内部有一个aio_thread 线程，用来检查aio是否完成。其完成后，通过回调函数aio_callback 通知调用方。 </p>
+<p>这一步其实已经包含 os.path.normpath(path) 的操作</p>
 </blockquote>
-<p>​    Ceph数据对象(真正的‘数据’)直接被写入块物理设备。因为是直接管理裸设备，所以需要分配器（Allocator）来进行裸设备的空间管理。OSD附带的数据对象元数据被存储到键值数据库RocksDB中。</p>
-<h2 id="存储模型"><a href="#存储模型" class="headerlink" title="存储模型"></a>存储模型</h2><p> <img src="http://ojet8bprn.bkt.clouddn.com/Bluestore%E5%AD%98%E5%82%A8%E6%A8%A1%E5%9E%8B.png" alt="bluestore存储模型"></p>
-<p>这里把一个硬盘分了两个分区：</p>
-<ol>
-<li>第一个迷你小分区使用了XFS或ext4文件系统。它存储了Ceph文件（像初始系统描述符，状态，id，fsid，钥匙串等），和RocksDB文件(RocksDB元数据和预写式日志)。</li>
-<li>第二个分区是没有文件系统的原始分区。</li>
-</ol>
-<p>​        每一个组件都可以存储在一个不同的物理设备上。在这张图中，RocksDB的预写式日志和数据可以被存储在不同的物理设备也可以存储在迷你小分区上。</p>
-<h2 id="元数据"><a href="#元数据" class="headerlink" title="元数据"></a>元数据</h2><p>​    数据结构onode 保存了BlueStore中一个对象的数据结构，这是一个常驻内存的数据结构，持久化的时候会以kv的形式存到rocksdb里。一个onode里会存在多个lextent（逻辑的数据块），用一个map来记录。lextent通过blob的id对应到blob（bluestore_blob_t ），blob里通过pextent对应到实际物理盘上的区域（pextent里就是offset和length来定位物理盘的位置区域）。blob和pextent是多对多的关系。</p>
-<p>​    数据结构Enode定义了一个共享的extent，也就是这段数据被多个对象共享，一个对象的onode里保存一个enode数据结构，记录该对象被共享的extent。</p>
-<h2 id="I-O处理"><a href="#I-O处理" class="headerlink" title="I/O处理"></a>I/O处理</h2><p>​    到达bluestore的I/O的offset和length都是对象内（onode）的，offset是相对于这个对象起始位置的偏移，在执行写操作时，首先就会根据最小分配单位min_alloc_size进行判断，并按照min_alloc_size进行拆分，从而将I/O分为对齐和非对齐的。落到某一个min_alloc_size区间的写I/O执行非对齐写，min_alloc_size整数倍的写I/O执行对齐写。</p>
-<p><strong>整块写（对齐写）</strong></p>
-<p>​    也就是对齐到min_alloc_size的写请求，在处理时会根据实际大小新生成lextent和blob，这个lextent跨越的区域是min_alloc_size的整数倍。如果这段区间是之前写过的，会将之前的lextent记录下来便于后续的空间回收。（PS:回收这部分还没看）</p>
-<p><strong>部分写（非对齐写）</strong></p>
-<p>​    在处理落到某个min_alloc_size区间的写请求时，会首先根据offset去查找有没有可以复用的blob，因为最小分配单元是min_alloc_size，默认64KB，如果一个4KB的写I/O就只会用到blob的一部分，blob里剩余的还能放其他的。</p>
-<p>1、没有找到可以复用的blob，新生成blob</p>
-<p>​    在处理还还需要根据offset和len是否对齐到block_size（默认是4KB）进行补零对齐的操，然后再把对齐后的offset和len作为lextent，进而放到blob里。之所以需要进行补零操作是因为采用Direct I/O的方式写盘要求偏移和缓冲区都对齐的。</p>
-<p>2、找到可以复用的blob</p>
-<p>​    先按照block_size进行对齐补零的动作，然后再判断是否可以直接使用blob里空闲的空间进行区分做不同的处理。</p>
-<p><em>a) 直接写在blob未使用的空间上</em></p>
-<p>​    这种情况下直接新生成lextent放到blob里。</p>
-<p><em>b) 覆盖写的情况</em></p>
-<p>​    通过WAL写到rocksdb。</p>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>​    从BlueStore 的设计和实现上看，可以将其理解为用户态下的一个文件系统，同时使用RocksDB来实现BlueStore所有元数据的管理，简化实现。</p>
-<p><strong>优点</strong></p>
-<p>​    对于整块数据的写入，数据直接以aio的方式写入磁盘，再更新RocksDB中数据对象的元数据，避免了filestore的先写日志，后apply到实际磁盘的两次写盘。同时避免了日志元数据的冗余存储占用，因为传统文件系统有他们自己内部的日志和元数据管理机制。</p>
-<p>​    对于随机IO，直接WAL的形式，写入RocksDB 高性能的KV存储中。</p>
-<h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
+<p>9、<strong>os.path.isabs(path) </strong></p>
+<p>功能：如果path是绝对路径，返回True。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; os.path.isabs(&apos;test/hello.jpg&apos;)</div><div class="line">False</div><div class="line">&gt;&gt;&gt; os.path.isabs(&apos;/Users/xiaqunfeng/python/show-me-the-code/0005/test/hello.jpg&apos;)</div><div class="line">True</div><div class="line">&gt;&gt;&gt; os.path.isabs(&apos;/Users/xiaqunfeng/helloworld&apos;)		// helloworld并不存在</div><div class="line">True</div></pre></td></tr></table></figure>
+<blockquote>
+<p>该函数只返回是不是绝对路径，不判断路径是否存在</p>
+</blockquote>
+<p>10、<strong>os.path.exists(path) </strong></p>
+<p>功能：如果path存在，返回True；如果path不存在，返回False。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; os.path.exists(&apos;/Users/xiaqunfeng/helloworld&apos;)</div><div class="line">False</div><div class="line">&gt;&gt;&gt; os.path.exists(&apos;/Users/xiaqunfeng/python/show-me-the-code/0005/test/hello.jpg&apos;)</div><div class="line">False</div><div class="line">&gt;&gt;&gt; os.path.exists(&apos;test/hello.jpg&apos;)</div><div class="line">False</div><div class="line">&gt;&gt;&gt; os.path.exists(&apos;test&apos;)</div><div class="line">True</div><div class="line">&gt;&gt;&gt; os.path.exists(&apos;/Users/xiaqunfeng/python/show-me-the-code/&apos;)</div><div class="line">True</div></pre></td></tr></table></figure>
+<blockquote>
+<p>只判断路径是否存在，不能是具体的文件</p>
+</blockquote>
+<p>11、<strong>os.path.getsize(path) </strong></p>
+<p>功能：返回path的文件的大小（字节）</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; os.path.getsize(&apos;test/iostat.jpg&apos;)</div><div class="line">237491</div></pre></td></tr></table></figure>
+<p>12、<strong>os.path.getatime(path)</strong> &amp;&amp; <strong>os.path.getmtime(path)</strong> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">os.path.getatime(path)          # 返回path所指向的文件或者目录的最后存取时间</div><div class="line">os.path.getmtime(path)          # 返回path所指向的文件或者目录的最后修改时间</div></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; os.path.getatime(&apos;test/iostat.jpg&apos;)</div><div class="line">1499659865.0</div><div class="line">&gt;&gt;&gt; os.path.getmtime(&apos;test/iostat.jpg&apos;)</div><div class="line">1499655924.0</div></pre></td></tr></table></figure>
+<p>这里得到的是一个浮点数的timestamp，如果有小数位，小数位表示毫秒数。</p>
+<p>可是看不懂哇。所以这里需要进行转换，将timestamp转换为datetime：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; from datetime import datetime</div><div class="line">&gt;&gt;&gt;</div><div class="line">&gt;&gt;&gt; atime = 1499659865.0</div><div class="line">&gt;&gt;&gt; print(datetime.fromtimestamp(atime))</div><div class="line">2017-07-10 12:11:05</div><div class="line">&gt;&gt;&gt;</div><div class="line">&gt;&gt;&gt; mtime = 1499655924.0</div><div class="line">&gt;&gt;&gt; print(datetime.fromtimestamp(mtime))</div><div class="line">2017-07-10 11:05:24</div></pre></td></tr></table></figure>
+<p>13、<strong>os.path.normpath()</strong></p>
+<p>功能：返回正常路径，可以解决双斜杆、对目录的多重引用的问题等。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; os.path.normpath(&apos;test//hello.jpg&apos;)</div><div class="line">&apos;test/hello.jpg&apos;</div><div class="line">&gt;&gt;&gt; os.path.normpath(&apos;test/../test/hello.jpg&apos;)</div><div class="line">&apos;test/hello.jpg&apos;</div><div class="line">&gt;&gt;&gt; os.path.normpath(&apos;test/test/hello.jpg&apos;)			// 该目录不存在</div><div class="line">&apos;test/test/hello.jpg&apos;</div><div class="line">&gt;&gt;&gt; os.path.normpath(&apos;test/../test/../result/../test/hello.jpg&apos;)</div><div class="line">&apos;test/hello.jpg&apos;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>仅仅规范化目录，不能判断目录是否存在</p>
+</blockquote>
 
       
     </div>
@@ -362,13 +361,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/02/23/Bluestore调研/">Bluestore调研</a></p>
+        <p><span>本文标题:</span><a href="/2017/08/05/python3-OS-module/">python3 OS module</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-02-23, 16:30:39</p>
-        <p><span>最后更新:</span>2017-02-23, 16:41:11</p>
+        <p><span>发布时间:</span>2017-08-05, 10:36:11</p>
+        <p><span>最后更新:</span>2017-08-05, 10:38:38</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/02/23/Bluestore调研/" title="Bluestore调研">http://xiaqunfeng.cc/2017/02/23/Bluestore调研/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/02/23/Bluestore调研/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/08/05/python3-OS-module/" title="python3 OS module">http://xiaqunfeng.cc/2017/08/05/python3-OS-module/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/08/05/python3-OS-module/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -380,16 +379,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/03/01/异步IO/">
-                    异步IO
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/02/23/RocksDB相比LevelDB的新特性/">
-                    RocksDB相比LevelDB的新特性
+                <a href="/2017/08/03/为什么对于企业NAS来说NFS-ganesha是一个更好的NFS-server/">
+                    为什么对于企业NAS来说NFS-ganesha是一个更好的NFS server
                 </a>
             </div>
         
@@ -401,7 +394,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#整体架构"><span class="toc-number">2.</span> <span class="toc-text">整体架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#存储模型"><span class="toc-number">3.</span> <span class="toc-text">存储模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#元数据"><span class="toc-number">4.</span> <span class="toc-text">元数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#I-O处理"><span class="toc-number">5.</span> <span class="toc-text">I/O处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#小结"><span class="toc-number">6.</span> <span class="toc-text">小结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#打赏通道"><span class="toc-number">7.</span> <span class="toc-text">打赏通道</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#os-path"><span class="toc-number">2.</span> <span class="toc-text">os.path</span></a></li></ol>
         
     </div>
     <style>
@@ -437,7 +430,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Bluestore调研　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"python3 OS module　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -456,8 +449,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.cc/2017/02/23/Bluestore调研/';
-            this.page.identifier = '2017/02/23/Bluestore调研/';
+            this.page.url = 'http://xiaqunfeng.cc/2017/08/05/python3-OS-module/';
+            this.page.identifier = '2017/08/05/python3-OS-module/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -479,15 +472,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/03/01/异步IO/" title="上一篇: 异步IO">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/02/23/RocksDB相比LevelDB的新特性/" title="下一篇: RocksDB相比LevelDB的新特性">
+            <a href="/2017/08/03/为什么对于企业NAS来说NFS-ganesha是一个更好的NFS-server/" title="下一篇: 为什么对于企业NAS来说NFS-ganesha是一个更好的NFS server">
                 <i class="fa fa-angle-right"></i>
             </a>
         

@@ -4,6 +4,90 @@
   
     
     <entry>
+      <title><![CDATA[python3 OS module]]></title>
+      <url>http://xiaqunfeng.cc/2017/08/05/python3-OS-module/</url>
+      <content type="html"><![CDATA[<p>python3 OS 模块学习笔记<br><a id="more"></a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>使用的时候需要导入OS模块</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">import os</div></pre></td></tr></table></figure>
+<h2 id="os-path"><a href="#os-path" class="headerlink" title="os.path"></a>os.path</h2><p>1、<strong>os.path.split(path)  </strong></p>
+<p>功能：将path分割成目录和文件名二元组返回</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; os.path.split(&apos;test/iostat.jpg&apos;)</div><div class="line">(&apos;test&apos;, &apos;iostat.jpg&apos;)</div></pre></td></tr></table></figure>
+<p>2、<strong>os.path.dirname(path) </strong></p>
+<p>功能：返回path的目录名。其实就是os.path.split(path)的第一个元素。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; os.path.dirname(&apos;test/iostat.jpg&apos;)</div><div class="line">&apos;test&apos;</div></pre></td></tr></table></figure>
+<p>3、<strong>os.path.basename(path)</strong></p>
+<p>功能：返回path最后的文件名。即os.path.split(path)的第二个元素。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; os.path.basename(&apos;test/iostat.jpg&apos;)</div><div class="line">&apos;iostat.jpg&apos;</div></pre></td></tr></table></figure>
+<p>4、<strong>.os.path.splitext(path)</strong></p>
+<p>功能：分离文件名与扩展名。默认返回(fname,fextension)元组，可做分片操作。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; os.path.splitext(&apos;test/iostat.jpg&apos;)</div><div class="line">(&apos;test/iostat&apos;, &apos;.jpg&apos;)</div></pre></td></tr></table></figure>
+<p>5、<strong>os.path.join(path1[, path2[, …]])</strong></p>
+<p>功能：将多个路径组合后返回，第一个绝对路径之前的参数将被忽略。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; os.path.join(&apos;test/iostat.jpg&apos;)</div><div class="line">&apos;test/iostat.jpg&apos;</div><div class="line">&gt;&gt;&gt;</div><div class="line">&gt;&gt;&gt; os.path.join(&apos;test/iostat.jpg&apos;, &apos;hahaha&apos;)</div><div class="line">&apos;test/iostat.jpg/hahaha&apos;</div><div class="line">&gt;&gt;&gt;</div><div class="line">&gt;&gt;&gt; os.path.join(&apos;test&apos;, &apos;hello&apos;)</div><div class="line">&apos;test/hello&apos;</div></pre></td></tr></table></figure>
+<p>6、<strong>os.path.isdir(path)</strong></p>
+<p>功能：如果path是一个存在的目录，则返回True。否则返回False。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; os.path.isdir(&apos;test&apos;)</div><div class="line">True</div><div class="line">&gt;&gt;&gt; os.path.isdir(&apos;xqf&apos;)</div><div class="line">False</div></pre></td></tr></table></figure>
+<p>7、<strong>os.path.isfile(path)</strong></p>
+<p>功能：如果path是一个存在的文件，返回True。否则返回False。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; os.path.isfile(&apos;test/iostat.jpg&apos;)</div><div class="line">True</div><div class="line">&gt;&gt;&gt; os.path.isfile(&apos;test/hello.jpg&apos;)</div><div class="line">False</div></pre></td></tr></table></figure>
+<p>8、<strong>os.path.abspath(path)</strong>   </p>
+<p>功能：返回path规范化的绝对路径。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; os.path.abspath(&apos;test/hello.jpg&apos;)</div><div class="line">&apos;/Users/xiaqunfeng/python/show-me-the-code/0005/test/hello.jpg&apos;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>这一步其实已经包含 os.path.normpath(path) 的操作</p>
+</blockquote>
+<p>9、<strong>os.path.isabs(path) </strong></p>
+<p>功能：如果path是绝对路径，返回True。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; os.path.isabs(&apos;test/hello.jpg&apos;)</div><div class="line">False</div><div class="line">&gt;&gt;&gt; os.path.isabs(&apos;/Users/xiaqunfeng/python/show-me-the-code/0005/test/hello.jpg&apos;)</div><div class="line">True</div><div class="line">&gt;&gt;&gt; os.path.isabs(&apos;/Users/xiaqunfeng/helloworld&apos;)		// helloworld并不存在</div><div class="line">True</div></pre></td></tr></table></figure>
+<blockquote>
+<p>该函数只返回是不是绝对路径，不判断路径是否存在</p>
+</blockquote>
+<p>10、<strong>os.path.exists(path) </strong></p>
+<p>功能：如果path存在，返回True；如果path不存在，返回False。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; os.path.exists(&apos;/Users/xiaqunfeng/helloworld&apos;)</div><div class="line">False</div><div class="line">&gt;&gt;&gt; os.path.exists(&apos;/Users/xiaqunfeng/python/show-me-the-code/0005/test/hello.jpg&apos;)</div><div class="line">False</div><div class="line">&gt;&gt;&gt; os.path.exists(&apos;test/hello.jpg&apos;)</div><div class="line">False</div><div class="line">&gt;&gt;&gt; os.path.exists(&apos;test&apos;)</div><div class="line">True</div><div class="line">&gt;&gt;&gt; os.path.exists(&apos;/Users/xiaqunfeng/python/show-me-the-code/&apos;)</div><div class="line">True</div></pre></td></tr></table></figure>
+<blockquote>
+<p>只判断路径是否存在，不能是具体的文件</p>
+</blockquote>
+<p>11、<strong>os.path.getsize(path) </strong></p>
+<p>功能：返回path的文件的大小（字节）</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; os.path.getsize(&apos;test/iostat.jpg&apos;)</div><div class="line">237491</div></pre></td></tr></table></figure>
+<p>12、<strong>os.path.getatime(path)</strong> &amp;&amp; <strong>os.path.getmtime(path)</strong> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">os.path.getatime(path)          # 返回path所指向的文件或者目录的最后存取时间</div><div class="line">os.path.getmtime(path)          # 返回path所指向的文件或者目录的最后修改时间</div></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; os.path.getatime(&apos;test/iostat.jpg&apos;)</div><div class="line">1499659865.0</div><div class="line">&gt;&gt;&gt; os.path.getmtime(&apos;test/iostat.jpg&apos;)</div><div class="line">1499655924.0</div></pre></td></tr></table></figure>
+<p>这里得到的是一个浮点数的timestamp，如果有小数位，小数位表示毫秒数。</p>
+<p>可是看不懂哇。所以这里需要进行转换，将timestamp转换为datetime：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; from datetime import datetime</div><div class="line">&gt;&gt;&gt;</div><div class="line">&gt;&gt;&gt; atime = 1499659865.0</div><div class="line">&gt;&gt;&gt; print(datetime.fromtimestamp(atime))</div><div class="line">2017-07-10 12:11:05</div><div class="line">&gt;&gt;&gt;</div><div class="line">&gt;&gt;&gt; mtime = 1499655924.0</div><div class="line">&gt;&gt;&gt; print(datetime.fromtimestamp(mtime))</div><div class="line">2017-07-10 11:05:24</div></pre></td></tr></table></figure>
+<p>13、<strong>os.path.normpath()</strong></p>
+<p>功能：返回正常路径，可以解决双斜杆、对目录的多重引用的问题等。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; os.path.normpath(&apos;test//hello.jpg&apos;)</div><div class="line">&apos;test/hello.jpg&apos;</div><div class="line">&gt;&gt;&gt; os.path.normpath(&apos;test/../test/hello.jpg&apos;)</div><div class="line">&apos;test/hello.jpg&apos;</div><div class="line">&gt;&gt;&gt; os.path.normpath(&apos;test/test/hello.jpg&apos;)			// 该目录不存在</div><div class="line">&apos;test/test/hello.jpg&apos;</div><div class="line">&gt;&gt;&gt; os.path.normpath(&apos;test/../test/../result/../test/hello.jpg&apos;)</div><div class="line">&apos;test/hello.jpg&apos;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>仅仅规范化目录，不能判断目录是否存在</p>
+</blockquote>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> python </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[为什么对于企业NAS来说NFS-ganesha是一个更好的NFS server]]></title>
       <url>http://xiaqunfeng.cc/2017/08/03/%E4%B8%BA%E4%BB%80%E4%B9%88%E5%AF%B9%E4%BA%8E%E4%BC%81%E4%B8%9ANAS%E6%9D%A5%E8%AF%B4NFS-ganesha%E6%98%AF%E4%B8%80%E4%B8%AA%E6%9B%B4%E5%A5%BD%E7%9A%84NFS-server/</url>
       <content type="html"><![CDATA[<p>如题，介绍了ganesha，同时对比了用户态下的nfs server(ganesha)和内核态下传统nfs server。<br><a id="more"></a></p>
