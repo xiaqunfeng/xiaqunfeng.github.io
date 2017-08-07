@@ -4,6 +4,137 @@
   
     
     <entry>
+      <title><![CDATA[git常用命名总结]]></title>
+      <url>http://xiaqunfeng.cc/2017/08/07/git%E5%B8%B8%E7%94%A8%E5%91%BD%E5%90%8D%E6%80%BB%E7%BB%93/</url>
+      <content type="html"><![CDATA[<p>总结记录自己最常用的git命令，然后将一些命令分类，便于翻阅。<br><a id="more"></a></p>
+<h2 id="最常用"><a href="#最常用" class="headerlink" title="最常用"></a>最常用</h2><p>1、下载一个项目和它的整个代码历史</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone [url]</div></pre></td></tr></table></figure>
+<p>2、切换分支</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git checkout [branch-name]		// 切换到指定分支，并更新工作区</div><div class="line">git checkout -b [branch]		// 新建一个分支，并切换到该分支</div></pre></td></tr></table></figure>
+<p>3、显示有变更的文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git status</div></pre></td></tr></table></figure>
+<p>4、添加文件到暂存区</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git add [file1] [file2] ...	// 添加指定文件到暂存区</div><div class="line">git add [dir]				// 添加指定目录到暂存区，包括子目录</div></pre></td></tr></table></figure>
+<p>5、提交暂存区到仓库区</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git commit -m [message]</div></pre></td></tr></table></figure>
+<p>6、恢复暂存区文件到工作区</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git checkout [file]		// 恢复暂存区的指定文件到工作区</div><div class="line">git checkout .			// 恢复暂存区的所有文件到工作区</div></pre></td></tr></table></figure>
+<h2 id="仓库-repository"><a href="#仓库-repository" class="headerlink" title="仓库 - repository"></a>仓库 - repository</h2><p>初始化目录为git仓库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git init</div></pre></td></tr></table></figure>
+<p>下载远程仓库的所有变动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git fetch [remote]</div></pre></td></tr></table></figure>
+<p>取回远程仓库的变化，并与本地分支合并</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git pull [remote] [branch]</div></pre></td></tr></table></figure>
+<p>查看远程仓库地址和名称</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git remote -v</div></pre></td></tr></table></figure>
+<p>推送本地分支到远程仓库，首次提交需要加-u</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># git push –u origin branch</div></pre></td></tr></table></figure>
+<p>创建远程分支(本地分支push到远程)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># git push origin &lt;local_branch&gt;	// 创建远程分支， origin是远程仓库名</div><div class="line"># git push origin &lt;local_branch&gt;:&lt;remote_branch&gt; // 提交本地分支作为远程的分支</div></pre></td></tr></table></figure>
+<p>删除远程仓库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git remote rm &lt;repository&gt;</div></pre></td></tr></table></figure>
+<h2 id="分支-branch"><a href="#分支-branch" class="headerlink" title="分支 - branch"></a>分支 - branch</h2><p>列出所有本地分支和远程分支</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># git branch -a</div></pre></td></tr></table></figure>
+<p>查看远程分支</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># git branch -r</div></pre></td></tr></table></figure>
+<p>查看本地分支</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># git branch</div></pre></td></tr></table></figure>
+<p>创建新分支并立即切换到新分支</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># git checkout -b [name]</div></pre></td></tr></table></figure>
+<p>基于远程分支创建本地分支</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># git checkout   -b &lt;local_branch&gt; origin/&lt;remote_branch&gt;</div></pre></td></tr></table></figure>
+<p>删除分支</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># git branch -d [name]</div></pre></td></tr></table></figure>
+<p>删除远程分支</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># git push origin :heads/[name]</div></pre></td></tr></table></figure>
+<p>先删除本地分支(<code>git br -d &lt;branch&gt;</code>)，然后再push删除远程分支</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># git push origin :&lt;remote_branch&gt;</div></pre></td></tr></table></figure>
+<p>合并分支</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># git merge [name] ----将名称为[name]的分支与当前分支合并</div></pre></td></tr></table></figure>
+<h2 id="版本-tag"><a href="#版本-tag" class="headerlink" title="版本 - tag"></a>版本 - tag</h2><p>查看版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># git tag</div></pre></td></tr></table></figure>
+<p>创建版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># git tag [name]</div></pre></td></tr></table></figure>
+<p>删除版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># git tag -d [name]</div></pre></td></tr></table></figure>
+<p>查看远程版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># git tag -r</div></pre></td></tr></table></figure>
+<p>创建远程版本(本地版本push到远程)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># git push origin [name]</div></pre></td></tr></table></figure>
+<p>删除远程版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># git push origin :refs/tags/[name]</div></pre></td></tr></table></figure>
+<h2 id="日志-log"><a href="#日志-log" class="headerlink" title="日志 - log"></a>日志 - log</h2><p>查看历史版本号</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git reflog</div></pre></td></tr></table></figure>
+<p>查看提交统计信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git log --stat</div></pre></td></tr></table></figure>
+<p>查看最近一次详细修改内容的diff</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git log -p -1		// -p 是显示详细信息的意思</div></pre></td></tr></table></figure>
+<p>查看某个文件的提交记录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git log &lt;filename&gt;</div></pre></td></tr></table></figure>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>显示指定文件是什么人在什么时间修改过</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git blame [file]</div></pre></td></tr></table></figure>
+<p>显示今天你写了多少行代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git diff --shortstat &quot;@&#123;0 day ago&#125;&quot;</div></pre></td></tr></table></figure>
+<p>比较当前文件和暂存区文件差异</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git diff &lt;filename&gt;</div></pre></td></tr></table></figure>
+<p>重置当前分支的HEAD为指定commit，同时重置暂存区和工作区，与指定commit一致</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git reset --hard [commit]</div></pre></td></tr></table></figure>
+<p>暂时将未提交的变化移除，稍后再移入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git stash</div><div class="line">git stash pop</div></pre></td></tr></table></figure>
+<p>显示某次提交时，某个文件的内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git show [commit]:[filename]</div></pre></td></tr></table></figure>
+<p>删除所有untracked文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clean</div></pre></td></tr></table></figure>
+<h2 id="同步fork"><a href="#同步fork" class="headerlink" title="同步fork"></a>同步fork</h2><p>fork 了别人的仓库后，原作者又更新了仓库，如何将自己的代码和原仓库保持一致？本文将给你解答。</p>
+<h3 id="Configuring-a-remote-for-a-fork"><a href="#Configuring-a-remote-for-a-fork" class="headerlink" title="Configuring a remote for a fork"></a>Configuring a remote for a fork</h3><ul>
+<li>给 fork 配置一个 remote</li>
+<li>主要使用 <code>git remote -v</code> 查看远程状态。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">git remote -v</div><div class="line"># origin  https://github.com/YOUR_USERNAME/YOUR_FORK.git (fetch)</div><div class="line"># origin  https://github.com/YOUR_USERNAME/YOUR_FORK.git (push)</div></pre></td></tr></table></figure>
+<ul>
+<li>添加一个将被同步给 fork 远程的上游仓库</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git remote add upstream https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git</div></pre></td></tr></table></figure>
+<ul>
+<li>再次查看状态确认是否配置成功。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">git remote -v</div><div class="line"># origin    https://github.com/YOUR_USERNAME/YOUR_FORK.git (fetch)</div><div class="line"># origin    https://github.com/YOUR_USERNAME/YOUR_FORK.git (push)</div><div class="line"># upstream  https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git (fetch)</div><div class="line"># upstream  https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git (push)</div></pre></td></tr></table></figure>
+<h3 id="Syncing-a-fork"><a href="#Syncing-a-fork" class="headerlink" title="Syncing a fork"></a>Syncing a fork</h3><ul>
+<li>从上游仓库 fetch 分支和提交点，传送到本地，并会被存储在一个本地分支 upstream/master<br><code>git fetch upstream</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">git fetch upstream</div><div class="line"># remote: Counting objects: 75, done.</div><div class="line"># remote: Compressing objects: 100% (53/53), done.</div><div class="line"># remote: Total 62 (delta 27), reused 44 (delta 9)</div><div class="line"># Unpacking objects: 100% (62/62), done.</div><div class="line"># From https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY</div><div class="line">#  * [new branch]      master     -&gt; upstream/master</div></pre></td></tr></table></figure>
+<ul>
+<li>切换到本地主分支(如果不在的话)<br><code>git checkout master</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git checkout master</div><div class="line"># Switched to branch &apos;master&apos;</div></pre></td></tr></table></figure>
+<ul>
+<li>把 upstream/master 分支合并到本地 master 上，这样就完成了同步，并且不会丢掉本地修改的内容。<br><code>git merge upstream/master</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">git merge upstream/master</div><div class="line"># Updating a422352..5fdff0f</div><div class="line"># Fast-forward</div><div class="line">#  README                    |    9 -------</div><div class="line">#  README.md                 |    7 ++++++</div><div class="line">#  2 files changed, 7 insertions(+), 9 deletions(-)</div><div class="line">#  delete mode 100644 README</div><div class="line">#  create mode 100644 README.md</div></pre></td></tr></table></figure>
+<ul>
+<li>如果想更新到 GitHub 的 fork 上，直接 <code>git push origin master</code> 就好了。</li>
+</ul>
+<p>该部分参考：<a href="https://gaohaoyang.github.io/2015/04/12/Syncing-a-fork/" target="_blank" rel="external">syncing a fork</a></p>
+<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><ul>
+<li><code>~/.gitconfig</code> 文件：用户目录下的配置文件只适用于该用户。若使用 <code>git config</code> 时用 <code>--global</code> 选项，读写的就是这个文件。</li>
+<li>当前项目的 Git 目录中的配置文件（也就是工作目录中的 <code>.git/config</code> 文件）：这里的配置仅仅针对当前项目有效。每一个级别的配置都会覆盖上层的相同配置，所以 <code>.git/config</code> 里的配置会覆盖 <code>/etc/gitconfig</code> 中的同名变量。</li>
+</ul>
+<p>比如，配置全局用户名和邮箱</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git config --global user.email &quot;email@example.com&quot;</div><div class="line">$ git config --global user.name &quot;yourname&quot;</div></pre></td></tr></table></figure>
+<p>为某个仓库配置的话，在该仓库目录下操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git config user.email &quot;email@example.com&quot;</div><div class="line">$ git config user.name &quot;yourname&quot;</div></pre></td></tr></table></figure>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> git </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[python3 OS module]]></title>
       <url>http://xiaqunfeng.cc/2017/08/05/python3-OS-module/</url>
       <content type="html"><![CDATA[<p>python3 OS 模块学习笔记<br><a id="more"></a></p>
