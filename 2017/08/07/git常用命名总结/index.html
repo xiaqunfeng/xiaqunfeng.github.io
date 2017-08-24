@@ -21,7 +21,7 @@
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/08/07/git常用命名总结/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="总结记录自己最常用的git命令，然后将一些命令分类，便于翻阅。">
-<meta property="og:updated_time" content="2017-08-07T09:26:07.000Z">
+<meta property="og:updated_time" content="2017-08-22T03:10:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git常用命名总结">
 <meta name="twitter:description" content="总结记录自己最常用的git命令，然后将一些命令分类，便于翻阅。">
@@ -340,6 +340,8 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># git push origin [name]</div></pre></td></tr></table></figure>
 <p>删除远程版本</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># git push origin :refs/tags/[name]</div></pre></td></tr></table></figure>
+<p>checkout远程tags到本地分支</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git checkout -b &lt;new_branch_name&gt; &lt;tagname&gt;</div></pre></td></tr></table></figure>
 <h2 id="日志-log"><a href="#日志-log" class="headerlink" title="日志 - log"></a>日志 - log</h2><p>查看历史版本号</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git reflog</div></pre></td></tr></table></figure>
 <p>查看提交统计信息</p>
@@ -400,6 +402,9 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git config --global user.email &quot;email@example.com&quot;</div><div class="line">$ git config --global user.name &quot;yourname&quot;</div></pre></td></tr></table></figure>
 <p>为某个仓库配置的话，在该仓库目录下操作</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git config user.email &quot;email@example.com&quot;</div><div class="line">$ git config user.name &quot;yourname&quot;</div></pre></td></tr></table></figure>
+<h2 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">▶ git checkout v12.1.4</div><div class="line">warning: refname &apos;v12.1.4&apos; is ambiguous.</div><div class="line">Switched to branch &apos;v12.1.4&apos;</div></pre></td></tr></table></figure>
+<p>原因：这个branch的名称是危险的，因为这是可能是一个标识名、tag名等。所以，rename一下就好。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">▶ git branch -m v12.1.4 v12.1.4-local</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -411,7 +416,7 @@
         <p><span>本文标题:</span><a href="/2017/08/07/git常用命名总结/">git常用命名总结</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
         <p><span>发布时间:</span>2017-08-07, 17:24:32</p>
-        <p><span>最后更新:</span>2017-08-07, 17:26:07</p>
+        <p><span>最后更新:</span>2017-08-22, 11:10:26</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/08/07/git常用命名总结/" title="git常用命名总结">http://xiaqunfeng.cc/2017/08/07/git常用命名总结/</a>
             <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/08/07/git常用命名总结/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -447,7 +452,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#最常用"><span class="toc-number">1.</span> <span class="toc-text">最常用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#仓库-repository"><span class="toc-number">2.</span> <span class="toc-text">仓库 - repository</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分支-branch"><span class="toc-number">3.</span> <span class="toc-text">分支 - branch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#版本-tag"><span class="toc-number">4.</span> <span class="toc-text">版本 - tag</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#日志-log"><span class="toc-number">5.</span> <span class="toc-text">日志 - log</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-number">6.</span> <span class="toc-text">其他</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#同步fork"><span class="toc-number">7.</span> <span class="toc-text">同步fork</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Configuring-a-remote-for-a-fork"><span class="toc-number">7.1.</span> <span class="toc-text">Configuring a remote for a fork</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Syncing-a-fork"><span class="toc-number">7.2.</span> <span class="toc-text">Syncing a fork</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置文件"><span class="toc-number">8.</span> <span class="toc-text">配置文件</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#最常用"><span class="toc-number">1.</span> <span class="toc-text">最常用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#仓库-repository"><span class="toc-number">2.</span> <span class="toc-text">仓库 - repository</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分支-branch"><span class="toc-number">3.</span> <span class="toc-text">分支 - branch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#版本-tag"><span class="toc-number">4.</span> <span class="toc-text">版本 - tag</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#日志-log"><span class="toc-number">5.</span> <span class="toc-text">日志 - log</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-number">6.</span> <span class="toc-text">其他</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#同步fork"><span class="toc-number">7.</span> <span class="toc-text">同步fork</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Configuring-a-remote-for-a-fork"><span class="toc-number">7.1.</span> <span class="toc-text">Configuring a remote for a fork</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Syncing-a-fork"><span class="toc-number">7.2.</span> <span class="toc-text">Syncing a fork</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置文件"><span class="toc-number">8.</span> <span class="toc-text">配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Q-amp-A"><span class="toc-number">9.</span> <span class="toc-text">Q&A</span></a></li></ol>
         
     </div>
     <style>
