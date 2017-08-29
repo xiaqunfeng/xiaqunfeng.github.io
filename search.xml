@@ -4,6 +4,37 @@
   
     
     <entry>
+      <title><![CDATA[Syntax error: '(' unexpected]]></title>
+      <url>http://xiaqunfeng.cc/2017/08/29/Syntax-error-unexpected/</url>
+      <content type="html"><![CDATA[<p>一个shell脚本在centos和ubuntu上执行的问题。<br><a id="more"></a></p>
+<p>今天发现一个奇怪的现象，原先在centos上写的可用的shell脚本，今天在ubuntu上突然运行就报错了。</p>
+<h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><p>脚本部分内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ cat test.sh</div><div class="line">#!/bin/bash</div><div class="line"></div><div class="line">array_osd=(2 3 4 5)</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>执行脚本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sh test.sh</div></pre></td></tr></table></figure>
+<p>报的错误是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Syntax error: &quot;(&quot; unexpected</div></pre></td></tr></table></figure>
+<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>通过 <code>sh</code> 来执行脚本时，内核实际上执行的是 <code>/bin/sh</code></p>
+<p>但是，在ubuntu上，<code>/bin/sh</code> 是 dash</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># lsb_release -a</div><div class="line">No LSB modules are available.</div><div class="line">Distributor ID:	Ubuntu</div><div class="line">Description:	Ubuntu 16.04.2 LTS</div><div class="line">Release:	16.04</div><div class="line">Codename:	xenial</div><div class="line"># ll /bin/sh</div><div class="line">lrwxrwxrwx 1 root root 4 Aug 22 16:24 /bin/sh -&gt; dash*</div></pre></td></tr></table></figure>
+<p>而，在centos上，<code>/bin/sh</code> 是 bash</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># lsb_release -a</div><div class="line">LSB Version:	:core-4.1-amd64:core-4.1-noarch</div><div class="line">Distributor ID:	CentOS</div><div class="line">Description:	CentOS Linux release 7.3.1611 (Core)</div><div class="line">Release:	7.3.1611</div><div class="line">Codename:	Core</div><div class="line"># ll /bin/sh</div><div class="line">lrwxrwxrwx. 1 root root 4 4月  20 11:52 /bin/sh -&gt; bash</div></pre></td></tr></table></figure>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>脚本中已经加了 <code>!/bin/bash</code> ，所以，直接执行的话，是用 bash 来执行，用 <code>sh</code> 会覆盖默认的bash。</p>
+<p>所以，可以执行如下操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ chmod +x test.sh</div><div class="line">$ ./test.sh</div></pre></td></tr></table></figure>
+<p>OK，这时候就没有错误了</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> shell </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[ceph osd相关操作]]></title>
       <url>http://xiaqunfeng.cc/2017/08/17/ceph-osd%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/</url>
       <content type="html"><![CDATA[<p>ceph osd的相关操作，包括osd的部署（自动和手动部署）、OSD操作、journal软链、uuid等。<br><a id="more"></a></p>
@@ -2300,9 +2331,9 @@
         
         <tags>
             
-            <tag> centos </tag>
-            
             <tag> Linux </tag>
+            
+            <tag> centos </tag>
             
         </tags>
         

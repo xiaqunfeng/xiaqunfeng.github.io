@@ -4,6 +4,23 @@
 
     
   <url>
+    <loc>http://xiaqunfeng.cc/2017/08/29/Syntax-error-unexpected/</loc>
+    <lastmod>2017-08-29T11:55:44.000Z</lastmod>
+    <data>
+        <display>
+        <title>Syntax error: '(' unexpected</title>
+        <pubTime>2017-08-29T11:31:11.000Z</pubTime>
+        
+        <tag>shell</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://xiaqunfeng.cc/2017/08/07/git%E5%B8%B8%E7%94%A8%E5%91%BD%E5%90%8D%E6%80%BB%E7%BB%93/</loc>
     <lastmod>2017-08-22T03:10:26.000Z</lastmod>
     <data>
@@ -532,9 +549,9 @@
         <title>firewalld和iptables</title>
         <pubTime>2017-05-07T08:08:01.000Z</pubTime>
         
-        <tag>centos</tag>
-         
         <tag>Linux</tag>
+         
+        <tag>centos</tag>
          
          
            
