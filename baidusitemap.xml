@@ -4,6 +4,23 @@
 
     
   <url>
+    <loc>http://xiaqunfeng.cc/2017/08/30/lsblk%E5%91%BD%E4%BB%A4/</loc>
+    <lastmod>2017-08-30T08:00:52.000Z</lastmod>
+    <data>
+        <display>
+        <title>lsblk命令</title>
+        <pubTime>2017-08-30T06:36:20.000Z</pubTime>
+        
+        <tag>storage</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://xiaqunfeng.cc/2017/08/29/Syntax-error-unexpected/</loc>
     <lastmod>2017-08-29T11:55:44.000Z</lastmod>
     <data>
@@ -549,9 +566,9 @@
         <title>firewalld和iptables</title>
         <pubTime>2017-05-07T08:08:01.000Z</pubTime>
         
-        <tag>Linux</tag>
-         
         <tag>centos</tag>
+         
+        <tag>Linux</tag>
          
          
            

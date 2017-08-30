@@ -15,21 +15,16 @@
 
 
 
-<meta name="description" content="NG的机器学习教程，第三章：预备知识和注释；第四章：规模驱使机器学习前进。">
+<meta name="description" content="介绍lsblk命令的详细用法。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Machine Learning Yearning(3、4)">
-<meta property="og:url" content="http://xiaqunfeng.cc/2017/03/03/Machine-Learning-Yearning-3、4/index.html">
+<meta property="og:title" content="lsblk命令">
+<meta property="og:url" content="http://xiaqunfeng.cc/2017/08/30/lsblk命令/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="NG的机器学习教程，第三章：预备知识和注释；第四章：规模驱使机器学习前进。">
-<meta property="og:image" content="http://img.blog.csdn.net/20161208234928384?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:image" content="http://img.blog.csdn.net/20161209001935676?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:image" content="http://img.blog.csdn.net/20161209002633511?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:image" content="http://img.blog.csdn.net/20161209003804359?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:updated_time" content="2017-03-08T03:11:24.000Z">
+<meta property="og:description" content="介绍lsblk命令的详细用法。">
+<meta property="og:updated_time" content="2017-08-30T08:00:52.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Machine Learning Yearning(3、4)">
-<meta name="twitter:description" content="NG的机器学习教程，第三章：预备知识和注释；第四章：规模驱使机器学习前进。">
-<meta name="twitter:image" content="http://img.blog.csdn.net/20161208234928384?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta name="twitter:title" content="lsblk命令">
+<meta name="twitter:description" content="介绍lsblk命令的详细用法。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -61,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Machine Learning Yearning(3、4) | 夏天的风的博客</title>
+<title>lsblk命令 | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -248,11 +243,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-Machine-Learning-Yearning-3、4" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-lsblk命令" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/03/03/Machine-Learning-Yearning-3、4/" class="article-date">
-      <time datetime="2017-03-03T01:14:50.000Z" itemprop="datePublished">2017-03-03</time>
+      <a href="/2017/08/30/lsblk命令/" class="article-date">
+      <time datetime="2017-08-30T06:36:20.000Z" itemprop="datePublished">2017-08-30</time>
 </a>
 
 
@@ -267,7 +262,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Machine Learning Yearning(3、4)
+      lsblk命令
     </h1>
   
 
@@ -278,7 +273,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/storage/">storage</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -288,23 +283,74 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>NG的机器学习教程，第三章：预备知识和注释；第四章：规模驱使机器学习前进。<br><a id="more"></a></p>
-<h2 id="Chapter-3、Prerequisites-and-Notation"><a href="#Chapter-3、Prerequisites-and-Notation" class="headerlink" title="Chapter 3、Prerequisites and Notation"></a>Chapter 3、Prerequisites and Notation</h2><p><strong>预备知识和注释</strong><br>​    如果你有学习过机器学习课程，比如我在Coursera上的的机器学习MOOC，或者如果你有应用监督学习的经验，你也将能够理解这段文字。<br>​    我假设你熟悉监督学习（supervised learning）：使用标记的训练样本（x，y）去学习一个从x映射到y的函数。 监督学习算法包括线性回归（linear regression），逻辑回归（logistic regression）和神经网络（neural networks）。 机器学习的形式有很多，但是现如今大部分机器学习的实用价值来自于监督学习。<br>​    我将经常提到神经网络（也称为“deep learning”）。你只需要遵循本问对它是什么有一个基本的理解就可以了。<br>​    如果您不熟悉这里提到的概念，请观看在Coursera上前三周 机器学习视频课程<a href="http://ml-class.org" target="_blank" rel="external">http://ml-class.org</a></p>
-<p><img src="http://img.blog.csdn.net/20161208234928384?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<h2 id="Chapter-4、Scale-drives-machine-learning-progress"><a href="#Chapter-4、Scale-drives-machine-learning-progress" class="headerlink" title="Chapter 4、Scale drives machine learning progress"></a>Chapter 4、Scale drives machine learning progress</h2><p><strong>规模驱使机器学习前进</strong></p>
-<p>深度学习（神经网络）的许多想法已经存在几十年了。 为什么这些想法现在才火起来？<br>最近得以进步的最大驱动因素有两个：</p>
-<ul>
-<li>数据可用性。 人们现在在数字设备（笔记本电脑，移动设备）上花费更多的时间。这些活动产生大量的数据，我们可以使用这些数据来训练和反馈我们的学习算法。</li>
-<li>计算尺度。 我们几年前才开始能够训练足够大的神经网络，以利用我们现在拥有的巨大的数据集。</li>
-</ul>
-<p>具体来说，即使你积累了更多的数据，通常传统学习算法（如逻辑回归）的性能表现“平稳”。这意味着它的学习曲线“平坦”，即使你给它更多的数据，算法也不会再有提升效果。</p>
-<p><img src="http://img.blog.csdn.net/20161209001935676?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<p>这就好像传统的算法不知道如何处理我们现在拥有的所有数据。<br>如果你在同一个监督学习任务上训练一个小的神经网络（NN），你可能会获得略好一点的性能：</p>
-<p><img src="http://img.blog.csdn.net/20161209002633511?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<p>这里，“小的神经网络”是指仅具有少量隐藏单位/层/参数的神经网络。 最后，如果你训练越来越大的神经网络，你可以获得更好的性能：[1]</p>
-<p><img src="http://img.blog.csdn.net/20161209003804359?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<p>因此，当你做到下面两点的时候你会获得最佳的性能（i）训练一个非常大的神经网络，使其在上面的绿色曲线上; （ii）有大量的数据。<br>许多其他细节，如神经网络架构也很重要，这里已经有很多创新。 但是现在提高算法性能的更可靠的方法之一仍然是（i）训练更大的网络和（ii）获得更多的数据。<br>如何完成（i）和（ii）的方法是极其复杂的。 这本书将详细讨论细节。 我们将从对传统学习算法和神经网络都有用的一般策略开始，并建立构建深度学习系统所需的最先进策略。</p>
-<p>[1]这个图表展示了NN在小数据集下做得更好。这种效果不如NNs在大数据集中表现良好的效果一致。 在小数据系统中，取决于特征是如何手工设计的，传统算法可能做的很好，也可能做得并不好。 例如，如果你有20个训练样本，那么使用逻辑回归还是神经网络可能并不重要; 手工特征的选择将比算法的选择产生更大的影响。 但如果你有100万的样本，我更倾向于神经网络。</p>
+        <p>介绍lsblk命令的详细用法。<br><a id="more"></a></p>
+<h2 id="lsblk"><a href="#lsblk" class="headerlink" title="lsblk"></a>lsblk</h2><p>功能：列出块设备</p>
+<p>描述：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">lsblk lists information about all available or the specified block devices.  The lsblk command reads the sysfs filesystem to gather information.</div><div class="line"></div><div class="line">The command prints all block devices (except RAM disks) in a tree-like format by default.  Use lsblk --help to get a list of all available columns.</div><div class="line"></div><div class="line">The default output, as well as the default output from options like --fs and --topology, is subject to change.  So whenever possible, you should avoid using default out‐puts in your scripts.  Always explicitly define expected columns by using --output columns-list in environments where a stable output is required.</div></pre></td></tr></table></figure>
+<p>用法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">lsblk [选项] [&lt;设备&gt; ...]</div></pre></td></tr></table></figure>
+<p>-a 是默认选项</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># lsblk</div><div class="line">NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</div><div class="line">sr0     11:0    1  436K  0 rom</div><div class="line">vda    253:0    0   20G  0 disk</div><div class="line">├─vda1 253:1    0    2M  0 part</div><div class="line">├─vda2 253:2    0  500M  0 part /boot</div><div class="line">└─vda3 253:3    0 19.5G  0 part /</div><div class="line">vdb    253:16   0   20G  0 disk</div><div class="line">├─vdb1 253:17   0  9.3G  0 part</div><div class="line">└─vdb2 253:18   0  9.3G  0 part </div><div class="line">vdc    253:32   0   10G  0 disk</div><div class="line">└─vdc1 253:33   0  9.3G  0 part</div></pre></td></tr></table></figure>
+<h3 id="head说明"><a href="#head说明" class="headerlink" title="head说明"></a>head说明</h3><table>
+<thead>
+<tr>
+<th>HEAD</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NAME</td>
+<td>块设备名</td>
+</tr>
+<tr>
+<td>MAJ:MIN</td>
+<td>主要和次要设备号</td>
+</tr>
+<tr>
+<td>RM</td>
+<td>设备是否可移动设备(1为可移动)</td>
+</tr>
+<tr>
+<td>SIZE</td>
+<td>设备的容量大小信息</td>
+</tr>
+<tr>
+<td>RO</td>
+<td>设备是否为只读(1表示只读)</td>
+</tr>
+<tr>
+<td>TYPE</td>
+<td>块设备是否是磁盘或磁盘上的一个分区(disk表示是磁盘，part表示是分区, rom表示只读存储)</td>
+</tr>
+<tr>
+<td>MOUNTPOINT</td>
+<td>设备挂载的挂载点</td>
+</tr>
+</tbody>
+</table>
+<h2 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h2><h3 id="选项列表"><a href="#选项列表" class="headerlink" title="选项列表"></a>选项列表</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">选项：</div><div class="line"> -a, --all            打印所有设备</div><div class="line"> -b, --bytes          以字节为单位而非易读的格式来打印 SIZE</div><div class="line"> -d, --nodeps         不打印从属设备(slave)或占位设备(holder)</div><div class="line"> -D, --discard        打印时丢弃能力</div><div class="line"> -e, --exclude &lt;列表&gt; 根据主设备号排除设备(默认：内存盘)</div><div class="line"> -I, --include &lt;列表&gt; 只显示有指定主设备号的设备</div><div class="line"> -f, --fs             输出文件系统信息</div><div class="line"> -h, --help           使用信息(此信息)</div><div class="line"> -i, --ascii          只使用 ascii 字符</div><div class="line"> -m, --perms          输出权限信息</div><div class="line"> -l, --list           使用列表格式的输出</div><div class="line"> -n, --noheadings     不打印标题</div><div class="line"> -o, --output &lt;列表&gt;  输出列</div><div class="line"> -p, --paths          打印完整设备路径</div><div class="line"> -P, --pairs          使用 key=“value” 输出格式</div><div class="line"> -r, --raw            使用原生输出格式</div><div class="line"> -s, --inverse        反向依赖</div><div class="line"> -t, --topology       输出拓扑信息</div><div class="line"> -S, --scsi           输出有关 SCSI 设备的信息</div><div class="line"></div><div class="line"> -h, --help     显示此帮助并退出</div><div class="line"> -V, --version  输出版本信息并退出</div></pre></td></tr></table></figure>
+<h3 id="b"><a href="#b" class="headerlink" title="-b"></a>-b</h3><p>以字节为单位而非易读的格式来打印 SIZE</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># lsblk -b</div><div class="line">NAME   MAJ:MIN RM        SIZE RO TYPE MOUNTPOINT</div><div class="line">sr0     11:0    1      446464  0 rom</div><div class="line">vda    253:0    0 21474836480  0 disk</div><div class="line">├─vda1 253:1    0     2097152  0 part</div><div class="line">├─vda2 253:2    0   524288000  0 part /boot</div><div class="line">└─vda3 253:3    0 20947402752  0 part /</div><div class="line">vdb    253:16   0 21474836480  0 disk</div><div class="line">├─vdb1 253:17   0  9999220736  0 part</div><div class="line">└─vdb2 253:18   0  9999220736  0 part </div><div class="line">vdc    253:32   0 10737418240  0 disk</div><div class="line">└─vdc1 253:33   0  9999220736  0 part</div></pre></td></tr></table></figure>
+<h3 id="d"><a href="#d" class="headerlink" title="-d"></a>-d</h3><p>不打印从属设备(slave)或占位设备(holder)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># lsblk -d</div><div class="line">NAME MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</div><div class="line">sr0   11:0    1  436K  0 rom</div><div class="line">vda  253:0    0   20G  0 disk</div><div class="line">vdb  253:16   0   20G  0 disk</div><div class="line">vdc  253:32   0   10G  0 disk</div></pre></td></tr></table></figure>
+<h3 id="f"><a href="#f" class="headerlink" title="-f"></a>-f</h3><p>输出文件系统信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># lsblk -f</div><div class="line">NAME   FSTYPE  LABEL    UUID                                 MOUNTPOINT</div><div class="line">sr0    iso9660 config-2 2017-05-19-09-35-17-00</div><div class="line">vda</div><div class="line">├─vda1 vfat    BOOT     9485-0659</div><div class="line">├─vda2 xfs              4931e9cc-324d-43f1-9c77-c283add1d38d /boot</div><div class="line">└─vda3 xfs              8b9001aa-126c-489f-b23d-98ea539ee204 /</div><div class="line">vdb</div><div class="line">├─vdb1</div><div class="line">└─vdb2 xfs              824f74a5-0cd5-411a-a77f-8b42f398bb44 </div><div class="line">vdc</div><div class="line">└─vdc1 xfs              5389e17f-7613-48b1-a905-3115a43288e9</div></pre></td></tr></table></figure>
+<h3 id="m"><a href="#m" class="headerlink" title="-m"></a>-m</h3><p>输出权限信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># lsblk -m</div><div class="line">NAME    SIZE OWNER GROUP MODE</div><div class="line">sr0     436K root  cdrom brw-rw----</div><div class="line">vda      20G root  disk  brw-rw----</div><div class="line">├─vda1    2M root  disk  brw-rw----</div><div class="line">├─vda2  500M root  disk  brw-rw----</div><div class="line">└─vda3 19.5G root  disk  brw-rw----</div><div class="line">vdb      20G root  disk  brw-rw----</div><div class="line">├─vdb1  9.3G root  disk  brw-rw----</div><div class="line">└─vdb2  9.3G ceph  ceph  brw-rw----</div><div class="line">vdc      10G root  disk  brw-rw----</div><div class="line">└─vdc1  9.3G ceph  ceph  brw-rw----</div></pre></td></tr></table></figure>
+<h3 id="l"><a href="#l" class="headerlink" title="-l"></a>-l</h3><p>使用列表格式的输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># lsblk -l</div><div class="line">NAME MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</div><div class="line">sr0   11:0    1  436K  0 rom</div><div class="line">vda  253:0    0   20G  0 disk</div><div class="line">vda1 253:1    0    2M  0 part</div><div class="line">vda2 253:2    0  500M  0 part /boot</div><div class="line">vda3 253:3    0 19.5G  0 part /</div><div class="line">vdb  253:16   0   20G  0 disk</div><div class="line">vdb1 253:17   0  9.3G  0 part</div><div class="line">vdb2 253:18   0  9.3G  0 part </div><div class="line">vdc  253:32   0   10G  0 disk</div><div class="line">vdc1 253:33   0  9.3G  0 part</div></pre></td></tr></table></figure>
+<h3 id="P"><a href="#P" class="headerlink" title="-P"></a>-P</h3><p>使用 key=“value” 输出格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># lsblk -P</div><div class="line">NAME=&quot;sr0&quot; MAJ:MIN=&quot;11:0&quot; RM=&quot;1&quot; SIZE=&quot;436K&quot; RO=&quot;0&quot; TYPE=&quot;rom&quot; MOUNTPOINT=&quot;&quot;</div><div class="line">NAME=&quot;vda&quot; MAJ:MIN=&quot;253:0&quot; RM=&quot;0&quot; SIZE=&quot;20G&quot; RO=&quot;0&quot; TYPE=&quot;disk&quot; MOUNTPOINT=&quot;&quot;</div><div class="line">NAME=&quot;vda1&quot; MAJ:MIN=&quot;253:1&quot; RM=&quot;0&quot; SIZE=&quot;2M&quot; RO=&quot;0&quot; TYPE=&quot;part&quot; MOUNTPOINT=&quot;&quot;</div><div class="line">NAME=&quot;vda2&quot; MAJ:MIN=&quot;253:2&quot; RM=&quot;0&quot; SIZE=&quot;500M&quot; RO=&quot;0&quot; TYPE=&quot;part&quot; MOUNTPOINT=&quot;/boot&quot;</div><div class="line">NAME=&quot;vda3&quot; MAJ:MIN=&quot;253:3&quot; RM=&quot;0&quot; SIZE=&quot;19.5G&quot; RO=&quot;0&quot; TYPE=&quot;part&quot; MOUNTPOINT=&quot;/&quot;</div><div class="line">NAME=&quot;vdb&quot; MAJ:MIN=&quot;253:16&quot; RM=&quot;0&quot; SIZE=&quot;20G&quot; RO=&quot;0&quot; TYPE=&quot;disk&quot; MOUNTPOINT=&quot;&quot;</div><div class="line">NAME=&quot;vdb1&quot; MAJ:MIN=&quot;253:17&quot; RM=&quot;0&quot; SIZE=&quot;9.3G&quot; RO=&quot;0&quot; TYPE=&quot;part&quot; MOUNTPOINT=&quot;&quot;</div><div class="line">NAME=&quot;vdb2&quot; MAJ:MIN=&quot;253:18&quot; RM=&quot;0&quot; SIZE=&quot;9.3G&quot; RO=&quot;0&quot; TYPE=&quot;part&quot; MOUNTPOINT=&quot;/var/lib/ceph/osd/ceph-2&quot;</div><div class="line">NAME=&quot;vdc&quot; MAJ:MIN=&quot;253:32&quot; RM=&quot;0&quot; SIZE=&quot;10G&quot; RO=&quot;0&quot; TYPE=&quot;disk&quot; MOUNTPOINT=&quot;&quot;</div><div class="line">NAME=&quot;vdc1&quot; MAJ:MIN=&quot;253:33&quot; RM=&quot;0&quot; SIZE=&quot;9.3G&quot; RO=&quot;0&quot; TYPE=&quot;part&quot; MOUNTPOINT=&quot;/var/lib/ceph/osd/ceph-4&quot;</div></pre></td></tr></table></figure>
+<h3 id="t"><a href="#t" class="headerlink" title="-t"></a>-t</h3><p>输出拓扑信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># lsblk -t</div><div class="line">NAME   ALIGNMENT MIN-IO OPT-IO PHY-SEC LOG-SEC ROTA SCHED RQ-SIZE   RA WSAME</div><div class="line">sr0            0   2048      0    2048    2048    1 cfq       128  128    0B</div><div class="line">vda            0    512      0     512     512    1           128 4096    0B</div><div class="line">├─vda1         0    512      0     512     512    1           128 4096    0B</div><div class="line">├─vda2         0    512      0     512     512    1           128 4096    0B</div><div class="line">└─vda3         0    512      0     512     512    1           128 4096    0B</div><div class="line">vdb            0    512      0     512     512    1           128 4096    0B</div><div class="line">├─vdb1         0    512      0     512     512    1           128 4096    0B</div><div class="line">└─vdb2         0    512      0     512     512    1           128 4096    0B</div><div class="line">vdc            0    512      0     512     512    1           128 4096    0B</div><div class="line">└─vdc1         0    512      0     512     512    1           128 4096    0B</div></pre></td></tr></table></figure>
+<p>其中 <code>SCHED</code> 是调度算法，有 cfq、deadline 等等。</p>
+<h3 id="S"><a href="#S" class="headerlink" title="-S"></a>-S</h3><p>输出有关 SCSI 设备的信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># lsblk -S</div><div class="line">NAME HCTL       TYPE VENDOR   MODEL             REV TRAN</div><div class="line">sr0  1:0:1:0    rom  QEMU     QEMU DVD-ROM     2.1. ata</div></pre></td></tr></table></figure>
+<h3 id="o"><a href="#o" class="headerlink" title="-o"></a>-o</h3><p>输出列</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># lsblk -o FSTYPE /dev/vdb2</div><div class="line">FSTYPE</div><div class="line">xfs</div></pre></td></tr></table></figure>
+<h3 id="n"><a href="#n" class="headerlink" title="-n"></a>-n</h3><p>不打印标题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># lsblk -n -o FSTYPE /dev/vdb2</div><div class="line">xfs</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -313,13 +359,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/03/03/Machine-Learning-Yearning-3、4/">Machine Learning Yearning(3、4)</a></p>
+        <p><span>本文标题:</span><a href="/2017/08/30/lsblk命令/">lsblk命令</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-03-03, 09:14:50</p>
-        <p><span>最后更新:</span>2017-03-08, 11:11:24</p>
+        <p><span>发布时间:</span>2017-08-30, 14:36:20</p>
+        <p><span>最后更新:</span>2017-08-30, 16:00:52</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/03/03/Machine-Learning-Yearning-3、4/" title="Machine Learning Yearning(3、4)">http://xiaqunfeng.cc/2017/03/03/Machine-Learning-Yearning-3、4/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/03/03/Machine-Learning-Yearning-3、4/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/08/30/lsblk命令/" title="lsblk命令">http://xiaqunfeng.cc/2017/08/30/lsblk命令/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/08/30/lsblk命令/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -331,16 +377,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/03/09/Machine-Learning-Yearning-5、6/">
-                    Machine Learning Yearning(5、6、7)
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/03/02/Machine-Learning-Yearning-开篇、1、2/">
-                    Machine Learning Yearning(开篇、1、2)
+                <a href="/2017/08/29/Syntax-error-unexpected/">
+                    Syntax error: &#39;(&#39; unexpected
                 </a>
             </div>
         
@@ -352,7 +392,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Chapter-3、Prerequisites-and-Notation"><span class="toc-number">1.</span> <span class="toc-text">Chapter 3、Prerequisites and Notation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Chapter-4、Scale-drives-machine-learning-progress"><span class="toc-number">2.</span> <span class="toc-text">Chapter 4、Scale drives machine learning progress</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#lsblk"><span class="toc-number">1.</span> <span class="toc-text">lsblk</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#head说明"><span class="toc-number">1.1.</span> <span class="toc-text">head说明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#选项"><span class="toc-number">2.</span> <span class="toc-text">选项</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#选项列表"><span class="toc-number">2.1.</span> <span class="toc-text">选项列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#b"><span class="toc-number">2.2.</span> <span class="toc-text">-b</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#d"><span class="toc-number">2.3.</span> <span class="toc-text">-d</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#f"><span class="toc-number">2.4.</span> <span class="toc-text">-f</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#m"><span class="toc-number">2.5.</span> <span class="toc-text">-m</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#l"><span class="toc-number">2.6.</span> <span class="toc-text">-l</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#P"><span class="toc-number">2.7.</span> <span class="toc-text">-P</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#t"><span class="toc-number">2.8.</span> <span class="toc-text">-t</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#S"><span class="toc-number">2.9.</span> <span class="toc-text">-S</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#o"><span class="toc-number">2.10.</span> <span class="toc-text">-o</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#n"><span class="toc-number">2.11.</span> <span class="toc-text">-n</span></a></li></ol></li></ol>
         
     </div>
     <style>
@@ -388,7 +428,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Machine Learning Yearning(3、4)　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"lsblk命令　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -407,8 +447,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.cc/2017/03/03/Machine-Learning-Yearning-3、4/';
-            this.page.identifier = '2017/03/03/Machine-Learning-Yearning-3、4/';
+            this.page.url = 'http://xiaqunfeng.cc/2017/08/30/lsblk命令/';
+            this.page.identifier = '2017/08/30/lsblk命令/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -430,15 +470,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/03/09/Machine-Learning-Yearning-5、6/" title="上一篇: Machine Learning Yearning(5、6、7)">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/03/02/Machine-Learning-Yearning-开篇、1、2/" title="下一篇: Machine Learning Yearning(开篇、1、2)">
+            <a href="/2017/08/29/Syntax-error-unexpected/" title="下一篇: Syntax error: &#39;(&#39; unexpected">
                 <i class="fa fa-angle-right"></i>
             </a>
         
