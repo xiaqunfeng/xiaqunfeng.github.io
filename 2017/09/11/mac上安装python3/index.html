@@ -15,19 +15,16 @@
 
 
 
-<meta name="description" content="​    第一篇hexo博客，介绍了在mac上搭建hexo博客的全过程。包括：准备工作、本地站点的建立、启动和部署站点、创建新文章、发布到github、更换主题 和 绑定域名。">
+<meta name="description" content="简单介绍一下mac上如何安装和使用 python3">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Mac上hexo博客的搭建">
-<meta property="og:url" content="http://xiaqunfeng.cc/2017/01/06/hexo的搭建/index.html">
+<meta property="og:title" content="mac上安装python3">
+<meta property="og:url" content="http://xiaqunfeng.cc/2017/09/11/mac上安装python3/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="​    第一篇hexo博客，介绍了在mac上搭建hexo博客的全过程。包括：准备工作、本地站点的建立、启动和部署站点、创建新文章、发布到github、更换主题 和 绑定域名。">
-<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/hexo-new.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/domain-hexo.jpg">
-<meta property="og:updated_time" content="2017-06-25T06:03:43.000Z">
+<meta property="og:description" content="简单介绍一下mac上如何安装和使用 python3">
+<meta property="og:updated_time" content="2017-09-11T07:49:43.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Mac上hexo博客的搭建">
-<meta name="twitter:description" content="​    第一篇hexo博客，介绍了在mac上搭建hexo博客的全过程。包括：准备工作、本地站点的建立、启动和部署站点、创建新文章、发布到github、更换主题 和 绑定域名。">
-<meta name="twitter:image" content="http://ojet8bprn.bkt.clouddn.com/hexo-new.png">
+<meta name="twitter:title" content="mac上安装python3">
+<meta name="twitter:description" content="简单介绍一下mac上如何安装和使用 python3">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -59,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Mac上hexo博客的搭建 | 夏天的风的博客</title>
+<title>mac上安装python3 | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -246,11 +243,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-hexo的搭建" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-mac上安装python3" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/01/06/hexo的搭建/" class="article-date">
-      <time datetime="2017-01-06T07:47:18.000Z" itemprop="datePublished">2017-01-06</time>
+      <a href="/2017/09/11/mac上安装python3/" class="article-date">
+      <time datetime="2017-09-11T07:35:30.000Z" itemprop="datePublished">2017-09-11</time>
 </a>
 
 
@@ -265,7 +262,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Mac上hexo博客的搭建
+      mac上安装python3
     </h1>
   
 
@@ -286,86 +283,25 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>​    第一篇hexo博客，介绍了在mac上搭建hexo博客的全过程。包括：准备工作、本地站点的建立、启动和部署站点、创建新文章、发布到github、更换主题 和 绑定域名。<br><a id="more"></a></p>
-<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><ol>
-<li><strong>github</strong></li>
-<li><strong>homebrew</strong></li>
-<li><strong>node.js 和 npm</strong></li>
-<li><strong>hexo</strong></li>
-</ol>
-<h3 id="github"><a href="#github" class="headerlink" title="github"></a>github</h3><p>1、github账号</p>
-<p>​    这部分略过，没有的话自己注册一个。然后将mac上的公钥添加到github上去。</p>
-<p>2、建立仓库</p>
-<p>​    严格按照 <code>git用户名</code>.<code>github</code>.<code>io</code> 来命名。我这里就叫：<code>xiaqunfeng.github.io</code> 。</p>
-<h3 id="homebrew"><a href="#homebrew" class="headerlink" title="homebrew"></a>homebrew</h3><p>homebrew 是MAC OSX 上面用来安装 或者 卸载软件用的非常方面的一个软件。在终端上执行如下命令即可安装，参考<a href="http://brew.sh/index_zh-cn.html" target="_blank" rel="external">官网</a>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo /usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</div></pre></td></tr></table></figure>
-<h3 id="node-js"><a href="#node-js" class="headerlink" title="node.js"></a>node.js</h3><p>不推荐使用 brew 安装node， 直接从<a href="https://nodejs.org/en/" target="_blank" rel="external">官网</a>下载，然后双击安装。我这里选择的版本是：v6.9.3 LTS。node.js 集成带有npm。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ node -v</div><div class="line">v6.9.3</div><div class="line"></div><div class="line">$ npm -v</div><div class="line">3.10.10</div></pre></td></tr></table></figure>
-<h3 id="hexo"><a href="#hexo" class="headerlink" title="hexo"></a>hexo</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo npm install hexo-cli -g</div></pre></td></tr></table></figure>
-<p>安装完后</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">$ hexo -v</div><div class="line">hexo: 3.2.2</div><div class="line">hexo-cli: 1.0.2</div><div class="line">os: Darwin 16.1.0 darwin x64</div><div class="line">http_parser: 2.7.0</div><div class="line">node: 6.9.3</div><div class="line">v8: 5.1.281.89</div><div class="line">uv: 1.9.1</div><div class="line">zlib: 1.2.8</div><div class="line">ares: 1.10.1-DEV</div><div class="line">icu: 57.1</div><div class="line">modules: 48</div><div class="line">openssl: 1.0.2j</div></pre></td></tr></table></figure>
-<h2 id="hexo命令行使用"><a href="#hexo命令行使用" class="headerlink" title="hexo命令行使用"></a>hexo命令行使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">常用命令：</div><div class="line">hexo help			#查看帮助</div><div class="line">hexo init 			#初始化一个目录</div><div class="line">hexo new &quot;postName&quot; 		#新建文章</div><div class="line">hexo new page &quot;pageName&quot; 	#新建页面</div><div class="line">hexo generate 			#生成网页，可以在 public 目录查看整个网站的文件</div><div class="line">hexo server 			#本地预览，&apos;Ctrl+C&apos;关闭</div><div class="line">hexo deploy 			#部署.deploy目录</div><div class="line">hexo clean 			#清除缓存，强烈建议每次执行命令前先清理缓存，每次部署前先删除 .deploy 文件夹</div><div class="line"></div><div class="line">简写：</div><div class="line">hexo n == hexo new</div><div class="line">hexo g == hexo generate</div><div class="line">hexo s == hexo server</div><div class="line">hexo d == hexo deploy</div></pre></td></tr></table></figure>
-<h2 id="建立本地站点"><a href="#建立本地站点" class="headerlink" title="建立本地站点"></a>建立本地站点</h2><p>执行下列命令，Hexo 将会在指定文件夹中新建所需要的文件。（文件夹不需要提前建好，会自行创建）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ hexo init &lt;folder&gt;</div><div class="line">$ cd &lt;folder&gt;</div><div class="line">$ npm install</div></pre></td></tr></table></figure>
-<p>新建文件夹目录如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">.</div><div class="line">├── .deploy 		#需要部署的文件</div><div class="line">├── node_modules 	#Hexo插件</div><div class="line">├── public 		#生成的静态网页文件</div><div class="line">├── scaffolds 		#模板</div><div class="line">├── source 		#博客正文和其他源文件</div><div class="line">| ├── _drafts 		#草稿(刚开始没有)</div><div class="line">| └── _posts 		#文章</div><div class="line">├── themes 		#主题</div><div class="line">├── _config.yml 	#全局配置文件</div><div class="line">└── package.json</div></pre></td></tr></table></figure>
-<h2 id="启动站点"><a href="#启动站点" class="headerlink" title="启动站点"></a>启动站点</h2><p>执行 hexo server 启动站点</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ hexo s</div><div class="line">INFO  Start processing</div><div class="line">INFO  Hexo is running at http://localhost:4000/. Press Ctrl+C to stop.</div></pre></td></tr></table></figure>
-<p>在浏览器中输入：<a href="http://localhost:4000" target="_blank" rel="external">http://localhost:4000</a> 就可以看到站点了。</p>
-<h2 id="部署站点"><a href="#部署站点" class="headerlink" title="部署站点"></a>部署站点</h2><p>编辑文件 <code>_config.yml</code> ，修改如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">deploy:</div><div class="line">   type: git</div><div class="line">   repository: https://github.com/xiaqunfeng/xiaqunfeng.github.io.git</div><div class="line">   branch: master</div></pre></td></tr></table></figure>
-<p><strong>注意</strong>：冒号后面要留 <strong>空格</strong>！！</p>
-<h2 id="创建新文章"><a href="#创建新文章" class="headerlink" title="创建新文章"></a>创建新文章</h2><p><strong>方法1</strong>、<code>hexo n</code>创建新文章</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ hexo n &quot;我的第一篇hexo博客&quot;</div><div class="line">INFO  Created: ~/hexo-blog/source/_posts/我的第一篇hexo博客.md</div></pre></td></tr></table></figure>
-<p>然后用编辑器打开编辑即可。</p>
-<p><strong>方法2</strong>、直接在 <code>source/_posts</code> 中新建一个md文件，进行编辑</p>
-<p>在hexo-blog文件夹下执行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hexo g</div><div class="line">hexo s</div></pre></td></tr></table></figure>
-<p>然后在浏览器中输入<code>http://localhost:4000</code>就可以看到新加的文章了。</p>
-<h2 id="发布"><a href="#发布" class="headerlink" title="发布"></a>发布</h2><p>执行 <code>hexo d</code> ，发现如下问题</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ hexo d</div><div class="line">ERROR Deployer not found: git</div></pre></td></tr></table></figure>
-<p>解决方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ npm install hexo-deployer-git --save</div><div class="line">hexo-site@0.0.0 /Users/xiaqunfeng/hexo-blog</div><div class="line">└── hexo-deployer-git@0.2.0</div></pre></td></tr></table></figure>
-<p>再执行 <code>hexo d</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">$ hexo d</div><div class="line">INFO  Deploying: git</div><div class="line">INFO  Clearing .deploy_git folder...</div><div class="line">INFO  Copying files from public folder...</div><div class="line">On branch master</div><div class="line">nothing to commit, working tree clean</div><div class="line">Username for &apos;https://github.com&apos;: xiaqunfeng</div><div class="line">Password for &apos;https://xiaqunfeng@github.com&apos;: </div><div class="line">To https://github.com/xiaqunfeng/xiaqunfeng.github.io.git</div><div class="line"> * [new branch]      HEAD -&gt; master</div><div class="line">Branch master set up to track remote branch master from https://github.com/xiaqunfeng/xiaqunfeng.github.io.git.</div><div class="line">INFO  Deploy done: git</div></pre></td></tr></table></figure>
-<p>输入github的用户名和密码即可。此时，博客已经完全搭建起来了。</p>
-<p>在浏览器中输入：<a href="https://xiaqunfeng.github.io/" target="_blank" rel="external">https://xiaqunfeng.github.io/</a> 即可访问。</p>
-<p>预览如下： <img src="http://ojet8bprn.bkt.clouddn.com/hexo-new.png" alt=""></p>
-<h2 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h2><p>自己google一下hexo主题，选一个自己喜欢的，然后git clone下来。比如 Next 主题</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git clone https://github.com/iissnan/hexo-theme-next.git</div></pre></td></tr></table></figure>
-<p>然后打开_config.yml文件，替换其中的 <code>theme</code> 属性，默认为 <code>landscape</code>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">theme: next</div></pre></td></tr></table></figure>
-<h3 id="本地调试"><a href="#本地调试" class="headerlink" title="本地调试"></a>本地调试</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ hexo g #生成静态页面，生成的内容在public文件夹下</div><div class="line">$ hexo s #启动本地服务，进行文章预览调试。hexo s --debug 命令可以用来调试</div></pre></td></tr></table></figure>
-<h3 id="发布到github"><a href="#发布到github" class="headerlink" title="发布到github"></a>发布到github</h3><p>1、清理之前生成的内容，即public文件。</p>
-<p><strong>注意</strong>：这一步必须要，不然有时因为缓存问题，服务器更新不了主题</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo clean</div></pre></td></tr></table></figure>
-<p>2、生成静态文件并部署到github</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ hexo g #生成静态文件</div><div class="line">$ hexo d #部署到github</div></pre></td></tr></table></figure>
-<p>上面两个命令可以合并为一个：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo d -g #在部署前先生成</div></pre></td></tr></table></figure>
-<h2 id="绑定域名"><a href="#绑定域名" class="headerlink" title="绑定域名"></a>绑定域名</h2><blockquote>
-<p>update 2017.06.25。已购买域名，特来补充完善。</p>
-</blockquote>
-<p>1、购买域名</p>
-<p>某乎<a href="https://www.zhihu.com/question/19551906" target="_blank" rel="external">这里</a>有各种推荐，自己可以参考的看看。</p>
-<p>godaddy地址: <a href="https://www.godaddy.com/" target="_blank" rel="external">https://www.godaddy.com</a></p>
-<p>阿里云域名地址: <a href="http://wanwang.aliyun.com/" target="_blank" rel="external">http://wanwang.aliyun.com</a></p>
-<p><strong> 总结 </strong><br>某乎上那些推荐都看了一遍，也琢磨了一下，最后发现，还是阿里云上的比较便宜，然后操作起来也比较方便，于是就在阿里云上买了。</p>
-<p>我的域名：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">www.xiaqunfeng.cc</div></pre></td></tr></table></figure></p>
-<p><strong> 关于域名选择 </strong></p>
-<p>.com .cn .net .org 这种比较适合网站比较大的，当然，价格也贵一点，.com .cn 还需要网站备案什么的。现在一些其他后缀也很不错，比如 .cc .me .im .pro .top .info 等等，这些资料大家可以自己去查，就不细说了，强烈推荐 .me 和 .cc ，不过 .me 比 .cc贵，特别是买的时间越久或者续费都贵。我的 .cc 16块一年，哈哈，便宜，然后也挺好。</p>
-<p>2、域名解析</p>
-<p>域名解析-&gt;解析设置-&gt;添加解析，记录类型选A或CNAME，A记录的记录值就是ip地址，github提供了两个IP地址，192.30.252.153和192.30.252.154，可以随便填一个，或者两个都填，线路就默认，CNAME记录值填你的github博客网址</p>
-<p>我的如下：</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/domain-hexo.jpg" alt="domain"></p>
-<p>3、创建<code>CNAME</code>文件</p>
-<p>这一步没做的话，打开网址访问不来博客。</p>
-<p>在hexo 博客的根目录下source文件夹里创建CNAME文件，里面填上域名信息：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># cat CNAME</div><div class="line">xiaqunfeng.cc</div></pre></td></tr></table></figure>
-<blockquote>
-<p>注：如果里面填的是 www.xiaqunfeng.cc，那以后就只能用它来访问；如果填的是 xiaqunfeng.cc，那以后用 www.xiaqunfeng.cc 和 xiaqunfeng.cc 都可以访问。</p>
-</blockquote>
-<p>等待生效，一般几分钟就好了，然后就可通过域名浏览你的博客主页了。</p>
+        <p>简单介绍一下mac上如何安装和使用 python3<br><a id="more"></a></p>
+<h2 id="安装homebrew"><a href="#安装homebrew" class="headerlink" title="安装homebrew"></a>安装homebrew</h2><p>官网地址：<a href="https://brew.sh/" target="_blank" rel="external">Homebrew</a></p>
+<p>执行如下命令安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">▶ /usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</div></pre></td></tr></table></figure>
+<p>安装完后查看版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">▶ brew --version</div><div class="line">Homebrew 1.3.0</div><div class="line">Homebrew/homebrew-core (git revision 2f02; last commit 2017-07-31)</div></pre></td></tr></table></figure>
+<p>表示安装成功。</p>
+<h2 id="安装python3"><a href="#安装python3" class="headerlink" title="安装python3"></a>安装python3</h2><p>使用homebrew工具直接安装python3，命令如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">▶ brew install python3</div></pre></td></tr></table></figure>
+<p>安装完后查看python3版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">▶ python3 --version</div><div class="line">Python 3.6.0</div></pre></td></tr></table></figure>
+<p>安装成功。</p>
+<h2 id="使用python3"><a href="#使用python3" class="headerlink" title="使用python3"></a>使用python3</h2><p>1、交互式命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">▶ python3</div><div class="line">Python 3.6.0 (default, Mar  4 2017, 12:32:34)</div><div class="line">[GCC 4.2.1 Compatible Apple LLVM 8.0.0 (clang-800.0.42.1)] on darwin</div><div class="line">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
+<p>此时就可以输入python代码和运算了。</p>
+<p>退出交互式命令有两种方法：ctrl + D，或者输入 <code>quit()</code> 然后回车。</p>
+<p>2、执行python文件</p>
+<p>如编写python代码 test.py，通过命令 python3 来运行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">▶ python3 test.py</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -374,13 +310,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/01/06/hexo的搭建/">Mac上hexo博客的搭建</a></p>
+        <p><span>本文标题:</span><a href="/2017/09/11/mac上安装python3/">mac上安装python3</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-01-06, 15:47:18</p>
-        <p><span>最后更新:</span>2017-06-25, 14:03:43</p>
+        <p><span>发布时间:</span>2017-09-11, 15:35:30</p>
+        <p><span>最后更新:</span>2017-09-11, 15:49:43</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/01/06/hexo的搭建/" title="Mac上hexo博客的搭建">http://xiaqunfeng.cc/2017/01/06/hexo的搭建/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/01/06/hexo的搭建/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/09/11/mac上安装python3/" title="mac上安装python3">http://xiaqunfeng.cc/2017/09/11/mac上安装python3/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/09/11/mac上安装python3/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -392,12 +328,12 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/01/11/Linux命令——crontab/">
-                    Linux命令——crontab
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/08/30/lsblk命令/">
+                    lsblk命令
                 </a>
             </div>
-        
         
     </nav>
 
@@ -407,7 +343,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#准备工作"><span class="toc-number">1.</span> <span class="toc-text">准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#github"><span class="toc-number">1.1.</span> <span class="toc-text">github</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#homebrew"><span class="toc-number">1.2.</span> <span class="toc-text">homebrew</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#node-js"><span class="toc-number">1.3.</span> <span class="toc-text">node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hexo"><span class="toc-number">1.4.</span> <span class="toc-text">hexo</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo命令行使用"><span class="toc-number">2.</span> <span class="toc-text">hexo命令行使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建立本地站点"><span class="toc-number">3.</span> <span class="toc-text">建立本地站点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#启动站点"><span class="toc-number">4.</span> <span class="toc-text">启动站点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#部署站点"><span class="toc-number">5.</span> <span class="toc-text">部署站点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建新文章"><span class="toc-number">6.</span> <span class="toc-text">创建新文章</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#发布"><span class="toc-number">7.</span> <span class="toc-text">发布</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更换主题"><span class="toc-number">8.</span> <span class="toc-text">更换主题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#本地调试"><span class="toc-number">8.1.</span> <span class="toc-text">本地调试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#发布到github"><span class="toc-number">8.2.</span> <span class="toc-text">发布到github</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#绑定域名"><span class="toc-number">9.</span> <span class="toc-text">绑定域名</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装homebrew"><span class="toc-number">1.</span> <span class="toc-text">安装homebrew</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装python3"><span class="toc-number">2.</span> <span class="toc-text">安装python3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用python3"><span class="toc-number">3.</span> <span class="toc-text">使用python3</span></a></li></ol>
         
     </div>
     <style>
@@ -443,7 +379,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Mac上hexo博客的搭建　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"mac上安装python3　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -462,8 +398,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.cc/2017/01/06/hexo的搭建/';
-            this.page.identifier = '2017/01/06/hexo的搭建/';
+            this.page.url = 'http://xiaqunfeng.cc/2017/09/11/mac上安装python3/';
+            this.page.identifier = '2017/09/11/mac上安装python3/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -485,15 +421,15 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/01/11/Linux命令——crontab/" title="上一篇: Linux命令——crontab">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+            <a href="/2017/08/30/lsblk命令/" title="下一篇: lsblk命令">
+                <i class="fa fa-angle-right"></i>
+            </a>
         
     </div>
 
