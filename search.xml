@@ -4,6 +4,69 @@
   
     
     <entry>
+      <title><![CDATA[ceph PGs per Pool Calculator]]></title>
+      <url>http://xiaqunfeng.cc/2017/09/18/ceph-PGs-per-Pool-Calculator/</url>
+      <content type="html"><![CDATA[<p>根据集群相关信息计算每个pool的pg数量。<br><a id="more"></a></p>
+<p>在前一篇文章<a href="http://xiaqunfeng.cc/2017/09/15/too-many-PGs-per-OSD/">too-many-PGs-per-OSD</a>中，简单讲了pg数目的设定，这里再深入介绍一下计算方法。</p>
+<h2 id="计算PG-Count的公式"><a href="#计算PG-Count的公式" class="headerlink" title="计算PG Count的公式"></a>计算PG Count的公式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">PoolPGCount=(TargetPGsPerOSD ∗ OSDNumber ∗ DataPercent) / PoolReplicateSize</div></pre></td></tr></table></figure>
+<p><strong>参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数释义</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PoolPGCount</td>
+<td>该pool的PG数量</td>
+<td></td>
+</tr>
+<tr>
+<td>TargetPGsPerOSD</td>
+<td>每个OSD的PG数量</td>
+<td>该值根据如下规则来进行设置：<br>1. 如果未来集群的OSD数量基本不再增长，Target PGs per OSD =100 <br>2. 如果未来集群的OSD数量可能增长到目前规模的2倍以内，Target PGs per OSD =200<br>3. 如果未来集群的OSD数量增长规模大于当前2倍且小于3倍，Target PGs per OSD =300</td>
+</tr>
+<tr>
+<td>OSDNumber</td>
+<td>OSD数目</td>
+<td>默认是所有的OSD, 具体看OSD所属的rule<br>一般会通过CRUSH rules划分SSD和SATA两个ruleset，此时单独填写pool所在的对应rule的OSD数量</td>
+</tr>
+<tr>
+<td>DataPercent</td>
+<td>该pool占用所在OSD集群容量百分比</td>
+<td>需要预估</td>
+</tr>
+<tr>
+<td>PoolReplicateSize</td>
+<td>该pool的副本数</td>
+<td>replicate size，默认是3<br>如果是EC pool，该值为 m+n</td>
+</tr>
+</tbody>
+</table>
+<h2 id="结果取值"><a href="#结果取值" class="headerlink" title="结果取值"></a>结果取值</h2><p>1、如果上述计算结果小于 <code>OSDNumber/PoolReplicateSize</code> ，那就使用值 <code>OSDNumber/PoolReplicateSize</code> 。这是为了确保每个Pool的每个OSD至少分配一个Primary或Secondary PG来确保均匀加载/数据。</p>
+<p>2、计算的最终结果应该是与计算结果相邻的2的幂次方。</p>
+<blockquote>
+<p>采用2的幂次方是因为了提高CRUSH算法的效率</p>
+</blockquote>
+<p>3、如果结果超过较小2次幂数值的25%则选择较大的2次幂作为最终结果，反之则选择较小的那个2次幂数值。</p>
+<h2 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h2><p>1、计算公式的目的是为了确保整个集群拥有足够多的PG从而实现数据均匀分布在各个OSD上，同时能够有效避免在Recovery 和Backfill 的时候因为PG/OSD比值过高所造成的问题。 </p>
+<p>2、如果集群中存在空pool或者其他non-active的pool，这些pool并不影响现有集群的数据分布，但是这些pool仍然会消耗集群的内存和CPU资源。</p>
+<p>官网参考信息：<a href="http://ceph.com/pgcalc/" target="_blank" rel="external">http://ceph.com/pgcalc/</a></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[too many PGs per OSD]]></title>
       <url>http://xiaqunfeng.cc/2017/09/15/too-many-PGs-per-OSD/</url>
       <content type="html"><![CDATA[<p>ceph告警问题：”too many PGs per OSD” 的解决方法，以及pg数量的合理设定<br><a id="more"></a></p>
@@ -5202,6 +5265,12 @@
     </entry>
     
     <entry>
+      <title><![CDATA[tags]]></title>
+      <url>http://xiaqunfeng.cc/tags/index.html</url>
+      <content type="html"></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[关于我]]></title>
       <url>http://xiaqunfeng.cc/about/index.html</url>
       <content type="html"><![CDATA[<p align="center"><strong>关注ceph、分布式存储、openstack、容器、机器学习</strong></p>
@@ -5211,12 +5280,6 @@
 </blockquote>
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果该博客文章对您有所帮助，感谢一杯咖啡的鼓励。 </p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 ]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[tags]]></title>
-      <url>http://xiaqunfeng.cc/tags/index.html</url>
-      <content type="html"></content>
     </entry>
     
   
