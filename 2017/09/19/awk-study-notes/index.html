@@ -15,19 +15,16 @@
 
 
 
-<meta name="description" content="第5、6、7三章，主要讲开发集和测试集，包括选型、大小、比例等。">
+<meta name="description" content="The awk study notes from working.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Machine Learning Yearning(5、6、7)">
-<meta property="og:url" content="http://xiaqunfeng.cc/2017/03/09/Machine-Learning-Yearning-5、6/index.html">
+<meta property="og:title" content="awk study notes">
+<meta property="og:url" content="http://xiaqunfeng.cc/2017/09/19/awk-study-notes/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="第5、6、7三章，主要讲开发集和测试集，包括选型、大小、比例等。">
-<meta property="og:image" content="http://img.blog.csdn.net/20161209012152300?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:image" content="http://img.blog.csdn.net/20161209022552344?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:updated_time" content="2017-03-12T07:41:39.000Z">
+<meta property="og:description" content="The awk study notes from working.">
+<meta property="og:updated_time" content="2017-09-19T11:38:38.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Machine Learning Yearning(5、6、7)">
-<meta name="twitter:description" content="第5、6、7三章，主要讲开发集和测试集，包括选型、大小、比例等。">
-<meta name="twitter:image" content="http://img.blog.csdn.net/20161209012152300?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta name="twitter:title" content="awk study notes">
+<meta name="twitter:description" content="The awk study notes from working.">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -59,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Machine Learning Yearning(5、6、7) | 夏天的风的博客</title>
+<title>awk study notes | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -246,11 +243,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-Machine-Learning-Yearning-5、6" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-awk-study-notes" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/03/09/Machine-Learning-Yearning-5、6/" class="article-date">
-      <time datetime="2017-03-09T02:38:35.000Z" itemprop="datePublished">2017-03-09</time>
+      <a href="/2017/09/19/awk-study-notes/" class="article-date">
+      <time datetime="2017-09-19T07:34:15.000Z" itemprop="datePublished">2017-09-19</time>
 </a>
 
 
@@ -265,7 +262,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Machine Learning Yearning(5、6、7)
+      awk study notes
     </h1>
   
 
@@ -276,7 +273,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -286,40 +283,32 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>第5、6、7三章，主要讲开发集和测试集，包括选型、大小、比例等。<br><a id="more"></a></p>
-<p>Setting up development and test sets</p>
-<p>设置开发和测试集</p>
-<h2 id="Chapter-5、Your-development-and-test-sets"><a href="#Chapter-5、Your-development-and-test-sets" class="headerlink" title="Chapter 5、Your development and test sets"></a>Chapter 5、Your development and test sets</h2><p><strong>您的开发和测试集</strong><br>​    让我们回到我们早期猫图片的那个例子：你运行一个移动app，用户正在上传很多不同事物的图片到该app中。你想自动找到猫的图片。<br>​    您的团队通过从不同网站上下载猫（positive examples，正样本）和非猫（negative examples，负样本）的图获得一个大的训练集。 他们将数据集按照比例70％/ 30％分成训练集/测试集。 使用这些数据，他们构建了一个在训练集和测试集上都表现很好的的猫检测器。<br>​    但是当你将这个分类器部署到移动app时，你发现表现真的很糟糕！</p>
-<p><img src="http://img.blog.csdn.net/20161209012152300?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"> </p>
-<p>​    发生了什么？<br>​    您发现用户上传的图片与您构建训练集的网站图片有所不同：用户上传的照片使用手机拍摄，这些照片往往分辨率较低，比较模糊，并且采光不好。 由于您的训练集/测试集是由网站图片构建的，您的算法没有很好的兼顾到你所关心的智能手机图片的实际分布。<br>​    在大数据的时代之前，在机器学习中使用随机的70％/ 30％来分割训练集和测试集是常见的规则。 这种做法可以工作，但在越来越多的应用程序，如训练集的分布（上面例子中的网站图像）不同于你最终关心的分布（手机图像），这是一个坏主意。</p>
-<p>​    我们通常定义：</p>
-<ul>
-<li>训练集 - 学习算法运行在这上面。</li>
-<li>Dev（开发）集 - 用于调整参数，选择特征，以及对学习算法做出其他决定。 有时也称为维持交叉验证集(hold-out cross validation set)。</li>
-<li>测试集 - 用于评估算法的性能，但不要做出关于使用什么学习算法或参数的任何决定。</li>
-</ul>
-<p>​    你定义一个开发集和测试集，你的团队会尝试很多想法，如不同的学习算法参数，看看什么是最好的。 开发集和测试集能够使你的团队快速看到你的算法做得有多好。</p>
-<p>​    换句话说，开发和测试集的目的是指导你的团队对机器学习系统进行最重要的更改。<br>​    所以，你应该做如下事情：</p>
-<ul>
-<li>选择开发和测试集，以反映您期望在未来获得的数据，并希望做好。</li>
-</ul>
-<p>​    换句话说，您的测试集不应该只是可用数据的30％这么简单，特别是如果您期望您的未来数据（移动app图片）在性质上与您的训练集（网站图像）不同时。</p>
-<p>​    如果您尚未启动移动app，可能还没有任何用户，因此可能无法获取准确反映您未来需要做的更好的数据。 但你可能仍然尝试去靠近它。 例如，请你的朋友拍一些手机图片，并发送给你。 一旦app启动后，您可以使用实际的用户数据更新您的开发集/测试集。<br>​    如果你真的没有任何方法来获得接近你期望的未来数据，也许你可以从使用网站图像开始。 但是你应该意识到这将导致系统不能一般化的很好的风险。<br>​    我们需要判断去决定多少投资开发好的开发集和测试集。 但是不要假定你的训练分布与你的测试分布是一样的。 尝试选择反映您最终想要表现良好的测试样本，而不是训练遇到的任何数据。</p>
-<h2 id="Chapter-6、Your-dev-and-test-sets-should-come-from-the-same-distribution"><a href="#Chapter-6、Your-dev-and-test-sets-should-come-from-the-same-distribution" class="headerlink" title="Chapter 6、Your dev and test sets should come from the same distribution"></a>Chapter 6、Your dev and test sets should come from the same distribution</h2><p><strong>你的开发集和测试集应该来自相同的分布</strong></p>
-<p>根据您最大的市场，将猫应用图片数据分为四个区域：（i）美国，（ii）中国，（iii）印度和（iv）其他。要想出一个开发集和一个测试集，我们可以随机分配这两个区域到开发集，另外两个到测试集，对吧？ 比如美国和印度在开发集; 中国和其他在测试集。</p>
-<p><img src="http://img.blog.csdn.net/20161209022552344?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<p>​    一旦定义了开发集和测试集，您的团队将专注于提高开发集的性能。 因此，开发集应该反映你最想提高的任务：在所有四个地区都要做得很好，而不只是两个。<br>​    开发集和测试集的不同分布带来的第二个问题：有一个机会，你的团队将构建一些在开发集件上工作得很好，只是发现它在测试集上做得不好。 我曾经在很多失望和白费的努力中看到这个结果。 避免让这些发生在你身上。<br>​    例如，假设您的团队开发的系统在开发集上工作的很好，但在测试集上并不如意。 如果你的开发集和测试集合来自相同的分布，那么你会有一个非常明确的诊断哪里出错了：你在开发集上过拟合(overfit)了。显而易见的方法是去获得更多的开发集数据。</p>
-<p>​    但是如果开发集和测试集来自不同的分布，那么你的选择是不清晰的。几方面可能会出错：</p>
-<ul>
-<li>1、在开发集上过拟合。</li>
-<li>2、测试集比开发集更难。所以你的算法可能做的和预期一样好，因此没有进一步的重大改进的可能了。</li>
-<li>3、测试集不一定更难，但只是和开发集不同。所以在开发集上表现很好但并不能在测试集上表现一样。这种情况下，之前很多提高开发集性能的努力可能都白费了。</li>
-</ul>
-<p>​    在机器学习应用程序上工作是很艰难的。具有不匹配的开发和测试集引入了关于是否改进开发集分布也提高测试集性能额外的不确定性。具有不匹配的开发和测试集，使得更难找出什么是有效和无效的努力，因此使得更难以确定工作的优先级。<br>​    如果你面临的是第三方基准测试 问题，他们的创建者可能会指定开发集和测试集来自不同的分布。相比开发和测试集来自同一分布，此时运气，而不是技术，将对这样的基准的性能有更大的影响。开发一个在一个分布上训练的很好同时能够很好的推广到另一个分布中的学习算法是一个重要的研究问题。但是如果你的目标是在一个特定的机器学习应用中取得进展，而不是研究进展，我建议尝试选择开发集和测试集从相同的分布。这将使您的团队更有效率。</p>
-<h2 id="Chapter-7、How-large-do-the-dev-test-sets-need-to-be"><a href="#Chapter-7、How-large-do-the-dev-test-sets-need-to-be" class="headerlink" title="Chapter 7、How large do the dev/test sets need to be?"></a>Chapter 7、How large do the dev/test sets need to be?</h2><p><strong>开发集/测试集需要多大？</strong></p>
-<p>​    开发集应该足够大，以检测您尝试的算法之间的差异。例如，如果分类器A具有90.0％的准确度，分类器B具有90.1％的准确度，那么100个样本的开发集将不能检测出这0.1％的差异。与我看到的其他机器学习问题相比，100个样本的开发集太小了。常见的开发集的大小在1,000到10,000个样本之间。有10,000个样本，你将有很好的机会检测到这0.1％的提升。[2]<br>​    对于成熟和重要的应用，例如广告，网络搜索和产品建议 - 我也看到了很多团队，甚至为提升0.01％积极努力，因为它对公司的利润有直接影响。在这种情况下，开发集可以远大于10,000，以便检测出更小的提升。<br>​    测试集的大小应该多大？它应该足够大，使得对系统的整体性能有一个高的信心。一个流行的启发式方法是将30％的数据用于测试集。当你有适量的样本，比如100到10,000的样本，它会工作的很好。但在大数据的时代，我们现在有机器学习问题，有时会超过十亿个样本，分配给开发集/测试集的比例一直在缩小，即使开发集 /测试集中的样本绝对数量一直在增长。除了需要评估算法的性能之外，没有必要提供过大的开发集/测试集。</p>
-<p>——————————</p>
-<p>[2]. 在理论上，我们可以测试算法的变化是否对开发集产生统计上显着的差异。 在实践中，大多数团队不会为此困扰（除非他们出版学术研究论文），我通常没法发现统计意义的测试对测量临时进展是有用的。</p>
+        <p>The awk study notes from working.<br><a id="more"></a></p>
+<p>先从计算每个osd中分别有多少个pg的脚本入手，解析awk用法。见实例一。</p>
+<h2 id="实例一"><a href="#实例一" class="headerlink" title="实例一"></a>实例一</h2><h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><p>用于以下测试的待处理的文件 <code>test.txt</code> :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">PG_STAT OBJECTS MISSING_ON_PRIMARY DEGRADED MISPLACED UNFOUND BYTES LOG  DISK_LOG STATE        STATE_STAMP                VERSION   REPORTED   UP      UP_PRIMARY ACTING  ACTING_PRIMARY LAST_SCRUB SCRUB_STAMP                LAST_DEEP_SCRUB DEEP_SCRUB_STAMP</div><div class="line">14.2          23                  0        0         0       0     0 3011     3011 active+clean 2017-09-18 17:03:38.392203 57&apos;639918  57:989384 [4,3,0]          4 [4,3,0]              4  56&apos;635514 2017-09-18 17:03:38.392149       56&apos;616858 2017-09-14 19:36:02.937121</div><div class="line">#1.7           2                  0        0         0       0    92    6        6 active+clean 2017-09-18 19:30:20.206806      29&apos;6  57:232942 [3,4,1]          3 [3,4,1]              3       29&apos;6 2017-09-18 19:30:20.206744            29&apos;6 2017-09-14 20:35:14.294297</div></pre></td></tr></table></figure>
+<p>想要学习的awk代码段：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">awk &apos;</div><div class="line"> /^PG_STAT/ &#123; col=1; while($col!=&quot;UP&quot;) &#123;col++&#125;; col++ &#125;</div><div class="line"> /^[0-9a-f]+\.[0-9a-f]+/ &#123; match($0,/^[0-9a-f]+/); pool=substr($0, RSTART, RLENGTH); poollist[pool]=0;</div><div class="line"> up=$col; i=0; RSTART=0; RLENGTH=0; delete osds; while(match(up,/[0-9]+/)&gt;0) &#123; osds[++i]=substr(up,RSTART,RLENGTH); up = substr(up, RSTART+RLENGTH) &#125;</div><div class="line"> for(i in osds) &#123;array[osds[i],pool]++; osdlist[osds[i]];&#125;</div><div class="line">&#125;&apos;</div></pre></td></tr></table></figure>
+<h3 id="剖析"><a href="#剖析" class="headerlink" title="剖析"></a>剖析</h3><p>1、运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># awk &apos;/^PG_STAT/ &#123; col=1; while($col!=&quot;UP&quot;) &#123;col++&#125;; col++ &#125; END &#123; printf(&quot;col=%d\n&quot;, col) &#125;&apos; test.txt</div><div class="line">col=15</div></pre></td></tr></table></figure>
+<p>从 <code>PG_STAT</code> 开始，直到遇到 <code>UP</code> 时结束，计算得到 <code>UP</code> 后的列号。</p>
+<p>2、运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># awk &apos;/^[0-9a-f]+\.[0-9a-f]+/ &#123; match($0,/^[0-9a-f]+/); pool=substr($0, RSTART, RLENGTH); poollist[pool]=0 &#125; END &#123; printf(&quot;pool=%s, RSTART=%s, RLENGTH=%s\n&quot;, pool, RSTART, RLENGTH) &#125;&apos; test.txt</div><div class="line">pool=14, RSTART=1, RLENGTH=2</div></pre></td></tr></table></figure>
+<p>解释一下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/^[0-9a-f]+\.[0-9a-f]+/  ——  这个表示匹配开头格式是 X.X 的字符串，X表示一个或多个[0-9a-f]的数字字符</div></pre></td></tr></table></figure>
+<p>关于match</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">match($0,/^[0-9a-f]+/)  ——  从第一列中匹配开头为 [0-9a-f] 的一个或多个数字字符</div></pre></td></tr></table></figure>
+<blockquote>
+<p>RSTART，RLENGTH在match成功之后会自动被设置成第一个匹配部分的起始位置和长度，没匹配上就是0，-1</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pool=substr($0, RSTART, RLENGTH)  ——  得到pool的值</div></pre></td></tr></table></figure>
+<p>3、运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># awk &apos;/^PG_STAT/ &#123; col=1; while($col!=&quot;UP&quot;) &#123;col++&#125;; col++ &#125;</div><div class="line"> /^[0-9a-f]+\.[0-9a-f]+/ &#123; match($0,/^[0-9a-f]+/); pool=substr($0, RSTART, RLENGTH); poollist[pool]=0;</div><div class="line"> up=$col; i=0; RSTART=0; RLENGTH=0; delete osds; while(match(up,/[0-9]+/)&gt;0) &#123; printf(&quot;up=%s, RSTART=%s, RLENGTH=%s\n&quot;, up, RSTART,RLENGTH); t=substr(up,RSTART,RLENGTH); up = substr(up, RSTART+RLENGTH); printf(&quot;osd=%s\n&quot;,t) &#125; &#125;&apos; test.txt</div><div class="line">up=[4,3,0], RSTART=2, RLENGTH=1</div><div class="line">osd=4</div><div class="line">up=,3,0], RSTART=2, RLENGTH=1</div><div class="line">osd=3</div><div class="line">up=,0], RSTART=2, RLENGTH=1</div><div class="line">osd=0</div></pre></td></tr></table></figure>
+<p>得到 <code>ACTING</code> 列的OSD列表，用于统计每个pool在每个osd上的pg数。</p>
+<h2 id="AWK模块"><a href="#AWK模块" class="headerlink" title="AWK模块"></a>AWK模块</h2><h3 id="substr"><a href="#substr" class="headerlink" title="substr"></a>substr</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">substr( String, M, [ N ] )</div></pre></td></tr></table></figure>
+<p>返回具有 N 参数指定的字符数量子串。子串从 String 参数指定的字符串取得，其字符以 M 参数指定的位置开始。M 参数指定为将 String 参数中的第一个字符作为编号 1。如果未指定 N 参数，则子串的长度将是 M 参数指定的位置到 String 参数的末尾 的长度。</p>
+<h3 id="match"><a href="#match" class="headerlink" title="match"></a>match</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">match( String, Ere )</div></pre></td></tr></table></figure>
+<p>在 String 参数指定的字符串（Ere 参数指定的扩展正则表达式出现在其中）中返回位置（字符形式），从 1 开始编号，或如果 Ere 参数不出现，则返回 0（零）。RSTART 特殊变量设置为返回值。RLENGTH 特殊变量设置为匹配的字符串的长度，或如果未找到任何匹配，则设置为 -1（负一）。</p>
 
       
     </div>
@@ -328,13 +317,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/03/09/Machine-Learning-Yearning-5、6/">Machine Learning Yearning(5、6、7)</a></p>
+        <p><span>本文标题:</span><a href="/2017/09/19/awk-study-notes/">awk study notes</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-03-09, 10:38:35</p>
-        <p><span>最后更新:</span>2017-03-12, 15:41:39</p>
+        <p><span>发布时间:</span>2017-09-19, 15:34:15</p>
+        <p><span>最后更新:</span>2017-09-19, 19:38:38</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/03/09/Machine-Learning-Yearning-5、6/" title="Machine Learning Yearning(5、6、7)">http://xiaqunfeng.cc/2017/03/09/Machine-Learning-Yearning-5、6/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/03/09/Machine-Learning-Yearning-5、6/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/09/19/awk-study-notes/" title="awk study notes">http://xiaqunfeng.cc/2017/09/19/awk-study-notes/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/09/19/awk-study-notes/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -346,16 +335,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/03/09/cow和row快照机制的区别/">
-                    cow和row快照机制的区别
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/03/03/Machine-Learning-Yearning-3、4/">
-                    Machine Learning Yearning(3、4)
+                <a href="/2017/09/18/ceph-PGs-per-Pool-Calculator/">
+                    ceph PGs per Pool Calculator
                 </a>
             </div>
         
@@ -367,7 +350,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Chapter-5、Your-development-and-test-sets"><span class="toc-number">1.</span> <span class="toc-text">Chapter 5、Your development and test sets</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Chapter-6、Your-dev-and-test-sets-should-come-from-the-same-distribution"><span class="toc-number">2.</span> <span class="toc-text">Chapter 6、Your dev and test sets should come from the same distribution</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Chapter-7、How-large-do-the-dev-test-sets-need-to-be"><span class="toc-number">3.</span> <span class="toc-text">Chapter 7、How large do the dev/test sets need to be?</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#实例一"><span class="toc-number">1.</span> <span class="toc-text">实例一</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#准备"><span class="toc-number">1.1.</span> <span class="toc-text">准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#剖析"><span class="toc-number">1.2.</span> <span class="toc-text">剖析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AWK模块"><span class="toc-number">2.</span> <span class="toc-text">AWK模块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#substr"><span class="toc-number">2.1.</span> <span class="toc-text">substr</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#match"><span class="toc-number">2.2.</span> <span class="toc-text">match</span></a></li></ol></li></ol>
         
     </div>
     <style>
@@ -403,7 +386,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Machine Learning Yearning(5、6、7)　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"awk study notes　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -422,8 +405,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.cc/2017/03/09/Machine-Learning-Yearning-5、6/';
-            this.page.identifier = '2017/03/09/Machine-Learning-Yearning-5、6/';
+            this.page.url = 'http://xiaqunfeng.cc/2017/09/19/awk-study-notes/';
+            this.page.identifier = '2017/09/19/awk-study-notes/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -445,15 +428,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/03/09/cow和row快照机制的区别/" title="上一篇: cow和row快照机制的区别">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/03/03/Machine-Learning-Yearning-3、4/" title="下一篇: Machine Learning Yearning(3、4)">
+            <a href="/2017/09/18/ceph-PGs-per-Pool-Calculator/" title="下一篇: ceph PGs per Pool Calculator">
                 <i class="fa fa-angle-right"></i>
             </a>
         

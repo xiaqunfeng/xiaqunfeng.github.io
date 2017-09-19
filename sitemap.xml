@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://xiaqunfeng.cc/2017/09/19/awk-study-notes/</loc>
+    
+    <lastmod>2017-09-19T11:38:38.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://xiaqunfeng.cc/2017/09/18/ceph-PGs-per-Pool-Calculator/</loc>
     
     <lastmod>2017-09-18T06:17:50.000Z</lastmod>
