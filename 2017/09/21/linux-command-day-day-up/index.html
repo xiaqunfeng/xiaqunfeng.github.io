@@ -15,20 +15,16 @@
 
 
 
-<meta name="description" content="体验ceph luminous，并初步探测ceph luminous的相关功能，这里先来看看官方标配的仪表盘长啥样。">
+<meta name="description" content="This article is aim to record some not commonly used linux command which used in the work.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ceph Luminous dashboard初探">
-<meta property="og:url" content="http://xiaqunfeng.cc/2017/06/29/ceph-Luminous初探/index.html">
+<meta property="og:title" content="linux command day day up">
+<meta property="og:url" content="http://xiaqunfeng.cc/2017/09/21/linux-command-day-day-up/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="体验ceph luminous，并初步探测ceph luminous的相关功能，这里先来看看官方标配的仪表盘长啥样。">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/luminous-0.jpg">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/luminous-2.jpg">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/luminous-1.jpg">
-<meta property="og:updated_time" content="2017-06-29T09:13:27.000Z">
+<meta property="og:description" content="This article is aim to record some not commonly used linux command which used in the work.">
+<meta property="og:updated_time" content="2017-09-27T03:24:44.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ceph Luminous dashboard初探">
-<meta name="twitter:description" content="体验ceph luminous，并初步探测ceph luminous的相关功能，这里先来看看官方标配的仪表盘长啥样。">
-<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/luminous-0.jpg">
+<meta name="twitter:title" content="linux command day day up">
+<meta name="twitter:description" content="This article is aim to record some not commonly used linux command which used in the work.">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -60,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>ceph Luminous dashboard初探 | 夏天的风的博客</title>
+<title>linux command day day up | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -247,11 +243,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-ceph-Luminous初探" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-linux-command-day-day-up" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/06/29/ceph-Luminous初探/" class="article-date">
-      <time datetime="2017-06-29T07:45:15.000Z" itemprop="datePublished">2017-06-29</time>
+      <a href="/2017/09/21/linux-command-day-day-up/" class="article-date">
+      <time datetime="2017-09-21T12:41:47.000Z" itemprop="datePublished">2017-09-21</time>
 </a>
 
 
@@ -266,7 +262,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      ceph Luminous dashboard初探
+      linux command day day up
     </h1>
   
 
@@ -277,7 +273,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -287,39 +283,132 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>体验ceph luminous，并初步探测ceph luminous的相关功能，这里先来看看官方标配的仪表盘长啥样。<br><a id="more"></a></p>
-<p>就冲这句话：Ceph now has a simple, built-in web-based dashboard for monitoring<br>cluster status，来一探究竟。</p>
-<h2 id="Luminous集群"><a href="#Luminous集群" class="headerlink" title="Luminous集群"></a>Luminous集群</h2><p><strong>物理环境</strong></p>
-<p>3个 host ，每个 host 含有 2 个OSD</p>
-<p><strong>查看ceph版本</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph -v</div><div class="line">ceph version 12.1.0 (262617c9f16c55e863693258061c5b25dea5b086) luminous (dev)</div></pre></td></tr></table></figure>
-<h3 id="ceph-s"><a href="#ceph-s" class="headerlink" title="ceph -s"></a>ceph -s</h3><p>查看集群状态，这里发现 <code>ceph -s</code> 信息和之前的不一样。（更多新的命令后续探索后奉上）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"># ceph -s</div><div class="line">  cluster:</div><div class="line">    id:     4c7ec5af-cbd3-40fd-8c96-0615c77660d4</div><div class="line">    health: HEALTH_OK</div><div class="line"></div><div class="line">  services:</div><div class="line">    mon: 3 daemons, quorum luminous0,luminous1,luminous2</div><div class="line">    mgr: luminous0(active)</div><div class="line">    mds: 1/1/1 up &#123;0=luminous0=up:active&#125;</div><div class="line">    osd: 6 osds: 6 up, 6 in</div><div class="line"></div><div class="line">  data:</div><div class="line">    pools:   7 pools, 112 pgs</div><div class="line">    objects: 208 objects, 3359 bytes</div><div class="line">    usage:   6341 MB used, 54492 MB / 60833 MB avail</div><div class="line">    pgs:     112 active+clean</div></pre></td></tr></table></figure>
-<p>这里我在机器 luminous0 上还部署了 mgr 和 mds。</p>
-<blockquote>
-<p>注意：mgr是高可用的，如果配置多个的话，会有standbys。我这里只配了一个 mgr，所以就只有active，没有standby。访问的时候，务必使用 active 进程所在节点的 IP ！！</p>
-</blockquote>
-<h2 id="dashboard"><a href="#dashboard" class="headerlink" title="dashboard"></a>dashboard</h2><h3 id="开启监控"><a href="#开启监控" class="headerlink" title="开启监控"></a>开启监控</h3><p>在所有运行了 ceph-mgr 守护进程的机器上编辑ceph配置文件 <code>/etc/ceph/ceph.conf</code> ，以启用 dashboard。</p>
-<p>添加如下配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[mgr]</div><div class="line">mgr_modules = dashboard</div></pre></td></tr></table></figure>
-<p>注意：不要重启 ceph-mgr 进程，还有其他的配置要做。</p>
-<h3 id="配置IP和端口"><a href="#配置IP和端口" class="headerlink" title="配置IP和端口"></a>配置IP和端口</h3><p>服务器地址和可选端口必须配置为 config-key</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph config-key put mgr/dashboard/server_addr 172.20.2.243</div><div class="line">set mgr/dashboard/server_addr</div></pre></td></tr></table></figure>
-<p>查看，发现<strong>默认端口是 7000</strong> </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># netstat -antpl | grep ceph-mgr | grep LISTEN</div><div class="line">tcp        0      0 0.0.0.0:6800            0.0.0.0:*               LISTEN      57645/ceph-mgr</div><div class="line">tcp        0      0 172.20.2.243:7000       0.0.0.0:*               LISTEN      57645/ceph-mgr</div></pre></td></tr></table></figure>
-<p>当然，可以改为指定端口号，使用如下命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph config-key put mgr/dashboard/server_port 8888</div></pre></td></tr></table></figure>
-<h3 id="重启ceph-mgr"><a href="#重启ceph-mgr" class="headerlink" title="重启ceph-mgr"></a>重启ceph-mgr</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># systemctl restart ceph-mgr@luminous0</div></pre></td></tr></table></figure>
-<p>这时候就可以访问了。</p>
-<h3 id="访问界面"><a href="#访问界面" class="headerlink" title="访问界面"></a>访问界面</h3><p><strong>1、主界面</strong>（Cluster health）</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/luminous-0.jpg" alt="dashboard"></p>
-<p><strong>2、Servers界面</strong></p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/luminous-2.jpg" alt="servers"></p>
-<p><strong>3、cephfs界面</strong></p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/luminous-1.jpg" alt="ceph-fs"></p>
-<h2 id="使用后感想"><a href="#使用后感想" class="headerlink" title="使用后感想"></a>使用后感想</h2><p>1、这仅仅只是一个展示的界面，不能进行相关操作</p>
-<p>2、关于 MONITORS 和 OSDS 的信息不能详细展开，更不能看到每台机器的情况</p>
-<p>3、比起ceph周边的监控软件：calamari、VSM、inkscope、grafana等，相去甚远，当然，可以简单展示基本信息，还是不错的。</p>
+        <p>This article is aim to record some not commonly used linux command which used in the work.<br><a id="more"></a></p>
+<h2 id="test"><a href="#test" class="headerlink" title="test"></a>test</h2><p>该命令用于检查某个条件是否成立，它可以进行数值、字符和文件三个方面的测试。</p>
+<p><strong>1、文件测试</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-e 文件名</td>
+<td>如果文件存在则为真</td>
+</tr>
+<tr>
+<td>-r 文件名</td>
+<td>如果文件存在且可读则为真</td>
+</tr>
+<tr>
+<td>-w 文件名</td>
+<td>如果文件存在且可写则为真</td>
+</tr>
+<tr>
+<td>-x 文件名</td>
+<td>如果文件存在且可执行则为真</td>
+</tr>
+<tr>
+<td>-s 文件名</td>
+<td>如果文件存在且至少有一个字符则为真</td>
+</tr>
+<tr>
+<td>-d 文件名</td>
+<td>如果文件存在且为目录则为真</td>
+</tr>
+<tr>
+<td>-f 文件名</td>
+<td>如果文件存在且为普通文件则为真</td>
+</tr>
+<tr>
+<td>-c 文件名</td>
+<td>如果文件存在且为字符型特殊文件则为真</td>
+</tr>
+<tr>
+<td>-b 文件名</td>
+<td>如果文件存在且为块特殊文件则为真</td>
+</tr>
+</tbody>
+</table>
+<p>比如，测试该系统是否含有某一个文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># cat test.sh</div><div class="line">if test -f /etc/redhat-release ; then</div><div class="line">    echo &quot;this system is centos&quot;</div><div class="line">else</div><div class="line">    echo &quot;this system is unbuntu&quot;</div><div class="line">fi</div></pre></td></tr></table></figure>
+<p>在centos系统上执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># sh test.sh</div><div class="line">this system is centos</div></pre></td></tr></table></figure>
+<p>centos上<code>test -f /etc/redhat-release</code> 返回真，ubuntu系统上返回假。</p>
+<p><strong>2、字符串测试</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>=</td>
+<td>等于则为真</td>
+</tr>
+<tr>
+<td>!=</td>
+<td>不相等则为真</td>
+</tr>
+<tr>
+<td>-z 字符串</td>
+<td>字符串的长度为零则为真</td>
+</tr>
+<tr>
+<td>-n 字符串</td>
+<td>字符串的长度不为零则为真</td>
+</tr>
+</tbody>
+</table>
+<p><strong>3、数值测试</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-eq</td>
+<td>等于则为真</td>
+</tr>
+<tr>
+<td>-ne</td>
+<td>不等于则为真</td>
+</tr>
+<tr>
+<td>-gt</td>
+<td>大于则为真</td>
+</tr>
+<tr>
+<td>-ge</td>
+<td>大于等于则为真</td>
+</tr>
+<tr>
+<td>-lt</td>
+<td>小于则为真</td>
+</tr>
+<tr>
+<td>-le</td>
+<td>小于等于则为真</td>
+</tr>
+</tbody>
+</table>
+<h2 id="type"><a href="#type" class="headerlink" title="type"></a>type</h2><p>该命令用来显示指定命令的类型，判断给出的指令是内部指令还是外部指令。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"># type cd</div><div class="line">cd 是 shell 内嵌</div><div class="line"># type date</div><div class="line">date 是 /usr/bin/date</div><div class="line"># type if</div><div class="line">if 是 shell 关键字</div><div class="line"># type mysql</div><div class="line">-bash: type: mysql: 未找到</div><div class="line"># type ll</div><div class="line">ll 是 `ls -l --color=auto&apos; 的别名</div><div class="line"># type yum</div><div class="line">yum 是 /usr/bin/yum</div><div class="line"># type apt-get</div><div class="line">-bash: type: apt-get: 未找到</div></pre></td></tr></table></figure>
+<p>一些选项：</p>
+<ul>
+<li>-t：输出“file”、“alias”或者“builtin”，分别表示给定的指令为“外部指令”、“命令别名”或者“内部指令”； </li>
+<li>-p：如果给出的指令为外部指令，则显示其绝对路径； </li>
+<li>-a：在环境变量“PATH”指定的路径中，显示给定指令的信息，包括命令别名。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"># type -t cd</div><div class="line">builtin</div><div class="line"># type -t ll</div><div class="line">alias</div><div class="line"># type -t yum</div><div class="line">file</div><div class="line"># type -t if</div><div class="line">keyword</div><div class="line">#################</div><div class="line"># type -p yum</div><div class="line">/usr/bin/yum</div><div class="line">#################</div><div class="line"># type -a cd</div><div class="line">cd 是 shell 内嵌</div><div class="line">cd 是 /usr/bin/cd</div><div class="line"># type -a date</div><div class="line">date 是 /usr/bin/date</div><div class="line"># type -a yum</div><div class="line">yum 是 /usr/bin/yum</div></pre></td></tr></table></figure>
+<h2 id="TO-BE-ADD"><a href="#TO-BE-ADD" class="headerlink" title="TO BE ADD"></a>TO BE ADD</h2><p>TODO</p>
 
       
     </div>
@@ -328,13 +417,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/06/29/ceph-Luminous初探/">ceph Luminous dashboard初探</a></p>
+        <p><span>本文标题:</span><a href="/2017/09/21/linux-command-day-day-up/">linux command day day up</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-06-29, 15:45:15</p>
-        <p><span>最后更新:</span>2017-06-29, 17:13:27</p>
+        <p><span>发布时间:</span>2017-09-21, 20:41:47</p>
+        <p><span>最后更新:</span>2017-09-27, 11:24:44</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/06/29/ceph-Luminous初探/" title="ceph Luminous dashboard初探">http://xiaqunfeng.cc/2017/06/29/ceph-Luminous初探/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/06/29/ceph-Luminous初探/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/09/21/linux-command-day-day-up/" title="linux command day day up">http://xiaqunfeng.cc/2017/09/21/linux-command-day-day-up/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/09/21/linux-command-day-day-up/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -347,15 +436,15 @@
     <nav id="article-nav">
         
             <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/07/04/ceph-Luminous新功能之crush-class/">
-                    ceph Luminous新功能之crush class
+                <a href="/2017/09/27/ceph指定版本安装/">
+                    ceph指定版本安装
                 </a>
             </div>
         
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/06/28/Ceph-v12-1-0-Luminous-RC-released/">
-                    Ceph v12.1.0 Luminous RC released
+                <a href="/2017/09/19/awk-study-notes/">
+                    awk study notes
                 </a>
             </div>
         
@@ -367,7 +456,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Luminous集群"><span class="toc-number">1.</span> <span class="toc-text">Luminous集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ceph-s"><span class="toc-number">1.1.</span> <span class="toc-text">ceph -s</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dashboard"><span class="toc-number">2.</span> <span class="toc-text">dashboard</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#开启监控"><span class="toc-number">2.1.</span> <span class="toc-text">开启监控</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置IP和端口"><span class="toc-number">2.2.</span> <span class="toc-text">配置IP和端口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#重启ceph-mgr"><span class="toc-number">2.3.</span> <span class="toc-text">重启ceph-mgr</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#访问界面"><span class="toc-number">2.4.</span> <span class="toc-text">访问界面</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用后感想"><span class="toc-number">3.</span> <span class="toc-text">使用后感想</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#test"><span class="toc-number">1.</span> <span class="toc-text">test</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#type"><span class="toc-number">2.</span> <span class="toc-text">type</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TO-BE-ADD"><span class="toc-number">3.</span> <span class="toc-text">TO BE ADD</span></a></li></ol>
         
     </div>
     <style>
@@ -403,7 +492,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"ceph Luminous dashboard初探　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"linux command day day up　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -422,8 +511,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.cc/2017/06/29/ceph-Luminous初探/';
-            this.page.identifier = '2017/06/29/ceph-Luminous初探/';
+            this.page.url = 'http://xiaqunfeng.cc/2017/09/21/linux-command-day-day-up/';
+            this.page.identifier = '2017/09/21/linux-command-day-day-up/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -445,7 +534,7 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/07/04/ceph-Luminous新功能之crush-class/" title="上一篇: ceph Luminous新功能之crush class">
+            <a href="/2017/09/27/ceph指定版本安装/" title="上一篇: ceph指定版本安装">
                 <i class="fa fa-angle-left"></i>
             </a>
         
@@ -453,7 +542,7 @@
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/06/28/Ceph-v12-1-0-Luminous-RC-released/" title="下一篇: Ceph v12.1.0 Luminous RC released">
+            <a href="/2017/09/19/awk-study-notes/" title="下一篇: awk study notes">
                 <i class="fa fa-angle-right"></i>
             </a>
         

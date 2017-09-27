@@ -4,6 +4,187 @@
   
     
     <entry>
+      <title><![CDATA[ceph指定版本安装]]></title>
+      <url>http://xiaqunfeng.cc/2017/09/27/ceph%E6%8C%87%E5%AE%9A%E7%89%88%E6%9C%AC%E5%AE%89%E8%A3%85/</url>
+      <content type="html"><![CDATA[<p>通过yum安装指定版本的ceph，避免因小版本不一致导致的一些问题。<br><a id="more"></a></p>
+<h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>ceph集群现有的版本是 11.2.0，需要扩容一台机器，新机器上ceph版本保持一致。</p>
+<h2 id="安装方法"><a href="#安装方法" class="headerlink" title="安装方法"></a>安装方法</h2><p>添加ceph安装源</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"># cat /etc/yum.repos.d/ceph.repo</div><div class="line">[ceph]</div><div class="line">name=Ceph packages for x86_64</div><div class="line">baseurl=http://mirrors.163.com/ceph/rpm-kraken/el7/x86_64</div><div class="line">enabled=1</div><div class="line">gpgcheck=1</div><div class="line">priority=1</div><div class="line">type=rpm-md</div><div class="line">gpgkey=http://mirrors.163.com/ceph/keys/release.asc</div><div class="line"></div><div class="line">[ceph-noarch]</div><div class="line">name=Ceph noarch packages</div><div class="line">baseurl=http://mirrors.163.com/ceph/rpm-kraken/el7/noarch</div><div class="line">enabled=1</div><div class="line">gpgcheck=1</div><div class="line">priority=1</div><div class="line">type=rpm-md</div><div class="line">gpgkey=http://mirrors.163.com/ceph/keys/release.asc</div><div class="line"></div><div class="line">[ceph-source]</div><div class="line">name=Ceph source packages</div><div class="line">baseurl=http://mirrors.163.com/ceph/rpm-kraken/el7/SRPMS</div><div class="line">enabled=0</div><div class="line">gpgcheck=1</div><div class="line">type=rpm-md</div><div class="line">gpgkey=http://mirrors.163.com/ceph/keys/release.asc</div><div class="line">priority=1</div></pre></td></tr></table></figure>
+<p>然后执行yum安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># yum install ceph</div></pre></td></tr></table></figure>
+<h2 id="问题一"><a href="#问题一" class="headerlink" title="问题一"></a>问题一</h2><p>通过 <code>yum install ceph --release kraken -y</code> 来安装，出现如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">错误：软件包：1:ceph-base-11.2.0-0.el7.x86_64 (ceph)</div><div class="line">          需要：librados2 = 1:11.2.0-0.el7</div><div class="line">          可用: 1:librados2-0.94.5-2.el7.i686 (base)</div><div class="line">              librados2 = 1:0.94.5-2.el7</div><div class="line">          可用: 1:librados2-11.0.1-0.el7.x86_64 (ceph)</div><div class="line">              librados2 = 1:11.0.1-0.el7</div><div class="line">          可用: 1:librados2-11.0.2-0.el7.x86_64 (ceph)</div><div class="line">              librados2 = 1:11.0.2-0.el7</div><div class="line">          可用: 1:librados2-11.1.0-0.el7.x86_64 (ceph)</div><div class="line">              librados2 = 1:11.1.0-0.el7</div><div class="line">          可用: 1:librados2-11.1.1-0.el7.x86_64 (ceph)</div><div class="line">              librados2 = 1:11.1.1-0.el7</div><div class="line">          可用: 1:librados2-11.2.0-0.el7.x86_64 (ceph)</div><div class="line">              librados2 = 1:11.2.0-0.el7</div><div class="line">          正在安装: 1:librados2-11.2.1-0.el7.x86_64 (ceph)</div><div class="line">              librados2 = 1:11.2.1-0.el7</div><div class="line"> 您可以尝试添加 --skip-broken 选项来解决该问题</div><div class="line"> 您可以尝试执行：rpm -Va --nofiles --nodigest</div></pre></td></tr></table></figure>
+<h3 id="方法一：指定版本"><a href="#方法一：指定版本" class="headerlink" title="方法一：指定版本"></a>方法一：指定版本</h3><p>因为kraken版本的ceph最新的release版本是 11.2.1，通过yum源来安装的话，会默认安装最新的release版本。</p>
+<p>查看源里有哪些可安装的版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"># yum --showduplicates list ceph | expand</div><div class="line">已加载插件：fastestmirror, langpacks</div><div class="line">Loading mirror speeds from cached hostfile</div><div class="line"> * base: mirrors.btte.net</div><div class="line"> * epel: mirrors.ustc.edu.cn</div><div class="line"> * extras: mirrors.neusoft.edu.cn</div><div class="line"> * updates: mirrors.btte.net</div><div class="line">可安装的软件包</div><div class="line">ceph.x86_64                       1:0.80.7-0.10.el7                        epel</div><div class="line">ceph.x86_64                       1:11.0.1-0.el7                           ceph</div><div class="line">ceph.x86_64                       1:11.0.2-0.el7                           ceph</div><div class="line">ceph.x86_64                       1:11.1.0-0.el7                           ceph</div><div class="line">ceph.x86_64                       1:11.1.1-0.el7                           ceph</div><div class="line">ceph.x86_64                       1:11.2.0-0.el7                           ceph</div><div class="line">ceph.x86_64                       1:11.2.1-0.el7                           ceph</div></pre></td></tr></table></figure>
+<p>可以看到，最新的版本是 <code>11.2.1-0.el7</code>。可以通过指定安装包的形式来安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install ceph-11.2.0-0.el7</div></pre></td></tr></table></figure>
+<h3 id="方法二：限制版本"><a href="#方法二：限制版本" class="headerlink" title="方法二：限制版本"></a>方法二：限制版本</h3><p>通过在 <code>/etc/yum.conf</code> 文件中添加配置来限制版本，这里只需要限制住比 11.2.0 高的版本就好了。</p>
+<p>新增 <code>exclude</code> 配置行如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># cat /etc/yum.con</div><div class="line">[main]</div><div class="line">...</div><div class="line">exclude=*11.2.1*</div></pre></td></tr></table></figure>
+<p>再次查看可安装的版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"># yum --showduplicates list ceph | expand</div><div class="line">已加载插件：fastestmirror, langpacks</div><div class="line">Loading mirror speeds from cached hostfile</div><div class="line"> * base: mirrors.btte.net</div><div class="line"> * epel: mirrors.ustc.edu.cn</div><div class="line"> * extras: mirrors.neusoft.edu.cn</div><div class="line"> * updates: mirrors.btte.net</div><div class="line">可安装的软件包</div><div class="line">ceph.x86_64                       1:0.80.7-0.10.el7                        epel</div><div class="line">ceph.x86_64                       1:11.0.1-0.el7                           ceph</div><div class="line">ceph.x86_64                       1:11.0.2-0.el7                           ceph</div><div class="line">ceph.x86_64                       1:11.1.0-0.el7                           ceph</div><div class="line">ceph.x86_64                       1:11.1.1-0.el7                           ceph</div><div class="line">ceph.x86_64                       1:11.2.0-0.el7                           ceph</div></pre></td></tr></table></figure>
+<p>发现版本 11.2.1 不见了，当前最高可安装的版本是 11.2.0，然后就可以直接安装了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install ceph</div></pre></td></tr></table></figure>
+<h2 id="问题二"><a href="#问题二" class="headerlink" title="问题二"></a>问题二</h2><p>解决了上面的问题，但是又有如下问题：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">错误：软件包：1:ceph-osd-11.2.0-0.el7.x86_64 (ceph)</div><div class="line">          需要：libleveldb.so.1()(64bit)</div><div class="line">错误：软件包：1:ceph-common-11.2.0-0.el7.x86_64 (ceph)</div><div class="line">          需要：libbabeltrace.so.1()(64bit)</div><div class="line">错误：软件包：1:librbd1-11.2.0-0.el7.x86_64 (ceph)</div><div class="line">          需要：liblttng-ust.so.0()(64bit)</div><div class="line">错误：软件包：1:ceph-mon-11.2.0-0.el7.x86_64 (ceph)</div><div class="line">          需要：libleveldb.so.1()(64bit)</div><div class="line">错误：软件包：1:librados2-11.2.0-0.el7.x86_64 (ceph)</div><div class="line">          需要：liblttng-ust.so.0()(64bit)</div><div class="line">错误：软件包：1:ceph-common-11.2.0-0.el7.x86_64 (ceph)</div><div class="line">          需要：libleveldb.so.1()(64bit)</div><div class="line">错误：软件包：1:ceph-common-11.2.0-0.el7.x86_64 (ceph)</div><div class="line">          需要：libbabeltrace-ctf.so.1()(64bit)</div><div class="line">错误：软件包：1:ceph-base-11.2.0-0.el7.x86_64 (ceph)</div><div class="line">          需要：liblttng-ust.so.0()(64bit)</div><div class="line"> 您可以尝试添加 --skip-broken 选项来解决该问题</div><div class="line"> 您可以尝试执行：rpm -Va --nofiles --nodigest</div></pre></td></tr></table></figure>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>依赖软件包的下载版本不一致，修改epel yum源即可，如果没有epel源，创建它。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"># cat /etc/yum.repos.d/epel.repo</div><div class="line">[epel]</div><div class="line">name=Extra Packages for Enterprise Linux 7 - $basearch</div><div class="line">#baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch</div><div class="line">mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-7&amp;arch=$basearch</div><div class="line">failovermethod=priority</div><div class="line">enabled=1</div><div class="line">gpgcheck=1</div><div class="line">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7</div><div class="line"></div><div class="line">[epel-debuginfo]</div><div class="line">name=Extra Packages for Enterprise Linux 7 - $basearch - Debug</div><div class="line">#baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch/debug</div><div class="line">mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-7&amp;arch=$basearch</div><div class="line">failovermethod=priority</div><div class="line">enabled=0</div><div class="line">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7</div><div class="line">gpgcheck=1</div><div class="line"></div><div class="line">[epel-source]</div><div class="line">name=Extra Packages for Enterprise Linux 7 - $basearch - Source</div><div class="line">#baseurl=http://download.fedoraproject.org/pub/epel/7/SRPMS</div><div class="line">mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-source-7&amp;arch=$basearch</div><div class="line">failovermethod=priority</div><div class="line">enabled=0</div><div class="line">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7</div><div class="line">gpgcheck=1</div></pre></td></tr></table></figure>
+<p>以上！</p>
+<p>此时，ceph指定的版本就可以顺利的安装成功了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph -v</div><div class="line">ceph version 11.2.0 (f223e27eeb35991352ebc1f67423d4ebc252adb7)</div></pre></td></tr></table></figure>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[linux command day day up]]></title>
+      <url>http://xiaqunfeng.cc/2017/09/21/linux-command-day-day-up/</url>
+      <content type="html"><![CDATA[<p>This article is aim to record some not commonly used linux command which used in the work.<br><a id="more"></a></p>
+<h2 id="test"><a href="#test" class="headerlink" title="test"></a>test</h2><p>该命令用于检查某个条件是否成立，它可以进行数值、字符和文件三个方面的测试。</p>
+<p><strong>1、文件测试</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-e 文件名</td>
+<td>如果文件存在则为真</td>
+</tr>
+<tr>
+<td>-r 文件名</td>
+<td>如果文件存在且可读则为真</td>
+</tr>
+<tr>
+<td>-w 文件名</td>
+<td>如果文件存在且可写则为真</td>
+</tr>
+<tr>
+<td>-x 文件名</td>
+<td>如果文件存在且可执行则为真</td>
+</tr>
+<tr>
+<td>-s 文件名</td>
+<td>如果文件存在且至少有一个字符则为真</td>
+</tr>
+<tr>
+<td>-d 文件名</td>
+<td>如果文件存在且为目录则为真</td>
+</tr>
+<tr>
+<td>-f 文件名</td>
+<td>如果文件存在且为普通文件则为真</td>
+</tr>
+<tr>
+<td>-c 文件名</td>
+<td>如果文件存在且为字符型特殊文件则为真</td>
+</tr>
+<tr>
+<td>-b 文件名</td>
+<td>如果文件存在且为块特殊文件则为真</td>
+</tr>
+</tbody>
+</table>
+<p>比如，测试该系统是否含有某一个文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># cat test.sh</div><div class="line">if test -f /etc/redhat-release ; then</div><div class="line">    echo &quot;this system is centos&quot;</div><div class="line">else</div><div class="line">    echo &quot;this system is unbuntu&quot;</div><div class="line">fi</div></pre></td></tr></table></figure>
+<p>在centos系统上执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># sh test.sh</div><div class="line">this system is centos</div></pre></td></tr></table></figure>
+<p>centos上<code>test -f /etc/redhat-release</code> 返回真，ubuntu系统上返回假。</p>
+<p><strong>2、字符串测试</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>=</td>
+<td>等于则为真</td>
+</tr>
+<tr>
+<td>!=</td>
+<td>不相等则为真</td>
+</tr>
+<tr>
+<td>-z 字符串</td>
+<td>字符串的长度为零则为真</td>
+</tr>
+<tr>
+<td>-n 字符串</td>
+<td>字符串的长度不为零则为真</td>
+</tr>
+</tbody>
+</table>
+<p><strong>3、数值测试</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-eq</td>
+<td>等于则为真</td>
+</tr>
+<tr>
+<td>-ne</td>
+<td>不等于则为真</td>
+</tr>
+<tr>
+<td>-gt</td>
+<td>大于则为真</td>
+</tr>
+<tr>
+<td>-ge</td>
+<td>大于等于则为真</td>
+</tr>
+<tr>
+<td>-lt</td>
+<td>小于则为真</td>
+</tr>
+<tr>
+<td>-le</td>
+<td>小于等于则为真</td>
+</tr>
+</tbody>
+</table>
+<h2 id="type"><a href="#type" class="headerlink" title="type"></a>type</h2><p>该命令用来显示指定命令的类型，判断给出的指令是内部指令还是外部指令。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"># type cd</div><div class="line">cd 是 shell 内嵌</div><div class="line"># type date</div><div class="line">date 是 /usr/bin/date</div><div class="line"># type if</div><div class="line">if 是 shell 关键字</div><div class="line"># type mysql</div><div class="line">-bash: type: mysql: 未找到</div><div class="line"># type ll</div><div class="line">ll 是 `ls -l --color=auto&apos; 的别名</div><div class="line"># type yum</div><div class="line">yum 是 /usr/bin/yum</div><div class="line"># type apt-get</div><div class="line">-bash: type: apt-get: 未找到</div></pre></td></tr></table></figure>
+<p>一些选项：</p>
+<ul>
+<li>-t：输出“file”、“alias”或者“builtin”，分别表示给定的指令为“外部指令”、“命令别名”或者“内部指令”； </li>
+<li>-p：如果给出的指令为外部指令，则显示其绝对路径； </li>
+<li>-a：在环境变量“PATH”指定的路径中，显示给定指令的信息，包括命令别名。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"># type -t cd</div><div class="line">builtin</div><div class="line"># type -t ll</div><div class="line">alias</div><div class="line"># type -t yum</div><div class="line">file</div><div class="line"># type -t if</div><div class="line">keyword</div><div class="line">#################</div><div class="line"># type -p yum</div><div class="line">/usr/bin/yum</div><div class="line">#################</div><div class="line"># type -a cd</div><div class="line">cd 是 shell 内嵌</div><div class="line">cd 是 /usr/bin/cd</div><div class="line"># type -a date</div><div class="line">date 是 /usr/bin/date</div><div class="line"># type -a yum</div><div class="line">yum 是 /usr/bin/yum</div></pre></td></tr></table></figure>
+<h2 id="TO-BE-ADD"><a href="#TO-BE-ADD" class="headerlink" title="TO BE ADD"></a>TO BE ADD</h2><p>TODO</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[awk study notes]]></title>
       <url>http://xiaqunfeng.cc/2017/09/19/awk-study-notes/</url>
       <content type="html"><![CDATA[<p>The awk study notes from working.<br><a id="more"></a></p>
@@ -2638,9 +2819,9 @@
         
         <tags>
             
-            <tag> Linux </tag>
-            
             <tag> centos </tag>
+            
+            <tag> Linux </tag>
             
         </tags>
         
