@@ -4,6 +4,101 @@
   
     
     <entry>
+      <title><![CDATA[mac上安装caffe并训练mnist]]></title>
+      <url>http://xiaqunfeng.cc/2017/11/05/mac%E4%B8%8A%E5%AE%89%E8%A3%85caffe%E5%B9%B6%E8%AE%AD%E7%BB%83mnist/</url>
+      <content type="html"><![CDATA[<p>在mac上安装caffe，然后训练一个mnist项目，熟悉流程。<br><a id="more"></a></p>
+<h2 id="安装caffe"><a href="#安装caffe" class="headerlink" title="安装caffe"></a>安装caffe</h2><p>官方的资料：<a href="http://caffe.berkeleyvision.org/install_osx.html" target="_blank" rel="external">http://caffe.berkeleyvision.org/install_osx.html</a></p>
+<p>我这里并没有用 Anaconda Python，如果想要安装它的话，去<a href="https://www.anaconda.com/download/#macos" target="_blank" rel="external">官网下载</a>并安装。</p>
+<h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><p>1、安装必要的库和依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">brew install -vd snappy leveldb gflags glog szip lmdb</div><div class="line"># need the homebrew science source for OpenCV and hdf5</div><div class="line">brew tap homebrew/science</div><div class="line">brew install hdf5 opencv</div></pre></td></tr></table></figure>
+<p>2、安装boost和protobuf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install protobuf boost</div></pre></td></tr></table></figure>
+<p>3、安装BLAS</p>
+<p>BLAS是Mac中自带的库，所以不需要安装。如果没有安装，推荐使用OpenBLAS：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install openblas</div></pre></td></tr></table></figure>
+<p>4、安装CUDA</p>
+<p>要确定mac的显卡是否支持CUDA。我这里没有安装，为啥，因为不支持。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Intel Iris Graphics 6100 1536 MB</div></pre></td></tr></table></figure>
+<h3 id="下载代码"><a href="#下载代码" class="headerlink" title="下载代码"></a>下载代码</h3><p>1、克隆代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/BVLC/caffe</div><div class="line">cd caffe</div></pre></td></tr></table></figure>
+<blockquote>
+<p>以下所有操作都在 caffe 目录下进行</p>
+</blockquote>
+<p>查看文件如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">~/AI/caffe  master ✔                                                                                                                                                           21d</div><div class="line">▶ ls</div><div class="line">CMakeLists.txt          LICENSE                 README.md               data                    examples                python</div><div class="line">CONTRIBUTING.md         Makefile                build                   distribute              include                 scripts</div><div class="line">CONTRIBUTORS.md         Makefile.config         caffe.cloc              docker                  matlab                  src</div><div class="line">INSTALL.md              Makefile.config.example cmake                   docs                    models                  tools</div></pre></td></tr></table></figure>
+<p>2、修改配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cp Makefile.config.example Makefile.config</div></pre></td></tr></table></figure>
+<p>修改 Makefile.config 文件：</p>
+<ul>
+<li>去掉CPU_ONLY := 1的注释，使Caffe只运行在CPU上。</li>
+<li>去掉OPENCV_VERSION := 3的注释，因为当前的OpenCV版本是3.1.0，如果版本是2.*就不需要。</li>
+</ul>
+<p>查看当前的opencv版本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">▶ pkg-config --modversion opencv</div><div class="line">3.3.1</div></pre></td></tr></table></figure>
+<blockquote>
+<p>如果 <code>pkg-config</code> 没安装：<code>brew install pkg-config</code></p>
+</blockquote>
+<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p>1、编译</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">make all</div><div class="line">make test</div></pre></td></tr></table></figure>
+<p>忽略 warning，有error解决error的错误（正常没有error，有的话一般是依赖包没装成功）。</p>
+<p>2、运行test</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">make runtest</div></pre></td></tr></table></figure>
+<p>输出如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">[----------] 3 tests from MSRAFillerTest/0, where TypeParam = f</div><div class="line">[ RUN      ] MSRAFillerTest/0.TestFillAverage</div><div class="line">[       OK ] MSRAFillerTest/0.TestFillAverage (0 ms)</div><div class="line">[ RUN      ] MSRAFillerTest/0.TestFillFanIn</div><div class="line">[       OK ] MSRAFillerTest/0.TestFillFanIn (1 ms)</div><div class="line">[ RUN      ] MSRAFillerTest/0.TestFillFanOut</div><div class="line">[       OK ] MSRAFillerTest/0.TestFillFanOut (1 ms)</div><div class="line">[----------] 3 tests from MSRAFillerTest/0 (2 ms total)</div><div class="line"></div><div class="line">[----------] Global test environment tear-down</div><div class="line">[==========] 1110 tests from 152 test cases ran. (54652 ms total)</div><div class="line">[  PASSED  ] 1110 tests.</div></pre></td></tr></table></figure>
+<p>此时，caffe安装成功，并通过了测试。</p>
+<h2 id="训练mnist数据集"><a href="#训练mnist数据集" class="headerlink" title="训练mnist数据集"></a>训练mnist数据集</h2><p>1、下载mnist数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./data/mnist/get_mnist.sh</div></pre></td></tr></table></figure>
+<p>下载的数据保存在 <code>./data/mnist/</code> 目录下。</p>
+<p>2、建立训练数据和测试数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./examples/mnist/create_mnist.sh</div></pre></td></tr></table></figure>
+<p>此时 <code>./examples/mnist/</code> 路径下出现 <code>mnist_test_lmdb</code> 和 <code>mnist_train_lmdb</code> 两个文件夹，分别是测试和训练数据。</p>
+<p>3、训练</p>
+<p>修改 <code>./examples/mnist/lenet_solver.prototxt</code> ，保证整个训练过程在CPU上进行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line"># solver mode: CPU or GPU</div><div class="line">solver_mode: CPU</div></pre></td></tr></table></figure>
+<p>4、执行训练命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./examples/mnist/train_lenet.sh</div></pre></td></tr></table></figure>
+<p>输出结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">I1102 17:31:49.379988 3124548544 solver.cpp:218] Iteration 9900 (25.582 iter/s, 3.909s/100 iters), loss = 0.00534126</div><div class="line">I1102 17:31:49.381337 3124548544 solver.cpp:237]     Train net output #0: loss = 0.00534115 (* 1 = 0.00534115 loss)</div><div class="line">I1102 17:31:49.381361 3124548544 sgd_solver.cpp:105] Iteration 9900, lr = 0.00596843</div><div class="line">I1102 17:31:54.009297 3124548544 solver.cpp:447] Snapshotting to binary proto file examples/mnist/lenet_iter_10000.caffemodel</div><div class="line">I1102 17:31:54.026062 3124548544 sgd_solver.cpp:273] Snapshotting solver state to binary proto file examples/mnist/lenet_iter_10000.solverstate</div><div class="line">I1102 17:31:54.059612 3124548544 solver.cpp:310] Iteration 10000, loss = 0.00328907</div><div class="line">I1102 17:31:54.059659 3124548544 solver.cpp:330] Iteration 10000, Testing net (#0)</div><div class="line">I1102 17:31:56.881471 148017152 data_layer.cpp:73] Restarting data prefetching from start.</div><div class="line">I1102 17:31:57.004863 3124548544 solver.cpp:397]     Test net output #0: accuracy = 0.9906</div><div class="line">I1102 17:31:57.004914 3124548544 solver.cpp:397]     Test net output #1: loss = 0.0292456 (* 1 = 0.0292456 loss)</div><div class="line">I1102 17:31:57.004932 3124548544 solver.cpp:315] Optimization Done.</div><div class="line">I1102 17:31:57.004940 3124548544 caffe.cpp:259] Optimization Done.</div></pre></td></tr></table></figure>
+<p>可以看到，一共迭代10000次，准确率为 0.9906。训练出的模型为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">▶ ll examples/mnist</div><div class="line">...</div><div class="line">-rw-r--r--  1 xiaqunfeng  staff   1.6M 11  2 17:31 lenet_iter_10000.caffemodel</div><div class="line">...</div></pre></td></tr></table></figure>
+<h2 id="使用模型进行分类"><a href="#使用模型进行分类" class="headerlink" title="使用模型进行分类"></a>使用模型进行分类</h2><p>用Caffe中已经训练好的模型（基于Alexnet的结构）对图像进行分类，并且可以显示不同层中训练得到的特征：</p>
+<p><a href="http://nbviewer.jupyter.org/github/BVLC/caffe/blob/master/examples/00-classification.ipynb" target="_blank" rel="external">http://nbviewer.jupyter.org/github/BVLC/caffe/blob/master/examples/00-classification.ipynb</a></p>
+<h2 id="关于mnist"><a href="#关于mnist" class="headerlink" title="关于mnist"></a>关于mnist</h2><p>MNIST 数据集来自美国国家标准与技术研究所, <strong>National Institute of Standards and Technology (NIST)</strong>。训练集 (training set) 由来自 250 个不同人手写的数字构成，其中 50% 是高中学生, 50% 来自人口普查局 (the Census Bureau) 的工作人员。测试集(test set) 也是同样比例的手写数字数据。mnist最初备在美国被用与支票上手写数字识别，现在成了DeepLearning的入门练习示例，针对mnist识别的神经网络的专门模型是Lenet，算是最早的CNN模型了。</p>
+<ul>
+<li>mnist数据的—训练样本为60000张</li>
+<li>测试样本为10000张</li>
+<li>每个样本为28*28大小的黑白图片</li>
+<li>手写数字为0-9,因此分为10类</li>
+</ul>
+<p>同时，Mnist数据库中的每张图片都进行了:</p>
+<ul>
+<li>尺寸的归一化处理(所有的图片均为28*28像素大小的图片)</li>
+<li>数字进行了居中处理</li>
+<li>通过脚本 <code>get_mnist.sh</code> 下载下来的数据不是图片数据，图片是以字节的形式进行存储</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">▶ ll data/mnist</div><div class="line">total 107352</div><div class="line">-rwxr-xr-x  1 xiaqunfeng  staff   408B 10 18 09:58 get_mnist.sh</div><div class="line">-rw-r--r--  1 xiaqunfeng  staff   7.5M  7 22  2000 t10k-images-idx3-ubyte</div><div class="line">-rw-r--r--  1 xiaqunfeng  staff   9.8K  7 22  2000 t10k-labels-idx1-ubyte</div><div class="line">-rw-r--r--  1 xiaqunfeng  staff    45M  7 22  2000 train-images-idx3-ubyte</div><div class="line">-rw-r--r--  1 xiaqunfeng  staff    59K  7 22  2000 train-labels-idx1-ubyte</div></pre></td></tr></table></figure>
+<p>详解：</p>
+<ul>
+<li><strong>Training set images</strong>: train-images-idx3-ubyte.gz (9.9 MB, 解压后 47 MB, 包含 60,000 个样本)</li>
+<li><strong>Training set labels</strong>: train-labels-idx1-ubyte.gz (29 KB, 解压后 60 KB, 包含 60,000 个标签)</li>
+<li><strong>Test set images</strong>: t10k-images-idx3-ubyte.gz (1.6 MB, 解压后 7.8 MB, 包含 10,000 个样本)</li>
+<li><strong>Test set labels</strong>: t10k-labels-idx1-ubyte.gz (5KB, 解压后 10 KB, 包含 10,000 个标签)</li>
+</ul>
+<h2 id="anaconda"><a href="#anaconda" class="headerlink" title="anaconda"></a>anaconda</h2><p>关于anaconda的使用可以参考：</p>
+<p><a href="http://blog.leanote.com/post/braveapple/Anaconda%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93" target="_blank" rel="external">http://blog.leanote.com/post/braveapple/Anaconda%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93</a></p>
+<p><a href="https://foofish.net/compatible-py2-and-py3.html" target="_blank" rel="external">https://foofish.net/compatible-py2-and-py3.html</a></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> caffe </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[ceph指定版本安装]]></title>
       <url>http://xiaqunfeng.cc/2017/09/27/ceph%E6%8C%87%E5%AE%9A%E7%89%88%E6%9C%AC%E5%AE%89%E8%A3%85/</url>
       <content type="html"><![CDATA[<p>通过yum安装指定版本的ceph，避免因小版本不一致导致的一些问题。<br><a id="more"></a></p>
