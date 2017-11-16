@@ -63,6 +63,26 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">▶ ll examples/mnist</div><div class="line">...</div><div class="line">-rw-r--r--  1 xiaqunfeng  staff   1.6M 11  2 17:31 lenet_iter_10000.caffemodel</div><div class="line">...</div></pre></td></tr></table></figure>
 <h2 id="使用模型进行分类"><a href="#使用模型进行分类" class="headerlink" title="使用模型进行分类"></a>使用模型进行分类</h2><p>用Caffe中已经训练好的模型（基于Alexnet的结构）对图像进行分类，并且可以显示不同层中训练得到的特征：</p>
 <p><a href="http://nbviewer.jupyter.org/github/BVLC/caffe/blob/master/examples/00-classification.ipynb" target="_blank" rel="external">http://nbviewer.jupyter.org/github/BVLC/caffe/blob/master/examples/00-classification.ipynb</a></p>
+<h2 id="ubuntu-16-04上安装遇到的问题"><a href="#ubuntu-16-04上安装遇到的问题" class="headerlink" title="ubuntu 16.04上安装遇到的问题"></a>ubuntu 16.04上安装遇到的问题</h2><p><strong>问题1：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./include/caffe/common.hpp:5:27: fatal error: gflags/gflags.h: No such file or directory</div></pre></td></tr></table></figure>
+<p>解决方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install libgflags-dev</div></pre></td></tr></table></figure>
+<p><strong>问题2：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./include/caffe/util/mkl_alternate.hpp:14:19: fatal error: cblas.h: No such file or directory</div></pre></td></tr></table></figure>
+<p>解决方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install libblas-dev</div></pre></td></tr></table></figure>
+<p><strong>问题3：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./include/caffe/util/hdf5.hpp:6:18: fatal error: hdf5.h: No such file or directory</div></pre></td></tr></table></figure>
+<p>解决方法：在 <code>Makefile.config</code> 找到以下亮行并添加最后一部分</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">INCLUDE_DIRS := $(PYTHON_INCLUDE) /usr/local/include /usr/include/hdf5/serial </div><div class="line">LIBRARY_DIRS := $(PYTHON_LIB) /usr/local/lib /usr/lib /usr/lib/x86_64-linux-gnu/hdf5/serial</div></pre></td></tr></table></figure>
+<p><strong>问题4：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./include/caffe/util/db_lmdb.hpp:8:18: fatal error: lmdb.h: No such file or directory</div></pre></td></tr></table></figure>
+<p>解决方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt install liblmdb-dev</div></pre></td></tr></table></figure>
+<p><strong>问题5：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/bin/ld: cannot find -lcblas</div></pre></td></tr></table></figure>
+<p>解决方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt install libatlas-base-dev</div></pre></td></tr></table></figure>
 <h2 id="关于mnist"><a href="#关于mnist" class="headerlink" title="关于mnist"></a>关于mnist</h2><p>MNIST 数据集来自美国国家标准与技术研究所, <strong>National Institute of Standards and Technology (NIST)</strong>。训练集 (training set) 由来自 250 个不同人手写的数字构成，其中 50% 是高中学生, 50% 来自人口普查局 (the Census Bureau) 的工作人员。测试集(test set) 也是同样比例的手写数字数据。mnist最初备在美国被用与支票上手写数字识别，现在成了DeepLearning的入门练习示例，针对mnist识别的神经网络的专门模型是Lenet，算是最早的CNN模型了。</p>
 <ul>
 <li>mnist数据的—训练样本为60000张</li>
