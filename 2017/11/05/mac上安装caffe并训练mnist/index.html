@@ -21,7 +21,7 @@
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/11/05/mac上安装caffe并训练mnist/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="在mac上安装caffe，然后训练一个mnist项目，熟悉流程。">
-<meta property="og:updated_time" content="2017-11-16T08:44:12.000Z">
+<meta property="og:updated_time" content="2017-11-16T09:20:10.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mac上安装caffe并训练mnist">
 <meta name="twitter:description" content="在mac上安装caffe，然后训练一个mnist项目，熟悉流程。">
@@ -340,7 +340,24 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">▶ ll examples/mnist</div><div class="line">...</div><div class="line">-rw-r--r--  1 xiaqunfeng  staff   1.6M 11  2 17:31 lenet_iter_10000.caffemodel</div><div class="line">...</div></pre></td></tr></table></figure>
 <h2 id="使用模型进行分类"><a href="#使用模型进行分类" class="headerlink" title="使用模型进行分类"></a>使用模型进行分类</h2><p>用Caffe中已经训练好的模型（基于Alexnet的结构）对图像进行分类，并且可以显示不同层中训练得到的特征：</p>
 <p><a href="http://nbviewer.jupyter.org/github/BVLC/caffe/blob/master/examples/00-classification.ipynb" target="_blank" rel="external">http://nbviewer.jupyter.org/github/BVLC/caffe/blob/master/examples/00-classification.ipynb</a></p>
-<h2 id="ubuntu-16-04上安装遇到的问题"><a href="#ubuntu-16-04上安装遇到的问题" class="headerlink" title="ubuntu 16.04上安装遇到的问题"></a>ubuntu 16.04上安装遇到的问题</h2><p><strong>问题1：</strong></p>
+<h2 id="导入caffe"><a href="#导入caffe" class="headerlink" title="导入caffe"></a>导入caffe</h2><p>编译安装完后，在python脚本中导入 caffe 时出现如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">    import caffe</div><div class="line">ImportError: No module named caffe</div></pre></td></tr></table></figure>
+<p>解决方法：</p>
+<p>1、先安装 pycaffe</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">make pycaffe</div></pre></td></tr></table></figure>
+<p>会遇到如下问题：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python/caffe/_caffe.cpp:10:31: fatal error: numpy/arrayobject.h: No such file or directory</div></pre></td></tr></table></figure>
+<p>原因是python-numpy没有安装到位，安装即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install python-numpy</div></pre></td></tr></table></figure>
+<p>2、添加caffe路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim ~/.bashrc</div></pre></td></tr></table></figure>
+<p>添加如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export PYTHONPATH=/workspace/caffe/python:$PYTHONPATH</div></pre></td></tr></table></figure>
+<p>其中 <code>/workspace</code> 是clone caffe master代码的目录</p>
+<p>然后执行 <code>source ~/.bashrc</code> 即可</p>
+<p>或者，在导入 caffe的时候在python 文件里手动添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">PYCAFFE_ROOT = &apos;/workspace/caffe/python/&apos;</div><div class="line">sys.path.append(PYCAFFE_ROOT)</div></pre></td></tr></table></figure>
+<h2 id="ubuntu-16-04上安装遇到的问题"><a href="#ubuntu-16-04上安装遇到的问题" class="headerlink" title="ubuntu 16.04上安装遇到的问题"></a>ubuntu 16.04上安装遇到的问题</h2><h3 id="编译依赖问题"><a href="#编译依赖问题" class="headerlink" title="编译依赖问题"></a>编译依赖问题</h3><p><strong>问题1：</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./include/caffe/common.hpp:5:27: fatal error: gflags/gflags.h: No such file or directory</div></pre></td></tr></table></figure>
 <p>解决方法：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install libgflags-dev</div></pre></td></tr></table></figure>
@@ -395,7 +412,7 @@
         <p><span>本文标题:</span><a href="/2017/11/05/mac上安装caffe并训练mnist/">mac上安装caffe并训练mnist</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
         <p><span>发布时间:</span>2017-11-05, 19:57:53</p>
-        <p><span>最后更新:</span>2017-11-16, 16:44:12</p>
+        <p><span>最后更新:</span>2017-11-16, 17:20:10</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/11/05/mac上安装caffe并训练mnist/" title="mac上安装caffe并训练mnist">http://xiaqunfeng.cc/2017/11/05/mac上安装caffe并训练mnist/</a>
             <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/11/05/mac上安装caffe并训练mnist/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -425,7 +442,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装caffe"><span class="toc-number">1.</span> <span class="toc-text">安装caffe</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装依赖"><span class="toc-number">1.1.</span> <span class="toc-text">安装依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#下载代码"><span class="toc-number">1.2.</span> <span class="toc-text">下载代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#编译"><span class="toc-number">1.3.</span> <span class="toc-text">编译</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#训练mnist数据集"><span class="toc-number">2.</span> <span class="toc-text">训练mnist数据集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用模型进行分类"><span class="toc-number">3.</span> <span class="toc-text">使用模型进行分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ubuntu-16-04上安装遇到的问题"><span class="toc-number">4.</span> <span class="toc-text">ubuntu 16.04上安装遇到的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于mnist"><span class="toc-number">5.</span> <span class="toc-text">关于mnist</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#anaconda"><span class="toc-number">6.</span> <span class="toc-text">anaconda</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装caffe"><span class="toc-number">1.</span> <span class="toc-text">安装caffe</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装依赖"><span class="toc-number">1.1.</span> <span class="toc-text">安装依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#下载代码"><span class="toc-number">1.2.</span> <span class="toc-text">下载代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#编译"><span class="toc-number">1.3.</span> <span class="toc-text">编译</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#训练mnist数据集"><span class="toc-number">2.</span> <span class="toc-text">训练mnist数据集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用模型进行分类"><span class="toc-number">3.</span> <span class="toc-text">使用模型进行分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#导入caffe"><span class="toc-number">4.</span> <span class="toc-text">导入caffe</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ubuntu-16-04上安装遇到的问题"><span class="toc-number">5.</span> <span class="toc-text">ubuntu 16.04上安装遇到的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#编译依赖问题"><span class="toc-number">5.1.</span> <span class="toc-text">编译依赖问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于mnist"><span class="toc-number">6.</span> <span class="toc-text">关于mnist</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#anaconda"><span class="toc-number">7.</span> <span class="toc-text">anaconda</span></a></li></ol>
         
     </div>
     <style>
