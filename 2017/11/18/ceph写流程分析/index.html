@@ -15,18 +15,22 @@
 
 
 
-<meta name="description" content="有时候看到好的镜像，想保存下来，不可能一个个通过url手动来下载，这时候就需要批量下载了。">
+<meta name="description" content="之前总结的ceph写流程分析笔记，代码是基于jewel版本10.2.0，现分享出来，欢迎指点。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="wget批量下载http目录及文件">
-<meta property="og:url" content="http://xiaqunfeng.cc/2017/06/23/wget批量下载http目录及文件/index.html">
+<meta property="og:title" content="ceph写流程分析">
+<meta property="og:url" content="http://xiaqunfeng.cc/2017/11/18/ceph写流程分析/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="有时候看到好的镜像，想保存下来，不可能一个个通过url手动来下载，这时候就需要批量下载了。">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/wget-http.jpg">
-<meta property="og:updated_time" content="2017-06-23T11:20:26.000Z">
+<meta property="og:description" content="之前总结的ceph写流程分析笔记，代码是基于jewel版本10.2.0，现分享出来，欢迎指点。">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/ceph_data_map.jpg">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/ceph_rw_arc.jpg">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/libRBD_write_Fotor.jpg">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/osd_write_Fotor.jpg">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/file_write_Fotor.jpg">
+<meta property="og:updated_time" content="2017-11-18T10:01:54.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="wget批量下载http目录及文件">
-<meta name="twitter:description" content="有时候看到好的镜像，想保存下来，不可能一个个通过url手动来下载，这时候就需要批量下载了。">
-<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/wget-http.jpg">
+<meta name="twitter:title" content="ceph写流程分析">
+<meta name="twitter:description" content="之前总结的ceph写流程分析笔记，代码是基于jewel版本10.2.0，现分享出来，欢迎指点。">
+<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/ceph_data_map.jpg">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +62,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>wget批量下载http目录及文件 | 夏天的风的博客</title>
+<title>ceph写流程分析 | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -245,11 +249,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-wget批量下载http目录及文件" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-ceph写流程分析" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/06/23/wget批量下载http目录及文件/" class="article-date">
-      <time datetime="2017-06-23T10:21:12.000Z" itemprop="datePublished">2017-06-23</time>
+      <a href="/2017/11/18/ceph写流程分析/" class="article-date">
+      <time datetime="2017-11-18T09:41:38.000Z" itemprop="datePublished">2017-11-18</time>
 </a>
 
 
@@ -264,7 +268,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      wget批量下载http目录及文件
+      ceph写流程分析
     </h1>
   
 
@@ -285,68 +289,29 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>有时候看到好的镜像，想保存下来，不可能一个个通过url手动来下载，这时候就需要批量下载了。<br><a id="more"></a></p>
-<p>举个例子，我要下载的地址和内容如下：<br><img src="http://oow6unnib.bkt.clouddn.com/wget-http.jpg" alt="wget-http"></p>
-<h2 id="得到页面的index-html"><a href="#得到页面的index-html" class="headerlink" title="得到页面的index.html"></a>得到页面的index.html</h2><p>我就在 <code>/root</code> 目录下操作</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget -m http://mirrors.163.com/ceph/rpm-jewel/el7/SRPMS/</div></pre></td></tr></table></figure>
-<p>得到<code>index.html</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"># cat /root/mirrors.163.com/ceph/rpm-jewel/el7/SRPMS/index.html</div><div class="line">&lt;html&gt;</div><div class="line">&lt;head&gt;&lt;title&gt;Index of /ceph/rpm-jewel/el7/SRPMS/&lt;/title&gt;&lt;/head&gt;</div><div class="line">&lt;body bgcolor=&quot;white&quot;&gt;</div><div class="line">&lt;h1&gt;Index of /ceph/rpm-jewel/el7/SRPMS/&lt;/h1&gt;&lt;hr&gt;&lt;pre&gt;&lt;a href=&quot;../&quot;&gt;../&lt;/a&gt;</div><div class="line">&lt;a href=&quot;repodata/&quot;&gt;repodata/&lt;/a&gt;                                          11-Apr-2017 03:06       -</div><div class="line">&lt;a href=&quot;ceph-10.1.0-0.el7.src.rpm&quot;&gt;ceph-10.1.0-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      8M</div><div class="line">&lt;a href=&quot;ceph-10.1.1-0.el7.src.rpm&quot;&gt;ceph-10.1.1-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      9M</div><div class="line">&lt;a href=&quot;ceph-10.1.2-0.el7.src.rpm&quot;&gt;ceph-10.1.2-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      9M</div><div class="line">&lt;a href=&quot;ceph-10.2.0-0.el7.src.rpm&quot;&gt;ceph-10.2.0-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      9M</div><div class="line">&lt;a href=&quot;ceph-10.2.1-0.el7.src.rpm&quot;&gt;ceph-10.2.1-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      9M</div><div class="line">&lt;a href=&quot;ceph-10.2.2-0.el7.src.rpm&quot;&gt;ceph-10.2.2-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      8M</div><div class="line">&lt;a href=&quot;ceph-10.2.3-0.el7.src.rpm&quot;&gt;ceph-10.2.3-0.el7.src.rpm&lt;/a&gt;                          17-Oct-2016 20:29      9M</div><div class="line">&lt;a href=&quot;ceph-10.2.4-0.el7.src.rpm&quot;&gt;ceph-10.2.4-0.el7.src.rpm&lt;/a&gt;                          07-Dec-2016 05:39     10M</div><div class="line">&lt;a href=&quot;ceph-10.2.5-0.el7.src.rpm&quot;&gt;ceph-10.2.5-0.el7.src.rpm&lt;/a&gt;                          05-Jan-2017 02:49     10M</div><div class="line">&lt;a href=&quot;ceph-10.2.6-0.el7.src.rpm&quot;&gt;ceph-10.2.6-0.el7.src.rpm&lt;/a&gt;                          08-Mar-2017 21:55     11M</div><div class="line">&lt;a href=&quot;ceph-10.2.7-0.el7.src.rpm&quot;&gt;ceph-10.2.7-0.el7.src.rpm&lt;/a&gt;                          11-Apr-2017 02:53     11M</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.29-0.src.rpm&quot;&gt;ceph-deploy-1.5.29-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     91K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.30-0.src.rpm&quot;&gt;ceph-deploy-1.5.30-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     91K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.31-0.src.rpm&quot;&gt;ceph-deploy-1.5.31-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     91K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.32-0.src.rpm&quot;&gt;ceph-deploy-1.5.32-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     91K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.33-0.src.rpm&quot;&gt;ceph-deploy-1.5.33-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     91K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.34-0.src.rpm&quot;&gt;ceph-deploy-1.5.34-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     94K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.35-0.src.rpm&quot;&gt;ceph-deploy-1.5.35-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     95K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.36-0.src.rpm&quot;&gt;ceph-deploy-1.5.36-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     95K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.37-0.src.rpm&quot;&gt;ceph-deploy-1.5.37-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     95K</div><div class="line">&lt;a href=&quot;ceph-release-1-1.el7.src.rpm&quot;&gt;ceph-release-1-1.el7.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53    4186</div><div class="line">&lt;a href=&quot;radosgw-agent-1.2.5-0.el7.src.rpm&quot;&gt;radosgw-agent-1.2.5-0.el7.src.rpm&lt;/a&gt;                  11-Apr-2017 02:53     29K</div><div class="line">&lt;a href=&quot;radosgw-agent-1.2.6-0.el7.src.rpm&quot;&gt;radosgw-agent-1.2.6-0.el7.src.rpm&lt;/a&gt;                  11-Apr-2017 02:53     29K</div><div class="line">&lt;a href=&quot;radosgw-agent-1.2.7-0.el7.src.rpm&quot;&gt;radosgw-agent-1.2.7-0.el7.src.rpm&lt;/a&gt;                  11-Apr-2017 02:53     29K</div><div class="line">&lt;/pre&gt;&lt;hr&gt;&lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
-<h2 id="开始下载"><a href="#开始下载" class="headerlink" title="开始下载"></a>开始下载</h2><p>命令如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget -nc -B http://mirrors.163.com/ceph/rpm-jewel/el7/SRPMS/ -F -nH --cut-dirs=3 -i index.html</div></pre></td></tr></table></figure>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>功能</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>-nc</td>
-<td>下载时跳过已经存在的文件</td>
-</tr>
-<tr>
-<td>-B</td>
-<td>使用 -F -i 文件选项时，在相对链接前添加指定的 URL</td>
-</tr>
-<tr>
-<td>-nH</td>
-<td>不创建主机名目录</td>
-</tr>
-<tr>
-<td>-i</td>
-<td>下载从指定文件中找到的 URL</td>
-</tr>
-<tr>
-<td>-v</td>
-<td>显示信息</td>
-</tr>
-<tr>
-<td>-r</td>
-<td>递归下载</td>
-</tr>
-<tr>
-<td>-l</td>
-<td>最大递归深度(inf 或 0 表示无限)</td>
-</tr>
-<tr>
-<td>-F</td>
-<td>以 HTML 方式处理输入文件</td>
-</tr>
-<tr>
-<td>–cut-dir=num</td>
-<td>忽略远程目录中指定数目的目录层</td>
-</tr>
-<tr>
-<td>-E</td>
-<td>将所有 MIME 类型为 text/html 的文件都加上 .html 扩展文件名</td>
-</tr>
-</tbody>
-</table>
-<p>更多关于参数的问题详见：<a href="http://jiaxl.blog.51cto.com/3064605/1191196" target="_blank" rel="external">wget参数介绍</a></p>
-<p>然后就开始下载，直至完成<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">FINISHED --2017-06-23 18:11:54--</div><div class="line">Total wall clock time: 7m 31s</div><div class="line">Downloaded: 24 files, 103M in 7m 29s (234 KB/s)</div></pre></td></tr></table></figure></p>
-<p>下载完成后列表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"># ll</div><div class="line">总用量 105264</div><div class="line">-rw-r--r--. 1 root root  8894228 6月  15 2016 ceph-10.1.0-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  8942739 6月  15 2016 ceph-10.1.1-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  8961123 6月  15 2016 ceph-10.1.2-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  8967492 6月  15 2016 ceph-10.2.0-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  8996472 6月  15 2016 ceph-10.2.1-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  8876099 6月  15 2016 ceph-10.2.2-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  9044336 10月 17 2016 ceph-10.2.3-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root 10849625 12月  7 2016 ceph-10.2.4-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root 10795514 1月   5 02:49 ceph-10.2.5-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root 11215646 3月   8 21:55 ceph-10.2.6-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root 11245006 4月  11 02:53 ceph-10.2.7-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root    92710 4月  11 02:53 ceph-deploy-1.5.29-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    92915 4月  11 02:53 ceph-deploy-1.5.30-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    92953 4月  11 02:53 ceph-deploy-1.5.31-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    93493 4月  11 02:53 ceph-deploy-1.5.32-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    93323 4月  11 02:53 ceph-deploy-1.5.33-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    96664 4月  11 02:53 ceph-deploy-1.5.34-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    97010 4月  11 02:53 ceph-deploy-1.5.35-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    96998 4月  11 02:53 ceph-deploy-1.5.36-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    97146 4月  11 02:53 ceph-deploy-1.5.37-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root     4186 4月  11 02:53 ceph-release-1-1.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root     3189 6月  23 18:01 index.html</div><div class="line">-rw-r--r--. 1 root root    30175 4月  11 02:53 radosgw-agent-1.2.5-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root    29980 4月  11 02:53 radosgw-agent-1.2.6-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root    30044 4月  11 02:53 radosgw-agent-1.2.7-0.el7.src.rpm</div></pre></td></tr></table></figure></p>
-<p>以上</p>
+        <p>之前总结的ceph写流程分析笔记，代码是基于jewel版本10.2.0，现分享出来，欢迎指点。<br><a id="more"></a></p>
+<h2 id="一、rbd到OSD映射关系"><a href="#一、rbd到OSD映射关系" class="headerlink" title="一、rbd到OSD映射关系"></a>一、rbd到OSD映射关系</h2><p>​    客户端使用RBD设备，使用librbd、librados库进行访问管理块设备。</p>
+<p>​    1、创建 一个pool，为这个pool指定pg的数量，同时在这个pool中指明保存数据的副本数（通常为3个副本）。</p>
+<p>​    2、在这个pool中创建一个rbd设备rbd0，那么这个rbd0都会保存三份，在创建rbd0时必须指定rbd的size，对于这个rbd0的任何操作不能超过这个size。</p>
+<p>​    3、将这个块设备进行切块，每个块的大小默认为4M，并且每个块都有一个名字，名字就是object+序号。</p>
+<p>​    4、将每个object通过pg进行副本位置的分配，pg会寻找3个osd，把这个object分别保存在这三个osd上。最后对于object的存储就变成了存储一个文件 <code>rbd0.object1.file</code>。数据层次映射图如下： <img src="http://oow6unnib.bkt.clouddn.com/ceph_data_map.jpg" alt="ceph数据的映射层次">​</p>
+<p>​    经过pool，rbd，object、pg的层层映射关系，在PG这一层中，已经知道存储数据的3个OSD所在位置及主从关系。</p>
+<p>​    客户端与primay OSD建立SOCKET 通信，将要写入的数据传给primary OSD，由primary OSD再将数据发送给其他replica OSD数据节点。</p>
+<p>​    读写框架图： <img src="http://oow6unnib.bkt.clouddn.com/ceph_rw_arc.jpg" alt="ceph读写框架"></p>
+<h2 id="二、写请求流程"><a href="#二、写请求流程" class="headerlink" title="二、写请求流程"></a>二、写请求流程</h2><h3 id="1、rbd上的处理"><a href="#1、rbd上的处理" class="headerlink" title="1、rbd上的处理"></a>1、rbd上的处理</h3><p>​    在rbd中一个操作对象为一个image，这个请求经过处理拆分成object对象的请求，拆分后交给Objector进行处理，找到目标osd的集合及主osd。</p>
+<p>​    将请求封装成MOSDOp消息，交由SimpleMessenger处理，SimpleMessager会尝试查找 / 创建一个OSDSession，并且为这个OSDSession创建一个数据通道pipe。消息从SimpleMessager收到后会保存到pipe的outq队列中。</p>
+<p>​    pipe 与目标osd建立Socket通信通道，并有专门的写线程writer来负责socket通信。writer线程同时监视这个outq队列，当队列中存在消息等待发送时，会就将消息写入socket，发送给目标OSD。</p>
+<p>​    OSD将数据消息处理完成之后，进行回调，反馈执行结果。</p>
+<p>​    关键代码序列图如下： <img src="http://oow6unnib.bkt.clouddn.com/libRBD_write_Fotor.jpg" alt="libRBD write"></p>
+<h3 id="2、osd上的处理"><a href="#2、osd上的处理" class="headerlink" title="2、osd上的处理"></a>2、osd上的处理</h3><p>​    OSD接收到message信息以后，解析并将消息转换成OpRequest，加入dispatch队列。同时从message中得到pool及PG的信息，将message交由PG进行相关处理。此时从OSD处理的message转化为了PG处理的op，添加到osd-&gt;op_wq队列中。PG中创建一个OpContext结构，接管message中的所有ops的操作。</p>
+<p>​    解析出OpRequest中的所有op与data，用Transaction结构进行管理，即将ops与Transaction绑定，将操作和数据打包成事务，并发送给其他副本，同时管理自己和其他副本的数据处理统计，创建repop 所有的applied与commit的管理。</p>
+<p>​    提交事务后，交由filestore进行处理。</p>
+<p>​    如果数据处理完成了，使用eval_repop()进行收尾的工作，将结果回调给客户端。</p>
+<p>​    关键代码序列图如下：  <img src="http://oow6unnib.bkt.clouddn.com/osd_write_Fotor.jpg" alt="osd write"></p>
+<h3 id="3、filestore上的处理"><a href="#3、filestore上的处理" class="headerlink" title="3、filestore上的处理"></a>3、filestore上的处理</h3><p>​    当数据进行写入的时候需要写到journal中一份，当data数据失败的时候可以从journal中进行恢复。从_op_journal_transactions()开始激发写入日志的操作，回调函数C_JournaledAhead的会在日志完成之后进行回调处理，将data写入磁盘。</p>
+<p>​    将日志保存完成的回调ondisk交给ondisk_finisher，ondisk注册回调为C_OSD_OnOpApplied，在后续finisher线程中处理。在该函数中，循环处理需要回调的请求，回复刚开始接收到请求的MOSDOp的操作，将请求发还给客户端。</p>
+<p>​    写完data的回调函数注册的为C_OSD_OnOpCommit，该函数处理并回复OSD一些状态的逻辑。</p>
+<p>​    关键代码序列图如下：<img src="http://oow6unnib.bkt.clouddn.com/file_write_Fotor.jpg" alt="file_write"></p>
 
       
     </div>
@@ -355,13 +320,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/06/23/wget批量下载http目录及文件/">wget批量下载http目录及文件</a></p>
+        <p><span>本文标题:</span><a href="/2017/11/18/ceph写流程分析/">ceph写流程分析</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-06-23, 18:21:12</p>
-        <p><span>最后更新:</span>2017-06-23, 19:20:26</p>
+        <p><span>发布时间:</span>2017-11-18, 17:41:38</p>
+        <p><span>最后更新:</span>2017-11-18, 18:01:54</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/06/23/wget批量下载http目录及文件/" title="wget批量下载http目录及文件">http://xiaqunfeng.cc/2017/06/23/wget批量下载http目录及文件/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/06/23/wget批量下载http目录及文件/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/11/18/ceph写流程分析/" title="ceph写流程分析">http://xiaqunfeng.cc/2017/11/18/ceph写流程分析/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/11/18/ceph写流程分析/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -373,16 +338,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/06/28/Ceph-v12-1-0-Luminous-RC-released/">
-                    Ceph v12.1.0 Luminous RC released
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/06/16/公有云和私有云的区别/">
-                    公有云和私有云的区别
+                <a href="/2017/11/05/mac上安装caffe并训练mnist/">
+                    mac上安装caffe并训练mnist
                 </a>
             </div>
         
@@ -394,7 +353,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#得到页面的index-html"><span class="toc-number">1.</span> <span class="toc-text">得到页面的index.html</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开始下载"><span class="toc-number">2.</span> <span class="toc-text">开始下载</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、rbd到OSD映射关系"><span class="toc-number">1.</span> <span class="toc-text">一、rbd到OSD映射关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、写请求流程"><span class="toc-number">2.</span> <span class="toc-text">二、写请求流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、rbd上的处理"><span class="toc-number">2.1.</span> <span class="toc-text">1、rbd上的处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、osd上的处理"><span class="toc-number">2.2.</span> <span class="toc-text">2、osd上的处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、filestore上的处理"><span class="toc-number">2.3.</span> <span class="toc-text">3、filestore上的处理</span></a></li></ol></li></ol>
         
     </div>
     <style>
@@ -430,7 +389,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"wget批量下载http目录及文件　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"ceph写流程分析　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -449,8 +408,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.cc/2017/06/23/wget批量下载http目录及文件/';
-            this.page.identifier = '2017/06/23/wget批量下载http目录及文件/';
+            this.page.url = 'http://xiaqunfeng.cc/2017/11/18/ceph写流程分析/';
+            this.page.identifier = '2017/11/18/ceph写流程分析/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -472,15 +431,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/06/28/Ceph-v12-1-0-Luminous-RC-released/" title="上一篇: Ceph v12.1.0 Luminous RC released">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/06/16/公有云和私有云的区别/" title="下一篇: 公有云和私有云的区别">
+            <a href="/2017/11/05/mac上安装caffe并训练mnist/" title="下一篇: mac上安装caffe并训练mnist">
                 <i class="fa fa-angle-right"></i>
             </a>
         

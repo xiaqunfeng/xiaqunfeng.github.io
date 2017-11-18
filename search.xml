@@ -4,6 +4,43 @@
   
     
     <entry>
+      <title><![CDATA[ceph写流程分析]]></title>
+      <url>http://xiaqunfeng.cc/2017/11/18/ceph%E5%86%99%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/</url>
+      <content type="html"><![CDATA[<p>之前总结的ceph写流程分析笔记，代码是基于jewel版本10.2.0，现分享出来，欢迎指点。<br><a id="more"></a></p>
+<h2 id="一、rbd到OSD映射关系"><a href="#一、rbd到OSD映射关系" class="headerlink" title="一、rbd到OSD映射关系"></a>一、rbd到OSD映射关系</h2><p>​    客户端使用RBD设备，使用librbd、librados库进行访问管理块设备。</p>
+<p>​    1、创建 一个pool，为这个pool指定pg的数量，同时在这个pool中指明保存数据的副本数（通常为3个副本）。</p>
+<p>​    2、在这个pool中创建一个rbd设备rbd0，那么这个rbd0都会保存三份，在创建rbd0时必须指定rbd的size，对于这个rbd0的任何操作不能超过这个size。</p>
+<p>​    3、将这个块设备进行切块，每个块的大小默认为4M，并且每个块都有一个名字，名字就是object+序号。</p>
+<p>​    4、将每个object通过pg进行副本位置的分配，pg会寻找3个osd，把这个object分别保存在这三个osd上。最后对于object的存储就变成了存储一个文件 <code>rbd0.object1.file</code>。数据层次映射图如下： <img src="http://oow6unnib.bkt.clouddn.com/ceph_data_map.jpg" alt="ceph数据的映射层次">​</p>
+<p>​    经过pool，rbd，object、pg的层层映射关系，在PG这一层中，已经知道存储数据的3个OSD所在位置及主从关系。</p>
+<p>​    客户端与primay OSD建立SOCKET 通信，将要写入的数据传给primary OSD，由primary OSD再将数据发送给其他replica OSD数据节点。</p>
+<p>​    读写框架图： <img src="http://oow6unnib.bkt.clouddn.com/ceph_rw_arc.jpg" alt="ceph读写框架"></p>
+<h2 id="二、写请求流程"><a href="#二、写请求流程" class="headerlink" title="二、写请求流程"></a>二、写请求流程</h2><h3 id="1、rbd上的处理"><a href="#1、rbd上的处理" class="headerlink" title="1、rbd上的处理"></a>1、rbd上的处理</h3><p>​    在rbd中一个操作对象为一个image，这个请求经过处理拆分成object对象的请求，拆分后交给Objector进行处理，找到目标osd的集合及主osd。</p>
+<p>​    将请求封装成MOSDOp消息，交由SimpleMessenger处理，SimpleMessager会尝试查找 / 创建一个OSDSession，并且为这个OSDSession创建一个数据通道pipe。消息从SimpleMessager收到后会保存到pipe的outq队列中。</p>
+<p>​    pipe 与目标osd建立Socket通信通道，并有专门的写线程writer来负责socket通信。writer线程同时监视这个outq队列，当队列中存在消息等待发送时，会就将消息写入socket，发送给目标OSD。</p>
+<p>​    OSD将数据消息处理完成之后，进行回调，反馈执行结果。</p>
+<p>​    关键代码序列图如下： <img src="http://oow6unnib.bkt.clouddn.com/libRBD_write_Fotor.jpg" alt="libRBD write"></p>
+<h3 id="2、osd上的处理"><a href="#2、osd上的处理" class="headerlink" title="2、osd上的处理"></a>2、osd上的处理</h3><p>​    OSD接收到message信息以后，解析并将消息转换成OpRequest，加入dispatch队列。同时从message中得到pool及PG的信息，将message交由PG进行相关处理。此时从OSD处理的message转化为了PG处理的op，添加到osd-&gt;op_wq队列中。PG中创建一个OpContext结构，接管message中的所有ops的操作。</p>
+<p>​    解析出OpRequest中的所有op与data，用Transaction结构进行管理，即将ops与Transaction绑定，将操作和数据打包成事务，并发送给其他副本，同时管理自己和其他副本的数据处理统计，创建repop 所有的applied与commit的管理。</p>
+<p>​    提交事务后，交由filestore进行处理。</p>
+<p>​    如果数据处理完成了，使用eval_repop()进行收尾的工作，将结果回调给客户端。</p>
+<p>​    关键代码序列图如下：  <img src="http://oow6unnib.bkt.clouddn.com/osd_write_Fotor.jpg" alt="osd write"></p>
+<h3 id="3、filestore上的处理"><a href="#3、filestore上的处理" class="headerlink" title="3、filestore上的处理"></a>3、filestore上的处理</h3><p>​    当数据进行写入的时候需要写到journal中一份，当data数据失败的时候可以从journal中进行恢复。从_op_journal_transactions()开始激发写入日志的操作，回调函数C_JournaledAhead的会在日志完成之后进行回调处理，将data写入磁盘。</p>
+<p>​    将日志保存完成的回调ondisk交给ondisk_finisher，ondisk注册回调为C_OSD_OnOpApplied，在后续finisher线程中处理。在该函数中，循环处理需要回调的请求，回复刚开始接收到请求的MOSDOp的操作，将请求发还给客户端。</p>
+<p>​    写完data的回调函数注册的为C_OSD_OnOpCommit，该函数处理并回复OSD一些状态的逻辑。</p>
+<p>​    关键代码序列图如下：<img src="http://oow6unnib.bkt.clouddn.com/file_write_Fotor.jpg" alt="file_write"></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[mac上安装caffe并训练mnist]]></title>
       <url>http://xiaqunfeng.cc/2017/11/05/mac%E4%B8%8A%E5%AE%89%E8%A3%85caffe%E5%B9%B6%E8%AE%AD%E7%BB%83mnist/</url>
       <content type="html"><![CDATA[<p>在mac上安装caffe，然后训练一个mnist项目，熟悉流程。<br><a id="more"></a></p>
