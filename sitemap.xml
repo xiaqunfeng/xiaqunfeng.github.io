@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://xiaqunfeng.cc/about/index.html</loc>
+    
+    <lastmod>2017-11-22T02:21:01.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://xiaqunfeng.cc/2017/11/05/mac%E4%B8%8A%E5%AE%89%E8%A3%85caffe%E5%B9%B6%E8%AE%AD%E7%BB%83mnist/</loc>
     
     <lastmod>2017-11-22T00:46:25.000Z</lastmod>
@@ -152,13 +159,6 @@
     <loc>http://xiaqunfeng.cc/2017/07/07/centos7%E4%B8%8A%E5%AE%89%E8%A3%85python3/</loc>
     
     <lastmod>2017-07-07T09:29:28.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/about/index.html</loc>
-    
-    <lastmod>2017-07-06T09:12:05.000Z</lastmod>
     
   </url>
   
