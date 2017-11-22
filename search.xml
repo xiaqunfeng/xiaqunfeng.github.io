@@ -110,13 +110,15 @@
 <p>原因是python-numpy没有安装到位，安装即可</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install python-numpy</div></pre></td></tr></table></figure>
 <p>2、添加caffe路径</p>
+<p><strong>方法一：</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim ~/.bashrc</div></pre></td></tr></table></figure>
 <p>添加如下</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export PYTHONPATH=/workspace/caffe/python:$PYTHONPATH</div></pre></td></tr></table></figure>
 <p>其中 <code>/workspace</code> 是clone caffe master代码的目录</p>
 <p>然后执行 <code>source ~/.bashrc</code> 即可</p>
+<p><strong>方法二：</strong></p>
 <p>或者，在导入 caffe的时候在python 文件里手动添加</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">PYCAFFE_ROOT = &apos;/workspace/caffe/python/&apos;</div><div class="line">sys.path.append(PYCAFFE_ROOT)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">import os</div><div class="line">import sys</div><div class="line">PYCAFFE_ROOT = &apos;/workspace/caffe/python/&apos;</div><div class="line">sys.path.append(PYCAFFE_ROOT)</div><div class="line">import caffe</div></pre></td></tr></table></figure>
 <h2 id="ubuntu-16-04上安装遇到的问题"><a href="#ubuntu-16-04上安装遇到的问题" class="headerlink" title="ubuntu 16.04上安装遇到的问题"></a>ubuntu 16.04上安装遇到的问题</h2><h3 id="编译依赖问题"><a href="#编译依赖问题" class="headerlink" title="编译依赖问题"></a>编译依赖问题</h3><p><strong>问题1：</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./include/caffe/common.hpp:5:27: fatal error: gflags/gflags.h: No such file or directory</div></pre></td></tr></table></figure>
 <p>解决方法：</p>

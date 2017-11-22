@@ -4,14 +4,14 @@
 
     
   <url>
-    <loc>http://xiaqunfeng.cc/2017/11/18/ceph%E5%86%99%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/</loc>
-    <lastmod>2017-11-18T10:01:54.000Z</lastmod>
+    <loc>http://xiaqunfeng.cc/2017/11/05/mac%E4%B8%8A%E5%AE%89%E8%A3%85caffe%E5%B9%B6%E8%AE%AD%E7%BB%83mnist/</loc>
+    <lastmod>2017-11-22T00:46:25.000Z</lastmod>
     <data>
         <display>
-        <title>ceph写流程分析</title>
-        <pubTime>2017-11-18T09:41:38.000Z</pubTime>
+        <title>mac上安装caffe并训练mnist</title>
+        <pubTime>2017-11-05T11:57:53.000Z</pubTime>
         
-        <tag>ceph</tag>
+        <tag>caffe</tag>
          
          
            
@@ -21,14 +21,14 @@
 
     
   <url>
-    <loc>http://xiaqunfeng.cc/2017/11/05/mac%E4%B8%8A%E5%AE%89%E8%A3%85caffe%E5%B9%B6%E8%AE%AD%E7%BB%83mnist/</loc>
-    <lastmod>2017-11-16T09:20:10.000Z</lastmod>
+    <loc>http://xiaqunfeng.cc/2017/11/18/ceph%E5%86%99%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/</loc>
+    <lastmod>2017-11-18T10:01:54.000Z</lastmod>
     <data>
         <display>
-        <title>mac上安装caffe并训练mnist</title>
-        <pubTime>2017-11-05T11:57:53.000Z</pubTime>
+        <title>ceph写流程分析</title>
+        <pubTime>2017-11-18T09:41:38.000Z</pubTime>
         
-        <tag>caffe</tag>
+        <tag>ceph</tag>
          
          
            
