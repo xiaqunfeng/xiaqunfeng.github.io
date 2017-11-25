@@ -15,19 +15,18 @@
 
 
 
-<meta name="description" content="第5、6、7三章，主要讲开发集和测试集，包括选型、大小、比例等。">
+<meta name="description" content="Fast R-CNN 是 RBG大神基于R-CNN的优化，论文阅读记录如下。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Machine Learning Yearning(5、6、7)">
-<meta property="og:url" content="http://xiaqunfeng.cc/2017/03/09/Machine-Learning-Yearning-5、6/index.html">
+<meta property="og:title" content="【论文阅读】Fast R-CNN">
+<meta property="og:url" content="http://xiaqunfeng.cc/2017/11/25/Fast-R-CNN/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="第5、6、7三章，主要讲开发集和测试集，包括选型、大小、比例等。">
-<meta property="og:image" content="http://img.blog.csdn.net/20161209012152300?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:image" content="http://img.blog.csdn.net/20161209022552344?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:updated_time" content="2017-03-12T07:41:39.000Z">
+<meta property="og:description" content="Fast R-CNN 是 RBG大神基于R-CNN的优化，论文阅读记录如下。">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/fastrcnn.jpg">
+<meta property="og:updated_time" content="2017-11-25T10:10:20.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Machine Learning Yearning(5、6、7)">
-<meta name="twitter:description" content="第5、6、7三章，主要讲开发集和测试集，包括选型、大小、比例等。">
-<meta name="twitter:image" content="http://img.blog.csdn.net/20161209012152300?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta name="twitter:title" content="【论文阅读】Fast R-CNN">
+<meta name="twitter:description" content="Fast R-CNN 是 RBG大神基于R-CNN的优化，论文阅读记录如下。">
+<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/fastrcnn.jpg">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -59,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Machine Learning Yearning(5、6、7) | 夏天的风的博客</title>
+<title>【论文阅读】Fast R-CNN | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -246,11 +245,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-Machine-Learning-Yearning-5、6" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Fast-R-CNN" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/03/09/Machine-Learning-Yearning-5、6/" class="article-date">
-      <time datetime="2017-03-09T02:38:35.000Z" itemprop="datePublished">2017-03-09</time>
+      <a href="/2017/11/25/Fast-R-CNN/" class="article-date">
+      <time datetime="2017-11-25T03:44:13.000Z" itemprop="datePublished">2017-11-25</time>
 </a>
 
 
@@ -265,7 +264,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Machine Learning Yearning(5、6、7)
+      【论文阅读】Fast R-CNN
     </h1>
   
 
@@ -276,7 +275,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/paper/">paper</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -286,40 +285,78 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>第5、6、7三章，主要讲开发集和测试集，包括选型、大小、比例等。<br><a id="more"></a></p>
-<p>Setting up development and test sets</p>
-<p>设置开发和测试集</p>
-<h2 id="Chapter-5、Your-development-and-test-sets"><a href="#Chapter-5、Your-development-and-test-sets" class="headerlink" title="Chapter 5、Your development and test sets"></a>Chapter 5、Your development and test sets</h2><p><strong>您的开发和测试集</strong><br>​    让我们回到我们早期猫图片的那个例子：你运行一个移动app，用户正在上传很多不同事物的图片到该app中。你想自动找到猫的图片。<br>​    您的团队通过从不同网站上下载猫（positive examples，正样本）和非猫（negative examples，负样本）的图获得一个大的训练集。 他们将数据集按照比例70％/ 30％分成训练集/测试集。 使用这些数据，他们构建了一个在训练集和测试集上都表现很好的的猫检测器。<br>​    但是当你将这个分类器部署到移动app时，你发现表现真的很糟糕！</p>
-<p><img src="http://img.blog.csdn.net/20161209012152300?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"> </p>
-<p>​    发生了什么？<br>​    您发现用户上传的图片与您构建训练集的网站图片有所不同：用户上传的照片使用手机拍摄，这些照片往往分辨率较低，比较模糊，并且采光不好。 由于您的训练集/测试集是由网站图片构建的，您的算法没有很好的兼顾到你所关心的智能手机图片的实际分布。<br>​    在大数据的时代之前，在机器学习中使用随机的70％/ 30％来分割训练集和测试集是常见的规则。 这种做法可以工作，但在越来越多的应用程序，如训练集的分布（上面例子中的网站图像）不同于你最终关心的分布（手机图像），这是一个坏主意。</p>
-<p>​    我们通常定义：</p>
+        <p>Fast R-CNN 是 RBG大神基于R-CNN的优化，论文阅读记录如下。<br><a id="more"></a></p>
+<p>源码：<a href="https://github.com/rbgirshick/fast-rcnn" target="_blank" rel="external">https://github.com/rbgirshick/fast-rcnn</a></p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>简化了最先进的基于卷积网络的目标检测器的训练过程（R-CNN）。提出一个单阶段训练算法，联合学习候选框分类和修正他们的空间位置。</p>
+<p>所得到的方法用来训练非常深的检测网络（例如VGG16） 比R-CNN快9倍，比SPPnet快3倍。在运行时，检测网络在PASCAL VOC 2012数据集上实现最高准确度，其中mAP为66％（R-CNN为62％），每张图像处理时间为0.3秒，不包括候选框的生成。测试时间比R-CNN快213倍。</p>
+<h3 id="R-CNN缺点："><a href="#R-CNN缺点：" class="headerlink" title="R-CNN缺点："></a>R-CNN缺点：</h3><p>1、训练过程是多级流水线（multi-stage pipeline）</p>
 <ul>
-<li>训练集 - 学习算法运行在这上面。</li>
-<li>Dev（开发）集 - 用于调整参数，选择特征，以及对学习算法做出其他决定。 有时也称为维持交叉验证集(hold-out cross validation set)。</li>
-<li>测试集 - 用于评估算法的性能，但不要做出关于使用什么学习算法或参数的任何决定。</li>
+<li>R-CNN首先使用目标候选框对卷积神经网络使用log损失进行微调。</li>
+<li>然后，它将卷积神经网络得到的特征送入SVM。 这些SVM作为目标检测器，替代通过微调学习的softmax分类器。 </li>
+<li>在第三个训练阶段，学习检测框回归。</li>
 </ul>
-<p>​    你定义一个开发集和测试集，你的团队会尝试很多想法，如不同的学习算法参数，看看什么是最好的。 开发集和测试集能够使你的团队快速看到你的算法做得有多好。</p>
-<p>​    换句话说，开发和测试集的目的是指导你的团队对机器学习系统进行最重要的更改。<br>​    所以，你应该做如下事情：</p>
+<p>2、训练时时间和空间开销大</p>
+<p>对于SVM和检测框回归训练，从每个图像中的每个目标候选框提取特征，并写入磁盘。对于非常深的网络，如VGG16，这个过程在单个GPU上需要2.5天（VOC07 trainval上的5k个图像）。这些特征需要数百GB的存储空间。</p>
+<p>3、目标检测速度慢</p>
+<p>在测试时，从每个测试图像中的每个目标候选框提取特征。用VGG16网络检测目标每个图像需要47秒（在GPU上）。</p>
+<p>R-CNN很慢是因为它为每个目标候选框进行卷积神经网络正向传递，而不共享计算。</p>
+<p><strong>因为是分阶段训练，训练SVM和bbox回归时无法更新前面CNN的参数，模型精度上不去。</strong></p>
+<h3 id="SPPnet"><a href="#SPPnet" class="headerlink" title="SPPnet"></a>SPPnet</h3><p>SPPnet通过共享计算加速R-CNN。SPPnet计算整个输入图像的卷积特征图，然后使用从共享特征图提取的特征向量来对每个候选框进行分类。通过最大池化将候选框内的特征图转化为固定大小的输出（例如，6X6）来提取针对候选框的特征。多个输出被池化，然后连接成空间金字塔池。SPPnet在测试时将R-CNN加速10到100倍。由于更快的候选框特征提取训练时间也减少3倍。</p>
+<p>缺点：</p>
 <ul>
-<li>选择开发和测试集，以反映您期望在未来获得的数据，并希望做好。</li>
+<li>分阶段训练网络：选取候选区域、训练CNN、训练SVM、训练bbox回归器.</li>
+<li>特征需要写入磁盘</li>
+<li>训练SVM，bbox回归时算法不能更新卷积层的参数，这会影响网络的精度</li>
 </ul>
-<p>​    换句话说，您的测试集不应该只是可用数据的30％这么简单，特别是如果您期望您的未来数据（移动app图片）在性质上与您的训练集（网站图像）不同时。</p>
-<p>​    如果您尚未启动移动app，可能还没有任何用户，因此可能无法获取准确反映您未来需要做的更好的数据。 但你可能仍然尝试去靠近它。 例如，请你的朋友拍一些手机图片，并发送给你。 一旦app启动后，您可以使用实际的用户数据更新您的开发集/测试集。<br>​    如果你真的没有任何方法来获得接近你期望的未来数据，也许你可以从使用网站图像开始。 但是你应该意识到这将导致系统不能一般化的很好的风险。<br>​    我们需要判断去决定多少投资开发好的开发集和测试集。 但是不要假定你的训练分布与你的测试分布是一样的。 尝试选择反映您最终想要表现良好的测试样本，而不是训练遇到的任何数据。</p>
-<h2 id="Chapter-6、Your-dev-and-test-sets-should-come-from-the-same-distribution"><a href="#Chapter-6、Your-dev-and-test-sets-should-come-from-the-same-distribution" class="headerlink" title="Chapter 6、Your dev and test sets should come from the same distribution"></a>Chapter 6、Your dev and test sets should come from the same distribution</h2><p><strong>你的开发集和测试集应该来自相同的分布</strong></p>
-<p>根据您最大的市场，将猫应用图片数据分为四个区域：（i）美国，（ii）中国，（iii）印度和（iv）其他。要想出一个开发集和一个测试集，我们可以随机分配这两个区域到开发集，另外两个到测试集，对吧？ 比如美国和印度在开发集; 中国和其他在测试集。</p>
-<p><img src="http://img.blog.csdn.net/20161209022552344?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<p>​    一旦定义了开发集和测试集，您的团队将专注于提高开发集的性能。 因此，开发集应该反映你最想提高的任务：在所有四个地区都要做得很好，而不只是两个。<br>​    开发集和测试集的不同分布带来的第二个问题：有一个机会，你的团队将构建一些在开发集件上工作得很好，只是发现它在测试集上做得不好。 我曾经在很多失望和白费的努力中看到这个结果。 避免让这些发生在你身上。<br>​    例如，假设您的团队开发的系统在开发集上工作的很好，但在测试集上并不如意。 如果你的开发集和测试集合来自相同的分布，那么你会有一个非常明确的诊断哪里出错了：你在开发集上过拟合(overfit)了。显而易见的方法是去获得更多的开发集数据。</p>
-<p>​    但是如果开发集和测试集来自不同的分布，那么你的选择是不清晰的。几方面可能会出错：</p>
+<h3 id="Fast-RCNN"><a href="#Fast-RCNN" class="headerlink" title="Fast RCNN"></a>Fast RCNN</h3><p>针对上述问题，Fast R-CNN的想法是将整个模型分成两步：</p>
 <ul>
-<li>1、在开发集上过拟合。</li>
-<li>2、测试集比开发集更难。所以你的算法可能做的和预期一样好，因此没有进一步的重大改进的可能了。</li>
-<li>3、测试集不一定更难，但只是和开发集不同。所以在开发集上表现很好但并不能在测试集上表现一样。这种情况下，之前很多提高开发集性能的努力可能都白费了。</li>
+<li>第一步是选取候选区域;</li>
+<li>第二步就是提出一个RoI层，整合了整个模型，把CNN、变换层、SVM分类器、bbox回归这几个模块整一起，大家一起训练</li>
 </ul>
-<p>​    在机器学习应用程序上工作是很艰难的。具有不匹配的开发和测试集引入了关于是否改进开发集分布也提高测试集性能额外的不确定性。具有不匹配的开发和测试集，使得更难找出什么是有效和无效的努力，因此使得更难以确定工作的优先级。<br>​    如果你面临的是第三方基准测试 问题，他们的创建者可能会指定开发集和测试集来自不同的分布。相比开发和测试集来自同一分布，此时运气，而不是技术，将对这样的基准的性能有更大的影响。开发一个在一个分布上训练的很好同时能够很好的推广到另一个分布中的学习算法是一个重要的研究问题。但是如果你的目标是在一个特定的机器学习应用中取得进展，而不是研究进展，我建议尝试选择开发集和测试集从相同的分布。这将使您的团队更有效率。</p>
-<h2 id="Chapter-7、How-large-do-the-dev-test-sets-need-to-be"><a href="#Chapter-7、How-large-do-the-dev-test-sets-need-to-be" class="headerlink" title="Chapter 7、How large do the dev/test sets need to be?"></a>Chapter 7、How large do the dev/test sets need to be?</h2><p><strong>开发集/测试集需要多大？</strong></p>
-<p>​    开发集应该足够大，以检测您尝试的算法之间的差异。例如，如果分类器A具有90.0％的准确度，分类器B具有90.1％的准确度，那么100个样本的开发集将不能检测出这0.1％的差异。与我看到的其他机器学习问题相比，100个样本的开发集太小了。常见的开发集的大小在1,000到10,000个样本之间。有10,000个样本，你将有很好的机会检测到这0.1％的提升。[2]<br>​    对于成熟和重要的应用，例如广告，网络搜索和产品建议 - 我也看到了很多团队，甚至为提升0.01％积极努力，因为它对公司的利润有直接影响。在这种情况下，开发集可以远大于10,000，以便检测出更小的提升。<br>​    测试集的大小应该多大？它应该足够大，使得对系统的整体性能有一个高的信心。一个流行的启发式方法是将30％的数据用于测试集。当你有适量的样本，比如100到10,000的样本，它会工作的很好。但在大数据的时代，我们现在有机器学习问题，有时会超过十亿个样本，分配给开发集/测试集的比例一直在缩小，即使开发集 /测试集中的样本绝对数量一直在增长。除了需要评估算法的性能之外，没有必要提供过大的开发集/测试集。</p>
-<p>——————————</p>
-<p>[2]. 在理论上，我们可以测试算法的变化是否对开发集产生统计上显着的差异。 在实践中，大多数团队不会为此困扰（除非他们出版学术研究论文），我通常没法发现统计意义的测试对测量临时进展是有用的。</p>
+<p>新的模型将多个训练阶段合并，训练后面阶段的同时可以更新前面阶段的参数，模型收敛的更好了。同时因为多个阶段合并，候选区域的特征不需要再写入磁盘，一直在显存中，训练的速度大大的提升。</p>
+<h2 id="architecture-and-training"><a href="#architecture-and-training" class="headerlink" title="architecture and training"></a>architecture and training</h2><p>架构图：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/fastrcnn.jpg" alt="fastrcnn"></p>
+<p>Fast R-CNN网络将整个图像和一组候选框作为输入。</p>
+<p>1、网络首先使用几个卷积层（conv）和最大池化层来处理整个图像，以产生卷积特征图。</p>
+<p>2、然后，对于每个候选框，RoI池化层从特征图中提取固定长度的特征向量。</p>
+<p>把图片的候选区域映射到feature map得到对应的patch(这和SPPNet的处理类似)。然后把这个patch塞给ROI层(Region of interest)得到固定大小的的特征向量(feature vector).</p>
+<p>3、每个特征向量被送入一系列全连接（fc）层中，其最终分支成两个同级输出层 ：</p>
+<ul>
+<li>一个输出K个类别加上1个背景类别的Softmax概率估计</li>
+<li>另一个作为bbox回归，输出回归的选框数据。即为K个类别的每一个类别输出四个实数值。每组4个值表示K个类别的一个类别的检测框位置的修正。</li>
+</ul>
+<h3 id="ROI-pooling-layer"><a href="#ROI-pooling-layer" class="headerlink" title="ROI pooling layer"></a>ROI pooling layer</h3><p>作用：把不同尺寸的侯选区域提取特征变换成为固定大小的特征向量</p>
+<p>每个RoI由指定其左上角(r,c)及其高度和宽度(h,w)的四元组(r,c,h,w)定义。</p>
+<p>RoI最大池化通过将大小为 h×w 的RoI窗口分割成 H×W 个网格，子窗口大小约 h/H×w/W，然后对每个子窗口执行最大池化，并将输出合并到相应的输出网格单元中。其中 H 和 W 是层的超参数，独立于任何特定的RoI。</p>
+<p>通过该层，可以将特征图上大小不一的候选区域转变为大小统一的数据，送入下一层。 </p>
+<h3 id="fine-tuning-for-detection-检测微调"><a href="#fine-tuning-for-detection-检测微调" class="headerlink" title="fine-tuning for detection(检测微调)"></a>fine-tuning for detection(检测微调)</h3><p>用反向传播训练所有网络权重是Fast R-CNN的重要能力。</p>
+<p>1、为什么SPPnet无法更新低于空间金字塔池化层的权重？</p>
+<p>根本原因是当每个训练样本（即RoI）来自不同的图像时，通过SPP层的反向传播是非常低效的，这正是训练R-CNN和SPPnet网络的方法。低效的部分是因为每个RoI可能具有非常大的感受野，通常跨越整个输入图像。由于正向传播必须处理整个感受野，训练输入很大（通常是整个图像）。</p>
+<p>2、提出了一种更有效的训练方法：利用训练期间的特征共享</p>
+<p><strong>分层采样</strong></p>
+<p>在Fast RCNN网络训练中，随机梯度下降（SGD）的小批量是被分层采样的，首先采样N个图像，然后从每个图像采样R/N个 RoI。</p>
+<blockquote>
+<p>关键的是，来自同一图像的RoI在向前和向后传播中共享计算和内存。减N，就减少了小批量的计算。例如，当N=2和R=128时，得到的训练方案比从128幅不同的图采样一个RoI（即R-CNN和SPPnet的策略）快64倍。</p>
+</blockquote>
+<p>这个策略的一个令人担心的问题是它可能导致训练收敛变慢，因为来自相同图像的RoI是相关的。然而在实际情况中该问题并不存在，当N=2和R=128时，我们使用比R-CNN更少的SGD迭代就获得了良好的结果。</p>
+<p><strong>更加精细的训练过程</strong></p>
+<p>在微调阶段联合优化Softmax分类器和检测框回归，而不是分别在三个独立的阶段训练softmax分类器，SVM和回归器。</p>
+<h4 id="多任务损失（multi-task-loss）"><a href="#多任务损失（multi-task-loss）" class="headerlink" title="多任务损失（multi-task loss）"></a>多任务损失（multi-task loss）</h4><p>Fast R-CNN在FC层后有两个分支,一个是SVM分类器，一个是bbox回归。</p>
+<p>结论就是：把两个分支的损失弄到一起</p>
+<blockquote>
+<p>具体没太看懂，后续再补</p>
+</blockquote>
+<h2 id="Fast-R-CNN检测"><a href="#Fast-R-CNN检测" class="headerlink" title="Fast R-CNN检测"></a>Fast R-CNN检测</h2><p>一旦Fast R-CNN网络被微调完毕，检测相当于运行前向传播（假设候选框是预先计算的）。网络将图像（或图像金字塔，编码为图像列表）和待计算概率的R个候选框的列表作为输入。在测试的时候，R通常在2000左右，虽然我们将考虑将它变大（约45k）的情况。当使用图像金字塔时，每个RoI被缩放，使其最接近 R-CNN 中的224个像素。</p>
+<p>对于每个测试的RoI r，正向传播输出类别后验概率分布p和相对于r的预测的检测框框偏移集合（K个类别中的每一个获得其自己的精细检测框预测）。使用估计的概率Pr(class=k|r)≜pk为每个对象类别kk分配rr的检测置信度。然后，使用R-CNN算法的设置和对每个类别独立执行非最大抑制。</p>
+<h3 id="使用截断的SVD来进行更快的检测"><a href="#使用截断的SVD来进行更快的检测" class="headerlink" title="使用截断的SVD来进行更快的检测"></a>使用截断的SVD来进行更快的检测</h3><p>对于整体图像分类，与卷积层相比，计算全连接层花费的时间较小。相反，为了检测，要处理的RoI的数量很大，并且接近一半的正向传递时间用于计算全连接层。大的全连接层容易通过用截短的SVD压缩来加速。</p>
+<p>为了压缩网络，对应于W的单个全连接层由两个全连接层替代，中间以一个低纬数据相连。在它们之间没有非线性。当RoI的数量大时，这种简单的压缩方法给出良好的加速。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>Fast RCNN方法修正了R-CNN和SPPnet的缺点，同时提高其速度和准确性，有以下几个优点：</p>
+<ul>
+<li>比R-CNN和SPPnet具有更高的目标检测精度（mAP）。</li>
+<li>训练是使用多任务损失的单阶段训练。</li>
+<li>训练可以更新所有网络层参数。</li>
+<li>不需要磁盘空间缓存特征。</li>
+</ul>
 
       
     </div>
@@ -328,13 +365,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/03/09/Machine-Learning-Yearning-5、6/">Machine Learning Yearning(5、6、7)</a></p>
+        <p><span>本文标题:</span><a href="/2017/11/25/Fast-R-CNN/">【论文阅读】Fast R-CNN</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-03-09, 10:38:35</p>
-        <p><span>最后更新:</span>2017-03-12, 15:41:39</p>
+        <p><span>发布时间:</span>2017-11-25, 11:44:13</p>
+        <p><span>最后更新:</span>2017-11-25, 18:10:20</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/03/09/Machine-Learning-Yearning-5、6/" title="Machine Learning Yearning(5、6、7)">http://xiaqunfeng.cc/2017/03/09/Machine-Learning-Yearning-5、6/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/03/09/Machine-Learning-Yearning-5、6/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/11/25/Fast-R-CNN/" title="【论文阅读】Fast R-CNN">http://xiaqunfeng.cc/2017/11/25/Fast-R-CNN/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/11/25/Fast-R-CNN/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -346,16 +383,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/03/09/cow和row快照机制的区别/">
-                    cow和row快照机制的区别
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/03/03/Machine-Learning-Yearning-3、4/">
-                    Machine Learning Yearning(3、4)
+                <a href="/2017/11/24/R-CNN/">
+                    【论文阅读】R-CNN
                 </a>
             </div>
         
@@ -367,7 +398,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Chapter-5、Your-development-and-test-sets"><span class="toc-number">1.</span> <span class="toc-text">Chapter 5、Your development and test sets</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Chapter-6、Your-dev-and-test-sets-should-come-from-the-same-distribution"><span class="toc-number">2.</span> <span class="toc-text">Chapter 6、Your dev and test sets should come from the same distribution</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Chapter-7、How-large-do-the-dev-test-sets-need-to-be"><span class="toc-number">3.</span> <span class="toc-text">Chapter 7、How large do the dev/test sets need to be?</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概述"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#R-CNN缺点："><span class="toc-number">1.1.</span> <span class="toc-text">R-CNN缺点：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SPPnet"><span class="toc-number">1.2.</span> <span class="toc-text">SPPnet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Fast-RCNN"><span class="toc-number">1.3.</span> <span class="toc-text">Fast RCNN</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#architecture-and-training"><span class="toc-number">2.</span> <span class="toc-text">architecture and training</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ROI-pooling-layer"><span class="toc-number">2.1.</span> <span class="toc-text">ROI pooling layer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#fine-tuning-for-detection-检测微调"><span class="toc-number">2.2.</span> <span class="toc-text">fine-tuning for detection(检测微调)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#多任务损失（multi-task-loss）"><span class="toc-number">2.2.1.</span> <span class="toc-text">多任务损失（multi-task loss）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Fast-R-CNN检测"><span class="toc-number">3.</span> <span class="toc-text">Fast R-CNN检测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用截断的SVD来进行更快的检测"><span class="toc-number">3.1.</span> <span class="toc-text">使用截断的SVD来进行更快的检测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结论"><span class="toc-number">4.</span> <span class="toc-text">结论</span></a></li></ol>
         
     </div>
     <style>
@@ -403,7 +434,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Machine Learning Yearning(5、6、7)　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"【论文阅读】Fast R-CNN　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -422,8 +453,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.cc/2017/03/09/Machine-Learning-Yearning-5、6/';
-            this.page.identifier = '2017/03/09/Machine-Learning-Yearning-5、6/';
+            this.page.url = 'http://xiaqunfeng.cc/2017/11/25/Fast-R-CNN/';
+            this.page.identifier = '2017/11/25/Fast-R-CNN/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -445,15 +476,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/03/09/cow和row快照机制的区别/" title="上一篇: cow和row快照机制的区别">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/03/03/Machine-Learning-Yearning-3、4/" title="下一篇: Machine Learning Yearning(3、4)">
+            <a href="/2017/11/24/R-CNN/" title="下一篇: 【论文阅读】R-CNN">
                 <i class="fa fa-angle-right"></i>
             </a>
         

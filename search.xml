@@ -4,6 +4,92 @@
   
     
     <entry>
+      <title><![CDATA[【论文阅读】Fast R-CNN]]></title>
+      <url>http://xiaqunfeng.cc/2017/11/25/Fast-R-CNN/</url>
+      <content type="html"><![CDATA[<p>Fast R-CNN 是 RBG大神基于R-CNN的优化，论文阅读记录如下。<br><a id="more"></a></p>
+<p>源码：<a href="https://github.com/rbgirshick/fast-rcnn" target="_blank" rel="external">https://github.com/rbgirshick/fast-rcnn</a></p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>简化了最先进的基于卷积网络的目标检测器的训练过程（R-CNN）。提出一个单阶段训练算法，联合学习候选框分类和修正他们的空间位置。</p>
+<p>所得到的方法用来训练非常深的检测网络（例如VGG16） 比R-CNN快9倍，比SPPnet快3倍。在运行时，检测网络在PASCAL VOC 2012数据集上实现最高准确度，其中mAP为66％（R-CNN为62％），每张图像处理时间为0.3秒，不包括候选框的生成。测试时间比R-CNN快213倍。</p>
+<h3 id="R-CNN缺点："><a href="#R-CNN缺点：" class="headerlink" title="R-CNN缺点："></a>R-CNN缺点：</h3><p>1、训练过程是多级流水线（multi-stage pipeline）</p>
+<ul>
+<li>R-CNN首先使用目标候选框对卷积神经网络使用log损失进行微调。</li>
+<li>然后，它将卷积神经网络得到的特征送入SVM。 这些SVM作为目标检测器，替代通过微调学习的softmax分类器。 </li>
+<li>在第三个训练阶段，学习检测框回归。</li>
+</ul>
+<p>2、训练时时间和空间开销大</p>
+<p>对于SVM和检测框回归训练，从每个图像中的每个目标候选框提取特征，并写入磁盘。对于非常深的网络，如VGG16，这个过程在单个GPU上需要2.5天（VOC07 trainval上的5k个图像）。这些特征需要数百GB的存储空间。</p>
+<p>3、目标检测速度慢</p>
+<p>在测试时，从每个测试图像中的每个目标候选框提取特征。用VGG16网络检测目标每个图像需要47秒（在GPU上）。</p>
+<p>R-CNN很慢是因为它为每个目标候选框进行卷积神经网络正向传递，而不共享计算。</p>
+<p><strong>因为是分阶段训练，训练SVM和bbox回归时无法更新前面CNN的参数，模型精度上不去。</strong></p>
+<h3 id="SPPnet"><a href="#SPPnet" class="headerlink" title="SPPnet"></a>SPPnet</h3><p>SPPnet通过共享计算加速R-CNN。SPPnet计算整个输入图像的卷积特征图，然后使用从共享特征图提取的特征向量来对每个候选框进行分类。通过最大池化将候选框内的特征图转化为固定大小的输出（例如，6X6）来提取针对候选框的特征。多个输出被池化，然后连接成空间金字塔池。SPPnet在测试时将R-CNN加速10到100倍。由于更快的候选框特征提取训练时间也减少3倍。</p>
+<p>缺点：</p>
+<ul>
+<li>分阶段训练网络：选取候选区域、训练CNN、训练SVM、训练bbox回归器.</li>
+<li>特征需要写入磁盘</li>
+<li>训练SVM，bbox回归时算法不能更新卷积层的参数，这会影响网络的精度</li>
+</ul>
+<h3 id="Fast-RCNN"><a href="#Fast-RCNN" class="headerlink" title="Fast RCNN"></a>Fast RCNN</h3><p>针对上述问题，Fast R-CNN的想法是将整个模型分成两步：</p>
+<ul>
+<li>第一步是选取候选区域;</li>
+<li>第二步就是提出一个RoI层，整合了整个模型，把CNN、变换层、SVM分类器、bbox回归这几个模块整一起，大家一起训练</li>
+</ul>
+<p>新的模型将多个训练阶段合并，训练后面阶段的同时可以更新前面阶段的参数，模型收敛的更好了。同时因为多个阶段合并，候选区域的特征不需要再写入磁盘，一直在显存中，训练的速度大大的提升。</p>
+<h2 id="architecture-and-training"><a href="#architecture-and-training" class="headerlink" title="architecture and training"></a>architecture and training</h2><p>架构图：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/fastrcnn.jpg" alt="fastrcnn"></p>
+<p>Fast R-CNN网络将整个图像和一组候选框作为输入。</p>
+<p>1、网络首先使用几个卷积层（conv）和最大池化层来处理整个图像，以产生卷积特征图。</p>
+<p>2、然后，对于每个候选框，RoI池化层从特征图中提取固定长度的特征向量。</p>
+<p>把图片的候选区域映射到feature map得到对应的patch(这和SPPNet的处理类似)。然后把这个patch塞给ROI层(Region of interest)得到固定大小的的特征向量(feature vector).</p>
+<p>3、每个特征向量被送入一系列全连接（fc）层中，其最终分支成两个同级输出层 ：</p>
+<ul>
+<li>一个输出K个类别加上1个背景类别的Softmax概率估计</li>
+<li>另一个作为bbox回归，输出回归的选框数据。即为K个类别的每一个类别输出四个实数值。每组4个值表示K个类别的一个类别的检测框位置的修正。</li>
+</ul>
+<h3 id="ROI-pooling-layer"><a href="#ROI-pooling-layer" class="headerlink" title="ROI pooling layer"></a>ROI pooling layer</h3><p>作用：把不同尺寸的侯选区域提取特征变换成为固定大小的特征向量</p>
+<p>每个RoI由指定其左上角(r,c)及其高度和宽度(h,w)的四元组(r,c,h,w)定义。</p>
+<p>RoI最大池化通过将大小为 h×w 的RoI窗口分割成 H×W 个网格，子窗口大小约 h/H×w/W，然后对每个子窗口执行最大池化，并将输出合并到相应的输出网格单元中。其中 H 和 W 是层的超参数，独立于任何特定的RoI。</p>
+<p>通过该层，可以将特征图上大小不一的候选区域转变为大小统一的数据，送入下一层。 </p>
+<h3 id="fine-tuning-for-detection-检测微调"><a href="#fine-tuning-for-detection-检测微调" class="headerlink" title="fine-tuning for detection(检测微调)"></a>fine-tuning for detection(检测微调)</h3><p>用反向传播训练所有网络权重是Fast R-CNN的重要能力。</p>
+<p>1、为什么SPPnet无法更新低于空间金字塔池化层的权重？</p>
+<p>根本原因是当每个训练样本（即RoI）来自不同的图像时，通过SPP层的反向传播是非常低效的，这正是训练R-CNN和SPPnet网络的方法。低效的部分是因为每个RoI可能具有非常大的感受野，通常跨越整个输入图像。由于正向传播必须处理整个感受野，训练输入很大（通常是整个图像）。</p>
+<p>2、提出了一种更有效的训练方法：利用训练期间的特征共享</p>
+<p><strong>分层采样</strong></p>
+<p>在Fast RCNN网络训练中，随机梯度下降（SGD）的小批量是被分层采样的，首先采样N个图像，然后从每个图像采样R/N个 RoI。</p>
+<blockquote>
+<p>关键的是，来自同一图像的RoI在向前和向后传播中共享计算和内存。减N，就减少了小批量的计算。例如，当N=2和R=128时，得到的训练方案比从128幅不同的图采样一个RoI（即R-CNN和SPPnet的策略）快64倍。</p>
+</blockquote>
+<p>这个策略的一个令人担心的问题是它可能导致训练收敛变慢，因为来自相同图像的RoI是相关的。然而在实际情况中该问题并不存在，当N=2和R=128时，我们使用比R-CNN更少的SGD迭代就获得了良好的结果。</p>
+<p><strong>更加精细的训练过程</strong></p>
+<p>在微调阶段联合优化Softmax分类器和检测框回归，而不是分别在三个独立的阶段训练softmax分类器，SVM和回归器。</p>
+<h4 id="多任务损失（multi-task-loss）"><a href="#多任务损失（multi-task-loss）" class="headerlink" title="多任务损失（multi-task loss）"></a>多任务损失（multi-task loss）</h4><p>Fast R-CNN在FC层后有两个分支,一个是SVM分类器，一个是bbox回归。</p>
+<p>结论就是：把两个分支的损失弄到一起</p>
+<blockquote>
+<p>具体没太看懂，后续再补</p>
+</blockquote>
+<h2 id="Fast-R-CNN检测"><a href="#Fast-R-CNN检测" class="headerlink" title="Fast R-CNN检测"></a>Fast R-CNN检测</h2><p>一旦Fast R-CNN网络被微调完毕，检测相当于运行前向传播（假设候选框是预先计算的）。网络将图像（或图像金字塔，编码为图像列表）和待计算概率的R个候选框的列表作为输入。在测试的时候，R通常在2000左右，虽然我们将考虑将它变大（约45k）的情况。当使用图像金字塔时，每个RoI被缩放，使其最接近 R-CNN 中的224个像素。</p>
+<p>对于每个测试的RoI r，正向传播输出类别后验概率分布p和相对于r的预测的检测框框偏移集合（K个类别中的每一个获得其自己的精细检测框预测）。使用估计的概率Pr(class=k|r)≜pk为每个对象类别kk分配rr的检测置信度。然后，使用R-CNN算法的设置和对每个类别独立执行非最大抑制。</p>
+<h3 id="使用截断的SVD来进行更快的检测"><a href="#使用截断的SVD来进行更快的检测" class="headerlink" title="使用截断的SVD来进行更快的检测"></a>使用截断的SVD来进行更快的检测</h3><p>对于整体图像分类，与卷积层相比，计算全连接层花费的时间较小。相反，为了检测，要处理的RoI的数量很大，并且接近一半的正向传递时间用于计算全连接层。大的全连接层容易通过用截短的SVD压缩来加速。</p>
+<p>为了压缩网络，对应于W的单个全连接层由两个全连接层替代，中间以一个低纬数据相连。在它们之间没有非线性。当RoI的数量大时，这种简单的压缩方法给出良好的加速。</p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>Fast RCNN方法修正了R-CNN和SPPnet的缺点，同时提高其速度和准确性，有以下几个优点：</p>
+<ul>
+<li>比R-CNN和SPPnet具有更高的目标检测精度（mAP）。</li>
+<li>训练是使用多任务损失的单阶段训练。</li>
+<li>训练可以更新所有网络层参数。</li>
+<li>不需要磁盘空间缓存特征。</li>
+</ul>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> paper </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[【论文阅读】R-CNN]]></title>
       <url>http://xiaqunfeng.cc/2017/11/24/R-CNN/</url>
       <content type="html"><![CDATA[<p>该论文是利用深度学习进行目标检测的开山之作<br><a id="more"></a></p>
