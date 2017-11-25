@@ -15,21 +15,18 @@
 
 
 
-<meta name="description" content="NG的机器学习教程，第三章：预备知识和注释；第四章：规模驱使机器学习前进。">
+<meta name="description" content="该论文是利用深度学习进行目标检测的开山之作">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Machine Learning Yearning(3、4)">
-<meta property="og:url" content="http://xiaqunfeng.cc/2017/03/03/Machine-Learning-Yearning-3、4/index.html">
+<meta property="og:title" content="【论文阅读】R-CNN">
+<meta property="og:url" content="http://xiaqunfeng.cc/2017/11/24/R-CNN/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="NG的机器学习教程，第三章：预备知识和注释；第四章：规模驱使机器学习前进。">
-<meta property="og:image" content="http://img.blog.csdn.net/20161208234928384?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:image" content="http://img.blog.csdn.net/20161209001935676?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:image" content="http://img.blog.csdn.net/20161209002633511?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:image" content="http://img.blog.csdn.net/20161209003804359?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:updated_time" content="2017-03-08T03:11:24.000Z">
+<meta property="og:description" content="该论文是利用深度学习进行目标检测的开山之作">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/1-1.jpg">
+<meta property="og:updated_time" content="2017-11-25T03:32:31.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Machine Learning Yearning(3、4)">
-<meta name="twitter:description" content="NG的机器学习教程，第三章：预备知识和注释；第四章：规模驱使机器学习前进。">
-<meta name="twitter:image" content="http://img.blog.csdn.net/20161208234928384?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta name="twitter:title" content="【论文阅读】R-CNN">
+<meta name="twitter:description" content="该论文是利用深度学习进行目标检测的开山之作">
+<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/1-1.jpg">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -61,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Machine Learning Yearning(3、4) | 夏天的风的博客</title>
+<title>【论文阅读】R-CNN | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -248,11 +245,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-Machine-Learning-Yearning-3、4" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-R-CNN" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/03/03/Machine-Learning-Yearning-3、4/" class="article-date">
-      <time datetime="2017-03-03T01:14:50.000Z" itemprop="datePublished">2017-03-03</time>
+      <a href="/2017/11/24/R-CNN/" class="article-date">
+      <time datetime="2017-11-24T12:08:43.000Z" itemprop="datePublished">2017-11-24</time>
 </a>
 
 
@@ -267,7 +264,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Machine Learning Yearning(3、4)
+      【论文阅读】R-CNN
     </h1>
   
 
@@ -278,7 +275,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/paper/">paper</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -288,23 +285,91 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>NG的机器学习教程，第三章：预备知识和注释；第四章：规模驱使机器学习前进。<br><a id="more"></a></p>
-<h2 id="Chapter-3、Prerequisites-and-Notation"><a href="#Chapter-3、Prerequisites-and-Notation" class="headerlink" title="Chapter 3、Prerequisites and Notation"></a>Chapter 3、Prerequisites and Notation</h2><p><strong>预备知识和注释</strong><br>​    如果你有学习过机器学习课程，比如我在Coursera上的的机器学习MOOC，或者如果你有应用监督学习的经验，你也将能够理解这段文字。<br>​    我假设你熟悉监督学习（supervised learning）：使用标记的训练样本（x，y）去学习一个从x映射到y的函数。 监督学习算法包括线性回归（linear regression），逻辑回归（logistic regression）和神经网络（neural networks）。 机器学习的形式有很多，但是现如今大部分机器学习的实用价值来自于监督学习。<br>​    我将经常提到神经网络（也称为“deep learning”）。你只需要遵循本问对它是什么有一个基本的理解就可以了。<br>​    如果您不熟悉这里提到的概念，请观看在Coursera上前三周 机器学习视频课程<a href="http://ml-class.org" target="_blank" rel="external">http://ml-class.org</a></p>
-<p><img src="http://img.blog.csdn.net/20161208234928384?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<h2 id="Chapter-4、Scale-drives-machine-learning-progress"><a href="#Chapter-4、Scale-drives-machine-learning-progress" class="headerlink" title="Chapter 4、Scale drives machine learning progress"></a>Chapter 4、Scale drives machine learning progress</h2><p><strong>规模驱使机器学习前进</strong></p>
-<p>深度学习（神经网络）的许多想法已经存在几十年了。 为什么这些想法现在才火起来？<br>最近得以进步的最大驱动因素有两个：</p>
+        <p>该论文是利用深度学习进行目标检测的开山之作<br><a id="more"></a></p>
+<p>原文：<a href="https://www.cv-foundation.org/openaccess/content_cvpr_2014/papers/Girshick_Rich_Feature_Hierarchies_2014_CVPR_paper.pdf" target="_blank" rel="external">R-CNN</a>，</p>
+<p>teach report v5：<a href="https://arxiv.org/pdf/1311.2524v5.pdf" target="_blank" rel="external">teach report v5</a></p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>主要解决了两个问题：</p>
+<p>1、如何确定物体位置，即建模</p>
+<p>这个模型是Region proposal + CNN，所以叫R-CNN</p>
+<p>本文通过传统的无监督的与类别无关的方法提取proposal，然后利用CNN对于这些矩形框进行特征提取；对于提取到的特征进行分类。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/1-1.jpg" alt="1-1"></p>
 <ul>
-<li>数据可用性。 人们现在在数字设备（笔记本电脑，移动设备）上花费更多的时间。这些活动产生大量的数据，我们可以使用这些数据来训练和反馈我们的学习算法。</li>
-<li>计算尺度。 我们几年前才开始能够训练足够大的神经网络，以利用我们现在拥有的巨大的数据集。</li>
+<li>输入图片</li>
+<li>提取约2000个 region proposals</li>
+<li>使用一个大的CNN 为每个 proposal 计算出特征</li>
+<li>使用类别特定的线性 SVM 对每个 region 进行分类</li>
 </ul>
-<p>具体来说，即使你积累了更多的数据，通常传统学习算法（如逻辑回归）的性能表现“平稳”。这意味着它的学习曲线“平坦”，即使你给它更多的数据，算法也不会再有提升效果。</p>
-<p><img src="http://img.blog.csdn.net/20161209001935676?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<p>这就好像传统的算法不知道如何处理我们现在拥有的所有数据。<br>如果你在同一个监督学习任务上训练一个小的神经网络（NN），你可能会获得略好一点的性能：</p>
-<p><img src="http://img.blog.csdn.net/20161209002633511?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<p>这里，“小的神经网络”是指仅具有少量隐藏单位/层/参数的神经网络。 最后，如果你训练越来越大的神经网络，你可以获得更好的性能：[1]</p>
-<p><img src="http://img.blog.csdn.net/20161209003804359?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
-<p>因此，当你做到下面两点的时候你会获得最佳的性能（i）训练一个非常大的神经网络，使其在上面的绿色曲线上; （ii）有大量的数据。<br>许多其他细节，如神经网络架构也很重要，这里已经有很多创新。 但是现在提高算法性能的更可靠的方法之一仍然是（i）训练更大的网络和（ii）获得更多的数据。<br>如何完成（i）和（ii）的方法是极其复杂的。 这本书将详细讨论细节。 我们将从对传统学习算法和神经网络都有用的一般策略开始，并建立构建深度学习系统所需的最先进策略。</p>
-<p>[1]这个图表展示了NN在小数据集下做得更好。这种效果不如NNs在大数据集中表现良好的效果一致。 在小数据系统中，取决于特征是如何手工设计的，传统算法可能做的很好，也可能做得并不好。 例如，如果你有20个训练样本，那么使用逻辑回归还是神经网络可能并不重要; 手工特征的选择将比算法的选择产生更大的影响。 但如果你有100万的样本，我更倾向于神经网络。</p>
+<p>2、如何训练一个复杂模型</p>
+<p>传统的预训练方法是无监督的，每层自己训练训练一个权重出来（例如通过AutoEncoder）之后，再加上label信息进行整体微调。这个方法没有任何先验，需要大量数据进行训练。而R-CNN则采用了CNN在分类问题上已经训好的权重作为初始权重，再针对detection问题进行微调。这就使得小数据集可以使用大数据集上的先验知识，在分类问题上的研究成果可以轻松迁移到detection问题上了。</p>
+<p>论文中使用大型辅助数据集(ILSVRC)上进行监督预训练，然后对小数据集(PASCAL)进行域特定的微调，这是在数据稀缺时训练高容量CNN模型的有效范例。最后在检测库上评测。</p>
+<p>一个较大的<strong>识别库</strong>（ImageNet ILSVC 2012）：标定每张图片中物体的类别。一千万图像，1000类。<br>一个较小的<strong>检测库</strong>（PASCAL VOC 2007）：标定每张图片中，物体的类别和位置。一万图像，20类。 </p>
+<p>CNN的输入必须是固定大小的。论文中采用了最简单的warp图像变形方法。但是对变形的区域进行了限制，即不单单对proposal选中的矩形框进行变形，还将其扩大（引入背景息），使得变形后原proposal矩形框外围还有p个像素点(p=16)。原话是这样的</p>
+<blockquote>
+<p>对于这些转换中的每一个，我们还考虑在原始目标提案四周包括附加图像内容。内容填充的量(pp)被定义为在缩放后图像中，原始目标提案周围的边界大小。图7显示了每个示例的顶行中p=0p=0像素，底行中p=16p=16像素。在所有方法中，如果矩形框超出图像边缘，超出的部分将被填充为图像均值（然后在将图像输入到CNN之前减去）。一组实验表明，采用上下文填充（p=16p=16像素）的缩放可以明显提高mAP（提高3-5个点）。显然还有更多其它可行的方案，包括使用复制而不是平均填充。对这些方案的详尽评估将作为未来的工作。</p>
+</blockquote>
+<h2 id="目标检测"><a href="#目标检测" class="headerlink" title="目标检测"></a>目标检测</h2><p>目标检测系统分为三个部分：1、生成类别无关的 region proposals（构成候选检测集）；2、从每个 region 提取固定长度特征向量的大型CNN；3、一组特定类别的线性 SVM。</p>
+<p><strong>region proposals</strong></p>
+<p>经典的目标检测算法使用滑动窗法依次判断所有可能的区域。</p>
+<p>本文采用了 selective search （选择性搜索），论文中说便于与之前的一些工作进行比较。</p>
+<p>从高层理解，Selective Search通过不同尺寸的窗口在图像中进行滑动，对于每个尺寸方法采用纹理、颜色或亮度对邻近的像素进行聚合，从而识别物体。</p>
+<blockquote>
+<p>关于 selective search，论文如下，后续有空深究：</p>
+<p>J. Uijlings, K. van de Sande, T. Gevers, and A. Smeulders. Selective search for object recognition. IJCV, 2013.</p>
+</blockquote>
+<p><strong>feature extraction</strong></p>
+<p>经典的目标检测算法在区域中提取人工设定的特征（Haar，HOG）。</p>
+<p>从每个 region proposal 中提取4096维特征向量，将减去像素平均值的227×227227×227分辨率的RGB图像通过五个卷积层和两个全连接层向前传播来计算特征。</p>
+<p>不管候选区域的大小或横纵比如何，我们将整个区域不保持横纵比缩放到所需的大小。</p>
+<p>在测试时，先对测试图像进行选择性搜索，以提取大约2000个区域提案（我们在所有实验中使用选择性搜索的“快速模式”）。然后缩放每个区域，并通过CNN向前传播，以计算特征。最后，对于每个类，使用针对该类训练的SVM来对每个提取的特征向量进行评分。给定图像中的所有区域的得分，我们应用贪婪非极大值抑制（每个类别独立进行），在训练时学习一个阈值，如果其与得分较高的区域的重叠部分(IoU)高于这个阈值，则丢弃这个区域。</p>
+<p><strong>两种性质使检测效率高</strong></p>
+<p>首先，所有CNN参数都在<strong>所有类别</strong>中共享。</p>
+<p>这种共享的结果是计算 region proposals 和 features（GPU上的13s/image 或 CPU上的53s/image）的时间在所有类别上进行摊销。唯一的类特定计算是特征、SVM权重和非极大值抑制之间的点积。</p>
+<p>其次，与其他常见方法比较，由CNN计算出的特征向量是低维度的，例如具有空间金字塔（spatial pyramids）和视像单词（bag-of-visual-word）</p>
+<h2 id="training"><a href="#training" class="headerlink" title="training"></a>training</h2><p><strong>supervised pre-training（监督预训练）</strong></p>
+<p>通过使用图像级标记来区分性地对大型辅助数据集（ILSVRC2012分类）进行CNN预训练（此数据没有检测框标记）。使用开源的Caffe CNN库进行预训练。</p>
+<p><strong>Domain-specific fine-tuning（特定域的微调）</strong></p>
+<p>使用缩放后的 region proposals 继续进行CNN参数的随机梯度下降(SGD)训练。</p>
+<p>所有 region proposals 与检测框真值（ground-truth）IoU ≥0.5的区域作为正样本，其余的作为负样本。</p>
+<p>优化算法采用learning rate=0.001的SGD（这个小学习率可以使得模型既可以有明显的学习，又不至于过分的更改前几层连接的权重）；每个mini-batch由32个正样本（可以是任意类别的）和96个负样本（背景）组成（这样强制要求，对比于随机抽样，的原因是proposal中属于背景的占大多数）</p>
+<p><strong>object category classifiers（目标类别分类器）</strong></p>
+<p>一旦提取了特征并应用了训练标签，我们就可以优化每类线性SVM。由于训练数据太大内存不够，我们采用 standard hard negative mining method （标准的难分样本挖掘方法）。难分样本挖掘可以快速收敛，实际上所有图像遍历一边，mAP就停止增长了。</p>
+<p>对每一类目标，使用一个线性SVM二类分类器进行判别。输入为CNN输出的4096维特征，输出是否属于此类。 </p>
+<p>SVM的策略是对于所有IoU &lt; 0.3的proposal视为负样本，而只对ground truth视为正样本。</p>
+<blockquote>
+<p>IoU的threshold，对于最终结果影响很大。其交叉验证试验了{0,0.1,…,0.5}，发现差值可以达到5个mAP points。特别的，设其为0.5将会使得mAP掉5个点，而设为0则会掉4个点。</p>
+</blockquote>
+<p><strong>Bounding-box regression（检测框回归）</strong></p>
+<blockquote>
+<p>目标检测问题的衡量标准是重叠面积：许多看似准确的检测结果，往往因为候选框不够准确，重叠面积很小。故需要一个位置精修步骤。 </p>
+</blockquote>
+<p>受DPM中使用的检测框回归的启发，训练一个线性回归模型使用在 region proposals 上提取的 pool5 特征来预测一个新的检测框。</p>
+<p>使用一个简单的检测框回归来提高定位性能。在使用类特定检测SVM对每个选择性搜索提案进行评分之后，使用类别特定的边界回归器预测新的检测框。</p>
+<p><strong>回归器</strong><br>对每一类目标，使用一个线性回归器进行精修。这里转化为标准正则化最小二乘问题，基于验证集，设置正则项 λ=1000。<br>输入为CNN pool5层的4096维特征，输出为xy方向的缩放和平移。<br><strong>训练样本</strong><br>只有当提案P至少在一个检测框真值附近时，我们才执行学习任务。“附近”即，将P分配给具有最大IoU的检测框真值G（在重叠多于一个的情况下），并且仅当重叠大于阈值（基于验证集，我们使用的阈值为0.6）。所有未分配的提案都被丢弃。</p>
+<p>为每个目标类别执行一次，以便学习一组特定于类别的检测框回归器。</p>
+<p>在测试时，对每个提案进行评分，并预测其新的检测框一次。原则上，可以迭代这个过程（即重新评估新预测的检测框，然后从它预测一个新的检测框，等等）。但是，发现迭代不会改进结果。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>R-CNN的步骤如下：</p>
+<ol>
+<li>生成regions proposals集合作为Bounding Box；</li>
+<li>采用预训练的AlexNet+SVM判断Bouding Box对应图像的物体类型；</li>
+<li>对已分类物体的Bounding Box进行线性回归，输出Box对应的tighter bounding boxes。</li>
+</ol>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>检测目标速度慢</li>
+</ul>
+<p>在测试阶段，特征来自于每张测试图片的每个候选区域。每个候选区域都需要经过CNN的前向传播计算出特征向量。因此速度很慢。</p>
+<ul>
+<li>多阶段训练（multi-stage pipeline）</li>
+</ul>
+<p>阶段一：从原始图片中使用selective search获取约2000个候选区域</p>
+<p>阶段二：训练CNN,获取候选区域的特征向量</p>
+<p>阶段三：训练SVM和bbox回归</p>
+<blockquote>
+<p>因为是分阶段训练，训练SVM和bbox回归时无法更新前面CNN的参数，模型精度上不去。</p>
+</blockquote>
+<ul>
+<li>空间时间浪费（in space and time）</li>
+</ul>
+<p>候选区域经过CNN得到的特征向量要存在到disk内，然后在训练SVM和bbox回归再取出来，这需要大量的磁盘空间，并且很耗费时间。</p>
 
       
     </div>
@@ -313,13 +378,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/03/03/Machine-Learning-Yearning-3、4/">Machine Learning Yearning(3、4)</a></p>
+        <p><span>本文标题:</span><a href="/2017/11/24/R-CNN/">【论文阅读】R-CNN</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-03-03, 09:14:50</p>
-        <p><span>最后更新:</span>2017-03-08, 11:11:24</p>
+        <p><span>发布时间:</span>2017-11-24, 20:08:43</p>
+        <p><span>最后更新:</span>2017-11-25, 11:32:31</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/03/03/Machine-Learning-Yearning-3、4/" title="Machine Learning Yearning(3、4)">http://xiaqunfeng.cc/2017/03/03/Machine-Learning-Yearning-3、4/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/03/03/Machine-Learning-Yearning-3、4/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/11/24/R-CNN/" title="【论文阅读】R-CNN">http://xiaqunfeng.cc/2017/11/24/R-CNN/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/11/24/R-CNN/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -331,16 +396,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/03/09/Machine-Learning-Yearning-5、6/">
-                    Machine Learning Yearning(5、6、7)
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/03/02/Machine-Learning-Yearning-开篇、1、2/">
-                    Machine Learning Yearning(开篇、1、2)
+                <a href="/2017/11/18/ceph写流程分析/">
+                    ceph写流程分析
                 </a>
             </div>
         
@@ -352,7 +411,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Chapter-3、Prerequisites-and-Notation"><span class="toc-number">1.</span> <span class="toc-text">Chapter 3、Prerequisites and Notation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Chapter-4、Scale-drives-machine-learning-progress"><span class="toc-number">2.</span> <span class="toc-text">Chapter 4、Scale drives machine learning progress</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概述"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#目标检测"><span class="toc-number">2.</span> <span class="toc-text">目标检测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#training"><span class="toc-number">3.</span> <span class="toc-text">training</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-number">4.1.</span> <span class="toc-text">缺点</span></a></li></ol></li></ol>
         
     </div>
     <style>
@@ -388,7 +447,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Machine Learning Yearning(3、4)　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"【论文阅读】R-CNN　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -407,8 +466,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.cc/2017/03/03/Machine-Learning-Yearning-3、4/';
-            this.page.identifier = '2017/03/03/Machine-Learning-Yearning-3、4/';
+            this.page.url = 'http://xiaqunfeng.cc/2017/11/24/R-CNN/';
+            this.page.identifier = '2017/11/24/R-CNN/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -430,15 +489,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/03/09/Machine-Learning-Yearning-5、6/" title="上一篇: Machine Learning Yearning(5、6、7)">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/03/02/Machine-Learning-Yearning-开篇、1、2/" title="下一篇: Machine Learning Yearning(开篇、1、2)">
+            <a href="/2017/11/18/ceph写流程分析/" title="下一篇: ceph写流程分析">
                 <i class="fa fa-angle-right"></i>
             </a>
         
