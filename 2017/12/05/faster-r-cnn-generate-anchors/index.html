@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="夏天的风" />
+
+
+
+<meta name="description" content="阅读Faster R-CNN里产生anchors的代码。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【代码阅读】generate_anchors.py">
+<meta property="og:url" content="http://xiaqunfeng.cc/2017/12/05/faster-r-cnn-generate-anchors/index.html">
+<meta property="og:site_name" content="夏天的风的博客">
+<meta property="og:description" content="阅读Faster R-CNN里产生anchors的代码。">
+<meta property="og:updated_time" content="2017-12-05T02:38:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【代码阅读】generate_anchors.py">
+<meta name="twitter:description" content="阅读Faster R-CNN里产生anchors的代码。">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/red_apple.ico">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>【代码阅读】generate_anchors.py | 夏天的风的博客</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?2eeeeb98562c97f7d79f13899ec599cd";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/stark.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">夏天的风</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">好记性不如烂笔头😝</p>
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="true" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" href="https://github.com/xiaqunfeng" title="GitHub"></a>
+                            
+                                <a class="fa CSDN" href="http://blog.csdn.net/xiaqunfeng123" title="CSDN"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/caffe/">caffe</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/centos/">centos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ceph/">ceph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ganesha/">ganesha</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/">machine learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paper/">paper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rocksdb/">rocksdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/storage/">storage</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ubuntu/">ubuntu</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">夏天的风</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/stark.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">夏天的风</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">好记性不如烂笔头😝</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/xiaqunfeng" title="GitHub"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://blog.csdn.net/xiaqunfeng123" title="CSDN"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-faster-r-cnn-generate-anchors" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/12/05/faster-r-cnn-generate-anchors/" class="article-date">
+      <time datetime="2017-12-05T01:42:49.000Z" itemprop="datePublished">2017-12-05</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【代码阅读】generate_anchors.py
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/">AI</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>阅读Faster R-CNN里产生anchors的代码。<br><a id="more"></a></p>
+<p>代码地址：<a href="https://github.com/rbgirshick/py-faster-rcnn/blob/master/lib/rpn/generate_anchors.py" target="_blank" rel="external">https://github.com/rbgirshick/py-faster-rcnn/blob/master/lib/rpn/generate_anchors.py</a></p>
+<h2 id="generate-anchors-py"><a href="#generate-anchors-py" class="headerlink" title="generate_anchors.py"></a>generate_anchors.py</h2><p>功能：生成多尺度多宽高比的anchors</p>
+<p>代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div></pre></td><td class="code"><pre><div class="line"># --------------------------------------------------------</div><div class="line"># Faster R-CNN</div><div class="line"># Copyright (c) 2015 Microsoft</div><div class="line"># Licensed under The MIT License [see LICENSE for details]</div><div class="line"># Written by Ross Girshick and Sean Bell</div><div class="line"># --------------------------------------------------------</div><div class="line"></div><div class="line">import numpy as np</div><div class="line"></div><div class="line"># Verify that we compute the same anchors as Shaoqing&apos;s matlab implementation:</div><div class="line">#</div><div class="line">#    &gt;&gt; load output/rpn_cachedir/faster_rcnn_VOC2007_ZF_stage1_rpn/anchors.mat</div><div class="line">#    &gt;&gt; anchors</div><div class="line">#</div><div class="line">#    anchors =</div><div class="line">#</div><div class="line">#       -83   -39   100    56</div><div class="line">#      -175   -87   192   104</div><div class="line">#      -359  -183   376   200</div><div class="line">#       -55   -55    72    72</div><div class="line">#      -119  -119   136   136</div><div class="line">#      -247  -247   264   264</div><div class="line">#       -35   -79    52    96</div><div class="line">#       -79  -167    96   184</div><div class="line">#      -167  -343   184   360</div><div class="line"></div><div class="line">#array([[ -83.,  -39.,  100.,   56.],</div><div class="line">#       [-175.,  -87.,  192.,  104.],</div><div class="line">#       [-359., -183.,  376.,  200.],</div><div class="line">#       [ -55.,  -55.,   72.,   72.],</div><div class="line">#       [-119., -119.,  136.,  136.],</div><div class="line">#       [-247., -247.,  264.,  264.],</div><div class="line">#       [ -35.,  -79.,   52.,   96.],</div><div class="line">#       [ -79., -167.,   96.,  184.],</div><div class="line">#       [-167., -343.,  184.,  360.]])</div><div class="line"></div><div class="line"># base_size =16 是因为从conv4层出来的最小的检测大小是16个像素</div><div class="line"># 在 fast_rcnn/config.py中有定义：__C.TRAIN.RPN_MIN_SIZE = 16</div><div class="line"># ratios 是宽高比，即 w:h = 1:2, 1:1, 2:1</div><div class="line"># scales = 8, 16, 32</div><div class="line"># [0，0，15，15]这四个数分别表示[x_l,y_l,x_r,y_r]，表示左上角和右下角的坐标</div><div class="line">def generate_anchors(base_size=16, ratios=[0.5, 1, 2],</div><div class="line">                     scales=2**np.arange(3, 6)):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Generate anchor (reference) windows by enumerating aspect ratios X</div><div class="line">    scales wrt a reference (0, 0, 15, 15) window.</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    base_anchor = np.array([1, 1, base_size, base_size]) - 1  #初始基准anchor[0，0，15，15]</div><div class="line">    ratio_anchors = _ratio_enum(base_anchor, ratios)  #枚举三种宽高比，得到3*4维anchor矩阵</div><div class="line">    #垂直方向上堆叠数组</div><div class="line">    anchors = np.vstack([_scale_enum(ratio_anchors[i, :], scales)</div><div class="line">                         for i in xrange(ratio_anchors.shape[0])]) #读取矩阵第一维大小，为3</div><div class="line">    return anchors</div><div class="line"></div><div class="line"># 根据输入的anchor[x,y,w,h]，返回宽、高、中心坐标：w,h,(x_ctr, y_ctr)</div><div class="line">def _whctrs(anchor):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Return width, height, x center, and y center for an anchor (window).</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    w = anchor[2] - anchor[0] + 1  #anchor里第三个值减去第一个值得到w</div><div class="line">    h = anchor[3] - anchor[1] + 1  #anchor里第四个值减去第二个值得到h</div><div class="line">    x_ctr = anchor[0] + 0.5 * (w - 1)  #通过左下角的点和w、h得到中心点</div><div class="line">    y_ctr = anchor[1] + 0.5 * (h - 1)</div><div class="line">    return w, h, x_ctr, y_ctr</div><div class="line"></div><div class="line"># 给定一组宽高向量，输出向量维度个数个anchor</div><div class="line">def _mkanchors(ws, hs, x_ctr, y_ctr):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Given a vector of widths (ws) and heights (hs) around a center</div><div class="line">    (x_ctr, y_ctr), output a set of anchors (windows).</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    ws = ws[:, np.newaxis]  #将数组转置成 X*1 维的矩阵，X为ws数组中元素的个数</div><div class="line">    hs = hs[:, np.newaxis]</div><div class="line">    anchors = np.hstack((x_ctr - 0.5 * (ws - 1),  #水平方向上将数组堆叠起来，得到一个X*4维的矩阵</div><div class="line">                         y_ctr - 0.5 * (hs - 1),  #[[-3.5,  2, 18.5, 13]</div><div class="line">                         x_ctr + 0.5 * (ws - 1),  # [   0,  0,   15, 15]</div><div class="line">                         y_ctr + 0.5 * (hs - 1))) # [ 2.5, -3, 12.5, 18]]</div><div class="line">    return anchors</div><div class="line"></div><div class="line"># 枚举一个anchor的三种宽高比，ratios[0.5，1，2]</div><div class="line">def _ratio_enum(anchor, ratios):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Enumerate a set of anchors for each aspect ratio wrt an anchor.</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    w, h, x_ctr, y_ctr = _whctrs(anchor) #得到框、高、中心点</div><div class="line">    size = w * h  </div><div class="line">    size_ratios = size / ratios          #[512，256，128]</div><div class="line">    ws = np.round(np.sqrt(size_ratios))  #[23，16，11]</div><div class="line">    hs = np.round(ws * ratios)           #[12，16，22]</div><div class="line">    anchors = _mkanchors(ws, hs, x_ctr, y_ctr) #输出三个预测窗口</div><div class="line">    return anchors</div><div class="line"></div><div class="line"># 枚举输入anchor的三种尺度，scales[8，16，32]</div><div class="line">def _scale_enum(anchor, scales):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Enumerate a set of anchors for each scale wrt an anchor.</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    w, h, x_ctr, y_ctr = _whctrs(anchor)</div><div class="line">    ws = w * scales  #同比例扩大宽高</div><div class="line">    hs = h * scales</div><div class="line">    anchors = _mkanchors(ws, hs, x_ctr, y_ctr)</div><div class="line">    return anchors</div><div class="line"></div><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">    import time</div><div class="line">    t = time.time()</div><div class="line">    a = generate_anchors()  #入口函数</div><div class="line">    print time.time() - t</div><div class="line">    print a</div><div class="line">    from IPython import embed; embed()</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/12/05/faster-r-cnn-generate-anchors/">【代码阅读】generate_anchors.py</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
+        <p><span>发布时间:</span>2017-12-05, 09:42:49</p>
+        <p><span>最后更新:</span>2017-12-05, 10:38:46</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/12/05/faster-r-cnn-generate-anchors/" title="【代码阅读】generate_anchors.py">http://xiaqunfeng.cc/2017/12/05/faster-r-cnn-generate-anchors/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/12/05/faster-r-cnn-generate-anchors/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/11/25/Fast-R-CNN/">
+                    【论文阅读】Fast R-CNN
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#generate-anchors-py"><span class="toc-number">1.</span> <span class="toc-text">generate_anchors.py</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"【代码阅读】generate_anchors.py　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section id="comments">
+    <style> aside.comment-bar { margin: auto 30px; }</style>
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function(){
+            this.page.url = 'http://xiaqunfeng.cc/2017/12/05/faster-r-cnn-generate-anchors/';
+            this.page.identifier = '2017/12/05/faster-r-cnn-generate-anchors/';
+        };
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = '//null.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+</section>
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/11/25/Fast-R-CNN/" title="下一篇: 【论文阅读】Fast R-CNN">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/12/05/faster-r-cnn-generate-anchors/">【代码阅读】generate_anchors.py</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/25/Fast-R-CNN/">【论文阅读】Fast R-CNN</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/24/R-CNN/">【论文阅读】R-CNN</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/18/ceph写流程分析/">ceph写流程分析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/05/mac上安装caffe并训练mnist/">mac上安装caffe并训练mnist</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/27/ceph指定版本安装/">ceph指定版本安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/21/linux-command-day-day-up/">linux command day day up</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/19/awk-study-notes/">awk study notes</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/18/ceph-PGs-per-Pool-Calculator/">ceph PGs per Pool Calculator</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/15/too-many-PGs-per-OSD/">too many PGs per OSD</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/11/mac上安装python3/">mac上安装python3</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/30/lsblk命令/">lsblk命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/29/Syntax-error-unexpected/">Syntax error: '(' unexpected</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/17/ceph-osd相关操作/">ceph osd相关操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/07/git常用命名总结/">git常用命名总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/05/python3-OS-module/">python3 OS module</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/03/为什么对于企业NAS来说NFS-ganesha是一个更好的NFS-server/">为什么对于企业NAS来说NFS-ganesha是一个更好的NFS server</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/01/ceph-peering过程分析/">ceph peering过程分析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/28/ceph-placement-group/">ceph placement group</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/28/Remove-Big-RBD-Image/">Remove Big RBD Image</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/17/centos下ceph部署/">centos下ceph部署</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/17/ceph部署完全手册/">ceph部署完全手册</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/12/fio测试ceph/">fio测试ceph</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/07/centos7上安装python3/">centos7上安装python3</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/06/XFS-vs-EXT4/">XFS vs EXT4</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/06/ceph-luminous新命令探索/">ceph luminous新命令探索</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/04/ceph-Luminous新功能之crush-class/">ceph Luminous新功能之crush class</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/29/ceph-Luminous初探/">ceph Luminous dashboard初探</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/28/Ceph-v12-1-0-Luminous-RC-released/">Ceph v12.1.0 Luminous RC released</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/23/wget批量下载http目录及文件/">wget批量下载http目录及文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/16/公有云和私有云的区别/">公有云和私有云的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/16/centos-7下操纵ceph进程/">centos 7下操纵ceph进程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/15/vim移动光标/">vim移动光标</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/07/Map-RBD-Devices-on-NBD/">Map RBD Devices on NBD</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/06/ceph-rbd-map-failed/">ceph rbd map failed</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/26/ceph-mon时钟偏移问题/">ceph mon时钟偏移问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/26/GPG-key-retrieval-failure/">GPG key retrieval failure</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/25/mac上实现vim的markdown预览/">mac上实现vim的markdown预览</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/23/ceph日志迁移/">ceph日志迁移</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/11/cpu拓扑结构/">cpu拓扑及ceph使用时的优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/07/firewalld和iptables/">firewalld和iptables</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/07/S-M-A-R-T-磁盘健康状态监测工具/">S.M.A.R.T--磁盘健康状态监测工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/04/iterm2配色/">iterm2配色--zsh & oh-my-zsh</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/03/nginx使用和配置/">nginx使用和配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/02/iterm2快捷键的使用/">iterm2快捷键的使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/02/VSM部署/">VSM部署</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/常用git命令清单/">常用git命令清单</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/理解socket编程/">理解socket编程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/cow和row快照机制的区别/">cow和row快照机制的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/09/Machine-Learning-Yearning-5、6/">Machine Learning Yearning(5、6、7)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/03/Machine-Learning-Yearning-3、4/">Machine Learning Yearning(3、4)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/02/Machine-Learning-Yearning-开篇、1、2/">Machine Learning Yearning(开篇、1、2)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/01/异步IO/">异步IO</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/23/Bluestore调研/">Bluestore调研</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/23/RocksDB相比LevelDB的新特性/">RocksDB相比LevelDB的新特性</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/20/Kernel modules (简体中文)/">Kernel modules (简体中文)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/17/Linux命令——pgrep和pkill/">Linux命令——pgrep和pkill</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/16/Linux命令——strace/">Linux命令——strace</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/10/获取每个osd的PG数/">获取每个osd的PG数</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/10/RBD-相关操作/">RBD 相关操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/07/在Kraken-release版本上测试Ceph-BlueStore/">在Kraken release版本上测试Ceph BlueStore</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/04/用户态和内核态/">用户态和内核态</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/04/ceph升级到kraken版本/">ceph升级到kraken版本</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/03/Dm-cache-vs-Bcache/">Dm-cache vs Bcache</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/03/Flashcache-vs-Cache-tier/">Flashcache vs Cache tier</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/25/Linux命令——parted/">Linux命令——parted</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/25/认识SSD/">认识SSD</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/24/Ceph-KRAKEN(V11.2.0)/">Ceph — V11.2.0 KRAKEN(译)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/24/Crushmap学习/">Crushmap学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/Ceph中严重数据不一致性BUG/">Ceph中严重数据不一致性BUG</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/20/块存储的世界/">块存储的世界</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/17/Linux命令——uptime/">Linux命令——uptime</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/dd磁盘命令小记/">dd磁盘命令小记</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/12/解决calamari无法获取集群hosts信息的BUG/">解决calamari无法获取集群hosts信息的BUG</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/ubuntu下配置邮件发送/">ubuntu下配置邮件发送</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/ubuntu下系统打包/">ubuntu下系统打包</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux命令——history及其优化/">Linux命令——history及其优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux下利用screen进行屏幕协作/">Linux下利用screen进行屏幕协作</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/11/Linux命令——crontab/">Linux命令——crontab</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/06/hexo的搭建/">Mac上hexo博客的搭建</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2017 夏天的风
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

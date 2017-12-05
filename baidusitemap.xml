@@ -4,6 +4,23 @@
 
     
   <url>
+    <loc>http://xiaqunfeng.cc/2017/12/05/faster-r-cnn-generate-anchors/</loc>
+    <lastmod>2017-12-05T02:38:46.000Z</lastmod>
+    <data>
+        <display>
+        <title>【代码阅读】generate_anchors.py</title>
+        <pubTime>2017-12-05T01:42:49.000Z</pubTime>
+        
+        <tag>AI</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://xiaqunfeng.cc/2017/11/25/Fast-R-CNN/</loc>
     <lastmod>2017-11-25T10:10:20.000Z</lastmod>
     <data>
@@ -736,9 +753,9 @@
         <title>firewalld和iptables</title>
         <pubTime>2017-05-07T08:08:01.000Z</pubTime>
         
-        <tag>centos</tag>
-         
         <tag>Linux</tag>
+         
+        <tag>centos</tag>
          
          
            
