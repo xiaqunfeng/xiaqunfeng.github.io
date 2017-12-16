@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://xiaqunfeng.cc/2017/12/14/Faster-R-CNN/</loc>
+    
+    <lastmod>2017-12-16T06:09:56.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://xiaqunfeng.cc/2017/12/05/faster-r-cnn-generate-anchors/</loc>
     
     <lastmod>2017-12-05T02:53:37.000Z</lastmod>

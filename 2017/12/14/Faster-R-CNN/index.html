@@ -15,22 +15,20 @@
 
 
 
-<meta name="description" content="介绍了AIO，以及四种IO模型。">
+<meta name="description" content="Faster R-CNN论文阅读小笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="异步IO">
-<meta property="og:url" content="http://xiaqunfeng.cc/2017/03/01/异步IO/index.html">
+<meta property="og:title" content="【论文阅读】Faster-R-CNN">
+<meta property="og:url" content="http://xiaqunfeng.cc/2017/12/14/Faster-R-CNN/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="介绍了AIO，以及四种IO模型。">
-<meta property="og:image" content="https://www.ibm.com/developerworks/cn/linux/l-async/figure1.gif">
-<meta property="og:image" content="https://www.ibm.com/developerworks/cn/linux/l-async/figure2.gif">
-<meta property="og:image" content="https://www.ibm.com/developerworks/cn/linux/l-async/figure3.gif">
-<meta property="og:image" content="https://www.ibm.com/developerworks/cn/linux/l-async/figure4.gif">
-<meta property="og:image" content="https://www.ibm.com/developerworks/cn/linux/l-async/figure5.gif">
-<meta property="og:updated_time" content="2017-03-01T06:06:14.000Z">
+<meta property="og:description" content="Faster R-CNN论文阅读小笔记">
+<meta property="og:image" content="http://img.blog.csdn.net/20160414164536029">
+<meta property="og:image" content="http://img.blog.csdn.net/20160415133947737">
+<meta property="og:image" content="http://img.blog.csdn.net/20161020131820060?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:updated_time" content="2017-12-16T06:09:56.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="异步IO">
-<meta name="twitter:description" content="介绍了AIO，以及四种IO模型。">
-<meta name="twitter:image" content="https://www.ibm.com/developerworks/cn/linux/l-async/figure1.gif">
+<meta name="twitter:title" content="【论文阅读】Faster-R-CNN">
+<meta name="twitter:description" content="Faster R-CNN论文阅读小笔记">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20160414164536029">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -62,7 +60,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>异步IO | 夏天的风的博客</title>
+<title>【论文阅读】Faster-R-CNN | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -249,11 +247,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-异步IO" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Faster-R-CNN" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/03/01/异步IO/" class="article-date">
-      <time datetime="2017-03-01T06:03:07.000Z" itemprop="datePublished">2017-03-01</time>
+      <a href="/2017/12/14/Faster-R-CNN/" class="article-date">
+      <time datetime="2017-12-14T05:08:34.000Z" itemprop="datePublished">2017-12-14</time>
 </a>
 
 
@@ -268,7 +266,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      异步IO
+      【论文阅读】Faster-R-CNN
     </h1>
   
 
@@ -279,7 +277,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/paper/">paper</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -289,43 +287,34 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>介绍了AIO，以及四种IO模型。<br><a id="more"></a></p>
-<p>Linux® 中最常用的输入/输出（I/O）模型是同步 I/O。在这个模型中，当请求发出之后，应用程序就会阻塞，直到请求满足为止。这是很好的一种解决方案，因为调用应用程序在等待 I/O 请求完成时不需要使用任何中央处理单元（CPU）。但是在某些情况中，I/O 请求可能需要与其他进程产生交叠。可移植操作系统接口（POSIX）异步 I/O（AIO）应用程序接口（API）就提供了这种功能。在本文中，我们将对这个 API 概要进行介绍，并来了解一下如何使用它。</p>
-<h2 id="AIO-简介"><a href="#AIO-简介" class="headerlink" title="AIO 简介"></a>AIO 简介</h2><p>Linux 异步 I/O 是 Linux 内核中提供的一个相当新的增强。它是 2.6 版本内核的一个标准特性，但是我们在 2.4 版本内核的补丁中也可以找到它。AIO 背后的基本思想是允许进程发起很多 I/O 操作，而不用阻塞或等待任何操作完成。稍后或在接收到 I/O 操作完成的通知时，进程就可以检索 I/O 操作的结果。</p>
-<h2 id="I-O-模型"><a href="#I-O-模型" class="headerlink" title="I/O 模型"></a>I/O 模型</h2><p>在深入介绍 AIO API 之前，让我们先来探索一下 Linux 上可以使用的不同 I/O 模型。这并不是一个详尽的介绍，但是我们将试图介绍最常用的一些模型来解释它们与异步 I/O 之间的区别。图 1 给出了同步和异步模型，以及阻塞和非阻塞的模型。</p>
-<p align="center">图 1. 基本 Linux I/O 模型的简单矩阵</p>
-
-<p><img src="https://www.ibm.com/developerworks/cn/linux/l-async/figure1.gif" alt="基本 Linux I/O 模型的简单矩阵"></p>
-<p>每个 I/O 模型都有自己的使用模式，它们对于特定的应用程序都有自己的优点。本节将简要对其一一进行介绍。</p>
-<h3 id="同步阻塞-I-O"><a href="#同步阻塞-I-O" class="headerlink" title="同步阻塞 I/O"></a>同步阻塞 I/O</h3><h2 id="I-O-密集型与-CPU-密集型进程的比较"><a href="#I-O-密集型与-CPU-密集型进程的比较" class="headerlink" title="I/O 密集型与 CPU 密集型进程的比较"></a>I/O 密集型与 CPU 密集型进程的比较</h2><p>I/O 密集型进程所执行的 I/O 操作比执行的处理操作更多。CPU 密集型的进程所执行的处理操作比 I/O 操作更多。Linux 2.6 的调度器实际上更加偏爱 I/O 密集型的进程，因为它们通常会发起一个 I/O 操作，然后进行阻塞，这就意味着其他工作都可以在两者之间有效地交错进行。</p>
-<p>最常用的一个模型是同步阻塞 I/O 模型。在这个模型中，用户空间的应用程序执行一个系统调用，这会导致应用程序阻塞。这意味着应用程序会一直阻塞，直到系统调用完成为止（数据传输完成或发生错误）。调用应用程序处于一种不再消费 CPU 而只是简单等待响应的状态，因此从处理的角度来看，这是非常有效的。</p>
-<p>图 2 给出了传统的阻塞 I/O 模型，这也是目前应用程序中最为常用的一种模型。其行为非常容易理解，其用法对于典型的应用程序来说都非常有效。在调用 <code>read</code> 系统调用时，应用程序会阻塞并对内核进行上下文切换。然后会触发读操作，当响应返回时（从我们正在从中读取的设备中返回），数据就被移动到用户空间的缓冲区中。然后应用程序就会解除阻塞（<code>read</code> 调用返回）。</p>
-<p align="center">图 2. 同步阻塞 I/O 模型的典型流程</p>
-
-<p><img src="https://www.ibm.com/developerworks/cn/linux/l-async/figure2.gif" alt="同步阻塞 I/O 模型的典型流程"></p>
-<p>从应用程序的角度来说，<code>read</code> 调用会延续很长时间。实际上，在内核执行读操作和其他工作时，应用程序的确会被阻塞。</p>
-<h3 id="同步非阻塞-I-O"><a href="#同步非阻塞-I-O" class="headerlink" title="同步非阻塞 I/O"></a>同步非阻塞 I/O</h3><p>同步阻塞 I/O 的一种效率稍低的变种是同步非阻塞 I/O。在这种模型中，设备是以非阻塞的形式打开的。这意味着 I/O 操作不会立即完成，<code>read</code>操作可能会返回一个错误代码，说明这个命令不能立即满足（<code>EAGAIN</code> 或 <code>EWOULDBLOCK</code>），如图 3 所示。</p>
-<p align="center">图 3. 同步非阻塞 I/O 模型的典型流程</p>
-
-<p><img src="https://www.ibm.com/developerworks/cn/linux/l-async/figure3.gif" alt="同步非阻塞 I/O 模型的典型流程"></p>
-<p>非阻塞的实现是 I/O 命令可能并不会立即满足，需要应用程序调用许多次来等待操作完成。这可能效率不高，因为在很多情况下，当内核执行这个命令时，应用程序必须要进行忙碌等待，直到数据可用为止，或者试图执行其他工作。正如图 3 所示的一样，这个方法可以引入 I/O 操作的延时，因为数据在内核中变为可用到用户调用 <code>read</code> 返回数据之间存在一定的间隔，这会导致整体数据吞吐量的降低。</p>
-<h3 id="异步阻塞-I-O"><a href="#异步阻塞-I-O" class="headerlink" title="异步阻塞 I/O"></a>异步阻塞 I/O</h3><p>另外一个阻塞解决方案是带有阻塞通知的非阻塞 I/O。在这种模型中，配置的是非阻塞 I/O，然后使用阻塞 <code>select</code> 系统调用来确定一个 I/O 描述符何时有操作。使 <code>select</code> 调用非常有趣的是它可以用来为多个描述符提供通知，而不仅仅为一个描述符提供通知。对于每个提示符来说，我们可以请求这个描述符可以写数据、有读数据可用以及是否发生错误的通知。</p>
-<p align="center">图 4. 异步阻塞 I/O 模型的典型流程 (select)</p>
-
-<p><img src="https://www.ibm.com/developerworks/cn/linux/l-async/figure4.gif" alt="异步阻塞 I/O 模型的典型流程"></p>
-<p><code>select</code> 调用的主要问题是它的效率不是非常高。尽管这是异步通知使用的一种方便模型，但是对于高性能的 I/O 操作来说不建议使用。</p>
-<h3 id="异步非阻塞-I-O（AIO）"><a href="#异步非阻塞-I-O（AIO）" class="headerlink" title="异步非阻塞 I/O（AIO）"></a>异步非阻塞 I/O（AIO）</h3><p>最后，异步非阻塞 I/O 模型是一种处理与 I/O 重叠进行的模型。读请求会立即返回，说明 <code>read</code> 请求已经成功发起了。在后台完成读操作时，应用程序然后会执行其他处理操作。当 <code>read</code> 的响应到达时，就会产生一个信号或执行一个基于线程的回调函数来完成这次 I/O 处理过程。</p>
-<p align="center">图 5. 异步非阻塞 I/O 模型的典型流程</p>
-
-<p><img src="https://www.ibm.com/developerworks/cn/linux/l-async/figure5.gif" alt="异步非阻塞 I/O 模型的典型流程"></p>
-<p>在一个进程中为了执行多个 I/O 请求而对计算操作和 I/O 处理进行重叠处理的能力利用了处理速度与 I/O 速度之间的差异。当一个或多个 I/O 请求挂起时，CPU 可以执行其他任务；或者更为常见的是，在发起其他 I/O 的同时对已经完成的 I/O 进行操作。</p>
-<h2 id="异步-I-O-的动机"><a href="#异步-I-O-的动机" class="headerlink" title="异步 I/O 的动机"></a>异步 I/O 的动机</h2><p>从前面 I/O 模型的分类中，我们可以看出 AIO 的动机。这种阻塞模型需要在 I/O 操作开始时阻塞应用程序。这意味着不可能同时重叠进行处理和 I/O 操作。同步非阻塞模型允许处理和 I/O 操作重叠进行，但是这需要应用程序根据重现的规则来检查 I/O 操作的状态。这样就剩下异步非阻塞 I/O 了，它允许处理和 I/O 操作重叠进行，包括 I/O 操作完成的通知。</p>
-<p>除了需要阻塞之外，<code>select</code> 函数所提供的功能（异步阻塞 I/O）与 AIO 类似。不过，它是对通知事件进行阻塞，而不是对 I/O 调用进行阻塞。</p>
-<h2 id="Linux-上的-AIO-简介"><a href="#Linux-上的-AIO-简介" class="headerlink" title="Linux 上的 AIO 简介"></a>Linux 上的 AIO 简介</h2><p>本节将探索 Linux 的异步 I/O 模型，从而帮助我们理解如何在应用程序中使用这种技术。</p>
-<p>在传统的 I/O 模型中，有一个使用惟一句柄标识的 I/O 通道。在 UNIX® 中，这些句柄是文件描述符（这对等同于文件、管道、套接字等等）。在阻塞 I/O 中，我们发起了一次传输操作，当传输操作完成或发生错误时，系统调用就会返回。</p>
-<h2 id="Linux-上的-AIO"><a href="#Linux-上的-AIO" class="headerlink" title="Linux 上的 AIO"></a>Linux 上的 AIO</h2><p>AIO 在 2.5 版本的内核中首次出现，现在已经是 2.6 版本的产品内核的一个标准特性了。</p>
-<p>在异步非阻塞 I/O 中，我们可以同时发起多个传输操作。这需要每个传输操作都有惟一的上下文，这样我们才能在它们完成时区分到底是哪个传输操作完成了。在 AIO 中，这是一个 <code>aiocb</code>（AIO I/O Control Block）结构。这个结构包含了有关传输的所有信息，包括为数据准备的用户缓冲区。在产生 I/O （称为完成）通知时，<code>aiocb</code> 结构就被用来惟一标识所完成的 I/O 操作。这个 API 的展示显示了如何使用它。</p>
-<p>本文为转载文章, 原文链接：<a href="https://www.ibm.com/developerworks/cn/linux/l-async/" target="_blank" rel="external">使用异步 I/O 大大提高应用程序的性能</a></p>
+        <p>Faster R-CNN论文阅读小笔记<br><a id="more"></a></p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>faster RCNN ~= RPN + fast RCNN</p>
+<p>用RPN代替fast RCNN中的Selective Search方法</p>
+<p>架构图：</p>
+<p>从 Fast R-CNN 中可以发现，目标检测的时间减少了，这时候，发现生成候选框成了性能瓶颈，所以，下一个改进的两个要点就是：</p>
+<p>1、将候选框的选取也放到GPU中去实现</p>
+<p>2、共享计算，共享已计算出的特征图</p>
+<p>R-CNN系列的架构演变</p>
+<p><img src="http://img.blog.csdn.net/20160414164536029" alt="r-cnn架构对比"></p>
+<p>目标检测的四个基本步骤被统一到一个大框架中，计算都在GPU中完成计算，提高了速度，同时消除了重复计算。</p>
+<h2 id="RPN"><a href="#RPN" class="headerlink" title="RPN"></a>RPN</h2><p>网络结构</p>
+<p><img src="http://img.blog.csdn.net/20160415133947737" alt="arc"></p>
+<p>用的是5层的ZF模型。</p>
+<h3 id="anchor的生成"><a href="#anchor的生成" class="headerlink" title="anchor的生成"></a>anchor的生成</h3><p>对于特征图中的每一个点，以该点为中心，考虑3种长宽比（1:1, 1:2, 2:1）和三种面积大小（128，256，512）共9种窗口，这些候选框即为anchors。示意图如下：</p>
+<p>关于anchors的生成代码如下：</p>
+<h3 id="Bounding-box-regression"><a href="#Bounding-box-regression" class="headerlink" title="Bounding-box regression"></a>Bounding-box regression</h3><p><img src="http://img.blog.csdn.net/20161020131820060?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="pic"></p>
+<p>A=(Ax, Ay, Aw, Ah)<br>f(Ax, Ay, Aw, Ah)=(G’x, G’y, G’w, G’h)<br>(G’x, G’y, G’w, G’h)≈(Gx, Gy, Gw, Gh)</p>
+<h2 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h2><h3 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h3><p>RPN和Fast R-CNN都是独立训练的，要用不同方式修改它们的卷积层。因此需要开发一种允许两个网络间共享卷积层的技术，而不是分别学习两个网络。</p>
+<p>论文中给出了三种训练具有共享特征的网络的解决方案：</p>
+<p>1、交替训练</p>
+<p>先训练RPN，并使用提案训练Fast R-CNN。然后，使用Fast R-CNN微调过后的网络初始化RPN，并重复此过程。这是论文中所有实验所使用的解决方案。</p>
+<p>2、近似联合训练</p>
+<p>RPN和Fast R-CNN网络在训练期间被合并到一个网络中。forward过程中，region proposal固定，训练Fast R-CNN。backward过程中，共享层包含RPN和Fast R-CNN两部分的损失。</p>
+<p>忽略了衍生的w.r.t.提案框的坐标也是网络响应，所以产生的结果是近似。但与交替训练相比，训练时间减少了约25-50％。</p>
+<p>3、非近似联合训练</p>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p>源码地址：</p>
+<p>根据代码，提取并总结的步骤如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">1. Stage 1 RPN, init from ImageNet model (M0 -&gt; M1)</div><div class="line">2. Stage1 RPN, generate proposals (M1 -&gt; P1)</div><div class="line">3. Stage1 Fast R-CNN using RPN  proposals, init from ImageNet model (M0, P1 -&gt; M2)</div><div class="line">4. Stage2 RPN, init from stage 1 Fast R-CNN model (M2 -&gt; M3)</div><div class="line">5. Stage2 RPN, generate proposals (M3 -&gt; P2)</div><div class="line">6. Stage2 Fast R-CNN, init from stage 2 RPN R-CNN model (M3,P2 -&gt; M4)</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -334,13 +323,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/03/01/异步IO/">异步IO</a></p>
+        <p><span>本文标题:</span><a href="/2017/12/14/Faster-R-CNN/">【论文阅读】Faster-R-CNN</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-03-01, 14:03:07</p>
-        <p><span>最后更新:</span>2017-03-01, 14:06:14</p>
+        <p><span>发布时间:</span>2017-12-14, 13:08:34</p>
+        <p><span>最后更新:</span>2017-12-16, 14:09:56</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/03/01/异步IO/" title="异步IO">http://xiaqunfeng.cc/2017/03/01/异步IO/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/03/01/异步IO/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/12/14/Faster-R-CNN/" title="【论文阅读】Faster-R-CNN">http://xiaqunfeng.cc/2017/12/14/Faster-R-CNN/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/12/14/Faster-R-CNN/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -352,16 +341,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/03/02/Machine-Learning-Yearning-开篇、1、2/">
-                    Machine Learning Yearning(开篇、1、2)
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/02/23/Bluestore调研/">
-                    Bluestore调研
+                <a href="/2017/12/05/faster-r-cnn-generate-anchors/">
+                    【代码阅读】generate_anchors.py
                 </a>
             </div>
         
@@ -373,7 +356,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#AIO-简介"><span class="toc-number">1.</span> <span class="toc-text">AIO 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#I-O-模型"><span class="toc-number">2.</span> <span class="toc-text">I/O 模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#同步阻塞-I-O"><span class="toc-number">2.1.</span> <span class="toc-text">同步阻塞 I/O</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#I-O-密集型与-CPU-密集型进程的比较"><span class="toc-number">3.</span> <span class="toc-text">I/O 密集型与 CPU 密集型进程的比较</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#同步非阻塞-I-O"><span class="toc-number">3.1.</span> <span class="toc-text">同步非阻塞 I/O</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异步阻塞-I-O"><span class="toc-number">3.2.</span> <span class="toc-text">异步阻塞 I/O</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异步非阻塞-I-O（AIO）"><span class="toc-number">3.3.</span> <span class="toc-text">异步非阻塞 I/O（AIO）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#异步-I-O-的动机"><span class="toc-number">4.</span> <span class="toc-text">异步 I/O 的动机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux-上的-AIO-简介"><span class="toc-number">5.</span> <span class="toc-text">Linux 上的 AIO 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux-上的-AIO"><span class="toc-number">6.</span> <span class="toc-text">Linux 上的 AIO</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概述"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RPN"><span class="toc-number">2.</span> <span class="toc-text">RPN</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#anchor的生成"><span class="toc-number">2.1.</span> <span class="toc-text">anchor的生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bounding-box-regression"><span class="toc-number">2.2.</span> <span class="toc-text">Bounding-box regression</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#训练"><span class="toc-number">3.</span> <span class="toc-text">训练</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#方案"><span class="toc-number">3.1.</span> <span class="toc-text">方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码实现"><span class="toc-number">3.2.</span> <span class="toc-text">代码实现</span></a></li></ol></li></ol>
         
     </div>
     <style>
@@ -409,7 +392,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"异步IO　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"【论文阅读】Faster-R-CNN　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -428,8 +411,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.cc/2017/03/01/异步IO/';
-            this.page.identifier = '2017/03/01/异步IO/';
+            this.page.url = 'http://xiaqunfeng.cc/2017/12/14/Faster-R-CNN/';
+            this.page.identifier = '2017/12/14/Faster-R-CNN/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -451,15 +434,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/03/02/Machine-Learning-Yearning-开篇、1、2/" title="上一篇: Machine Learning Yearning(开篇、1、2)">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/02/23/Bluestore调研/" title="下一篇: Bluestore调研">
+            <a href="/2017/12/05/faster-r-cnn-generate-anchors/" title="下一篇: 【代码阅读】generate_anchors.py">
                 <i class="fa fa-angle-right"></i>
             </a>
         

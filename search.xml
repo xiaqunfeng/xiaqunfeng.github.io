@@ -4,6 +4,48 @@
   
     
     <entry>
+      <title><![CDATA[【论文阅读】Faster-R-CNN]]></title>
+      <url>http://xiaqunfeng.cc/2017/12/14/Faster-R-CNN/</url>
+      <content type="html"><![CDATA[<p>Faster R-CNN论文阅读小笔记<br><a id="more"></a></p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>faster RCNN ~= RPN + fast RCNN</p>
+<p>用RPN代替fast RCNN中的Selective Search方法</p>
+<p>架构图：</p>
+<p>从 Fast R-CNN 中可以发现，目标检测的时间减少了，这时候，发现生成候选框成了性能瓶颈，所以，下一个改进的两个要点就是：</p>
+<p>1、将候选框的选取也放到GPU中去实现</p>
+<p>2、共享计算，共享已计算出的特征图</p>
+<p>R-CNN系列的架构演变</p>
+<p><img src="http://img.blog.csdn.net/20160414164536029" alt="r-cnn架构对比"></p>
+<p>目标检测的四个基本步骤被统一到一个大框架中，计算都在GPU中完成计算，提高了速度，同时消除了重复计算。</p>
+<h2 id="RPN"><a href="#RPN" class="headerlink" title="RPN"></a>RPN</h2><p>网络结构</p>
+<p><img src="http://img.blog.csdn.net/20160415133947737" alt="arc"></p>
+<p>用的是5层的ZF模型。</p>
+<h3 id="anchor的生成"><a href="#anchor的生成" class="headerlink" title="anchor的生成"></a>anchor的生成</h3><p>对于特征图中的每一个点，以该点为中心，考虑3种长宽比（1:1, 1:2, 2:1）和三种面积大小（128，256，512）共9种窗口，这些候选框即为anchors。示意图如下：</p>
+<p>关于anchors的生成代码如下：</p>
+<h3 id="Bounding-box-regression"><a href="#Bounding-box-regression" class="headerlink" title="Bounding-box regression"></a>Bounding-box regression</h3><p><img src="http://img.blog.csdn.net/20161020131820060?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="pic"></p>
+<p>A=(Ax, Ay, Aw, Ah)<br>f(Ax, Ay, Aw, Ah)=(G’x, G’y, G’w, G’h)<br>(G’x, G’y, G’w, G’h)≈(Gx, Gy, Gw, Gh)</p>
+<h2 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h2><h3 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h3><p>RPN和Fast R-CNN都是独立训练的，要用不同方式修改它们的卷积层。因此需要开发一种允许两个网络间共享卷积层的技术，而不是分别学习两个网络。</p>
+<p>论文中给出了三种训练具有共享特征的网络的解决方案：</p>
+<p>1、交替训练</p>
+<p>先训练RPN，并使用提案训练Fast R-CNN。然后，使用Fast R-CNN微调过后的网络初始化RPN，并重复此过程。这是论文中所有实验所使用的解决方案。</p>
+<p>2、近似联合训练</p>
+<p>RPN和Fast R-CNN网络在训练期间被合并到一个网络中。forward过程中，region proposal固定，训练Fast R-CNN。backward过程中，共享层包含RPN和Fast R-CNN两部分的损失。</p>
+<p>忽略了衍生的w.r.t.提案框的坐标也是网络响应，所以产生的结果是近似。但与交替训练相比，训练时间减少了约25-50％。</p>
+<p>3、非近似联合训练</p>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p>源码地址：</p>
+<p>根据代码，提取并总结的步骤如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">1. Stage 1 RPN, init from ImageNet model (M0 -&gt; M1)</div><div class="line">2. Stage1 RPN, generate proposals (M1 -&gt; P1)</div><div class="line">3. Stage1 Fast R-CNN using RPN  proposals, init from ImageNet model (M0, P1 -&gt; M2)</div><div class="line">4. Stage2 RPN, init from stage 1 Fast R-CNN model (M2 -&gt; M3)</div><div class="line">5. Stage2 RPN, generate proposals (M3 -&gt; P2)</div><div class="line">6. Stage2 Fast R-CNN, init from stage 2 RPN R-CNN model (M3,P2 -&gt; M4)</div></pre></td></tr></table></figure>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> paper </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[【代码阅读】generate_anchors.py]]></title>
       <url>http://xiaqunfeng.cc/2017/12/05/faster-r-cnn-generate-anchors/</url>
       <content type="html"><![CDATA[<p>阅读Faster R-CNN里产生anchors的代码。<br><a id="more"></a></p>
@@ -3200,9 +3242,9 @@
         
         <tags>
             
-            <tag> Linux </tag>
-            
             <tag> centos </tag>
+            
+            <tag> Linux </tag>
             
         </tags>
         
