@@ -21,14 +21,18 @@
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/12/14/Faster-R-CNN/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="Faster R-CNN论文阅读小笔记">
+<meta property="og:image" content="http://img.blog.csdn.net/20170314163622365">
 <meta property="og:image" content="http://img.blog.csdn.net/20160414164536029">
 <meta property="og:image" content="http://img.blog.csdn.net/20160415133947737">
-<meta property="og:image" content="http://img.blog.csdn.net/20161020131820060?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
-<meta property="og:updated_time" content="2017-12-16T06:09:56.000Z">
+<meta property="og:image" content="http://img.blog.csdn.net/20170322103903632">
+<meta property="og:image" content="http://img.blog.csdn.net/20170322103823615">
+<meta property="og:image" content="http://img.blog.csdn.net/20170321000420426">
+<meta property="og:image" content="http://img.blog.csdn.net/20170321221228658">
+<meta property="og:updated_time" content="2017-12-16T08:09:15.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【论文阅读】Faster-R-CNN">
 <meta name="twitter:description" content="Faster R-CNN论文阅读小笔记">
-<meta name="twitter:image" content="http://img.blog.csdn.net/20160414164536029">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20170314163622365">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -290,20 +294,38 @@
         <p>Faster R-CNN论文阅读小笔记<br><a id="more"></a></p>
 <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>faster RCNN ~= RPN + fast RCNN</p>
 <p>用RPN代替fast RCNN中的Selective Search方法</p>
-<p>架构图：</p>
+<p><strong>架构图</strong></p>
+<p><img src="http://img.blog.csdn.net/20170314163622365" alt="img"></p>
 <p>从 Fast R-CNN 中可以发现，目标检测的时间减少了，这时候，发现生成候选框成了性能瓶颈，所以，下一个改进的两个要点就是：</p>
-<p>1、将候选框的选取也放到GPU中去实现</p>
-<p>2、共享计算，共享已计算出的特征图</p>
-<p>R-CNN系列的架构演变</p>
+<ul>
+<li><p>1、将候选框的选取也放到GPU中去实现</p>
+</li>
+<li><p>2、共享计算，共享已计算出的特征图</p>
+</li>
+</ul>
+<p><strong>R-CNN系列的架构演变</strong></p>
 <p><img src="http://img.blog.csdn.net/20160414164536029" alt="r-cnn架构对比"></p>
 <p>目标检测的四个基本步骤被统一到一个大框架中，计算都在GPU中完成计算，提高了速度，同时消除了重复计算。</p>
-<h2 id="RPN"><a href="#RPN" class="headerlink" title="RPN"></a>RPN</h2><p>网络结构</p>
+<h2 id="RPN"><a href="#RPN" class="headerlink" title="RPN"></a>RPN</h2><p><strong>网络结构</strong></p>
 <p><img src="http://img.blog.csdn.net/20160415133947737" alt="arc"></p>
 <p>用的是5层的ZF模型。</p>
-<h3 id="anchor的生成"><a href="#anchor的生成" class="headerlink" title="anchor的生成"></a>anchor的生成</h3><p>对于特征图中的每一个点，以该点为中心，考虑3种长宽比（1:1, 1:2, 2:1）和三种面积大小（128，256，512）共9种窗口，这些候选框即为anchors。示意图如下：</p>
+<h3 id="anchor的生成"><a href="#anchor的生成" class="headerlink" title="anchor的生成"></a>anchor的生成</h3><p>遍历Conv layers计算获得的feature maps</p>
+<p><img src="http://img.blog.csdn.net/20170322103903632" alt="img"></p>
+<p>对于特征图中的每一个点，以该点为中心，考虑3种长宽比（1:1, 1:2, 2:1）和三种面积大小（128，256，512）共9种窗口，这些候选框即为anchors。示意图如下：</p>
+<p><img src="http://img.blog.csdn.net/20170322103823615" alt="img"></p>
 <p>关于anchors的生成代码如下：</p>
-<h3 id="Bounding-box-regression"><a href="#Bounding-box-regression" class="headerlink" title="Bounding-box regression"></a>Bounding-box regression</h3><p><img src="http://img.blog.csdn.net/20161020131820060?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="pic"></p>
-<p>A=(Ax, Ay, Aw, Ah)<br>f(Ax, Ay, Aw, Ah)=(G’x, G’y, G’w, G’h)<br>(G’x, G’y, G’w, G’h)≈(Gx, Gy, Gw, Gh)</p>
+<p><strong><a href="https://github.com/xiaqunfeng/py-faster-rcnn/blob/master/lib/rpn/generate_anchors.py" target="_blank" rel="external">generate_anchors.py</a></strong></p>
+<h3 id="Bounding-box-regression"><a href="#Bounding-box-regression" class="headerlink" title="Bounding-box regression"></a>Bounding-box regression</h3><p>如图，绿色框为飞机的Ground Truth(GT)，红色为提取的foreground anchors。这里得对红色的框进行微调，使得foreground anchors和GT更加接近。</p>
+<p><img src="http://img.blog.csdn.net/20170321000420426" alt="img"></p>
+<h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><p>对于窗口一般使用四维向量(x, y, w, h)表示，分别表示窗口的中心点坐标和宽高。</p>
+<p>如下图所示，红色的框A代表原始的Foreground Anchors，绿色的框G代表目标的GT。这里要使得输入A经过映射得到一个跟真实窗口G更接近的回归窗口G’。</p>
+<p><img src="http://img.blog.csdn.net/20170321221228658" alt="img"></p>
+<p>给定：anchor A=(Ax, Ay, Aw, Ah)，GT=[Gx, Gy, Gw, Gh]</p>
+<p>寻找变换<strong>F</strong>：<strong>F</strong>(Ax, Ay, Aw, Ah)=(G’x, G’y, G’w, G’h)</p>
+<p>其中(G’x, G’y, G’w, G’h)≈(Gx, Gy, Gw, Gh)</p>
+<h4 id="代码："><a href="#代码：" class="headerlink" title="代码："></a>代码：</h4><p><a href="https://github.com/xiaqunfeng/py-faster-rcnn/blob/master/lib/fast_rcnn/bbox_transform.py" target="_blank" rel="external">bbox_transform.py</a></p>
+<p>函数：bbox_transform_inv</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">def bbox_transform_inv(boxes, deltas):</div><div class="line">    if boxes.shape[0] == 0:</div><div class="line">        return np.zeros((0, deltas.shape[1]), dtype=deltas.dtype)</div><div class="line"></div><div class="line">    boxes = boxes.astype(deltas.dtype, copy=False)</div><div class="line"></div><div class="line">    widths = boxes[:, 2] - boxes[:, 0] + 1.0</div><div class="line">    heights = boxes[:, 3] - boxes[:, 1] + 1.0</div><div class="line">    ctr_x = boxes[:, 0] + 0.5 * widths</div><div class="line">    ctr_y = boxes[:, 1] + 0.5 * heights</div><div class="line"></div><div class="line">    dx = deltas[:, 0::4]</div><div class="line">    dy = deltas[:, 1::4]</div><div class="line">    dw = deltas[:, 2::4]</div><div class="line">    dh = deltas[:, 3::4]</div><div class="line"></div><div class="line">    pred_ctr_x = dx * widths[:, np.newaxis] + ctr_x[:, np.newaxis]</div><div class="line">    pred_ctr_y = dy * heights[:, np.newaxis] + ctr_y[:, np.newaxis]</div><div class="line">    pred_w = np.exp(dw) * widths[:, np.newaxis]</div><div class="line">    pred_h = np.exp(dh) * heights[:, np.newaxis]</div><div class="line"></div><div class="line">    pred_boxes = np.zeros(deltas.shape, dtype=deltas.dtype)</div><div class="line">    # x1</div><div class="line">    pred_boxes[:, 0::4] = pred_ctr_x - 0.5 * pred_w</div><div class="line">    # y1</div><div class="line">    pred_boxes[:, 1::4] = pred_ctr_y - 0.5 * pred_h</div><div class="line">    # x2</div><div class="line">    pred_boxes[:, 2::4] = pred_ctr_x + 0.5 * pred_w</div><div class="line">    # y2</div><div class="line">    pred_boxes[:, 3::4] = pred_ctr_y + 0.5 * pred_h</div><div class="line"></div><div class="line">    return pred_boxes</div></pre></td></tr></table></figure>
 <h2 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h2><h3 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h3><p>RPN和Fast R-CNN都是独立训练的，要用不同方式修改它们的卷积层。因此需要开发一种允许两个网络间共享卷积层的技术，而不是分别学习两个网络。</p>
 <p>论文中给出了三种训练具有共享特征的网络的解决方案：</p>
 <p>1、交替训练</p>
@@ -313,6 +335,7 @@
 <p>忽略了衍生的w.r.t.提案框的坐标也是网络响应，所以产生的结果是近似。但与交替训练相比，训练时间减少了约25-50％。</p>
 <p>3、非近似联合训练</p>
 <h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p>源码地址：</p>
+<p><a href="https://github.com/xiaqunfeng/py-faster-rcnn/blob/master/tools/train_faster_rcnn_alt_opt.py" target="_blank" rel="external">train_faster_rcnn_alt_opt.py</a></p>
 <p>根据代码，提取并总结的步骤如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">1. Stage 1 RPN, init from ImageNet model (M0 -&gt; M1)</div><div class="line">2. Stage1 RPN, generate proposals (M1 -&gt; P1)</div><div class="line">3. Stage1 Fast R-CNN using RPN  proposals, init from ImageNet model (M0, P1 -&gt; M2)</div><div class="line">4. Stage2 RPN, init from stage 1 Fast R-CNN model (M2 -&gt; M3)</div><div class="line">5. Stage2 RPN, generate proposals (M3 -&gt; P2)</div><div class="line">6. Stage2 Fast R-CNN, init from stage 2 RPN R-CNN model (M3,P2 -&gt; M4)</div></pre></td></tr></table></figure>
 
@@ -326,7 +349,7 @@
         <p><span>本文标题:</span><a href="/2017/12/14/Faster-R-CNN/">【论文阅读】Faster-R-CNN</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
         <p><span>发布时间:</span>2017-12-14, 13:08:34</p>
-        <p><span>最后更新:</span>2017-12-16, 14:09:56</p>
+        <p><span>最后更新:</span>2017-12-16, 16:09:15</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/12/14/Faster-R-CNN/" title="【论文阅读】Faster-R-CNN">http://xiaqunfeng.cc/2017/12/14/Faster-R-CNN/</a>
             <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/12/14/Faster-R-CNN/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -356,7 +379,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概述"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RPN"><span class="toc-number">2.</span> <span class="toc-text">RPN</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#anchor的生成"><span class="toc-number">2.1.</span> <span class="toc-text">anchor的生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bounding-box-regression"><span class="toc-number">2.2.</span> <span class="toc-text">Bounding-box regression</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#训练"><span class="toc-number">3.</span> <span class="toc-text">训练</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#方案"><span class="toc-number">3.1.</span> <span class="toc-text">方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码实现"><span class="toc-number">3.2.</span> <span class="toc-text">代码实现</span></a></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概述"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RPN"><span class="toc-number">2.</span> <span class="toc-text">RPN</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#anchor的生成"><span class="toc-number">2.1.</span> <span class="toc-text">anchor的生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bounding-box-regression"><span class="toc-number">2.2.</span> <span class="toc-text">Bounding-box regression</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#原理"><span class="toc-number">2.2.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#代码："><span class="toc-number">2.2.2.</span> <span class="toc-text">代码：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#训练"><span class="toc-number">3.</span> <span class="toc-text">训练</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#方案"><span class="toc-number">3.1.</span> <span class="toc-text">方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码实现"><span class="toc-number">3.2.</span> <span class="toc-text">代码实现</span></a></li></ol></li></ol>
         
     </div>
     <style>
