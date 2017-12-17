@@ -13,10 +13,8 @@
 <p><img src="http://img.blog.csdn.net/20170314163622365" alt="img"></p>
 <p>从 Fast R-CNN 中可以发现，目标检测的时间减少了，这时候，发现生成候选框成了性能瓶颈，所以，下一个改进的两个要点就是：</p>
 <ul>
-<li><p>1、将候选框的选取也放到GPU中去实现</p>
-</li>
-<li><p>2、共享计算，共享已计算出的特征图</p>
-</li>
+<li>1、将候选框的选取也放到GPU中去实现</li>
+<li>2、共享计算，共享已计算出的特征图</li>
 </ul>
 <p><strong>R-CNN系列的架构演变</strong></p>
 <p><img src="http://img.blog.csdn.net/20160414164536029" alt="r-cnn架构对比"></p>
