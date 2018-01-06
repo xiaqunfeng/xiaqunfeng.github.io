@@ -317,7 +317,7 @@
     <entry>
       <title><![CDATA[mac上安装caffe并训练mnist]]></title>
       <url>http://xiaqunfeng.cc/2017/11/05/mac%E4%B8%8A%E5%AE%89%E8%A3%85caffe%E5%B9%B6%E8%AE%AD%E7%BB%83mnist/</url>
-      <content type="html"><![CDATA[<p>在mac上安装caffe，然后训练一个mnist项目，熟悉流程。<br><a id="more"></a></p>
+      <content type="html"><![CDATA[<p>在mac上安装caffe，然后训练一个mnist项目，熟悉流程。新增anaconda的使用介绍。<br><a id="more"></a></p>
 <h2 id="安装caffe"><a href="#安装caffe" class="headerlink" title="安装caffe"></a>安装caffe</h2><p>官方的资料：<a href="http://caffe.berkeleyvision.org/install_osx.html" target="_blank" rel="external">http://caffe.berkeleyvision.org/install_osx.html</a></p>
 <p>我这里并没有用 Anaconda Python，如果想要安装它的话，去<a href="https://www.anaconda.com/download/#macos" target="_blank" rel="external">官网下载</a>并安装。</p>
 <h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><p>1、安装必要的库和依赖</p>
@@ -349,14 +349,31 @@
 <blockquote>
 <p>如果 <code>pkg-config</code> 没安装：<code>brew install pkg-config</code></p>
 </blockquote>
+<p>修改anaconda的地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># Anaconda Python distribution is quite popular. Include path:</div><div class="line"># Verify anaconda location, sometimes it&apos;s in root.</div><div class="line"># ANACONDA_HOME := $(HOME)/anaconda</div><div class="line">ANACONDA_HOME := $/Users/xiaqunfeng/anaconda2</div><div class="line">PYTHON_INCLUDE := $(ANACONDA_HOME)/include \</div><div class="line">         $(ANACONDA_HOME)/include/python2.7 \</div><div class="line">         $(ANACONDA_HOME)/lib/python2.7/site-packages/numpy/core/include</div></pre></td></tr></table></figure>
 <h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p>1、编译</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">make all</div><div class="line">make test</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mkdir build</div><div class="line">cd build</div><div class="line">cmake -DCPU_ONLY=ON ..</div><div class="line">make all -j8</div></pre></td></tr></table></figure>
 <p>忽略 warning，有error解决error的错误（正常没有error，有的话一般是依赖包没装成功）。</p>
 <p>2、运行test</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">make runtest</div></pre></td></tr></table></figure>
 <p>输出如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">[----------] 3 tests from MSRAFillerTest/0, where TypeParam = f</div><div class="line">[ RUN      ] MSRAFillerTest/0.TestFillAverage</div><div class="line">[       OK ] MSRAFillerTest/0.TestFillAverage (0 ms)</div><div class="line">[ RUN      ] MSRAFillerTest/0.TestFillFanIn</div><div class="line">[       OK ] MSRAFillerTest/0.TestFillFanIn (1 ms)</div><div class="line">[ RUN      ] MSRAFillerTest/0.TestFillFanOut</div><div class="line">[       OK ] MSRAFillerTest/0.TestFillFanOut (1 ms)</div><div class="line">[----------] 3 tests from MSRAFillerTest/0 (2 ms total)</div><div class="line"></div><div class="line">[----------] Global test environment tear-down</div><div class="line">[==========] 1110 tests from 152 test cases ran. (54652 ms total)</div><div class="line">[  PASSED  ] 1110 tests.</div></pre></td></tr></table></figure>
 <p>此时，caffe安装成功，并通过了测试。</p>
+<h2 id="pycaffe安装"><a href="#pycaffe安装" class="headerlink" title="pycaffe安装"></a>pycaffe安装</h2><p>1、在build目录下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">make pycaffe</div><div class="line">make pytest</div></pre></td></tr></table></figure>
+<p>2、设置pycaffe环境变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">▶ cat ~/.bash_profile</div><div class="line">...</div><div class="line"># caffe python</div><div class="line">export PYTHONPATH=&quot;/Users/xiaqunfeng/AI/caffe/python:$PYTHONPATH&quot;</div><div class="line">...</div><div class="line">▶ source ~/.bash_profile</div></pre></td></tr></table></figure>
+<p>3、在python中测试caffe接口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">▶ python</div><div class="line">Python 2.7.14 |Anaconda, Inc.| (default, Dec  7 2017, 11:07:58)</div><div class="line">[GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)] on darwin</div><div class="line">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</div><div class="line">&gt;&gt;&gt; import caffe</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注：python3和caffe不能很好的兼容，官方也说了不推荐，我试了一直会出错：“ImportError: dynamic module does not define module export function (PyInit__caffe)”</p>
+</blockquote>
+<h3 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h3><p>Q1：<code>ImportError: No module named numpy</code></p>
+<p>A1：<code>conda install numpy</code></p>
+<p>Q2：<code>ImportError: No module named skimage.io</code></p>
+<p>A2：<code>conda install scikit-image</code></p>
+<p>Q3：<code>ImportError: No module named google.protobuf.internal</code></p>
+<p>A3：<code>conda install protobuf</code></p>
 <h2 id="训练mnist数据集"><a href="#训练mnist数据集" class="headerlink" title="训练mnist数据集"></a>训练mnist数据集</h2><p>1、下载mnist数据</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./data/mnist/get_mnist.sh</div></pre></td></tr></table></figure>
 <p>下载的数据保存在 <code>./data/mnist/</code> 目录下。</p>
@@ -372,48 +389,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">I1102 17:31:49.379988 3124548544 solver.cpp:218] Iteration 9900 (25.582 iter/s, 3.909s/100 iters), loss = 0.00534126</div><div class="line">I1102 17:31:49.381337 3124548544 solver.cpp:237]     Train net output #0: loss = 0.00534115 (* 1 = 0.00534115 loss)</div><div class="line">I1102 17:31:49.381361 3124548544 sgd_solver.cpp:105] Iteration 9900, lr = 0.00596843</div><div class="line">I1102 17:31:54.009297 3124548544 solver.cpp:447] Snapshotting to binary proto file examples/mnist/lenet_iter_10000.caffemodel</div><div class="line">I1102 17:31:54.026062 3124548544 sgd_solver.cpp:273] Snapshotting solver state to binary proto file examples/mnist/lenet_iter_10000.solverstate</div><div class="line">I1102 17:31:54.059612 3124548544 solver.cpp:310] Iteration 10000, loss = 0.00328907</div><div class="line">I1102 17:31:54.059659 3124548544 solver.cpp:330] Iteration 10000, Testing net (#0)</div><div class="line">I1102 17:31:56.881471 148017152 data_layer.cpp:73] Restarting data prefetching from start.</div><div class="line">I1102 17:31:57.004863 3124548544 solver.cpp:397]     Test net output #0: accuracy = 0.9906</div><div class="line">I1102 17:31:57.004914 3124548544 solver.cpp:397]     Test net output #1: loss = 0.0292456 (* 1 = 0.0292456 loss)</div><div class="line">I1102 17:31:57.004932 3124548544 solver.cpp:315] Optimization Done.</div><div class="line">I1102 17:31:57.004940 3124548544 caffe.cpp:259] Optimization Done.</div></pre></td></tr></table></figure>
 <p>可以看到，一共迭代10000次，准确率为 0.9906。训练出的模型为：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">▶ ll examples/mnist</div><div class="line">...</div><div class="line">-rw-r--r--  1 xiaqunfeng  staff   1.6M 11  2 17:31 lenet_iter_10000.caffemodel</div><div class="line">...</div></pre></td></tr></table></figure>
-<h2 id="使用模型进行分类"><a href="#使用模型进行分类" class="headerlink" title="使用模型进行分类"></a>使用模型进行分类</h2><p>用Caffe中已经训练好的模型（基于Alexnet的结构）对图像进行分类，并且可以显示不同层中训练得到的特征：</p>
-<p><a href="http://nbviewer.jupyter.org/github/BVLC/caffe/blob/master/examples/00-classification.ipynb" target="_blank" rel="external">http://nbviewer.jupyter.org/github/BVLC/caffe/blob/master/examples/00-classification.ipynb</a></p>
-<h2 id="导入caffe"><a href="#导入caffe" class="headerlink" title="导入caffe"></a>导入caffe</h2><p>编译安装完后，在python脚本中导入 caffe 时出现如下错误：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">    import caffe</div><div class="line">ImportError: No module named caffe</div></pre></td></tr></table></figure>
-<p>解决方法：</p>
-<p>1、先安装 pycaffe</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">make pycaffe</div></pre></td></tr></table></figure>
-<p>会遇到如下问题：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python/caffe/_caffe.cpp:10:31: fatal error: numpy/arrayobject.h: No such file or directory</div></pre></td></tr></table></figure>
-<p>原因是python-numpy没有安装到位，安装即可</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install python-numpy</div></pre></td></tr></table></figure>
-<p>2、添加caffe路径</p>
-<p><strong>方法一：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim ~/.bashrc</div></pre></td></tr></table></figure>
-<p>添加如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export PYTHONPATH=/workspace/caffe/python:$PYTHONPATH</div></pre></td></tr></table></figure>
-<p>其中 <code>/workspace</code> 是clone caffe master代码的目录</p>
-<p>然后执行 <code>source ~/.bashrc</code> 即可</p>
-<p><strong>方法二：</strong></p>
-<p>或者，在导入 caffe的时候在python 文件里手动添加</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">import os</div><div class="line">import sys</div><div class="line">PYCAFFE_ROOT = &apos;/workspace/caffe/python/&apos;</div><div class="line">sys.path.append(PYCAFFE_ROOT)</div><div class="line">import caffe</div></pre></td></tr></table></figure>
-<h2 id="ubuntu-16-04上安装遇到的问题"><a href="#ubuntu-16-04上安装遇到的问题" class="headerlink" title="ubuntu 16.04上安装遇到的问题"></a>ubuntu 16.04上安装遇到的问题</h2><h3 id="编译依赖问题"><a href="#编译依赖问题" class="headerlink" title="编译依赖问题"></a>编译依赖问题</h3><p><strong>问题1：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./include/caffe/common.hpp:5:27: fatal error: gflags/gflags.h: No such file or directory</div></pre></td></tr></table></figure>
-<p>解决方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install libgflags-dev</div></pre></td></tr></table></figure>
-<p><strong>问题2：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./include/caffe/util/mkl_alternate.hpp:14:19: fatal error: cblas.h: No such file or directory</div></pre></td></tr></table></figure>
-<p>解决方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install libblas-dev</div></pre></td></tr></table></figure>
-<p><strong>问题3：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./include/caffe/util/hdf5.hpp:6:18: fatal error: hdf5.h: No such file or directory</div></pre></td></tr></table></figure>
-<p>解决方法：在 <code>Makefile.config</code> 找到以下亮行并添加最后一部分</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">INCLUDE_DIRS := $(PYTHON_INCLUDE) /usr/local/include /usr/include/hdf5/serial </div><div class="line">LIBRARY_DIRS := $(PYTHON_LIB) /usr/local/lib /usr/lib /usr/lib/x86_64-linux-gnu/hdf5/serial</div></pre></td></tr></table></figure>
-<p><strong>问题4：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./include/caffe/util/db_lmdb.hpp:8:18: fatal error: lmdb.h: No such file or directory</div></pre></td></tr></table></figure>
-<p>解决方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt install liblmdb-dev</div></pre></td></tr></table></figure>
-<p><strong>问题5：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/bin/ld: cannot find -lcblas</div></pre></td></tr></table></figure>
-<p>解决方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt install libatlas-base-dev</div></pre></td></tr></table></figure>
-<h2 id="关于mnist"><a href="#关于mnist" class="headerlink" title="关于mnist"></a>关于mnist</h2><p>MNIST 数据集来自美国国家标准与技术研究所, <strong>National Institute of Standards and Technology (NIST)</strong>。训练集 (training set) 由来自 250 个不同人手写的数字构成，其中 50% 是高中学生, 50% 来自人口普查局 (the Census Bureau) 的工作人员。测试集(test set) 也是同样比例的手写数字数据。mnist最初备在美国被用与支票上手写数字识别，现在成了DeepLearning的入门练习示例，针对mnist识别的神经网络的专门模型是Lenet，算是最早的CNN模型了。</p>
+<h3 id="关于mnist"><a href="#关于mnist" class="headerlink" title="关于mnist"></a>关于mnist</h3><p>MNIST 数据集来自美国国家标准与技术研究所, <strong>National Institute of Standards and Technology (NIST)</strong>。训练集 (training set) 由来自 250 个不同人手写的数字构成，其中 50% 是高中学生, 50% 来自人口普查局 (the Census Bureau) 的工作人员。测试集(test set) 也是同样比例的手写数字数据。mnist最初备在美国被用与支票上手写数字识别，现在成了DeepLearning的入门练习示例，针对mnist识别的神经网络的专门模型是Lenet，算是最早的CNN模型了。</p>
 <ul>
 <li>mnist数据的—训练样本为60000张</li>
 <li>测试样本为10000张</li>
@@ -434,9 +410,111 @@
 <li><strong>Test set images</strong>: t10k-images-idx3-ubyte.gz (1.6 MB, 解压后 7.8 MB, 包含 10,000 个样本)</li>
 <li><strong>Test set labels</strong>: t10k-labels-idx1-ubyte.gz (5KB, 解压后 10 KB, 包含 10,000 个标签)</li>
 </ul>
-<h2 id="anaconda"><a href="#anaconda" class="headerlink" title="anaconda"></a>anaconda</h2><p>关于anaconda的使用可以参考：</p>
-<p><a href="http://blog.leanote.com/post/braveapple/Anaconda%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93" target="_blank" rel="external">http://blog.leanote.com/post/braveapple/Anaconda%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93</a></p>
-<p><a href="https://foofish.net/compatible-py2-and-py3.html" target="_blank" rel="external">https://foofish.net/compatible-py2-and-py3.html</a></p>
+<h2 id="使用模型进行分类"><a href="#使用模型进行分类" class="headerlink" title="使用模型进行分类"></a>使用模型进行分类</h2><p>用Caffe中已经训练好的模型（基于Alexnet的结构）对图像进行分类，并且可以显示不同层中训练得到的特征：</p>
+<p><a href="http://nbviewer.jupyter.org/github/BVLC/caffe/blob/master/examples/00-classification.ipynb" target="_blank" rel="external">http://nbviewer.jupyter.org/github/BVLC/caffe/blob/master/examples/00-classification.ipynb</a></p>
+<h2 id="ubuntu-16-04上安装遇到的问题"><a href="#ubuntu-16-04上安装遇到的问题" class="headerlink" title="ubuntu 16.04上安装遇到的问题"></a>ubuntu 16.04上安装遇到的问题</h2><h3 id="编译依赖问题"><a href="#编译依赖问题" class="headerlink" title="编译依赖问题"></a>编译依赖问题</h3><p><strong>问题1：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./include/caffe/common.hpp:5:27: fatal error: gflags/gflags.h: No such file or directory</div></pre></td></tr></table></figure>
+<p>解决方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install libgflags-dev</div></pre></td></tr></table></figure>
+<p><strong>问题2：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./include/caffe/util/mkl_alternate.hpp:14:19: fatal error: cblas.h: No such file or directory</div></pre></td></tr></table></figure>
+<p>解决方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install libblas-dev</div></pre></td></tr></table></figure>
+<p><strong>问题3：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./include/caffe/util/hdf5.hpp:6:18: fatal error: hdf5.h: No such file or directory</div></pre></td></tr></table></figure>
+<p>解决方法：在 <code>Makefile.config</code> 找到以下亮行并添加最后一部分</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">INCLUDE_DIRS := $(PYTHON_INCLUDE) /usr/local/include /usr/include/hdf5/serial </div><div class="line">LIBRARY_DIRS := $(PYTHON_LIB) /usr/local/lib /usr/lib /usr/lib/x86_64-linux-gnu/hdf5/serial</div></pre></td></tr></table></figure>
+<p><strong>问题4：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./include/caffe/util/db_lmdb.hpp:8:18: fatal error: lmdb.h: No such file or directory</div></pre></td></tr></table></figure>
+<p>解决方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt install liblmdb-dev</div></pre></td></tr></table></figure>
+<p><strong>问题5：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/bin/ld: cannot find -lcblas</div></pre></td></tr></table></figure>
+<p>解决方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt install libatlas-base-dev</div></pre></td></tr></table></figure>
+<h3 id="python导入caffe"><a href="#python导入caffe" class="headerlink" title="python导入caffe"></a>python导入caffe</h3><p>编译安装完后，在python脚本中导入 caffe 时出现如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">    import caffe</div><div class="line">ImportError: No module named caffe</div></pre></td></tr></table></figure>
+<p>解决方法：</p>
+<p>1、先安装 pycaffe</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">make pycaffe</div></pre></td></tr></table></figure>
+<p>会遇到如下问题：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python/caffe/_caffe.cpp:10:31: fatal error: numpy/arrayobject.h: No such file or directory</div></pre></td></tr></table></figure>
+<p>原因是python-numpy没有安装到位，安装即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install python-numpy</div></pre></td></tr></table></figure>
+<p>2、添加caffe路径</p>
+<p><strong>方法一：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim ~/.bashrc</div></pre></td></tr></table></figure>
+<p>添加如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export PYTHONPATH=/workspace/caffe/python:$PYTHONPATH</div></pre></td></tr></table></figure>
+<p>其中 <code>/workspace</code> 是clone caffe master代码的目录</p>
+<p>然后执行 <code>source ~/.bashrc</code> 即可</p>
+<p><strong>方法二：</strong></p>
+<p>或者，在导入 caffe的时候在python 文件里手动添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">import os</div><div class="line">import sys</div><div class="line">PYCAFFE_ROOT = &apos;/workspace/caffe/python/&apos;</div><div class="line">sys.path.append(PYCAFFE_ROOT)</div><div class="line">import caffe</div></pre></td></tr></table></figure>
+<h2 id="anaconda"><a href="#anaconda" class="headerlink" title="anaconda"></a>anaconda</h2><blockquote>
+<p>caffe不能和python3很好的支持，所以主要用Python2.7。因为我在mac上的使用习惯都是python3，各种安装包也都是通过 pip3 命令装的python3版本的，所以需要一个anaconda来创建一个python2.7的环境。</p>
+</blockquote>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>1、官网<a href="https://www.anaconda.com/download/#macos" target="_blank" rel="external">下载</a></p>
+<p>推荐下载 .pkg 文件进行图形化安装，下载python2和python3版本的均可，只是默认环境不一样，不影响，我这里下载的 Anaconda2。</p>
+<p>安装完后会在 <code>~/.bash_profile</code> 中自动添加如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># added by Anaconda2 5.0.1 installer</div><div class="line">export PATH=&quot;/Users/xiaqunfeng/anaconda2/bin:$PATH&quot;</div></pre></td></tr></table></figure>
+<p>如果没有添加，手动添加之</p>
+<p>运行 <code>source ~/.bash_profile</code></p>
+<p>2、确认安装</p>
+<p>进入选择的安装目录 <code>/Users/xiaqunfeng/anaconda2</code></p>
+<p>查看conda命令是否可用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># conda list</div></pre></td></tr></table></figure>
+<p>可用，表示安装成功</p>
+<h3 id="conda"><a href="#conda" class="headerlink" title="conda"></a>conda</h3><h3 id="环境管理"><a href="#环境管理" class="headerlink" title="环境管理"></a>环境管理</h3><p>1、创建</p>
+<p>创建名为python27的环境，指定python版本2.7（不用指定小版本 2.7.x，conda会自动寻找2.7.x中最新版）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">▶ conda create --name python27 python=2.7</div></pre></td></tr></table></figure>
+<p>2、激活</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">▶ source activate python27</div><div class="line">(python27)</div></pre></td></tr></table></figure>
+<p>这一步系统做的事情就是把默认2.7环境从PATH中去除，再把新的2.7对应的命令加入PATH</p>
+<p>查看系统版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">▶ python --version</div><div class="line">Python 2.7.14 :: Anaconda, Inc.</div><div class="line">(python27)</div></pre></td></tr></table></figure>
+<p>3、查看</p>
+<p>用户安装的不同python环境都会被放在目录<code>~/anaconda/envs</code>下。运行<code>conda info -e</code>查看已安装的环境，当前被激活的环境会显示有一个星号。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">▶ conda info -e</div><div class="line"># conda environments:</div><div class="line">#</div><div class="line">python27              *  /Users/xiaqunfeng/anaconda2/envs/python27</div><div class="line">root                     /Users/xiaqunfeng/anaconda2</div></pre></td></tr></table></figure>
+<p>4、离开</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">▶ source deactivate python27</div></pre></td></tr></table></figure>
+<p>此时系统环境回到了默认的 root 上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">▶ conda info -e</div><div class="line"># conda environments:</div><div class="line">#</div><div class="line">python27                 /Users/xiaqunfeng/anaconda2/envs/python27</div><div class="line">root                  *  /Users/xiaqunfeng/anaconda2</div></pre></td></tr></table></figure>
+<p>5、删除</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">▶ conda remove --name python27 --all</div></pre></td></tr></table></figure>
+<p>6、共享</p>
+<ul>
+<li><strong>导出</strong></li>
+</ul>
+<p>将当前的环境保存到文件中包保存为YAML文件（包括Pyhton版本和所有包的名称）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">▶ conda env export &gt; py27-env.yaml</div><div class="line">(python27)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>在 GitHub 上共享代码时，最好同样创建环境文件并将其包括在代码库中。这能让其他人更轻松地安装你的代码的所有依赖项。</p>
+</blockquote>
+<ul>
+<li><strong>使用</strong></li>
+</ul>
+<p>在conda中进入自己的环境</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">▶ conda activate XXX</div></pre></td></tr></table></figure>
+<p>然后更新环境</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">▶ conda env update -f=/yourpath/py27-env.yaml</div></pre></td></tr></table></figure>
+<blockquote>
+<p>如果不使用 conda ，还可以使用 pip freeze，具体没实践过，可以查阅相关资料</p>
+</blockquote>
+<h3 id="包管理"><a href="#包管理" class="headerlink" title="包管理"></a>包管理</h3><p>conda 的包管理功能可 pip 是一样的，当然你选择 pip 来安装包也是没问题的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"># 安装命令</div><div class="line">conda install package-name</div><div class="line"></div><div class="line"># 指定环境安装package</div><div class="line">conda install -n python34 package-name</div><div class="line"></div><div class="line"># 查看当前环境已经安装的packages</div><div class="line">conda list</div><div class="line"></div><div class="line"># 查看某个指定环境的已安装包</div><div class="line">conda list -n python34</div><div class="line"></div><div class="line"># 查找package信息</div><div class="line">conda search numpy</div><div class="line"></div><div class="line"># 更新package</div><div class="line">conda update -n python34 numpy</div><div class="line"></div><div class="line"># 删除package</div><div class="line">conda remove -n python34 numpy</div></pre></td></tr></table></figure>
+<p>conda将conda、python等都视为package，因此，完全可以使用conda来管理conda和python的版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># 更新conda，保持conda最新</div><div class="line">conda update conda</div><div class="line"># 更新anaconda</div><div class="line">conda update anaconda</div><div class="line"># 更新python</div><div class="line">conda update python</div></pre></td></tr></table></figure>
+<h3 id="设置国内镜像"><a href="#设置国内镜像" class="headerlink" title="设置国内镜像"></a>设置国内镜像</h3><p>Anaconda.org的服务器在国外，下载速度有时会比较慢，设置国内清华TUNA镜像源，加入conda的配置。</p>
+<p>1、原配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">▶ cat ~/.condarc</div><div class="line">channels:</div><div class="line">  - defaults</div><div class="line">ssl_verify: true</div></pre></td></tr></table></figure>
+<p>2、添加配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">▶ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/</div><div class="line">▶ conda config --set show_channel_urls yes</div></pre></td></tr></table></figure>
+<p>修改后配置如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">▶ cat ~/.condarc</div><div class="line">channels:</div><div class="line">  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/</div><div class="line">  - defaults</div><div class="line">ssl_verify: true</div><div class="line">show_channel_urls: true</div></pre></td></tr></table></figure>
+<p>3、查看配置是否生效，查看当前信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">▶ conda info</div><div class="line">Current conda install:</div><div class="line">...</div><div class="line">           channel URLs : https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/osx-64</div><div class="line">                          https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/noarch</div><div class="line">                          https://repo.continuum.io/pkgs/main/osx-64</div><div class="line">                          https://repo.continuum.io/pkgs/main/noarch</div><div class="line">                          https://repo.continuum.io/pkgs/free/osx-64</div><div class="line">                          https://repo.continuum.io/pkgs/free/noarch</div><div class="line">                          https://repo.continuum.io/pkgs/r/osx-64</div><div class="line">                          https://repo.continuum.io/pkgs/r/noarch</div><div class="line">                          https://repo.continuum.io/pkgs/pro/osx-64</div><div class="line">                          https://repo.continuum.io/pkgs/pro/noarch</div><div class="line">...</div><div class="line">(python27)</div></pre></td></tr></table></figure>
+<p>在 channel URLs 中有新添加的镜像地址，表示已生效。</p>
 ]]></content>
       
         
