@@ -3970,6 +3970,7 @@
       <title><![CDATA[Machine Learning Yearning(5、6、7)]]></title>
       <url>http://xiaqunfeng.cc/2017/03/09/Machine-Learning-Yearning-5%E3%80%816/</url>
       <content type="html"><![CDATA[<p>第5、6、7三章，主要讲开发集和测试集，包括选型、大小、比例等。<br><a id="more"></a></p>
+<p>共14篇完整手稿已翻译完毕，详见：<a href="https://github.com/xiaqunfeng/machine-learning-yearning，博客上就不再更新" target="_blank" rel="external">https://github.com/xiaqunfeng/machine-learning-yearning，博客上就不再更新</a></p>
 <p>Setting up development and test sets</p>
 <p>设置开发和测试集</p>
 <h2 id="Chapter-5、Your-development-and-test-sets"><a href="#Chapter-5、Your-development-and-test-sets" class="headerlink" title="Chapter 5、Your development and test sets"></a>Chapter 5、Your development and test sets</h2><p><strong>您的开发和测试集</strong><br>​    让我们回到我们早期猫图片的那个例子：你运行一个移动app，用户正在上传很多不同事物的图片到该app中。你想自动找到猫的图片。<br>​    您的团队通过从不同网站上下载猫（positive examples，正样本）和非猫（negative examples，负样本）的图获得一个大的训练集。 他们将数据集按照比例70％/ 30％分成训练集/测试集。 使用这些数据，他们构建了一个在训练集和测试集上都表现很好的的猫检测器。<br>​    但是当你将这个分类器部署到移动app时，你发现表现真的很糟糕！</p>
@@ -4018,6 +4019,7 @@
       <title><![CDATA[Machine Learning Yearning(3、4)]]></title>
       <url>http://xiaqunfeng.cc/2017/03/03/Machine-Learning-Yearning-3%E3%80%814/</url>
       <content type="html"><![CDATA[<p>NG的机器学习教程，第三章：预备知识和注释；第四章：规模驱使机器学习前进。<br><a id="more"></a></p>
+<p>共14篇完整手稿已翻译完毕，详见：<a href="https://github.com/xiaqunfeng/machine-learning-yearning，博客上就不再更新" target="_blank" rel="external">https://github.com/xiaqunfeng/machine-learning-yearning，博客上就不再更新</a></p>
 <h2 id="Chapter-3、Prerequisites-and-Notation"><a href="#Chapter-3、Prerequisites-and-Notation" class="headerlink" title="Chapter 3、Prerequisites and Notation"></a>Chapter 3、Prerequisites and Notation</h2><p><strong>预备知识和注释</strong><br>​    如果你有学习过机器学习课程，比如我在Coursera上的的机器学习MOOC，或者如果你有应用监督学习的经验，你也将能够理解这段文字。<br>​    我假设你熟悉监督学习（supervised learning）：使用标记的训练样本（x，y）去学习一个从x映射到y的函数。 监督学习算法包括线性回归（linear regression），逻辑回归（logistic regression）和神经网络（neural networks）。 机器学习的形式有很多，但是现如今大部分机器学习的实用价值来自于监督学习。<br>​    我将经常提到神经网络（也称为“deep learning”）。你只需要遵循本问对它是什么有一个基本的理解就可以了。<br>​    如果您不熟悉这里提到的概念，请观看在Coursera上前三周 机器学习视频课程<a href="http://ml-class.org" target="_blank" rel="external">http://ml-class.org</a></p>
 <p><img src="http://img.blog.csdn.net/20161208234928384?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
 <h2 id="Chapter-4、Scale-drives-machine-learning-progress"><a href="#Chapter-4、Scale-drives-machine-learning-progress" class="headerlink" title="Chapter 4、Scale drives machine learning progress"></a>Chapter 4、Scale drives machine learning progress</h2><p><strong>规模驱使机器学习前进</strong></p>
@@ -4052,6 +4054,7 @@
 <h2 id="开篇"><a href="#开篇" class="headerlink" title="开篇"></a>开篇</h2><p>网上搜了一下，发现已经有一些翻译后的资料了，我这里就是边学习边翻译记录，主要作为给自己的学习笔记吧，并不冲突。</p>
 <p>官网：<a href="http://www.mlyearning.org/" target="_blank" rel="external">http://www.mlyearning.org/</a></p>
 <p>这里可以留下你的邮箱，当有更新的时候会发到你的邮箱（好像我关注后就没发过）。</p>
+<p>共14篇完整手稿已翻译完毕，详见：<a href="https://github.com/xiaqunfeng/machine-learning-yearning，博客上就不再更新" target="_blank" rel="external">https://github.com/xiaqunfeng/machine-learning-yearning，博客上就不再更新</a></p>
 <h3 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h3><p>这本书的目的是教你如何做组织一个机器学习项目所需的大量的决定。 你将学习：</p>
 <ul>
 <li>如何建立你的开发和测试集</li>
