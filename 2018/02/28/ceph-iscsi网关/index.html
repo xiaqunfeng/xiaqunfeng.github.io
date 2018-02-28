@@ -15,16 +15,18 @@
 
 
 
-<meta name="description" content="Linux本身是支持多终端并行处理的，但是某些时候我们可能需要两个人同时处理同一个终端，比如远程协助定位问题等。screen正好能满足这个需求。">
+<meta name="description" content="介绍三种iscsi target的选型：TGT、LIO、SCST。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux下利用screen进行屏幕协作">
-<meta property="og:url" content="http://xiaqunfeng.cc/2017/01/11/Linux下利用screen进行屏幕协作/index.html">
+<meta property="og:title" content="ceph iscsi网关">
+<meta property="og:url" content="http://xiaqunfeng.cc/2018/02/28/ceph-iscsi网关/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="Linux本身是支持多终端并行处理的，但是某些时候我们可能需要两个人同时处理同一个终端，比如远程协助定位问题等。screen正好能满足这个需求。">
-<meta property="og:updated_time" content="2017-01-11T03:30:52.000Z">
+<meta property="og:description" content="介绍三种iscsi target的选型：TGT、LIO、SCST。">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/ceph_iscsi_gateway.png">
+<meta property="og:updated_time" content="2018-02-28T12:11:43.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Linux下利用screen进行屏幕协作">
-<meta name="twitter:description" content="Linux本身是支持多终端并行处理的，但是某些时候我们可能需要两个人同时处理同一个终端，比如远程协助定位问题等。screen正好能满足这个需求。">
+<meta name="twitter:title" content="ceph iscsi网关">
+<meta name="twitter:description" content="介绍三种iscsi target的选型：TGT、LIO、SCST。">
+<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/ceph_iscsi_gateway.png">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -56,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Linux下利用screen进行屏幕协作 | 夏天的风的博客</title>
+<title>ceph iscsi网关 | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -243,11 +245,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-Linux下利用screen进行屏幕协作" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-ceph-iscsi网关" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/01/11/Linux下利用screen进行屏幕协作/" class="article-date">
-      <time datetime="2017-01-11T03:30:52.000Z" itemprop="datePublished">2017-01-11</time>
+      <a href="/2018/02/28/ceph-iscsi网关/" class="article-date">
+      <time datetime="2018-02-28T12:06:46.000Z" itemprop="datePublished">2018-02-28</time>
 </a>
 
 
@@ -262,7 +264,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Linux下利用screen进行屏幕协作
+      ceph iscsi网关
     </h1>
   
 
@@ -273,7 +275,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -283,23 +285,82 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>Linux本身是支持多终端并行处理的，但是某些时候我们可能需要两个人同时处理同一个终端，比如远程协助定位问题等。screen正好能满足这个需求。<br><a id="more"></a></p>
-<h2 id="screen的安装"><a href="#screen的安装" class="headerlink" title="screen的安装"></a>screen的安装</h2><p>debian和ubuntu下安装方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apt-get install screen</div></pre></td></tr></table></figure>
-<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><p>假设现在有a和b需要进行屏幕协作。</p>
+        <p>介绍三种iscsi target的选型：TGT、LIO、SCST。</p>
+<a id="more"></a>
+<p> Ceph iSCSI Gateway基本框架：<img src="http://oow6unnib.bkt.clouddn.com/ceph_iscsi_gateway.png" alt="ceph iscsi gateway"></p>
+<h2 id="用户态（TGT）"><a href="#用户态（TGT）" class="headerlink" title="用户态（TGT）"></a>用户态（TGT）</h2><p>tgt是一个用户态的SCSI target框架。由于是基于用户态的框架，因此对集成同在用户态的RBD接口比较简单。</p>
+<p>作为用户态框架，tgt在使用本地存储的情况下，性能相比SCST、LIO有一定差距的，如果从性能的角度考虑，tgt应该不推荐使用的，在新特性验证等方面是很合适的。</p>
+<p>使用TGT的开源分布式存储项目：sheepdog 与 hlfs。</p>
+<h2 id="内核态（LIO、SCST）"><a href="#内核态（LIO、SCST）" class="headerlink" title="内核态（LIO、SCST）"></a>内核态（LIO、SCST）</h2><h3 id="LIO"><a href="#LIO" class="headerlink" title="LIO"></a>LIO</h3><p>1）支持较多传输协议</p>
+<p>2）代码并入linux内核，减少了手动编译内核的麻烦。</p>
+<p>3）提供了python版本的编程接口rtslib。</p>
+<p>4）LIO在不断backport SCST的功能到linux内核，社区的力量是强大的。</p>
+<p>5）LIO也支持一些SCST没有的功能。如“会话多连接”（MC/S）。</p>
 <blockquote>
-<p>他们需要登录同一台服务器/机器</p>
-<p>必须使用相同的账户，不同账户之前不能屏幕协作</p>
+<p>MC/S 让 initiator 可以和 target 在一条或多条物理路径上建立多条连接。这样，在一条路径发生错误的时候，已经建立好的会话可以不中断会话，直接使用其他的路径。MC/S 还可以用来进行所有连接之间的负载均衡。这种情况下，会在所有通信路径上保持会话命令的顺序性。</p>
 </blockquote>
-<p>第一步：a 在终端上运行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">screen -S zp</div></pre></td></tr></table></figure>
-<p><strong>注意</strong>：<code>S</code> 是大写</p>
-<p>第二步：b 在终端上运行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">screen -x zp</div></pre></td></tr></table></figure>
-<p>这时两边的操作是实时而且同步的。</p>
-<h2 id="退出协作"><a href="#退出协作" class="headerlink" title="退出协作"></a>退出协作</h2><p>在任意一个终端上输入命令：<code>exit</code> ，输出如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[screen is terminating]</div></pre></td></tr></table></figure>
-<p>表示退出成功。</p>
+<p>MCS是一个比较鸡肋的feature，因为现在Linux内核已经有Device Mapper的支持。</p>
+<p>6）LIO支持最高级别的ERL。</p>
+<blockquote>
+<p>iSCSI 连接的错误可能会发生在三个层面上：会话、校验或是连接层。错误恢复工作也可以在这三个层面开始进行，这样就可以在当前的层面开始进行恢复，不会让错误到达下一个层面。错误恢复首先是检查断开的连接。在这种情况下，iSCSI initiator 驱动会主动建立新的到 target 的 TCP 连接它会告诉 target，SCSI 指令路径已经变到新的连接上了。这样 target 就可以在新的连接上处理 SCSI 命令了。这时，上层的 SCSI 驱动对新的连接已经建立、控制信息已经通过新连接传输的事还是毫无知觉的。iSCSI 会话在这期间会保持正常，不会重新变换状态。LIO 支持的最大错误恢复级别（ERL）为2，这就是说，它可以在会话、校验或连接层进行错误恢复。而SCST 支持的 ERL 为 0，也就是说，它智能恢复会话级别的错误，所有连接层面的错误都会转到 SCSI 驱动层面来处理。</p>
+</blockquote>
+<h3 id="SCST"><a href="#SCST" class="headerlink" title="SCST"></a>SCST</h3><p>1）支持更多传输协议</p>
+<p>2）针对性能做了特殊的优化</p>
+<p>3）除了基本的SCSI协议支持外，还有一些高级支持：</p>
+<p>SCST支持永久性预留（Persistent Reservation, PR）</p>
+<blockquote>
+<p>这是一个用于高可用集群中的存储设备的 I/O 隔离与存储设备故障切换、接管的特性。通过使用 PR 命令，initiator 可以在一个 target 上建立、抢占、查询、重置预留策略。在故障接管过程中，新的虚拟资源可以重置老的虚拟资源的预留策略，从而让故障切换更快、更容易地进行。</p>
+</blockquote>
+<p>SCST 可以使用异步事件通知（AEN）来通告会话状态的变更</p>
+<blockquote>
+<p>AEN 是一个 SCSI target 用来向 initiator 进行 target 端的事件告知的协议特性，即使在没有服务请求的时候也可以进行。于是 initiator 就可以在 target 端发生事件时，如设备插入、移除、调整尺寸或更换介质时，可以得到通知。这让 initiator 可以以即插即用的方式看到 target 的变化。</p>
+</blockquote>
+<p>4）SCST 的开发者声称，它们的设计在健壮性和安全性方面更加符合 SCSI 标准。</p>
+<blockquote>
+<p>SCSI 协议要求，如果一个 initiator 要清除另一个 initiator 的预留资源时，预留者必须要得到清除通知，否则，多个 initiator 都可能来改变预留数据，就可能会破坏数据。SCST 可以实现安全的预留、释放操作，避免类似事情发生。</p>
+</blockquote>
+<p>5）SCST 也支持非对称逻辑卷分配（ALUA）。</p>
+<blockquote>
+<p>ALUA 允许 target 管理员来管理 target 的访问状态和路径属性。这让多路径路由机制可以选择最好的路径，从而根据 target 的访问状态，优化带宽的使用。换句话说，在多路径环境下，target 管理员可以通过改变访问状态来调整 initiator 的路径。</p>
+</blockquote>
+<p>6）各大存储服务提供商都是基于SCST。</p>
+<p>7）提供更细粒度的访问控制策略以及QoS保证机制（限制initiator连接的个数）。</p>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>SCST和LIO，工作在内核态，缺点如下：</p>
+<p>1、一旦出问题，会导致系统挂掉，直接影响跑在系统上的其他线上服务。</p>
+<p>2、SCSI与LIO作为通用的SCSI Target实现，在处理完iSCSI协议后，会把SCSI的处理交给内核SCSI Driver去处理，这对支持分布式文件做二次开发来说，相对更加困难。</p>
+<p>3、SCST 的kernel部分没有并入linux，需要手工编译。</p>
+<p>4、LIO不支持AEN，所以target状态发生变化时，只能通过IO或者用户手动触发以检测处理变化。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><table>
+<thead>
+<tr>
+<th>SCSI框架</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TGT</td>
+<td>用户态接口，可使用Ceph librbd</td>
+<td>librbd 性能较差，FC驱动还不支持</td>
+</tr>
+<tr>
+<td>LIO</td>
+<td>性能好，支持用户态和内核态接口，加入linux内核</td>
+<td>特性支持不如SCST</td>
+</tr>
+<tr>
+<td>SCST</td>
+<td>稳定，性能好，支持用户态和内核态接口</td>
+<td>没有纳入linux内核，升级比较麻烦</td>
+</tr>
+</tbody>
+</table>
+<p>如果需求只是构建一个iSCSI target，并且规模不是很大，tgt是一个不错的选择。<br>如果要构建一个企业级的存储方案，即高性能、高稳定性的，并且围绕这个有长远计划的，SCST是正确的选择。<br>如果对性能、稳定性要求不是那么高，但又想支持FC、SRP等协议，可以选择LIO。</p>
+<p><strong>参考资料</strong></p>
+<p><a href="http://infinicloud.cn/blog/1/" target="_blank" rel="external">基于ceph RBD的iscsi target实现分析</a></p>
+<p><a href="http://www.cnblogs.com/bodhitree/p/6016331.html" target="_blank" rel="external">iscsi与ceph</a></p>
+<p><a href="http://chuansong.me/n/2297546" target="_blank" rel="external">ceph iscsi gateway demo 安装配置</a></p>
 
       
     </div>
@@ -308,13 +369,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/01/11/Linux下利用screen进行屏幕协作/">Linux下利用screen进行屏幕协作</a></p>
+        <p><span>本文标题:</span><a href="/2018/02/28/ceph-iscsi网关/">ceph iscsi网关</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-01-11, 11:30:52</p>
-        <p><span>最后更新:</span>2017-01-11, 11:30:52</p>
+        <p><span>发布时间:</span>2018-02-28, 20:06:46</p>
+        <p><span>最后更新:</span>2018-02-28, 20:11:43</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/01/11/Linux下利用screen进行屏幕协作/" title="Linux下利用screen进行屏幕协作">http://xiaqunfeng.cc/2017/01/11/Linux下利用screen进行屏幕协作/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/01/11/Linux下利用screen进行屏幕协作/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2018/02/28/ceph-iscsi网关/" title="ceph iscsi网关">http://xiaqunfeng.cc/2018/02/28/ceph-iscsi网关/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2018/02/28/ceph-iscsi网关/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -326,16 +387,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/01/11/Linux命令——history及其优化/">
-                    Linux命令——history及其优化
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/01/11/Linux命令——crontab/">
-                    Linux命令——crontab
+                <a href="/2018/02/28/ceph-ansible使用手册/">
+                    ceph ansible使用手册
                 </a>
             </div>
         
@@ -347,7 +402,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#screen的安装"><span class="toc-number">1.</span> <span class="toc-text">screen的安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用方法"><span class="toc-number">2.</span> <span class="toc-text">使用方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#退出协作"><span class="toc-number">3.</span> <span class="toc-text">退出协作</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#用户态（TGT）"><span class="toc-number">1.</span> <span class="toc-text">用户态（TGT）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内核态（LIO、SCST）"><span class="toc-number">2.</span> <span class="toc-text">内核态（LIO、SCST）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LIO"><span class="toc-number">2.1.</span> <span class="toc-text">LIO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SCST"><span class="toc-number">2.2.</span> <span class="toc-text">SCST</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-number">2.3.</span> <span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
         
     </div>
     <style>
@@ -383,7 +438,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Linux下利用screen进行屏幕协作　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"ceph iscsi网关　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -402,8 +457,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.cc/2017/01/11/Linux下利用screen进行屏幕协作/';
-            this.page.identifier = '2017/01/11/Linux下利用screen进行屏幕协作/';
+            this.page.url = 'http://xiaqunfeng.cc/2018/02/28/ceph-iscsi网关/';
+            this.page.identifier = '2018/02/28/ceph-iscsi网关/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -425,15 +480,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/01/11/Linux命令——history及其优化/" title="上一篇: Linux命令——history及其优化">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/01/11/Linux命令——crontab/" title="下一篇: Linux命令——crontab">
+            <a href="/2018/02/28/ceph-ansible使用手册/" title="下一篇: ceph ansible使用手册">
                 <i class="fa fa-angle-right"></i>
             </a>
         
