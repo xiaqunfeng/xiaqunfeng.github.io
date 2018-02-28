@@ -15,18 +15,16 @@
 
 
 
-<meta name="description" content="Fast R-CNN 是 RBG大神基于R-CNN的优化，论文阅读记录如下。">
+<meta name="description" content="ceph ansible使用手册该文档介绍利用ansible来部署ceph集群">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【论文阅读】Fast R-CNN">
-<meta property="og:url" content="http://xiaqunfeng.cc/2017/11/25/Fast-R-CNN/index.html">
+<meta property="og:title" content="ceph ansible使用手册">
+<meta property="og:url" content="http://xiaqunfeng.cc/2018/02/28/ceph-ansible使用手册/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="Fast R-CNN 是 RBG大神基于R-CNN的优化，论文阅读记录如下。">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/fastrcnn.jpg">
-<meta property="og:updated_time" content="2017-12-29T08:25:21.000Z">
+<meta property="og:description" content="ceph ansible使用手册该文档介绍利用ansible来部署ceph集群">
+<meta property="og:updated_time" content="2018-02-28T12:01:23.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="【论文阅读】Fast R-CNN">
-<meta name="twitter:description" content="Fast R-CNN 是 RBG大神基于R-CNN的优化，论文阅读记录如下。">
-<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/fastrcnn.jpg">
+<meta name="twitter:title" content="ceph ansible使用手册">
+<meta name="twitter:description" content="ceph ansible使用手册该文档介绍利用ansible来部署ceph集群">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>【论文阅读】Fast R-CNN | 夏天的风的博客</title>
+<title>ceph ansible使用手册 | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -245,11 +243,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-Fast-R-CNN" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-ceph-ansible使用手册" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/11/25/Fast-R-CNN/" class="article-date">
-      <time datetime="2017-11-25T03:44:13.000Z" itemprop="datePublished">2017-11-25</time>
+      <a href="/2018/02/28/ceph-ansible使用手册/" class="article-date">
+      <time datetime="2018-02-28T11:59:56.000Z" itemprop="datePublished">2018-02-28</time>
 </a>
 
 
@@ -264,7 +262,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      【论文阅读】Fast R-CNN
+      ceph ansible使用手册
     </h1>
   
 
@@ -275,7 +273,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/deeplearning/">deeplearning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/paper/">paper</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -285,78 +283,37 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>Fast R-CNN 是 RBG大神基于R-CNN的优化，论文阅读记录如下。<br><a id="more"></a></p>
-<p>源码：<a href="https://github.com/rbgirshick/fast-rcnn" target="_blank" rel="external">https://github.com/rbgirshick/fast-rcnn</a></p>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>简化了最先进的基于卷积网络的目标检测器的训练过程（R-CNN）。提出一个单阶段训练算法，联合学习候选框分类和修正他们的空间位置。</p>
-<p>所得到的方法用来训练非常深的检测网络（例如VGG16） 比R-CNN快9倍，比SPPnet快3倍。在运行时，检测网络在PASCAL VOC 2012数据集上实现最高准确度，其中mAP为66％（R-CNN为62％），每张图像处理时间为0.3秒，不包括候选框的生成。测试时间比R-CNN快213倍。</p>
-<h3 id="R-CNN缺点："><a href="#R-CNN缺点：" class="headerlink" title="R-CNN缺点："></a>R-CNN缺点：</h3><p>1、训练过程是多级流水线（multi-stage pipeline）</p>
-<ul>
-<li>R-CNN首先使用目标候选框对卷积神经网络使用log损失进行微调。</li>
-<li>然后，它将卷积神经网络得到的特征送入SVM。 这些SVM作为目标检测器，替代通过微调学习的softmax分类器。 </li>
-<li>在第三个训练阶段，学习检测框回归。</li>
-</ul>
-<p>2、训练时时间和空间开销大</p>
-<p>对于SVM和检测框回归训练，从每个图像中的每个目标候选框提取特征，并写入磁盘。对于非常深的网络，如VGG16，这个过程在单个GPU上需要2.5天（VOC07 trainval上的5k个图像）。这些特征需要数百GB的存储空间。</p>
-<p>3、目标检测速度慢</p>
-<p>在测试时，从每个测试图像中的每个目标候选框提取特征。用VGG16网络检测目标每个图像需要47秒（在GPU上）。</p>
-<p>R-CNN很慢是因为它为每个目标候选框进行卷积神经网络正向传递，而不共享计算。</p>
-<p><strong>因为是分阶段训练，训练SVM和bbox回归时无法更新前面CNN的参数，模型精度上不去。</strong></p>
-<h3 id="SPPnet"><a href="#SPPnet" class="headerlink" title="SPPnet"></a>SPPnet</h3><p>SPPnet通过共享计算加速R-CNN。SPPnet计算整个输入图像的卷积特征图，然后使用从共享特征图提取的特征向量来对每个候选框进行分类。通过最大池化将候选框内的特征图转化为固定大小的输出（例如，6X6）来提取针对候选框的特征。多个输出被池化，然后连接成空间金字塔池。SPPnet在测试时将R-CNN加速10到100倍。由于更快的候选框特征提取训练时间也减少3倍。</p>
-<p>缺点：</p>
-<ul>
-<li>分阶段训练网络：选取候选区域、训练CNN、训练SVM、训练bbox回归器.</li>
-<li>特征需要写入磁盘</li>
-<li>训练SVM，bbox回归时算法不能更新卷积层的参数，这会影响网络的精度</li>
-</ul>
-<h3 id="Fast-RCNN"><a href="#Fast-RCNN" class="headerlink" title="Fast RCNN"></a>Fast RCNN</h3><p>针对上述问题，Fast R-CNN的想法是将整个模型分成两步：</p>
-<ul>
-<li>第一步是选取候选区域;</li>
-<li>第二步就是提出一个RoI层，整合了整个模型，把CNN、变换层、SVM分类器、bbox回归这几个模块整一起，大家一起训练</li>
-</ul>
-<p>新的模型将多个训练阶段合并，训练后面阶段的同时可以更新前面阶段的参数，模型收敛的更好了。同时因为多个阶段合并，候选区域的特征不需要再写入磁盘，一直在显存中，训练的速度大大的提升。</p>
-<h2 id="architecture-and-training"><a href="#architecture-and-training" class="headerlink" title="architecture and training"></a>architecture and training</h2><p>架构图：</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/fastrcnn.jpg" alt="fastrcnn"></p>
-<p>Fast R-CNN网络将整个图像和一组候选框作为输入。</p>
-<p>1、网络首先使用几个卷积层（conv）和最大池化层来处理整个图像，以产生卷积特征图。</p>
-<p>2、然后，对于每个候选框，RoI池化层从特征图中提取固定长度的特征向量。</p>
-<p>把图片的候选区域映射到feature map得到对应的patch(这和SPPNet的处理类似)。然后把这个patch塞给ROI层(Region of interest)得到固定大小的的特征向量(feature vector).</p>
-<p>3、每个特征向量被送入一系列全连接（fc）层中，其最终分支成两个同级输出层 ：</p>
-<ul>
-<li>一个输出K个类别加上1个背景类别的Softmax概率估计</li>
-<li>另一个作为bbox回归，输出回归的选框数据。即为K个类别的每一个类别输出四个实数值。每组4个值表示K个类别的一个类别的检测框位置的修正。</li>
-</ul>
-<h3 id="ROI-pooling-layer"><a href="#ROI-pooling-layer" class="headerlink" title="ROI pooling layer"></a>ROI pooling layer</h3><p>作用：把不同尺寸的侯选区域提取特征变换成为固定大小的特征向量</p>
-<p>每个RoI由指定其左上角(r,c)及其高度和宽度(h,w)的四元组(r,c,h,w)定义。</p>
-<p>RoI最大池化通过将大小为 h×w 的RoI窗口分割成 H×W 个网格，子窗口大小约 h/H×w/W，然后对每个子窗口执行最大池化，并将输出合并到相应的输出网格单元中。其中 H 和 W 是层的超参数，独立于任何特定的RoI。</p>
-<p>通过该层，可以将特征图上大小不一的候选区域转变为大小统一的数据，送入下一层。 </p>
-<h3 id="fine-tuning-for-detection-检测微调"><a href="#fine-tuning-for-detection-检测微调" class="headerlink" title="fine-tuning for detection(检测微调)"></a>fine-tuning for detection(检测微调)</h3><p>用反向传播训练所有网络权重是Fast R-CNN的重要能力。</p>
-<p>1、为什么SPPnet无法更新低于空间金字塔池化层的权重？</p>
-<p>根本原因是当每个训练样本（即RoI）来自不同的图像时，通过SPP层的反向传播是非常低效的，这正是训练R-CNN和SPPnet网络的方法。低效的部分是因为每个RoI可能具有非常大的感受野，通常跨越整个输入图像。由于正向传播必须处理整个感受野，训练输入很大（通常是整个图像）。</p>
-<p>2、提出了一种更有效的训练方法：利用训练期间的特征共享</p>
-<p><strong>分层采样</strong></p>
-<p>在Fast RCNN网络训练中，随机梯度下降（SGD）的小批量是被分层采样的，首先采样N个图像，然后从每个图像采样R/N个 RoI。</p>
+        <h1 id="ceph-ansible使用手册"><a href="#ceph-ansible使用手册" class="headerlink" title="ceph ansible使用手册"></a>ceph ansible使用手册</h1><p>该文档介绍利用ansible来部署ceph集群</p>
+<a id="more"></a>
+<p>github：<a href="https://github.com/xiaqunfeng/ceph-ansible" target="_blank" rel="external">https://github.com/xiaqunfeng/ceph-ansible</a></p>
+<p>新增role的使用方法详见README.md</p>
+<h2 id="安装ansible"><a href="#安装ansible" class="headerlink" title="安装ansible"></a>安装ansible</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./install-ansible.sh</div></pre></td></tr></table></figure>
 <blockquote>
-<p>关键的是，来自同一图像的RoI在向前和向后传播中共享计算和内存。减N，就减少了小批量的计算。例如，当N=2和R=128时，得到的训练方案比从128幅不同的图采样一个RoI（即R-CNN和SPPnet的策略）快64倍。</p>
+<p>注意，默认安装的是ansible的最新版，最好安装ansible版本为2.3.X.X。因为该改进的ceph-ansible是基于ansible 2.3版本的，为了避免版本不匹配带来的问题。</p>
 </blockquote>
-<p>这个策略的一个令人担心的问题是它可能导致训练收敛变慢，因为来自相同图像的RoI是相关的。然而在实际情况中该问题并不存在，当N=2和R=128时，我们使用比R-CNN更少的SGD迭代就获得了良好的结果。</p>
-<p><strong>更加精细的训练过程</strong></p>
-<p>在微调阶段联合优化Softmax分类器和检测框回归，而不是分别在三个独立的阶段训练softmax分类器，SVM和回归器。</p>
-<h4 id="多任务损失（multi-task-loss）"><a href="#多任务损失（multi-task-loss）" class="headerlink" title="多任务损失（multi-task loss）"></a>多任务损失（multi-task loss）</h4><p>Fast R-CNN在FC层后有两个分支,一个是SVM分类器，一个是bbox回归。</p>
-<p>结论就是：把两个分支的损失弄到一起</p>
-<blockquote>
-<p>具体没太看懂，后续再补</p>
-</blockquote>
-<h2 id="Fast-R-CNN检测"><a href="#Fast-R-CNN检测" class="headerlink" title="Fast R-CNN检测"></a>Fast R-CNN检测</h2><p>一旦Fast R-CNN网络被微调完毕，检测相当于运行前向传播（假设候选框是预先计算的）。网络将图像（或图像金字塔，编码为图像列表）和待计算概率的R个候选框的列表作为输入。在测试的时候，R通常在2000左右，虽然我们将考虑将它变大（约45k）的情况。当使用图像金字塔时，每个RoI被缩放，使其最接近 R-CNN 中的224个像素。</p>
-<p>对于每个测试的RoI r，正向传播输出类别后验概率分布p和相对于r的预测的检测框框偏移集合（K个类别中的每一个获得其自己的精细检测框预测）。使用估计的概率Pr(class=k|r)≜pk为每个对象类别kk分配rr的检测置信度。然后，使用R-CNN算法的设置和对每个类别独立执行非最大抑制。</p>
-<h3 id="使用截断的SVD来进行更快的检测"><a href="#使用截断的SVD来进行更快的检测" class="headerlink" title="使用截断的SVD来进行更快的检测"></a>使用截断的SVD来进行更快的检测</h3><p>对于整体图像分类，与卷积层相比，计算全连接层花费的时间较小。相反，为了检测，要处理的RoI的数量很大，并且接近一半的正向传递时间用于计算全连接层。大的全连接层容易通过用截短的SVD压缩来加速。</p>
-<p>为了压缩网络，对应于W的单个全连接层由两个全连接层替代，中间以一个低纬数据相连。在它们之间没有非线性。当RoI的数量大时，这种简单的压缩方法给出良好的加速。</p>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>Fast RCNN方法修正了R-CNN和SPPnet的缺点，同时提高其速度和准确性，有以下几个优点：</p>
-<ul>
-<li>比R-CNN和SPPnet具有更高的目标检测精度（mAP）。</li>
-<li>训练是使用多任务损失的单阶段训练。</li>
-<li>训练可以更新所有网络层参数。</li>
-<li>不需要磁盘空间缓存特征。</li>
-</ul>
+<h2 id="设置机器组"><a href="#设置机器组" class="headerlink" title="设置机器组"></a>设置机器组</h2><p>在文件 <code>/etc/ansible/hosts</code> 中添加如下信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"># cat /etc/ansible/hosts</div><div class="line">...</div><div class="line">...</div><div class="line">[mons]</div><div class="line">ceph-0</div><div class="line">ceph-1</div><div class="line">ceph-2</div><div class="line"></div><div class="line">[osds]</div><div class="line">ceph-0</div><div class="line">ceph-1</div><div class="line">ceph-2</div><div class="line"></div><div class="line">[rgws]</div><div class="line">ceph-0</div></pre></td></tr></table></figure>
+<p>mons表示将要安装mon的机器组，osds表示osd机器组，rgws表示要安装rgw网关的机器组。关于其他的机器组，可以在 <code>site.yml</code> 文件中看到：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"># cat site.yml</div><div class="line">...</div><div class="line">- hosts:</div><div class="line">  - mons</div><div class="line">  - agents</div><div class="line">  - osds</div><div class="line">  - mdss</div><div class="line">  - rgws</div><div class="line">  - nfss</div><div class="line">  - restapis</div><div class="line">  - rbdmirrors</div><div class="line">  - clients</div><div class="line">  - iscsigws</div><div class="line">  - mgrs</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>查看所有机器是否都能无密登录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"># ansible -m ping all</div><div class="line">ceph-1 | SUCCESS =&gt; &#123;</div><div class="line">    &quot;changed&quot;: false,</div><div class="line">    &quot;ping&quot;: &quot;pong&quot;</div><div class="line">&#125;</div><div class="line">ceph-0 | SUCCESS =&gt; &#123;</div><div class="line">    &quot;changed&quot;: false,</div><div class="line">    &quot;ping&quot;: &quot;pong&quot;</div><div class="line">&#125;</div><div class="line">ceph-2 | SUCCESS =&gt; &#123;</div><div class="line">    &quot;changed&quot;: false,</div><div class="line">    &quot;ping&quot;: &quot;pong&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h2><h3 id="common"><a href="#common" class="headerlink" title="common"></a>common</h3><p>编辑配置文件：<code>group_vars/all.yml</code></p>
+<p>主要修改一下几个配置项：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line"># or &apos;distro&apos; or &apos;local&apos;</div><div class="line">ceph_origin: &apos;upstream&apos;</div><div class="line">...</div><div class="line">ceph_stable: true</div><div class="line">ceph_mirror: http://mirrors.163.com/ceph</div><div class="line">ceph_stable_key: http://mirrors.163.com/ceph/keys/release.asc</div><div class="line">ceph_stable_release: kraken</div><div class="line">ceph_stable_repo: &quot;&#123;&#123; ceph_mirror &#125;&#125;/rpm-&#123;&#123; ceph_stable_release &#125;&#125;&quot;	# ubuntu系统的话记得把rpm改成debian</div><div class="line">...</div><div class="line">ceph_stable_redhat_distro: el7	# ubuntu系统不需要该选项</div><div class="line">...</div><div class="line">monitor_interface: eth0</div><div class="line">...</div><div class="line">public_network: 172.20.2.0/24</div><div class="line">...</div></pre></td></tr></table></figure>
+<h3 id="osd"><a href="#osd" class="headerlink" title="osd"></a>osd</h3><p>编辑配置文件：<code>group_vars/osds.yml</code></p>
+<p>选择一种部署场景：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">journal_collocation</div><div class="line">raw_multi_journal</div><div class="line">dmcrypt_journal_collocation</div><div class="line">dmcrypt_dedicated_journal</div><div class="line">bluestore</div><div class="line">osd_directory</div></pre></td></tr></table></figure>
+<p>根据不同的场景来编辑如下两个选项：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">devices:</div><div class="line">...</div><div class="line">raw_journal_devices:</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>最常用的场景解释：</p>
+<p>journal_collocation：日志盘和数据盘共用一块磁盘，部署的时候不需要分区，只需要指定 devices磁盘就好。</p>
+<p>raw_multi_journal：日志盘和数据盘分开指定，devices指定数据盘，raw_journal_devices指定日志盘，都是磁盘主分区。</p>
+<p>bluestore：部署bluestore，只需要指定devices盘。当然最佳实践的话需要手动分4个区来部署。</p>
+<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>修改部署yml文件，注释掉不需要安装的选项，比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"># cat site.yml</div><div class="line">...</div><div class="line">- hosts: mons</div><div class="line">  gather_facts: false</div><div class="line">  become: True</div><div class="line">  roles:</div><div class="line">  - ceph-mon</div><div class="line"></div><div class="line">#- hosts: agents</div><div class="line">#  gather_facts: false</div><div class="line">#  become: True</div><div class="line">#  roles:</div><div class="line">#  - ceph-agent</div><div class="line"></div><div class="line">- hosts: osds</div><div class="line">  gather_facts: false</div><div class="line">  become: True</div><div class="line">  roles:</div><div class="line">  - ceph-osd</div><div class="line"></div><div class="line">- hosts: rgws</div><div class="line">  gather_facts: false</div><div class="line">  become: True</div><div class="line">  roles:</div><div class="line">  - ceph-rgw</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>通过ansible-playbook来运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># ansible-playbook site.yml</div></pre></td></tr></table></figure>
+<p>更多关于ansible的部署情况可以参见官方文档：<a href="https://github.com/ceph/ceph-ansible/wiki" target="_blank" rel="external">https://github.com/ceph/ceph-ansible/wiki</a></p>
 
       
     </div>
@@ -365,13 +322,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/11/25/Fast-R-CNN/">【论文阅读】Fast R-CNN</a></p>
+        <p><span>本文标题:</span><a href="/2018/02/28/ceph-ansible使用手册/">ceph ansible使用手册</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-11-25, 11:44:13</p>
-        <p><span>最后更新:</span>2017-12-29, 16:25:21</p>
+        <p><span>发布时间:</span>2018-02-28, 19:59:56</p>
+        <p><span>最后更新:</span>2018-02-28, 20:01:23</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/11/25/Fast-R-CNN/" title="【论文阅读】Fast R-CNN">http://xiaqunfeng.cc/2017/11/25/Fast-R-CNN/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/11/25/Fast-R-CNN/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2018/02/28/ceph-ansible使用手册/" title="ceph ansible使用手册">http://xiaqunfeng.cc/2018/02/28/ceph-ansible使用手册/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2018/02/28/ceph-ansible使用手册/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -383,16 +340,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/12/05/faster-r-cnn-generate-anchors/">
-                    【代码阅读】generate_anchors.py
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/11/24/R-CNN/">
-                    【论文阅读】R-CNN
+                <a href="/2017/12/14/Faster-R-CNN/">
+                    【论文阅读】Faster-R-CNN
                 </a>
             </div>
         
@@ -404,7 +355,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概述"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#R-CNN缺点："><span class="toc-number">1.1.</span> <span class="toc-text">R-CNN缺点：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SPPnet"><span class="toc-number">1.2.</span> <span class="toc-text">SPPnet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Fast-RCNN"><span class="toc-number">1.3.</span> <span class="toc-text">Fast RCNN</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#architecture-and-training"><span class="toc-number">2.</span> <span class="toc-text">architecture and training</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ROI-pooling-layer"><span class="toc-number">2.1.</span> <span class="toc-text">ROI pooling layer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#fine-tuning-for-detection-检测微调"><span class="toc-number">2.2.</span> <span class="toc-text">fine-tuning for detection(检测微调)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#多任务损失（multi-task-loss）"><span class="toc-number">2.2.1.</span> <span class="toc-text">多任务损失（multi-task loss）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Fast-R-CNN检测"><span class="toc-number">3.</span> <span class="toc-text">Fast R-CNN检测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用截断的SVD来进行更快的检测"><span class="toc-number">3.1.</span> <span class="toc-text">使用截断的SVD来进行更快的检测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结论"><span class="toc-number">4.</span> <span class="toc-text">结论</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ceph-ansible使用手册"><span class="toc-number">1.</span> <span class="toc-text">ceph ansible使用手册</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装ansible"><span class="toc-number">1.1.</span> <span class="toc-text">安装ansible</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#设置机器组"><span class="toc-number">1.2.</span> <span class="toc-text">设置机器组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改配置文件"><span class="toc-number">1.3.</span> <span class="toc-text">修改配置文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#common"><span class="toc-number">1.3.1.</span> <span class="toc-text">common</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#osd"><span class="toc-number">1.3.2.</span> <span class="toc-text">osd</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#部署"><span class="toc-number">1.4.</span> <span class="toc-text">部署</span></a></li></ol></li></ol>
         
     </div>
     <style>
@@ -440,7 +391,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"【论文阅读】Fast R-CNN　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"ceph ansible使用手册　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -459,8 +410,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.cc/2017/11/25/Fast-R-CNN/';
-            this.page.identifier = '2017/11/25/Fast-R-CNN/';
+            this.page.url = 'http://xiaqunfeng.cc/2018/02/28/ceph-ansible使用手册/';
+            this.page.identifier = '2018/02/28/ceph-ansible使用手册/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -482,15 +433,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/12/05/faster-r-cnn-generate-anchors/" title="上一篇: 【代码阅读】generate_anchors.py">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/11/24/R-CNN/" title="下一篇: 【论文阅读】R-CNN">
+            <a href="/2017/12/14/Faster-R-CNN/" title="下一篇: 【论文阅读】Faster-R-CNN">
                 <i class="fa fa-angle-right"></i>
             </a>
         

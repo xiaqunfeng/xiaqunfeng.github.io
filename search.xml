@@ -4,6 +4,51 @@
   
     
     <entry>
+      <title><![CDATA[ceph ansible使用手册]]></title>
+      <url>http://xiaqunfeng.cc/2018/02/28/ceph-ansible%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/</url>
+      <content type="html"><![CDATA[<h1 id="ceph-ansible使用手册"><a href="#ceph-ansible使用手册" class="headerlink" title="ceph ansible使用手册"></a>ceph ansible使用手册</h1><p>该文档介绍利用ansible来部署ceph集群</p>
+<a id="more"></a>
+<p>github：<a href="https://github.com/xiaqunfeng/ceph-ansible" target="_blank" rel="external">https://github.com/xiaqunfeng/ceph-ansible</a></p>
+<p>新增role的使用方法详见README.md</p>
+<h2 id="安装ansible"><a href="#安装ansible" class="headerlink" title="安装ansible"></a>安装ansible</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./install-ansible.sh</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意，默认安装的是ansible的最新版，最好安装ansible版本为2.3.X.X。因为该改进的ceph-ansible是基于ansible 2.3版本的，为了避免版本不匹配带来的问题。</p>
+</blockquote>
+<h2 id="设置机器组"><a href="#设置机器组" class="headerlink" title="设置机器组"></a>设置机器组</h2><p>在文件 <code>/etc/ansible/hosts</code> 中添加如下信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"># cat /etc/ansible/hosts</div><div class="line">...</div><div class="line">...</div><div class="line">[mons]</div><div class="line">ceph-0</div><div class="line">ceph-1</div><div class="line">ceph-2</div><div class="line"></div><div class="line">[osds]</div><div class="line">ceph-0</div><div class="line">ceph-1</div><div class="line">ceph-2</div><div class="line"></div><div class="line">[rgws]</div><div class="line">ceph-0</div></pre></td></tr></table></figure>
+<p>mons表示将要安装mon的机器组，osds表示osd机器组，rgws表示要安装rgw网关的机器组。关于其他的机器组，可以在 <code>site.yml</code> 文件中看到：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"># cat site.yml</div><div class="line">...</div><div class="line">- hosts:</div><div class="line">  - mons</div><div class="line">  - agents</div><div class="line">  - osds</div><div class="line">  - mdss</div><div class="line">  - rgws</div><div class="line">  - nfss</div><div class="line">  - restapis</div><div class="line">  - rbdmirrors</div><div class="line">  - clients</div><div class="line">  - iscsigws</div><div class="line">  - mgrs</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>查看所有机器是否都能无密登录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"># ansible -m ping all</div><div class="line">ceph-1 | SUCCESS =&gt; &#123;</div><div class="line">    &quot;changed&quot;: false,</div><div class="line">    &quot;ping&quot;: &quot;pong&quot;</div><div class="line">&#125;</div><div class="line">ceph-0 | SUCCESS =&gt; &#123;</div><div class="line">    &quot;changed&quot;: false,</div><div class="line">    &quot;ping&quot;: &quot;pong&quot;</div><div class="line">&#125;</div><div class="line">ceph-2 | SUCCESS =&gt; &#123;</div><div class="line">    &quot;changed&quot;: false,</div><div class="line">    &quot;ping&quot;: &quot;pong&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h2><h3 id="common"><a href="#common" class="headerlink" title="common"></a>common</h3><p>编辑配置文件：<code>group_vars/all.yml</code></p>
+<p>主要修改一下几个配置项：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line"># or &apos;distro&apos; or &apos;local&apos;</div><div class="line">ceph_origin: &apos;upstream&apos;</div><div class="line">...</div><div class="line">ceph_stable: true</div><div class="line">ceph_mirror: http://mirrors.163.com/ceph</div><div class="line">ceph_stable_key: http://mirrors.163.com/ceph/keys/release.asc</div><div class="line">ceph_stable_release: kraken</div><div class="line">ceph_stable_repo: &quot;&#123;&#123; ceph_mirror &#125;&#125;/rpm-&#123;&#123; ceph_stable_release &#125;&#125;&quot;	# ubuntu系统的话记得把rpm改成debian</div><div class="line">...</div><div class="line">ceph_stable_redhat_distro: el7	# ubuntu系统不需要该选项</div><div class="line">...</div><div class="line">monitor_interface: eth0</div><div class="line">...</div><div class="line">public_network: 172.20.2.0/24</div><div class="line">...</div></pre></td></tr></table></figure>
+<h3 id="osd"><a href="#osd" class="headerlink" title="osd"></a>osd</h3><p>编辑配置文件：<code>group_vars/osds.yml</code></p>
+<p>选择一种部署场景：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">journal_collocation</div><div class="line">raw_multi_journal</div><div class="line">dmcrypt_journal_collocation</div><div class="line">dmcrypt_dedicated_journal</div><div class="line">bluestore</div><div class="line">osd_directory</div></pre></td></tr></table></figure>
+<p>根据不同的场景来编辑如下两个选项：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">devices:</div><div class="line">...</div><div class="line">raw_journal_devices:</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>最常用的场景解释：</p>
+<p>journal_collocation：日志盘和数据盘共用一块磁盘，部署的时候不需要分区，只需要指定 devices磁盘就好。</p>
+<p>raw_multi_journal：日志盘和数据盘分开指定，devices指定数据盘，raw_journal_devices指定日志盘，都是磁盘主分区。</p>
+<p>bluestore：部署bluestore，只需要指定devices盘。当然最佳实践的话需要手动分4个区来部署。</p>
+<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>修改部署yml文件，注释掉不需要安装的选项，比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"># cat site.yml</div><div class="line">...</div><div class="line">- hosts: mons</div><div class="line">  gather_facts: false</div><div class="line">  become: True</div><div class="line">  roles:</div><div class="line">  - ceph-mon</div><div class="line"></div><div class="line">#- hosts: agents</div><div class="line">#  gather_facts: false</div><div class="line">#  become: True</div><div class="line">#  roles:</div><div class="line">#  - ceph-agent</div><div class="line"></div><div class="line">- hosts: osds</div><div class="line">  gather_facts: false</div><div class="line">  become: True</div><div class="line">  roles:</div><div class="line">  - ceph-osd</div><div class="line"></div><div class="line">- hosts: rgws</div><div class="line">  gather_facts: false</div><div class="line">  become: True</div><div class="line">  roles:</div><div class="line">  - ceph-rgw</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>通过ansible-playbook来运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># ansible-playbook site.yml</div></pre></td></tr></table></figure>
+<p>更多关于ansible的部署情况可以参见官方文档：<a href="https://github.com/ceph/ceph-ansible/wiki" target="_blank" rel="external">https://github.com/ceph/ceph-ansible/wiki</a></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[【论文阅读】Faster-R-CNN]]></title>
       <url>http://xiaqunfeng.cc/2017/12/14/Faster-R-CNN/</url>
       <content type="html"><![CDATA[<p>Faster R-CNN论文阅读小笔记<br><a id="more"></a></p>
