@@ -4,6 +4,28 @@
   
     
     <entry>
+      <title><![CDATA[客户端rbd环境检查]]></title>
+      <url>http://xiaqunfeng.cc/2018/03/08/%E5%AE%A2%E6%88%B7%E7%AB%AFrbd%E7%8E%AF%E5%A2%83%E6%A3%80%E6%9F%A5/</url>
+      <content type="html"><![CDATA[<p>检查rbd客户端是否可以正常识别文件系统<br><a id="more"></a></p>
+<h2 id="应付的场景"><a href="#应付的场景" class="headerlink" title="应付的场景"></a>应付的场景</h2><p>  编译10.2.6和11.2.1版本的rbd，执行发现，在sysfs_write_rbd_add(buf)步中(该块设备已经被文件系统xfs格式化)，创建的/run/udev/data/b251\:0都为异常状态，ID_FS_TYPE字段为空。执行mount都可以正常挂载。<br>  实际上，通过apt-get install ceph-common的rbd存在异常，而apt-get install ceph的rbd表现正常(ceph-deploy部署的rbd是通过apt-get install ceph实现的)。<br>这个异常与rbd源代码没关系，而是与安装的方式有关，这可能是有组件的依赖有关系。</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>暂时无法从rbd代码层面定位问题，通过提供工具检测暂时绕过这个问题。<br>ceph-client-rbd-env-check.py可以协助检查rbd客户端是否可以正常识别文件系统。在rbd环境就绪后，可以运行脚本执行检查。</p>
+<p>在rbd环境就绪后，可以运行脚本执行检查。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># python ceph-client-rbd-env-check.py</div><div class="line">EXAMPLE:</div><div class="line">python ceph-client-rbd-env-check.py $&#123;pool_name&#125;</div><div class="line"></div><div class="line"># python ceph-client-rbd-env-check.py rbd</div><div class="line">[PASS] get device fstype okay.</div></pre></td></tr></table></figure>
+<p>脚本下载链接：<a href="https://github.com/xiaqunfeng/ceph-ansible/blob/master/tools/ceph-client-rbd-env-check.py" target="_blank" rel="external">ceph-client-rbd-env-check.py</a></p>
+<h3 id="异常情形"><a href="#异常情形" class="headerlink" title="异常情形"></a>异常情形</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># cat /run/udev/data/b251\:0 </div><div class="line">S:rbd/rbd/rbd0</div><div class="line">I:162920386411</div><div class="line">E:ID_FS_TYPE=</div><div class="line">G:systemd</div><div class="line"></div><div class="line"># python ceph-client-env-rbd-test.py rbd</div><div class="line">[FAIL] cmd=&apos;lsblk -nd -o FSTYPE /dev/rbd0&apos;, desc=&apos;get device fstype&apos;</div></pre></td></tr></table></figure>
+<h3 id="正常情形"><a href="#正常情形" class="headerlink" title="正常情形"></a>正常情形</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># cat /run/udev/data/b251\:0 </div><div class="line">S:rbd/rbd/rbd0</div><div class="line">I:163204714535</div><div class="line">E:ID_FS_UUID=d0296c84-56d7-4adb-89b1-9f60c6a54309</div><div class="line">E:ID_FS_UUID_ENC=d0296c84-56d7-4adb-89b1-9f60c6a54309</div><div class="line">E:ID_FS_TYPE=xfs</div><div class="line">E:ID_FS_USAGE=filesystem</div><div class="line">G:systemd</div><div class="line"></div><div class="line"># python ceph-client-env-rbd-test.py rbd</div><div class="line">[PASS] get device fstype okay.</div></pre></td></tr></table></figure>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[ceph osd权重调整]]></title>
       <url>http://xiaqunfeng.cc/2018/03/08/ceph-osd%E6%9D%83%E9%87%8D%E8%B0%83%E6%95%B4/</url>
       <content type="html"><![CDATA[<p>介绍调整何时该调整权重，以及调整权重的方法。<br><a id="more"></a></p>

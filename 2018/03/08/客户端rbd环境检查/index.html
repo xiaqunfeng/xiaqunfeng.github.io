@@ -15,19 +15,16 @@
 
 
 
-<meta name="description" content="如题，环境是ubuntu 14.04，解决过程和方法详见正文。">
+<meta name="description" content="检查rbd客户端是否可以正常识别文件系统">
 <meta property="og:type" content="article">
-<meta property="og:title" content="解决calamari无法获取集群hosts信息的BUG">
-<meta property="og:url" content="http://xiaqunfeng.cc/2017/01/12/解决calamari无法获取集群hosts信息的BUG/index.html">
+<meta property="og:title" content="客户端rbd环境检查">
+<meta property="og:url" content="http://xiaqunfeng.cc/2018/03/08/客户端rbd环境检查/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="如题，环境是ubuntu 14.04，解决过程和方法详见正文。">
-<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/calamari-1.png">
-<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/calamari-2.png">
-<meta property="og:updated_time" content="2017-01-12T09:55:14.000Z">
+<meta property="og:description" content="检查rbd客户端是否可以正常识别文件系统">
+<meta property="og:updated_time" content="2018-03-08T12:51:51.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="解决calamari无法获取集群hosts信息的BUG">
-<meta name="twitter:description" content="如题，环境是ubuntu 14.04，解决过程和方法详见正文。">
-<meta name="twitter:image" content="http://ojet8bprn.bkt.clouddn.com/calamari-1.png">
+<meta name="twitter:title" content="客户端rbd环境检查">
+<meta name="twitter:description" content="检查rbd客户端是否可以正常识别文件系统">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -59,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>解决calamari无法获取集群hosts信息的BUG | 夏天的风的博客</title>
+<title>客户端rbd环境检查 | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -246,11 +243,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-解决calamari无法获取集群hosts信息的BUG" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-客户端rbd环境检查" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/01/12/解决calamari无法获取集群hosts信息的BUG/" class="article-date">
-      <time datetime="2017-01-12T09:55:14.000Z" itemprop="datePublished">2017-01-12</time>
+      <a href="/2018/03/08/客户端rbd环境检查/" class="article-date">
+      <time datetime="2018-03-08T12:47:49.000Z" itemprop="datePublished">2018-03-08</time>
 </a>
 
 
@@ -265,7 +262,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      解决calamari无法获取集群hosts信息的BUG
+      客户端rbd环境检查
     </h1>
   
 
@@ -286,30 +283,14 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>如题，环境是ubuntu 14.04，解决过程和方法详见正文。<br><a id="more"></a></p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前在磨磨的文章中看到这个问题，他是在CentOS上，通过修改 <code>/usr/lib/python2.7/site-packages/salt/master.py</code> 文件，然后重启salt-master和salt-minion服务来解决的，链接在文末。原理类似，可ubuntu上并不能完全照搬。</p>
-<h2 id="折腾过程"><a href="#折腾过程" class="headerlink" title="折腾过程"></a>折腾过程</h2><blockquote>
-<p>这部分的内容为折腾求证的过程，想看解决方法的可以直接跳过！</p>
-</blockquote>
-<p>在ubuntu上并没有这个文件和路径，通过tab可以看到site开头的只有这几个：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root@calamari:~# vim /usr/lib/python2.7/site</div><div class="line">sitecustomize.py   sitecustomize.pyc  site.py            site.pyc</div></pre></td></tr></table></figure>
-<p>我以为可能是系统下包安装的位置不对而已，好，那我就查看一下ubuntu下salt-master的安装位置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">root@calamari:~# dpkg -L salt-master</div><div class="line">/.</div><div class="line">/usr</div><div class="line">/usr/share</div><div class="line">/usr/share/man</div><div class="line">/usr/share/man/man1</div><div class="line">/usr/share/man/man1/salt.1.gz</div><div class="line">/usr/share/man/man1/salt-run.1.gz</div><div class="line">/usr/share/man/man1/salt-master.1.gz</div><div class="line">/usr/share/man/man1/salt-key.1.gz</div><div class="line">/usr/share/man/man1/salt-cp.1.gz</div><div class="line">/usr/share/doc</div><div class="line">/usr/share/doc/salt-master</div><div class="line">/usr/share/doc/salt-master/changelog.Debian.gz</div><div class="line">/usr/share/doc/salt-master/NEWS.Debian.gz</div><div class="line">/usr/share/doc/salt-master/copyright</div><div class="line">/usr/bin</div><div class="line">/usr/bin/salt-run</div><div class="line">/usr/bin/salt-master</div><div class="line">/usr/bin/salt-key</div><div class="line">/usr/bin/salt-cp</div><div class="line">/usr/bin/salt</div><div class="line">/lib</div><div class="line">/lib/systemd</div><div class="line">/lib/systemd/system</div><div class="line">/lib/systemd/system/salt-master.service</div><div class="line">/etc</div><div class="line">/etc/init.d</div><div class="line">/etc/init.d/salt-master</div><div class="line">/etc/init</div><div class="line">/etc/init/salt-master.conf</div><div class="line">/etc/salt</div><div class="line">/etc/salt/master</div><div class="line">/etc/salt/master.d</div></pre></td></tr></table></figure>
-<p>然后通过 <code>find</code> 命令去 <code>/etc, /usr, /lib</code> 这几个目录下找 <code>master.py</code> ，结果真没有</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find: `master.py&apos;: No such file or directory</div></pre></td></tr></table></figure>
-<p>好吧，下面来看问题。</p>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>在calamari的web界面下，查看 MANAGE -&gt; Cluster -&gt;HOSTS 信息，发现啥也没有，如下图所示：<img src="http://ojet8bprn.bkt.clouddn.com/calamari-1.png" alt="calamari-1"></p>
-<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>calamari的salt-master节点在读取</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/var/cache/salt/master/minions/&#123;minion-hostname&#125;/data.p</div></pre></td></tr></table></figure>
-<p>该文件的时候有权限问题，当前权限为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-rw------- 1 root root 3019 Jan 10 11:06 data.p</div></pre></td></tr></table></figure>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>修改权限为 644 即可，写了个脚本，如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">for x in 0 1 2</div><div class="line">do</div><div class="line">    chmod 644 /var/cache/salt/master/minions/ceph$x/data.p</div><div class="line">done</div></pre></td></tr></table></figure>
-<p>修改完后，再次查看，可以看到hosts的详细信息了<img src="http://ojet8bprn.bkt.clouddn.com/calamari-2.png" alt="calamari-2"></p>
-<blockquote>
-<p>当然，重启 salt-minion 后又需要在 salt-master 机器上重新执行一遍，<del>~~(&gt;_&lt;)</del>~~，忧伤~</p>
-</blockquote>
-<p>磨磨的方法：<a href="http://www.zphj1987.com/2017/01/09/calamari-node-info/" target="_blank" rel="external">centos下该问题的解决方法</a></p>
+        <p>检查rbd客户端是否可以正常识别文件系统<br><a id="more"></a></p>
+<h2 id="应付的场景"><a href="#应付的场景" class="headerlink" title="应付的场景"></a>应付的场景</h2><p>  编译10.2.6和11.2.1版本的rbd，执行发现，在sysfs_write_rbd_add(buf)步中(该块设备已经被文件系统xfs格式化)，创建的/run/udev/data/b251\:0都为异常状态，ID_FS_TYPE字段为空。执行mount都可以正常挂载。<br>  实际上，通过apt-get install ceph-common的rbd存在异常，而apt-get install ceph的rbd表现正常(ceph-deploy部署的rbd是通过apt-get install ceph实现的)。<br>这个异常与rbd源代码没关系，而是与安装的方式有关，这可能是有组件的依赖有关系。</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>暂时无法从rbd代码层面定位问题，通过提供工具检测暂时绕过这个问题。<br>ceph-client-rbd-env-check.py可以协助检查rbd客户端是否可以正常识别文件系统。在rbd环境就绪后，可以运行脚本执行检查。</p>
+<p>在rbd环境就绪后，可以运行脚本执行检查。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># python ceph-client-rbd-env-check.py</div><div class="line">EXAMPLE:</div><div class="line">python ceph-client-rbd-env-check.py $&#123;pool_name&#125;</div><div class="line"></div><div class="line"># python ceph-client-rbd-env-check.py rbd</div><div class="line">[PASS] get device fstype okay.</div></pre></td></tr></table></figure>
+<p>脚本下载链接：<a href="https://github.com/xiaqunfeng/ceph-ansible/blob/master/tools/ceph-client-rbd-env-check.py" target="_blank" rel="external">ceph-client-rbd-env-check.py</a></p>
+<h3 id="异常情形"><a href="#异常情形" class="headerlink" title="异常情形"></a>异常情形</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># cat /run/udev/data/b251\:0 </div><div class="line">S:rbd/rbd/rbd0</div><div class="line">I:162920386411</div><div class="line">E:ID_FS_TYPE=</div><div class="line">G:systemd</div><div class="line"></div><div class="line"># python ceph-client-env-rbd-test.py rbd</div><div class="line">[FAIL] cmd=&apos;lsblk -nd -o FSTYPE /dev/rbd0&apos;, desc=&apos;get device fstype&apos;</div></pre></td></tr></table></figure>
+<h3 id="正常情形"><a href="#正常情形" class="headerlink" title="正常情形"></a>正常情形</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># cat /run/udev/data/b251\:0 </div><div class="line">S:rbd/rbd/rbd0</div><div class="line">I:163204714535</div><div class="line">E:ID_FS_UUID=d0296c84-56d7-4adb-89b1-9f60c6a54309</div><div class="line">E:ID_FS_UUID_ENC=d0296c84-56d7-4adb-89b1-9f60c6a54309</div><div class="line">E:ID_FS_TYPE=xfs</div><div class="line">E:ID_FS_USAGE=filesystem</div><div class="line">G:systemd</div><div class="line"></div><div class="line"># python ceph-client-env-rbd-test.py rbd</div><div class="line">[PASS] get device fstype okay.</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -318,13 +299,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/01/12/解决calamari无法获取集群hosts信息的BUG/">解决calamari无法获取集群hosts信息的BUG</a></p>
+        <p><span>本文标题:</span><a href="/2018/03/08/客户端rbd环境检查/">客户端rbd环境检查</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-01-12, 17:55:14</p>
-        <p><span>最后更新:</span>2017-01-12, 17:55:14</p>
+        <p><span>发布时间:</span>2018-03-08, 20:47:49</p>
+        <p><span>最后更新:</span>2018-03-08, 20:51:51</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/01/12/解决calamari无法获取集群hosts信息的BUG/" title="解决calamari无法获取集群hosts信息的BUG">http://xiaqunfeng.cc/2017/01/12/解决calamari无法获取集群hosts信息的BUG/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/01/12/解决calamari无法获取集群hosts信息的BUG/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2018/03/08/客户端rbd环境检查/" title="客户端rbd环境检查">http://xiaqunfeng.cc/2018/03/08/客户端rbd环境检查/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2018/03/08/客户端rbd环境检查/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -336,16 +317,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/01/12/dd磁盘命令小记/">
-                    dd磁盘命令小记
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/01/11/ubuntu下配置邮件发送/">
-                    ubuntu下配置邮件发送
+                <a href="/2018/03/08/ceph-osd权重调整/">
+                    ceph osd权重调整
                 </a>
             </div>
         
@@ -357,7 +332,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#折腾过程"><span class="toc-number">2.</span> <span class="toc-text">折腾过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题"><span class="toc-number">3.</span> <span class="toc-text">问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#原因"><span class="toc-number">4.</span> <span class="toc-text">原因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方法"><span class="toc-number">5.</span> <span class="toc-text">解决方法</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#应付的场景"><span class="toc-number">1.</span> <span class="toc-text">应付的场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方法"><span class="toc-number">2.</span> <span class="toc-text">解决方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#异常情形"><span class="toc-number">2.1.</span> <span class="toc-text">异常情形</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#正常情形"><span class="toc-number">2.2.</span> <span class="toc-text">正常情形</span></a></li></ol></li></ol>
         
     </div>
     <style>
@@ -393,7 +368,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"解决calamari无法获取集群hosts信息的BUG　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"客户端rbd环境检查　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -412,8 +387,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.cc/2017/01/12/解决calamari无法获取集群hosts信息的BUG/';
-            this.page.identifier = '2017/01/12/解决calamari无法获取集群hosts信息的BUG/';
+            this.page.url = 'http://xiaqunfeng.cc/2018/03/08/客户端rbd环境检查/';
+            this.page.identifier = '2018/03/08/客户端rbd环境检查/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -435,15 +410,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/01/12/dd磁盘命令小记/" title="上一篇: dd磁盘命令小记">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/01/11/ubuntu下配置邮件发送/" title="下一篇: ubuntu下配置邮件发送">
+            <a href="/2018/03/08/ceph-osd权重调整/" title="下一篇: ceph osd权重调整">
                 <i class="fa fa-angle-right"></i>
             </a>
         
