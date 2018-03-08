@@ -287,144 +287,8 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>介绍调整何时该调整权重，以及调整权重的方法。<br>&lt;! – more –&gt;</p>
-<h2 id="为什么要调整权重？"><a href="#为什么要调整权重？" class="headerlink" title="为什么要调整权重？"></a>为什么要调整权重？</h2><p>ceph是一个去中心化的分布式存储系统，其数据的分布是按照<a href="[https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf](https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf">crush算法</a>)计算得到。</p>
-<p>然而遗憾的是crush算法并不能将pg均匀的分布于osd之间。以某三副本pool有1024个pg，共1024*3=3072个pg在30个osd中的分布为例：</p>
-<table>
-<thead>
-<tr>
-<th>osd编号</th>
-<th>28</th>
-<th>22</th>
-<th>3</th>
-<th>12</th>
-<th>7</th>
-<th>23</th>
-<th>20</th>
-<th>13</th>
-<th>16</th>
-<th>4</th>
-<th>2</th>
-<th>14</th>
-<th>9</th>
-<th>8</th>
-<th>24</th>
-<th>18</th>
-<th>17</th>
-<th>11</th>
-<th>6</th>
-<th>21</th>
-<th>0</th>
-<th>27</th>
-<th>10</th>
-<th>1</th>
-<th>25</th>
-<th>29</th>
-<th>19</th>
-<th>26</th>
-<th>15</th>
-<th>5</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>pg数目</td>
-<td>112</td>
-<td>112</td>
-<td>110</td>
-<td>110</td>
-<td>109</td>
-<td>109</td>
-<td>109</td>
-<td>109</td>
-<td>107</td>
-<td>106</td>
-<td>106</td>
-<td>106</td>
-<td>105</td>
-<td>105</td>
-<td>105</td>
-<td>105</td>
-<td>104</td>
-<td>104</td>
-<td>101</td>
-<td>101</td>
-<td>99</td>
-<td>98</td>
-<td>98</td>
-<td>97</td>
-<td>94</td>
-<td>93</td>
-<td>92</td>
-<td>91</td>
-<td>89</td>
-<td>86</td>
-</tr>
-<tr>
-<td>剩余比例(%)</td>
-<td>5</td>
-<td>5</td>
-<td>6.7</td>
-<td>6.7</td>
-<td>7.6</td>
-<td>7.6</td>
-<td>7.6</td>
-<td>7.6</td>
-<td>9.4</td>
-<td>10.3</td>
-<td>10.3</td>
-<td>10.3</td>
-<td>11.2</td>
-<td>11.2</td>
-<td>11.2</td>
-<td>11.2</td>
-<td>12.1</td>
-<td>12.1</td>
-<td>14.8</td>
-<td>14.8</td>
-<td>16.6</td>
-<td>17.5</td>
-<td>17.5</td>
-<td>18.3</td>
-<td>21.1</td>
-<td>22.0</td>
-<td>22.9</td>
-<td>23.8</td>
-<td>25.5</td>
-<td>28.2</td>
-</tr>
-</tbody>
-</table>
-<p>该pg数目分布的方差达到7，平均值是102.4。</p>
-<p>这么分布的缺点有两个：</p>
-<ul>
-<li>无法充分利用空间。集群会更早的达到full报警，full之后，在full-osd上的pg将停止写入。full的警报在某个osd达到95%时报出，按照上面表格的数据，最早达到的是osd.28，osd.28写到95%时，按照pg分布的比例，各个osd此时的剩余比例如上，整个集群的剩余空间比例在13.3%。而如果pg数目的分布在[101, 105]之间，某osd达到95%时，整个集群的剩余比例在6%，可见，pg均匀分布会更充分利用空间。</li>
-<li>pg分布多的osd将成为性能瓶颈。这个结论显而易见，当pg分布多时，iops就高，因此pg分布均匀能消除系统性能瓶颈。</li>
-</ul>
-<h2 id="什么时候调整权重？"><a href="#什么时候调整权重？" class="headerlink" title="什么时候调整权重？"></a>什么时候调整权重？</h2><p>一些公开的分享常常提及在集群空间报警时调整权重，实际上我更推荐在集群刚刚建立时即可调整权重，均衡pg分布。这样的好处有两个：</p>
-<ul>
-<li>新建立的集群没有数据，pg迁移时负担小。老集群迁移数据成本高，且会对应用产生性能影响。</li>
-<li>更早的消除了性能瓶颈。</li>
-</ul>
-<h2 id="如何调整权重？"><a href="#如何调整权重？" class="headerlink" title="如何调整权重？"></a>如何调整权重？</h2><p>我们使用 <code>ceph osd crush reweight osd.N float_weight</code> 来调整某个pool的pg分布来实现均衡分布。我们建议ceph集群中一个ruleset只有一个主力pool，我们将调整这个主力pool的分布实现均衡。举个例子：</p>
-<ul>
-<li>对象存储。其主力使用的pool为data。如果把index pool放置在其他ruleset(该ruleset与data pool的ruleset不共享osd)上，则index pool也可以调整权重实现index pool pg均衡分布;</li>
-<li>块存储。其主力使用的pool是rbd。</li>
-<li>对象存储和块存储共享集群，此时建议分布于不同的osd集合，使用不同的ruleset。</li>
-</ul>
-<p>对于一个pool_id=10的pg分布调整，步骤如下：</p>
-<ol>
-<li>使用 <code>ceph pg dump|grep &#39;^10\.&#39; |awk &#39;{print $15}&#39; |python pg_stat.py|sort -k2 -rn</code> 得到分布统计</li>
-<li>通过方差查看均衡效果：<code>ceph pg dump|grep &#39;^10\.&#39; |awk &#39;{print $15}&#39; | python pg_stat.py |sort -k2 -rn|awk &#39;{print $2}&#39;|python dispersion.py</code></li>
-<li>通过 <code>python ceph-reweight.py {osd编号} {float权重}</code>来调整某个osd的权重。每次调整权重建议为osd权重的5%粒度。</li>
-<li>等待所有pg进入active状态；</li>
-<li>回到第2步查看方差，确认效果，效果不好可以撤销上次调整；继续调整则回到1，选择需要调整的节点。</li>
-</ol>
-<p>结束的时机选择在 <code>方差/avg_pg_num_per_osd &lt; 3</code> 时可以结束。</p>
-<h2 id="有没有更好的办法？"><a href="#有没有更好的办法？" class="headerlink" title="有没有更好的办法？"></a>有没有更好的办法？</h2><p>ceph osd reweight-by-pg的方式早期可能有所效果，但是调整到一定程度时不够彻底，不如手动直接。</p>
-<p>后续研究下crushtool，通过离线计算的方式直接得出权重，然后直接reweight osd一步到位。先提供手动方式凑合用。</p>
-<p>脚本地址：<a href="https://github.com/xiaqunfeng/ceph-ansible/tree/master/tools/ceph-pg-reweight" target="_blank" rel="external">https://github.com/xiaqunfeng/ceph-ansible/tree/master/tools/ceph-pg-reweight</a></p>
-
+              <p>介绍调整何时该调整权重，以及调整权重的方法。<br>
+          
       
     </div>
     
@@ -437,6 +301,10 @@
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
     </div>
 
+      
+        <p class="article-more-link">
+          <a href="/2018/03/08/ceph-osd权重调整/#more">阅读全文 >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>

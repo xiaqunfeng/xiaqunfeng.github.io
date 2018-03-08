@@ -15,55 +15,16 @@
 
 
 
-<meta name="description" content="介绍调整何时该调整权重，以及调整权重的方法。&amp;lt;! – more –&amp;gt;
-为什么要调整权重？ceph是一个去中心化的分布式存储系统，其数据的分布是按照crush算法)计算得到。
-然而遗憾的是crush算法并不能将pg均匀的分布于osd之间。以某三副本pool有1024个pg，共1024*3=3072个pg在30个osd中的分布为例：
-
-
-
-osd编号
-28
-22
-3
-12
-7
-23
-20">
+<meta name="description" content="介绍调整何时该调整权重，以及调整权重的方法。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ceph osd权重调整">
 <meta property="og:url" content="http://xiaqunfeng.cc/2018/03/08/ceph-osd权重调整/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="介绍调整何时该调整权重，以及调整权重的方法。&amp;lt;! – more –&amp;gt;
-为什么要调整权重？ceph是一个去中心化的分布式存储系统，其数据的分布是按照crush算法)计算得到。
-然而遗憾的是crush算法并不能将pg均匀的分布于osd之间。以某三副本pool有1024个pg，共1024*3=3072个pg在30个osd中的分布为例：
-
-
-
-osd编号
-28
-22
-3
-12
-7
-23
-20">
-<meta property="og:updated_time" content="2018-03-08T12:27:59.000Z">
+<meta property="og:description" content="介绍调整何时该调整权重，以及调整权重的方法。">
+<meta property="og:updated_time" content="2018-03-08T12:45:30.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ceph osd权重调整">
-<meta name="twitter:description" content="介绍调整何时该调整权重，以及调整权重的方法。&amp;lt;! – more –&amp;gt;
-为什么要调整权重？ceph是一个去中心化的分布式存储系统，其数据的分布是按照crush算法)计算得到。
-然而遗憾的是crush算法并不能将pg均匀的分布于osd之间。以某三副本pool有1024个pg，共1024*3=3072个pg在30个osd中的分布为例：
-
-
-
-osd编号
-28
-22
-3
-12
-7
-23
-20">
+<meta name="twitter:description" content="介绍调整何时该调整权重，以及调整权重的方法。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -322,7 +283,7 @@ osd编号
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>介绍调整何时该调整权重，以及调整权重的方法。<br>&lt;! – more –&gt;</p>
+        <p>介绍调整何时该调整权重，以及调整权重的方法。<br><a id="more"></a></p>
 <h2 id="为什么要调整权重？"><a href="#为什么要调整权重？" class="headerlink" title="为什么要调整权重？"></a>为什么要调整权重？</h2><p>ceph是一个去中心化的分布式存储系统，其数据的分布是按照<a href="[https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf](https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf">crush算法</a>)计算得到。</p>
 <p>然而遗憾的是crush算法并不能将pg均匀的分布于osd之间。以某三副本pool有1024个pg，共1024*3=3072个pg在30个osd中的分布为例：</p>
 <table>
@@ -470,7 +431,7 @@ osd编号
         <p><span>本文标题:</span><a href="/2018/03/08/ceph-osd权重调整/">ceph osd权重调整</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
         <p><span>发布时间:</span>2018-03-08, 20:22:36</p>
-        <p><span>最后更新:</span>2018-03-08, 20:27:59</p>
+        <p><span>最后更新:</span>2018-03-08, 20:45:30</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2018/03/08/ceph-osd权重调整/" title="ceph osd权重调整">http://xiaqunfeng.cc/2018/03/08/ceph-osd权重调整/</a>
             <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2018/03/08/ceph-osd权重调整/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
