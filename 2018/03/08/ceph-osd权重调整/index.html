@@ -15,16 +15,55 @@
 
 
 
-<meta name="description" content="如题，介绍了ganesha，同时对比了用户态下的nfs server(ganesha)和内核态下传统nfs server。">
+<meta name="description" content="介绍调整何时该调整权重，以及调整权重的方法。&amp;lt;! – more –&amp;gt;
+为什么要调整权重？ceph是一个去中心化的分布式存储系统，其数据的分布是按照crush算法)计算得到。
+然而遗憾的是crush算法并不能将pg均匀的分布于osd之间。以某三副本pool有1024个pg，共1024*3=3072个pg在30个osd中的分布为例：
+
+
+
+osd编号
+28
+22
+3
+12
+7
+23
+20">
 <meta property="og:type" content="article">
-<meta property="og:title" content="为什么对于企业NAS来说NFS-ganesha是一个更好的NFS server">
-<meta property="og:url" content="http://xiaqunfeng.cc/2017/08/03/为什么对于企业NAS来说NFS-ganesha是一个更好的NFS-server/index.html">
+<meta property="og:title" content="ceph osd权重调整">
+<meta property="og:url" content="http://xiaqunfeng.cc/2018/03/08/ceph-osd权重调整/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="如题，介绍了ganesha，同时对比了用户态下的nfs server(ganesha)和内核态下传统nfs server。">
-<meta property="og:updated_time" content="2017-08-04T03:36:01.000Z">
+<meta property="og:description" content="介绍调整何时该调整权重，以及调整权重的方法。&amp;lt;! – more –&amp;gt;
+为什么要调整权重？ceph是一个去中心化的分布式存储系统，其数据的分布是按照crush算法)计算得到。
+然而遗憾的是crush算法并不能将pg均匀的分布于osd之间。以某三副本pool有1024个pg，共1024*3=3072个pg在30个osd中的分布为例：
+
+
+
+osd编号
+28
+22
+3
+12
+7
+23
+20">
+<meta property="og:updated_time" content="2018-03-08T12:27:59.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="为什么对于企业NAS来说NFS-ganesha是一个更好的NFS server">
-<meta name="twitter:description" content="如题，介绍了ganesha，同时对比了用户态下的nfs server(ganesha)和内核态下传统nfs server。">
+<meta name="twitter:title" content="ceph osd权重调整">
+<meta name="twitter:description" content="介绍调整何时该调整权重，以及调整权重的方法。&amp;lt;! – more –&amp;gt;
+为什么要调整权重？ceph是一个去中心化的分布式存储系统，其数据的分布是按照crush算法)计算得到。
+然而遗憾的是crush算法并不能将pg均匀的分布于osd之间。以某三副本pool有1024个pg，共1024*3=3072个pg在30个osd中的分布为例：
+
+
+
+osd编号
+28
+22
+3
+12
+7
+23
+20">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -56,7 +95,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>为什么对于企业NAS来说NFS-ganesha是一个更好的NFS server | 夏天的风的博客</title>
+<title>ceph osd权重调整 | 夏天的风的博客</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -243,11 +282,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-为什么对于企业NAS来说NFS-ganesha是一个更好的NFS-server" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-ceph-osd权重调整" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/08/03/为什么对于企业NAS来说NFS-ganesha是一个更好的NFS-server/" class="article-date">
-      <time datetime="2017-08-03T11:57:19.000Z" itemprop="datePublished">2017-08-03</time>
+      <a href="/2018/03/08/ceph-osd权重调整/" class="article-date">
+      <time datetime="2018-03-08T12:22:36.000Z" itemprop="datePublished">2018-03-08</time>
 </a>
 
 
@@ -262,7 +301,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      为什么对于企业NAS来说NFS-ganesha是一个更好的NFS server
+      ceph osd权重调整
     </h1>
   
 
@@ -273,7 +312,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ganesha/">ganesha</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph/">ceph</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -283,115 +322,143 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>如题，介绍了ganesha，同时对比了用户态下的nfs server(ganesha)和内核态下传统nfs server。<br><a id="more"></a></p>
-<h2 id="What-is-NFS-Ganesha"><a href="#What-is-NFS-Ganesha" class="headerlink" title="What is NFS-Ganesha?"></a>What is NFS-Ganesha?</h2><p>1、是NFS server用户态层面的实现</p>
-<p>支持 NFS V2, V3, V4, V4.1, V4.2</p>
-<p>2、可以管理庞大的元数据和数据缓存</p>
-<p>3、能够访问不同的数据集</p>
-<p>4、规定开发 FS 的具体特性</p>
-<p>5、能够同时为多个不同类型的文件系统服务</p>
-<p>6、能够同时服务多个协议</p>
-<p>7、可以作为一个 Proxy server 并导出一个远端的 NFSv4 server</p>
-<p>8、不感知集群管理</p>
-<p>同时拥有一个小但是在成长中的社区</p>
-<p>积极参与者有：IBM, Panasas, Redhat, LinuxBox, CES</p>
-<h2 id="Enterprise-NAS"><a href="#Enterprise-NAS" class="headerlink" title="Enterprise NAS"></a>Enterprise NAS</h2><p>1、通过集群配置可靠、冗余和故障安全。</p>
-<p>2、通过多个协议服务结构化和非机构化数据。</p>
-<p>3、在容量和性能上可扩展</p>
+        <p>介绍调整何时该调整权重，以及调整权重的方法。<br>&lt;! – more –&gt;</p>
+<h2 id="为什么要调整权重？"><a href="#为什么要调整权重？" class="headerlink" title="为什么要调整权重？"></a>为什么要调整权重？</h2><p>ceph是一个去中心化的分布式存储系统，其数据的分布是按照<a href="[https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf](https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf">crush算法</a>)计算得到。</p>
+<p>然而遗憾的是crush算法并不能将pg均匀的分布于osd之间。以某三副本pool有1024个pg，共1024*3=3072个pg在30个osd中的分布为例：</p>
+<table>
+<thead>
+<tr>
+<th>osd编号</th>
+<th>28</th>
+<th>22</th>
+<th>3</th>
+<th>12</th>
+<th>7</th>
+<th>23</th>
+<th>20</th>
+<th>13</th>
+<th>16</th>
+<th>4</th>
+<th>2</th>
+<th>14</th>
+<th>9</th>
+<th>8</th>
+<th>24</th>
+<th>18</th>
+<th>17</th>
+<th>11</th>
+<th>6</th>
+<th>21</th>
+<th>0</th>
+<th>27</th>
+<th>10</th>
+<th>1</th>
+<th>25</th>
+<th>29</th>
+<th>19</th>
+<th>26</th>
+<th>15</th>
+<th>5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pg数目</td>
+<td>112</td>
+<td>112</td>
+<td>110</td>
+<td>110</td>
+<td>109</td>
+<td>109</td>
+<td>109</td>
+<td>109</td>
+<td>107</td>
+<td>106</td>
+<td>106</td>
+<td>106</td>
+<td>105</td>
+<td>105</td>
+<td>105</td>
+<td>105</td>
+<td>104</td>
+<td>104</td>
+<td>101</td>
+<td>101</td>
+<td>99</td>
+<td>98</td>
+<td>98</td>
+<td>97</td>
+<td>94</td>
+<td>93</td>
+<td>92</td>
+<td>91</td>
+<td>89</td>
+<td>86</td>
+</tr>
+<tr>
+<td>剩余比例(%)</td>
+<td>5</td>
+<td>5</td>
+<td>6.7</td>
+<td>6.7</td>
+<td>7.6</td>
+<td>7.6</td>
+<td>7.6</td>
+<td>7.6</td>
+<td>9.4</td>
+<td>10.3</td>
+<td>10.3</td>
+<td>10.3</td>
+<td>11.2</td>
+<td>11.2</td>
+<td>11.2</td>
+<td>11.2</td>
+<td>12.1</td>
+<td>12.1</td>
+<td>14.8</td>
+<td>14.8</td>
+<td>16.6</td>
+<td>17.5</td>
+<td>17.5</td>
+<td>18.3</td>
+<td>21.1</td>
+<td>22.0</td>
+<td>22.9</td>
+<td>23.8</td>
+<td>25.5</td>
+<td>28.2</td>
+</tr>
+</tbody>
+</table>
+<p>该pg数目分布的方差达到7，平均值是102.4。</p>
+<p>这么分布的缺点有两个：</p>
 <ul>
-<li>灵活的 scale-up 和 scale-out</li>
-<li>能够支持大量客户端</li>
+<li>无法充分利用空间。集群会更早的达到full报警，full之后，在full-osd上的pg将停止写入。full的警报在某个osd达到95%时报出，按照上面表格的数据，最早达到的是osd.28，osd.28写到95%时，按照pg分布的比例，各个osd此时的剩余比例如上，整个集群的剩余空间比例在13.3%。而如果pg数目的分布在[101, 105]之间，某osd达到95%时，整个集群的剩余比例在6%，可见，pg均匀分布会更充分利用空间。</li>
+<li>pg分布多的osd将成为性能瓶颈。这个结论显而易见，当pg分布多时，iops就高，因此pg分布均匀能消除系统性能瓶颈。</li>
 </ul>
-<p>4、企业级特性：tiering, de-dup, multi-tenancy, multi-protocol 等</p>
-<p>5、灵活的运行在多个平台并服务于异构数据集</p>
-<p>6、支持复杂的安全配置</p>
-<p>7、QoS - 服务质量（Quality of Service）</p>
-<h2 id="Kernel-vs-User-Space-Server"><a href="#Kernel-vs-User-Space-Server" class="headerlink" title="Kernel vs User Space Server"></a>Kernel vs User Space Server</h2><p>1、内核级服务需要提供更多的up-calls</p>
+<h2 id="什么时候调整权重？"><a href="#什么时候调整权重？" class="headerlink" title="什么时候调整权重？"></a>什么时候调整权重？</h2><p>一些公开的分享常常提及在集群空间报警时调整权重，实际上我更推荐在集群刚刚建立时即可调整权重，均衡pg分布。这样的好处有两个：</p>
 <ul>
-<li>Mounted和exportfs信息</li>
-<li>ID映射</li>
-<li>GSS API</li>
-<li>客户端ID跟踪</li>
-<li>Statd 相互作用</li>
-<li>集群相关的服务</li>
+<li>新建立的集群没有数据，pg迁移时负担小。老集群迁移数据成本高，且会对应用产生性能影响。</li>
+<li>更早的消除了性能瓶颈。</li>
 </ul>
-<p>2、为什么用户空间更好</p>
+<h2 id="如何调整权重？"><a href="#如何调整权重？" class="headerlink" title="如何调整权重？"></a>如何调整权重？</h2><p>我们使用 <code>ceph osd crush reweight osd.N float_weight</code> 来调整某个pool的pg分布来实现均衡分布。我们建议ceph集群中一个ruleset只有一个主力pool，我们将调整这个主力pool的分布实现均衡。举个例子：</p>
 <ul>
-<li>用户空间比内核空间更灵活</li>
-<li>实现 restarts, failover, failback 更容易</li>
-<li>不需要实现系统调用</li>
-<li>和用户空间的服务的交互没有 up-calls </li>
-<li>clustering变得自然而简单</li>
-<li>有针对性和侵略性的缓存功能</li>
-<li>灵活和插件式的 FSAL（可以利用的 FS 的特定功能）</li>
-<li>可以通过支持通用的 DLM 分布式锁管理来支持 multi-Protocol</li>
-<li>易于实现的 multi-tenancy</li>
-<li>易于监控和控制资源消耗，甚至扩展至强制执行QoS</li>
-<li>可管理性和调试能力是重要的加分项</li>
+<li>对象存储。其主力使用的pool为data。如果把index pool放置在其他ruleset(该ruleset与data pool的ruleset不共享osd)上，则index pool也可以调整权重实现index pool pg均衡分布;</li>
+<li>块存储。其主力使用的pool是rbd。</li>
+<li>对象存储和块存储共享集群，此时建议分布于不同的osd集合，使用不同的ruleset。</li>
 </ul>
-<p>3、内核服务没有优点吗？优点在这</p>
-<ul>
-<li>文件句柄：最近才有的主要优势，现在有了开放式的支持</li>
-<li>性能：用户空间差一点，但可以通过集群FS，积极缓存，自定义RPC，以及积极的线程/并行执行来抵消</li>
-<li>所有权/权限：每一个处理都通过 setfsuid。但是其他可能需要执行多个系统调用或特殊的 FS 接口来实现，如VFS，Luster，GPFS，但实CEPH，Gluster 可以接受lib库实现</li>
-<li>多次系统调用由于WCC的原因需要 perform, write/getattr</li>
-<li>没有重复的缓存和零拷贝读写，降低了复杂性</li>
-</ul>
-<h2 id="Clustering-with-NFS-Ganesha"><a href="#Clustering-with-NFS-Ganesha" class="headerlink" title="Clustering with NFS-Ganesha"></a>Clustering with NFS-Ganesha</h2><p>1、建议 Cluster Manager Abstraction Layer (CMAL) ，使集群不感知</p>
-<p>2、故障转移和IP移动处理</p>
-<p>3、集群感知DRC</p>
-<p>4、跨集群的DLM</p>
-<p>5、集群范围的宽限期管理</p>
-<h2 id="Cluster-Manager-Abstraction-Layer-CMAL"><a href="#Cluster-Manager-Abstraction-Layer-CMAL" class="headerlink" title="Cluster Manager Abstraction Layer (CMAL)"></a>Cluster Manager Abstraction Layer (CMAL)</h2><p>1、为集群管理提供了一个抽象的支持</p>
-<p>2、管理集群节点中节点内的通信</p>
-<p>3、通用性足以实现 cDRC, DLM等特性的多个集群交互</p>
-<p>4、集群管理不可知。容易插入任何集群管理中</p>
-<p>5、模仿FSAL</p>
-<p>6、CMAL层将具有基于集群管理的功能指针</p>
-<p>7、能够提供pNFS配置文件中DS和MDS节点间的集群通信</p>
-<h2 id="Cluster-DRC"><a href="#Cluster-DRC" class="headerlink" title="Cluster DRC"></a>Cluster DRC</h2><p>1、DRC帮助server识别非幂等操作的重复请求，并进行相应处理</p>
-<p>2、识别back-up节点以备份DRC，或在集群/中心位置的所有节点上备份</p>
-<p>3、通过CMAL存储和获取DRC entries</p>
-<p>4、接口</p>
-<ul>
-<li>init_drc_cmal(server-ip)：初始化CMAL接口，设置server-ip的备份节点。</li>
-<li>add_drc_entry(xid, entry, server-ip)：在集群中存储DRC entry。</li>
-<li>retrieve_drc_entries(server-ip)：检索特定服务节点的所有entry</li>
-<li>shutdown_drc_cmal(server-ip)：关闭指定 server-ip 的CMAL接口</li>
-</ul>
-<h2 id="Failover-IP-Move"><a href="#Failover-IP-Move" class="headerlink" title="Failover/IP Move"></a>Failover/IP Move</h2><p>1、NLM使其非常复杂，但NFS-Ganesha架构面临挑战。</p>
-<p>2、在第一次加锁和最后一次解锁时，Ganesha调用集群管理提供的接口去register(monitor)/unregister(unmonitor) the client-ip, server-ip pair</p>
-<p>3、当IP被移动（手动或者失败），CM发送 sm_notify 给影响 server-ip的客户端</p>
-<p>4、CM为相应的服务器节点生成事件，release-ip，take-ip，所以状态应该从源节点释放，在目的节点获取</p>
-<p>5、根据锁的粒度，相应的锁/文件系统，或者整个集群应该优雅的进入</p>
-<h2 id="Distributed-Lock-manager"><a href="#Distributed-Lock-manager" class="headerlink" title="Distributed Lock manager"></a>Distributed Lock manager</h2><p>1、NFS-Ganesha的架构支持DLM</p>
-<p>DLM可以用不同的方式实现</p>
-<p>2、允许管理集群范围锁</p>
-<p>3、通过 NFS, CIFS和其他协议共享状态管理</p>
-<p>4、最小化失败带来影响的能力（Targeted Grace）</p>
-<h2 id="FSAL-Enhancements-and-new-features"><a href="#FSAL-Enhancements-and-new-features" class="headerlink" title="FSAL Enhancements and new features"></a>FSAL Enhancements and new features</h2><p>1、动态exports</p>
-<p>2、delegations</p>
-<p>3、FSAL 增强</p>
-<ul>
-<li>支持ACL</li>
-<li>开放升级支持</li>
-<li>解决POSIX语义</li>
-<li>用户libraries可以轻松插入（protecTIER, GlusterFS）</li>
-<li>可堆叠的FSALs</li>
-<li>PseudoFS作为FSAL的第一个类</li>
-</ul>
-<p>4、LTTng集成</p>
-<p>5、通过libmooshika支持RDMA</p>
-<h2 id="NFS-Ganesha-links"><a href="#NFS-Ganesha-links" class="headerlink" title="NFS-Ganesha links"></a>NFS-Ganesha links</h2><p>1、NFS-Ganesha is available under the terms of the LGPLv3 license.<br>2、NFS-Ganesha Project homepage on github<br> <a href="https://github.com/nfs-ganesha/nfs-ganesha/wiki" target="_blank" rel="external">https://github.com/nfs-ganesha/nfs-ganesha/wiki</a><br>3、Github:<br> <a href="https://github.com/nfs-ganesha/nfs-ganesh" target="_blank" rel="external">https://github.com/nfs-ganesha/nfs-ganesh</a><br>4、Download page<br> <a href="http://sourceforge.net/projects/nfs-ganesha/files" target="_blank" rel="external">http://sourceforge.net/projects/nfs-ganesha/files</a><br>5、Mailing lists</p>
-<ul>
-<li> nfs-ganesha-devel@lists.sourceforge.net</li>
-<li> nfs-ganesha-support@lists.sourceforge.net</li>
-<li> nfs-ganesha-announce@lists.sourceforge.net</li>
-</ul>
-<p>本文翻译自：<a href="http://events.linuxfoundation.org/sites/events/files/slides/Collab14_nfsGanesha.pdf" target="_blank" rel="external">Why is it a better NFS server for Enterprise NAS</a></p>
-<blockquote>
-<p>部分晦涩的地方直接引用英文原文</p>
-</blockquote>
+<p>对于一个pool_id=10的pg分布调整，步骤如下：</p>
+<ol>
+<li>使用 <code>ceph pg dump|grep &#39;^10\.&#39; |awk &#39;{print $15}&#39; |python pg_stat.py|sort -k2 -rn</code> 得到分布统计</li>
+<li>通过方差查看均衡效果：<code>ceph pg dump|grep &#39;^10\.&#39; |awk &#39;{print $15}&#39; | python pg_stat.py |sort -k2 -rn|awk &#39;{print $2}&#39;|python dispersion.py</code></li>
+<li>通过 <code>python ceph-reweight.py {osd编号} {float权重}</code>来调整某个osd的权重。每次调整权重建议为osd权重的5%粒度。</li>
+<li>等待所有pg进入active状态；</li>
+<li>回到第2步查看方差，确认效果，效果不好可以撤销上次调整；继续调整则回到1，选择需要调整的节点。</li>
+</ol>
+<p>结束的时机选择在 <code>方差/avg_pg_num_per_osd &lt; 3</code> 时可以结束。</p>
+<h2 id="有没有更好的办法？"><a href="#有没有更好的办法？" class="headerlink" title="有没有更好的办法？"></a>有没有更好的办法？</h2><p>ceph osd reweight-by-pg的方式早期可能有所效果，但是调整到一定程度时不够彻底，不如手动直接。</p>
+<p>后续研究下crushtool，通过离线计算的方式直接得出权重，然后直接reweight osd一步到位。先提供手动方式凑合用。</p>
+<p>脚本地址：<a href="https://github.com/xiaqunfeng/ceph-ansible/tree/master/tools/ceph-pg-reweight" target="_blank" rel="external">https://github.com/xiaqunfeng/ceph-ansible/tree/master/tools/ceph-pg-reweight</a></p>
 
       
     </div>
@@ -400,13 +467,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/08/03/为什么对于企业NAS来说NFS-ganesha是一个更好的NFS-server/">为什么对于企业NAS来说NFS-ganesha是一个更好的NFS server</a></p>
+        <p><span>本文标题:</span><a href="/2018/03/08/ceph-osd权重调整/">ceph osd权重调整</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">夏天的风</a></p>
-        <p><span>发布时间:</span>2017-08-03, 19:57:19</p>
-        <p><span>最后更新:</span>2017-08-04, 11:36:01</p>
+        <p><span>发布时间:</span>2018-03-08, 20:22:36</p>
+        <p><span>最后更新:</span>2018-03-08, 20:27:59</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/08/03/为什么对于企业NAS来说NFS-ganesha是一个更好的NFS-server/" title="为什么对于企业NAS来说NFS-ganesha是一个更好的NFS server">http://xiaqunfeng.cc/2017/08/03/为什么对于企业NAS来说NFS-ganesha是一个更好的NFS-server/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2017/08/03/为什么对于企业NAS来说NFS-ganesha是一个更好的NFS-server/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2018/03/08/ceph-osd权重调整/" title="ceph osd权重调整">http://xiaqunfeng.cc/2018/03/08/ceph-osd权重调整/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://xiaqunfeng.cc/2018/03/08/ceph-osd权重调整/　　作者: 夏天的风" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -418,16 +485,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/08/05/python3-OS-module/">
-                    python3 OS module
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/08/01/ceph-peering过程分析/">
-                    ceph peering过程分析
+                <a href="/2018/03/04/ceph-luminous最佳部署实践/">
+                    ceph luminous最佳部署实践
                 </a>
             </div>
         
@@ -439,7 +500,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#What-is-NFS-Ganesha"><span class="toc-number">1.</span> <span class="toc-text">What is NFS-Ganesha?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Enterprise-NAS"><span class="toc-number">2.</span> <span class="toc-text">Enterprise NAS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Kernel-vs-User-Space-Server"><span class="toc-number">3.</span> <span class="toc-text">Kernel vs User Space Server</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Clustering-with-NFS-Ganesha"><span class="toc-number">4.</span> <span class="toc-text">Clustering with NFS-Ganesha</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cluster-Manager-Abstraction-Layer-CMAL"><span class="toc-number">5.</span> <span class="toc-text">Cluster Manager Abstraction Layer (CMAL)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cluster-DRC"><span class="toc-number">6.</span> <span class="toc-text">Cluster DRC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Failover-IP-Move"><span class="toc-number">7.</span> <span class="toc-text">Failover/IP Move</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Distributed-Lock-manager"><span class="toc-number">8.</span> <span class="toc-text">Distributed Lock manager</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FSAL-Enhancements-and-new-features"><span class="toc-number">9.</span> <span class="toc-text">FSAL Enhancements and new features</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NFS-Ganesha-links"><span class="toc-number">10.</span> <span class="toc-text">NFS-Ganesha links</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么要调整权重？"><span class="toc-number">1.</span> <span class="toc-text">为什么要调整权重？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么时候调整权重？"><span class="toc-number">2.</span> <span class="toc-text">什么时候调整权重？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何调整权重？"><span class="toc-number">3.</span> <span class="toc-text">如何调整权重？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#有没有更好的办法？"><span class="toc-number">4.</span> <span class="toc-text">有没有更好的办法？</span></a></li></ol>
         
     </div>
     <style>
@@ -475,7 +536,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"为什么对于企业NAS来说NFS-ganesha是一个更好的NFS server　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"ceph osd权重调整　| 夏天的风的博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -494,8 +555,8 @@
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function(){
-            this.page.url = 'http://xiaqunfeng.cc/2017/08/03/为什么对于企业NAS来说NFS-ganesha是一个更好的NFS-server/';
-            this.page.identifier = '2017/08/03/为什么对于企业NAS来说NFS-ganesha是一个更好的NFS-server/';
+            this.page.url = 'http://xiaqunfeng.cc/2018/03/08/ceph-osd权重调整/';
+            this.page.identifier = '2018/03/08/ceph-osd权重调整/';
         };
         var loadComment = function(){
             var d = document, s = d.createElement('script');
@@ -517,15 +578,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/08/05/python3-OS-module/" title="上一篇: python3 OS module">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/08/01/ceph-peering过程分析/" title="下一篇: ceph peering过程分析">
+            <a href="/2018/03/04/ceph-luminous最佳部署实践/" title="下一篇: ceph luminous最佳部署实践">
                 <i class="fa fa-angle-right"></i>
             </a>
         
