@@ -4,6 +4,156 @@
   
     
     <entry>
+      <title><![CDATA[inkscope安装配置]]></title>
+      <url>http://xiaqunfeng.cc/2018/03/11/inkscope%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</url>
+      <content type="html"><![CDATA[<p>关于inkscope监控配置实践手册。<br><a id="more"></a></p>
+<h2 id="关于inkscope"><a href="#关于inkscope" class="headerlink" title="关于inkscope"></a>关于inkscope</h2><p><strong>Inkscope</strong> 是一个 Ceph 的管理和监控系统，依赖于 Ceph 提供的 API，使用 MongoDB  来存储实时的监控数据和历史信息。</p>
+<p>inkscope是一个基于apache2部署的flask应用， flask项目只负责ceph监控页面展示，实际获取ceph集群状态信息，是通过向ceph-rest-api发起请求实现的。</p>
+<p>github地址：<a href="https://github.com/inkscope/inkscope" target="_blank" rel="external">https://github.com/inkscope/inkscope</a></p>
+<p><strong>架构图</strong> <img src="http://oow6unnib.bkt.clouddn.com/inkscope-platform.png" alt="inkscope-platform"></p>
+<p><strong>各组件作用</strong></p>
+<ul>
+<li>ceph-rest-api：Ceph提供的restfulAPI接口，inkscope通过ceph-rest-api接口访问和操作Ceph集群；</li>
+<li>cephprobe：用于获取Ceph集群的相关信息；</li>
+<li>sysprobe：用于获取Ceph运行的物理节点的相关信息，如：CPU、内存、网络以及磁盘使用量等相关信息；</li>
+<li>mongoDB：用于保存又cephprobe和sysprobe获取的实时和历史数据集合，该数据集合由inkscope web界面展示部分读取调用；</li>
+<li>inkscope-admviz：inkscope对外提供web服务。用户通过web浏览器向inkscope-admviz发送restfulAPI格式的读写请求，之后inkscope-admviz通过访问mongoDB数据库或访问ceph-rest-api接口来完成用户的读写请求，之后将读写请求的结果返回给客户浏览器。</li>
+</ul>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>系统版本信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># cat /etc/redhat-release </div><div class="line">CentOS Linux release 7.3.1611 (Core) </div><div class="line"></div><div class="line"># getconf LONG_BIT</div><div class="line">64</div><div class="line"></div><div class="line"># cat /proc/version </div><div class="line">Linux version 3.10.0-514.16.1.el7.x86_64 (builder@kbuilder.dev.centos.org) (gcc version 4.8.5 20150623 (Red Hat 4.8.5-11) (GCC) ) #1 SMP Wed Apr 12 15:04:24 UTC 2017</div></pre></td></tr></table></figure>
+<p>ceph集群信息</p>
+<p>三个节点（ceph0，ceph1，ceph2）即使mon节点，也是osd节点。</p>
+<p>这里将ceph0作为inkscope管理节点，配置公网IP。</p>
+<p>软件包的安装情况一览</p>
+<ul>
+<li>集群的mon节点：cephprobe，ceph-rest-api</li>
+<li>集群的osd节点：sysprobe，inkscope-common</li>
+<li>inkscope管理控制台： inkscope-admviz，inkscope-monitor，mongodb</li>
+</ul>
+<h2 id="管理节点"><a href="#管理节点" class="headerlink" title="管理节点"></a>管理节点</h2><h3 id="1、安装依赖包"><a href="#1、安装依赖包" class="headerlink" title="1、安装依赖包"></a>1、安装依赖包</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># yum install httpd python-setuptools lshw mod_wsgi -y</div></pre></td></tr></table></figure>
+<h3 id="2、安装mongodb"><a href="#2、安装mongodb" class="headerlink" title="2、安装mongodb"></a>2、安装mongodb</h3><p>创建 repo文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># cat /etc/yum.repos.d/mongodb-org-3.4.repo</div><div class="line">[mongodb-org-3.4]   </div><div class="line">name=MongoDB Repository    </div><div class="line">baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.4/x86_64/    </div><div class="line">gpgcheck=1    </div><div class="line">enabled=1    </div><div class="line">gpgkey=https://www.mongodb.org/static/pgp/server-3.4.asc</div></pre></td></tr></table></figure>
+<p>安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># yum install mongodb-org -y</div></pre></td></tr></table></figure>
+<p>修改配置文件，让mongdb可以远程访问</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># vim /etc/mongod.conf</div></pre></td></tr></table></figure>
+<p>bind_ip = 127.0.0.1修改为 bind_ip = 0.0.0.0</p>
+<p>启动mongodb服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># systemctl start mongod.service</div></pre></td></tr></table></figure>
+<p>查看服务是否已启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># netstat -tunlp | grep mongod</div><div class="line">tcp        0      0 0.0.0.0:27017           0.0.0.0:*               LISTEN      12115/mongod</div></pre></td></tr></table></figure>
+<h3 id="3、安装inkscope相关的包"><a href="#3、安装inkscope相关的包" class="headerlink" title="3、安装inkscope相关的包"></a>3、安装inkscope相关的包</h3><h4 id="建立本地仓库"><a href="#建立本地仓库" class="headerlink" title="建立本地仓库"></a>建立本地仓库</h4><p>参考官方的方法：<a href="https://github.com/inkscope/inkscope-packaging" target="_blank" rel="external">https://github.com/inkscope/inkscope-packaging</a></p>
+<p>1、从git上将源下载到本地</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/inkscope/inkscope-packaging.git</div></pre></td></tr></table></figure>
+<p>2、创建本地仓库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cd inkscope-packaging/</div><div class="line">mkdir -p /var/www/html/inkscope-repo</div><div class="line">cp -r RPMS/* /var/www/html/inkscope-repo</div><div class="line">createrepo /var/www/html/inkscope-repo</div></pre></td></tr></table></figure>
+<p>3、新建仓库配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># cat /etc/yum.repos.d/inkscope.repo </div><div class="line">[inkscope]</div><div class="line">name=My inkScope Repo</div><div class="line">baseurl=http://172.20.2.117:8080/inkscope-repo</div><div class="line">enabled=1</div><div class="line">gpgcheck=0</div></pre></td></tr></table></figure>
+<h4 id="安装inkscope相关软件"><a href="#安装inkscope相关软件" class="headerlink" title="安装inkscope相关软件"></a>安装inkscope相关软件</h4><p>1、安装并启动cephprobe和ceph-rest-api</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># yum install inkscope-cephrestapi</div><div class="line"># /etc/init.d/ceph-rest-api start</div><div class="line">Starting ceph-rest-api python server</div><div class="line">* Running on http://0.0.0.0:5000/</div><div class="line"></div><div class="line"># yum install inkscope-cephprobe</div><div class="line"># /etc/init.d/cephprobe start</div></pre></td></tr></table></figure>
+<blockquote>
+<p>在安装cephprobe的时候，inkscope-common作为依赖被安装</p>
+</blockquote>
+<p>2、安装inkscope-sysprobe</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># yum install inkscope-sysprobe -y</div><div class="line"># /etc/init.d/sysprobe start</div></pre></td></tr></table></figure>
+<p>3、安装inskscopeviz</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># yum install inkscope-admviz -y</div></pre></td></tr></table></figure>
+<blockquote>
+<p>此时会生成/etc/httpd/conf.d/inkScope.conf</p>
+</blockquote>
+<h3 id="4、配置权限"><a href="#4、配置权限" class="headerlink" title="4、配置权限"></a>4、配置权限</h3><p>需要创建一个client.restapi的用户 拥有权限 [mds] allow, [mon] allow , [osd] allow </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ceph auth get-or-create client.restapi mds &apos;allow&apos; osd &apos;allow *&apos; mon &apos;allow *&apos; &gt; /etc/ceph/ceph.client.restapi.keyring</div><div class="line"></div><div class="line">chmod 644 /etc/ceph/ceph.client.admin.keyring</div><div class="line">chmod 644 /etc/ceph/ceph.client.restapi.keyring</div></pre></td></tr></table></figure>
+<p>在/etc/ceph/ceph.conf配置文件里面添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[client.restapi]</div><div class="line">    log_file = /dev/null</div><div class="line">    keyring = /etc/ceph/ceph.client.restapi.keyring</div></pre></td></tr></table></figure>
+<h3 id="5、配置http"><a href="#5、配置http" class="headerlink" title="5、配置http"></a>5、配置http</h3><p>/etc/httpd/conf/httpd.conf 中间添加一条</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Listen 8080</div></pre></td></tr></table></figure>
+<p>因为inkscope的web 默认采用虚拟主机的方式使用了8080端口。这个地方是写的这台管理节点的地址和端口，因为本机实现了wsgi的方式的rest-api的接口，不是用的集群的5000的端口，而是直接使用web配置的8080的端口</p>
+<h3 id="6、给目录访问权限"><a href="#6、给目录访问权限" class="headerlink" title="6、给目录访问权限"></a>6、给目录访问权限</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># chmod 777 -R /var/log/ceph/</div></pre></td></tr></table></figure>
+<p>修改ceph-rest-api的地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim /etc/httpd/conf.d/inkScope.conf</div></pre></td></tr></table></figure>
+<p>将</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># For a ceph_rest_api in wsgi mode</div><div class="line">ProxyPass /ceph-rest-api/ http://&lt;inkscope_host&gt;:&lt;inkscope_port&gt;/ceph_rest_api/api/v0.1/</div></pre></td></tr></table></figure>
+<p>修改为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">ProxyPass /ceph-rest-api/ http://172.20.2.117:8080/ceph_rest_api/api/v0.1/</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>启动http服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">systemctl restart httpd</div></pre></td></tr></table></figure>
+<p>检查ceph-rest-api是否能访问</p>
+<p>地址是上面修改的地址：<a href="http://183.136.239.36:8080/ceph_rest_api/api/v0.1/" target="_blank" rel="external">http://183.136.239.36:8080/ceph_rest_api/api/v0.1/</a></p>
+<p>修改/opt/inkscope/etc/inkscope.conf配置文件，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&quot;ceph_rest_api&quot;: &quot;172.20.2.117:8080&quot;,</div><div class="line">&quot;ceph_rest_api_subfolder&quot;: &quot;ceph_rest_api&quot;,</div><div class="line">&quot;mongodb_host&quot; : &quot;172.20.2.117&quot;,</div></pre></td></tr></table></figure>
+<h3 id="7、启动cephprobe-服务"><a href="#7、启动cephprobe-服务" class="headerlink" title="7、启动cephprobe 服务"></a>7、启动cephprobe 服务</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@inkscope ~]# /etc/init.d/cephprobe restart</div></pre></td></tr></table></figure>
+<p>现在就可以访问<br><a href="http://123.59.204.199:8080/inkscopeViz/index.html" target="_blank" rel="external">http://123.59.204.199:8080/inkscopeViz/index.html</a></p>
+<p>这个是没有用户名密码的，我们为了安全采用以下用户名密码的方式,需要安装flask-login</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@inkscope ~]# rpm -ivh python-flask-login-0.2.11-1.el7.centos.noarch.rpm</div></pre></td></tr></table></figure>
+<h3 id="8、重启httpd服务"><a href="#8、重启httpd服务" class="headerlink" title="8、重启httpd服务"></a>8、重启httpd服务</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@inkscope ~]# systemctl restart httpd</div></pre></td></tr></table></figure>
+<p>再次访问就需要用户名密码了</p>
+<ul>
+<li>默认用户名:admin</li>
+<li>默认密码:admin</li>
+</ul>
+<h2 id="OSD节点"><a href="#OSD节点" class="headerlink" title="OSD节点"></a>OSD节点</h2><h3 id="配置sysprobe"><a href="#配置sysprobe" class="headerlink" title="配置sysprobe"></a>配置sysprobe</h3><p>sysprobe是获取集群节点的主机的信息的</p>
+<p>管理节点同时也是OSD节点的话也要配置</p>
+<p>1、安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># rpm -ivh inkscope-common-1.3.1-2.noarch.rpm</div><div class="line"># rpm -ivh inkscope-sysprobe-1.3.1-2.noarch.rpm</div></pre></td></tr></table></figure>
+<p>将主监控节点的inkscope配置文件拷贝到所有OSD节点上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># scp /opt/inkscope/etc/inkscope.conf 192.168.8.106:/opt/inkscope/etc/</div></pre></td></tr></table></figure>
+<p>2、在osd节点启动sysprobe服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@lab8106 ~]# /etc/init.d/sysprobe start</div></pre></td></tr></table></figure>
+<p>cephprobe是用来或者集群的相关信息和操作的<br>sysprobe是获取节点的磁盘分区等相关信息的</p>
+<p>问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># /etc/init.d/sysprobe start</div><div class="line">Starting sysprob daemon</div><div class="line">Traceback (most recent call last):</div><div class="line">  File &quot;/opt/inkscope/bin/sysprobe.py&quot;, line 24, in &lt;module&gt;</div><div class="line">    import psutil</div><div class="line">ImportError: No module named psutil</div></pre></td></tr></table></figure>
+<p>原因：</p>
+<p>没有按照系统性能信息模块psutil，该模块能够获取系统运行的进程和系统利用率（cpu、内存、磁盘、网络）等信息。</p>
+<p>centos7下安装psutil</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># yum install python-psutil</div></pre></td></tr></table></figure>
+<h2 id="展示"><a href="#展示" class="headerlink" title="展示"></a>展示</h2><p> <img src="http://oow6unnib.bkt.clouddn.com/inkscope-protal.png" alt="inkscope-protal"></p>
+<p>更多相关截图可以在这里查阅：<a href="https://github.com/inkscope/inkscope/tree/master/screenshots" target="_blank" rel="external">https://github.com/inkscope/inkscope/tree/master/screenshots</a></p>
+<p>ubuntu上的部署指南可以参考这里：<a href="http://gtcsq.readthedocs.io/en/latest/others/inkscope_install.html" target="_blank" rel="external">http://gtcsq.readthedocs.io/en/latest/others/inkscope_install.html</a></p>
+<p>参考资料：<a href="http://www.zphj1987.com/2016/04/19/inkscope%E5%AE%8C%E6%95%B4%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/" target="_blank" rel="external">http://www.zphj1987.com/2016/04/19/inkscope%E5%AE%8C%E6%95%B4%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</a> </p>
+<h2 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># /etc/init.d/cephprobe restart</div><div class="line">restarting  cephprob daemon</div><div class="line">Traceback (most recent call last):</div><div class="line">  File &quot;/opt/inkscope/bin/cephprobe.py&quot;, line 25, in &lt;module&gt;</div><div class="line">    from daemon import Daemon</div><div class="line">  File &quot;/opt/inkscope/bin/daemon.py&quot;, line 6, in &lt;module&gt;</div><div class="line">    import psutil</div><div class="line">ImportError: No module named psutil</div></pre></td></tr></table></figure>
+<p>解决方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install python-setuptools</div></pre></td></tr></table></figure>
+<p>安装完以后我们就可以使用命令easy_install安装 系统性能信息模块psutil</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">easy_install psutil</div></pre></td></tr></table></figure>
+<p>这时候又出现错误</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">psutil/_psutil_linux.c:12:20: 致命错误：Python.h：没有那个文件或目录</div></pre></td></tr></table></figure>
+<p>解决方法</p>
+<p>查看本地是否安装python-devel，这是Python的头文件和静态库包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pm -qa |grep python-devel</div></pre></td></tr></table></figure>
+<p>这时候没有输出，说明没有</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum search python |grep python-devel</div></pre></td></tr></table></figure>
+<p>选一个安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install python-devel.x86_64 -y</div></pre></td></tr></table></figure>
+<p>over</p>
+<h2 id="安装mongodb"><a href="#安装mongodb" class="headerlink" title="安装mongodb"></a>安装mongodb</h2><p>创建.repo文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim /etc/yum.repos.d/mongodb-org-3.4.repo</div></pre></td></tr></table></figure>
+<p>内容如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[mongodb-org-3.4]   </div><div class="line">name=MongoDB Repository    </div><div class="line">baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.4/x86_64/    </div><div class="line">gpgcheck=1    </div><div class="line">enabled=1    </div><div class="line">gpgkey=https://www.mongodb.org/static/pgp/server-3.4.asc</div></pre></td></tr></table></figure>
+<p>验证MongoDB存储库是否存在于yum实用程序中。 repolist命令显示已启用的存储库的列表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># yum repolist</div><div class="line">...</div><div class="line">mongodb-org-3.4/7                               MongoDB Repository</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>安装mongodb</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo yum install mongodb-org</div></pre></td></tr></table></figure>
+<p>mongodb-org将包含mongodb-org-server、mongodb-org-mongos、mongodb-org-shell、mongodb-org-tools</p>
+<p>启动服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo chkconfig mongod on   </div><div class="line">sudo service mongod start    </div><div class="line">netstat -tunpl | grep 27017</div></pre></td></tr></table></figure>
+<p>停止</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo service mongod stop</div></pre></td></tr></table></figure>
+<p>移除包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo yum erase $(rpm -qa | grep mongodb-org)</div></pre></td></tr></table></figure>
+<p>移除数据和日志文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo rm -r /var/log/mongodb   </div><div class="line">sudo rm -r /var/lib/mongo</div></pre></td></tr></table></figure>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[客户端rbd环境检查]]></title>
       <url>http://xiaqunfeng.cc/2018/03/08/%E5%AE%A2%E6%88%B7%E7%AB%AFrbd%E7%8E%AF%E5%A2%83%E6%A3%80%E6%9F%A5/</url>
       <content type="html"><![CDATA[<p>检查rbd客户端是否可以正常识别文件系统<br><a id="more"></a></p>
