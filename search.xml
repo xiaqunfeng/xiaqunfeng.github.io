@@ -4,6 +4,22 @@
   
     
     <entry>
+      <title><![CDATA[【论文阅读】mtcnn]]></title>
+      <url>http://xiaqunfeng.cc/2018/03/21/mtcnn-note/</url>
+      <content type="html"></content>
+      
+        
+        <tags>
+            
+            <tag> paper </tag>
+            
+            <tag> deeplearning </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Mac-Tensorflow-Keras]]></title>
       <url>http://xiaqunfeng.cc/2018/03/18/Mac-Tensorflow-Keras/</url>
       <content type="html"><![CDATA[<p>在mac上初步搭建keras，用tensorflow作为backend。<br><a id="more"></a></p>
@@ -3966,9 +3982,9 @@
         
         <tags>
             
-            <tag> centos </tag>
-            
             <tag> Linux </tag>
+            
+            <tag> centos </tag>
             
         </tags>
         

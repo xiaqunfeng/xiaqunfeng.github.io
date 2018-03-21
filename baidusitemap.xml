@@ -4,6 +4,25 @@
 
     
   <url>
+    <loc>http://xiaqunfeng.cc/2018/03/21/mtcnn-note/</loc>
+    <lastmod>2018-03-21T08:34:10.000Z</lastmod>
+    <data>
+        <display>
+        <title>【论文阅读】mtcnn</title>
+        <pubTime>2018-03-21T08:32:06.000Z</pubTime>
+        
+        <tag>paper</tag>
+         
+        <tag>deeplearning</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://xiaqunfeng.cc/2018/03/18/Mac-Tensorflow-Keras/</loc>
     <lastmod>2018-03-18T02:44:10.000Z</lastmod>
     <data>
@@ -963,9 +982,9 @@
         <title>firewalld和iptables</title>
         <pubTime>2017-05-07T08:08:01.000Z</pubTime>
         
-        <tag>centos</tag>
-         
         <tag>Linux</tag>
+         
+        <tag>centos</tag>
          
          
            
