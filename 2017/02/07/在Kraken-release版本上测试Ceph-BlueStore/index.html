@@ -47,11 +47,11 @@
 <meta name="twitter:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
 
 
-<link rel="icon" href="/img/avatar.jpg">
+<link rel="icon" href="/img/apple2.ico">
 
 <link rel="stylesheet" href="/css/style.css">
 
-<link rel="stylesheet" href="/css/hl_theme/atom-light.css">
+<link rel="stylesheet" href="/css/hl_theme/school-book.css">
 
 <link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
 <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -75,13 +75,13 @@
 </head>
 <div style="display: none">
   <input class="theme_disqus_on" value="false">
-  <input class="theme_preload_comment" value="false">
+  <input class="theme_preload_comment" value="true">
 </div>
 <body>
 <aside class="nav">
     <div class="nav-left">
         <a href="/" class="avatar_target">
-    <img class="avatar" src="/img/avatar.jpg" />
+    <img class="avatar" src="/img/stark.jpg" />
 </a>
 <div class="author">
     <span>夏天的风</span>
@@ -105,17 +105,15 @@
 
 
 
-<a class="more-menus">更多菜单</a>
-
 <ul>
     <li class="all active">全部文章</li>
+    
+    <li data-rel="DeepLearning"> DeepLearning </li>
     
 </ul>
 <div class="left-bottom">
     <div class="menus">
     
-    
-    <a class="dynamic-menu site_url"   href="/photo">相册</a>
     
     
     
@@ -138,7 +136,7 @@
     <div class="friends-content">
         <ul>
             
-            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            <li><a target="_blank" href="http://blog.csdn.net/xiaqunfeng123">夏天的风CSDN</a></li>
             
         </ul>
     </div>
@@ -792,9 +790,9 @@
             <span class="post-date" title="2017-05-25 10:11:55">2017/05/25</span>
         </a>
         
-        <a  class=""
+        <a  class="DeepLearning "
            href="/2018/03/21/mtcnn-note/"
-           data-tag="paper,deeplearning"
+           data-tag="paper"
            data-author="" >
             <span class="post-title" title="【论文阅读】mtcnn">【论文阅读】mtcnn</span>
             <span class="post-date" title="2018-03-21 16:32:06">2018/03/21</span>
@@ -1002,6 +1000,17 @@
         </span>
         
         
+        <span class="top-comment" title="跳转至评论区">
+            <a href="#comments">
+                评论:<span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </a>
+        </span>
+        
     </div>
     
     <div class="toc-ref">
@@ -1084,6 +1093,26 @@
 </div>
 
 
+    <div id="comments"></div>
+<link rel="stylesheet" href="/css/gitalk.css">
+
+<script type="text/javascript">
+    $.getScript('/js/gitalk.js', function () {
+        var gitalk = new Gitalk({
+            clientID: 'null',
+            clientSecret: 'null',
+            repo: 'yelog.github.io',
+            owner: 'yelog',
+            admin: ['yelog'],
+            id: location.pathname,
+            distractionFreeMode: 'true',
+            language: 'zh-CN',
+            perPage: parseInt('10',10)
+        })
+        gitalk.render('comments')
+    })
+</script>
+
 
 
     
@@ -1159,17 +1188,6 @@
         
 
         /*高亮代码块行号*/
-        
-        $('pre code').each(function(){
-            var lines = $(this).text().split('\n').length - 1;
-            var $numbering = $('<ul/>').addClass('pre-numbering').attr("unselectable","on");
-            $(this).addClass('has-numbering')
-                    .parent()
-                    .append($numbering);
-            for(i=1;i<=lines;i++){
-                $numbering.append($('<li/>').text(i));
-            }
-        });
         
 
         /*访问数量*/
@@ -1443,32 +1461,6 @@
 
 <!--加入行号的高亮代码块样式-->
 
-<style>
-    pre{
-        position: relative;
-        margin-bottom: 24px;
-        border-radius: 10px;
-        border: 2px solid #e2dede;
-        background: #FFF;
-        overflow: hidden;
-    }
-    code.has-numbering{
-        margin-left: 30px;
-    }
-    .pre-numbering{
-        margin: 0px;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 20px;
-        padding: 0.5em 3px 0.7em 5px;
-        border-right: 1px solid #C3CCD0;
-        text-align: right;
-        color: #AAA;
-        background-color: #fafafa;
-    }
-</style>
-
 <!--自定义样式设置-->
 <style>
     
@@ -1600,17 +1592,5 @@
 
 
 
-
-<div class="mobile-menus-out" >
-
-</div>
-<div class="mobile-menus">
-    
-    
-    <a class="dynamic-menu site_url"   href="/photo">相册</a>
-    
-    
-    
-</div>
 
 </html>
