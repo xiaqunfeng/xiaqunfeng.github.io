@@ -6,16 +6,45 @@
   <meta name="keywords" content=" code ">
   <meta name="description" content="【代码阅读】generate_anchors.py | 夏天的风的博客">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="UL74CvGIA2">
+<meta name="description" content="关注人工智能、深度学习、分布式存储（FusionStorage, Ceph, …）、云计算
+
+最近主要focus在人工智能上，关于之前分布式存储的笔记会陆续整理发布上来
+
+
+本博客为个人学习总结随笔，所有文章非特殊标注皆为原创，转载请务必注明出处！
+
+联系方式email：xiaqunfeng123@126.com
+
+打赏通道如果该碰巧文章对您有所帮助，感谢小额鼓励。 谢谢O(∩_∩)O~">
 <meta property="og:type" content="website">
-<meta property="og:title" content="夏天的风的博客">
-<meta property="og:url" content="http://xiaqunfeng.cc/baidu_verify_UL74CvGIA2.html">
+<meta property="og:title" content="关于我">
+<meta property="og:url" content="http://xiaqunfeng.cc/about/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="UL74CvGIA2">
-<meta property="og:updated_time" content="2017-06-25T02:46:16.000Z">
+<meta property="og:description" content="关注人工智能、深度学习、分布式存储（FusionStorage, Ceph, …）、云计算
+
+最近主要focus在人工智能上，关于之前分布式存储的笔记会陆续整理发布上来
+
+
+本博客为个人学习总结随笔，所有文章非特殊标注皆为原创，转载请务必注明出处！
+
+联系方式email：xiaqunfeng123@126.com
+
+打赏通道如果该碰巧文章对您有所帮助，感谢小额鼓励。 谢谢O(∩_∩)O~">
+<meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
+<meta property="og:updated_time" content="2018-03-04T12:32:04.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="夏天的风的博客">
-<meta name="twitter:description" content="UL74CvGIA2">
+<meta name="twitter:title" content="关于我">
+<meta name="twitter:description" content="关注人工智能、深度学习、分布式存储（FusionStorage, Ceph, …）、云计算
+
+最近主要focus在人工智能上，关于之前分布式存储的笔记会陆续整理发布上来
+
+
+本博客为个人学习总结随笔，所有文章非特殊标注皆为原创，转载请务必注明出处！
+
+联系方式email：xiaqunfeng123@126.com
+
+打赏通道如果该碰巧文章对您有所帮助，感谢小额鼓励。 谢谢O(∩_∩)O~">
+<meta name="twitter:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -60,31 +89,23 @@
 
 <div class="icon">
     
-    <a class="rss" title="rss" href="/atom.xml" target="_blank"></a>
     
-    
-    <a class="github" title="github" href="https://github.com/yelog" target="_blank"></a>
-    
-    
-    <a class="facebook" title="facebook" href="https://www.facebook.com/faker.tops" target="_blank"></a>
+    <a class="github" title="github" href="https://github.com/xiaqunfeng" target="_blank"></a>
     
     
     
-    <a class="linkedin" title="linkedin" href="https://www.linkedin.com/in/%E7%8E%89%E6%9D%B0-%E6%9D%A8-13a40a103/" target="_blank"></a>
     
     
     
-    <a class="reddit" title="reddit" href="https://www.reddit.com/user/yelog/" target="_blank"></a>
     
     
-    <a class="weibo" title="weibo" href="http://weibo.com/u/2307534817" target="_blank"></a>
-    
-    
-    <a class="email" title="email" href="mailto:jaytp@qq.com"></a>
+    <a class="email" title="email" href="mailto:xiaqunfeng123@126.com"></a>
     
 </div>
 
 
+
+<a class="more-menus">更多菜单</a>
 
 <ul>
     <li class="all active">全部文章</li>
@@ -94,13 +115,15 @@
     <div class="menus">
     
     
+    <a class="dynamic-menu site_url"   href="/photo">相册</a>
+    
     
     
     </div>
     <div><a style="border-right: 1px solid #fff; width: 49%"  class="about site_url"  href="/about">关于</a><a style="width: 50%"  class="friends">友链</a></div>
 </div>
 <input type="hidden" id="yelog_site_posts_number" value="90">
-
+<input type="hidden" id="yelog_site_word_count" value="114.5k">
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
     <span id="busuanzi_value_site_pv"></span>
@@ -964,6 +987,8 @@
     </div>
     <div class="article-meta">
         
+        <span>字数:786</span>
+        
         
         <span id="busuanzi_container_page_pv">
             阅读:<span id="busuanzi_value_page_pv">
@@ -988,8 +1013,8 @@
     .left-col .switch-area {
         display: none;
     }
-    .toc-level-3 i,
-    .toc-level-3 ol {
+    .toc-level-4 i,
+    .toc-level-4 ol {
         display: none !important;
     }
 </style>
@@ -1004,7 +1029,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div></pre></td><td class="code"><pre><div class="line"># --------------------------------------------------------</div><div class="line"># Faster R-CNN</div><div class="line"># Copyright (c) 2015 Microsoft</div><div class="line"># Licensed under The MIT License [see LICENSE for details]</div><div class="line"># Written by Ross Girshick and Sean Bell</div><div class="line"># --------------------------------------------------------</div><div class="line"></div><div class="line">import numpy as np</div><div class="line"></div><div class="line"># Verify that we compute the same anchors as Shaoqing&apos;s matlab implementation:</div><div class="line">#</div><div class="line">#    &gt;&gt; load output/rpn_cachedir/faster_rcnn_VOC2007_ZF_stage1_rpn/anchors.mat</div><div class="line">#    &gt;&gt; anchors</div><div class="line">#</div><div class="line">#    anchors =</div><div class="line">#</div><div class="line">#       -83   -39   100    56</div><div class="line">#      -175   -87   192   104</div><div class="line">#      -359  -183   376   200</div><div class="line">#       -55   -55    72    72</div><div class="line">#      -119  -119   136   136</div><div class="line">#      -247  -247   264   264</div><div class="line">#       -35   -79    52    96</div><div class="line">#       -79  -167    96   184</div><div class="line">#      -167  -343   184   360</div><div class="line"></div><div class="line">#array([[ -83.,  -39.,  100.,   56.],</div><div class="line">#       [-175.,  -87.,  192.,  104.],</div><div class="line">#       [-359., -183.,  376.,  200.],</div><div class="line">#       [ -55.,  -55.,   72.,   72.],</div><div class="line">#       [-119., -119.,  136.,  136.],</div><div class="line">#       [-247., -247.,  264.,  264.],</div><div class="line">#       [ -35.,  -79.,   52.,   96.],</div><div class="line">#       [ -79., -167.,   96.,  184.],</div><div class="line">#       [-167., -343.,  184.,  360.]])</div><div class="line"></div><div class="line"># base_size =16 是因为从conv4层出来的最小的检测大小是16个像素</div><div class="line"># 在 fast_rcnn/config.py中有定义：__C.TRAIN.RPN_MIN_SIZE = 16</div><div class="line"># ratios 是宽高比，即 w:h = 1:2, 1:1, 2:1</div><div class="line"># scales = 8, 16, 32</div><div class="line"># [0，0，15，15]这四个数分别表示[x_l,y_l,x_r,y_r]，表示左上角和右下角的坐标</div><div class="line">def generate_anchors(base_size=16, ratios=[0.5, 1, 2],</div><div class="line">                     scales=2**np.arange(3, 6)):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Generate anchor (reference) windows by enumerating aspect ratios X</div><div class="line">    scales wrt a reference (0, 0, 15, 15) window.</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    base_anchor = np.array([1, 1, base_size, base_size]) - 1  #初始基准anchor[0，0，15，15]</div><div class="line">    ratio_anchors = _ratio_enum(base_anchor, ratios)  #枚举三种宽高比，得到3*4维anchor矩阵</div><div class="line">    #垂直方向上堆叠数组</div><div class="line">    anchors = np.vstack([_scale_enum(ratio_anchors[i, :], scales)</div><div class="line">                         for i in xrange(ratio_anchors.shape[0])]) #读取矩阵第一维大小，为3</div><div class="line">    return anchors</div><div class="line"></div><div class="line"># 根据输入的anchor[x,y,w,h]，返回宽、高、中心坐标：w,h,(x_ctr, y_ctr)</div><div class="line">def _whctrs(anchor):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Return width, height, x center, and y center for an anchor (window).</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    w = anchor[2] - anchor[0] + 1  #anchor里第三个值减去第一个值得到w</div><div class="line">    h = anchor[3] - anchor[1] + 1  #anchor里第四个值减去第二个值得到h</div><div class="line">    x_ctr = anchor[0] + 0.5 * (w - 1)  #通过左下角的点和w、h得到中心点</div><div class="line">    y_ctr = anchor[1] + 0.5 * (h - 1)</div><div class="line">    return w, h, x_ctr, y_ctr</div><div class="line"></div><div class="line"># 给定一组宽高向量，输出向量维度个数个anchor</div><div class="line">def _mkanchors(ws, hs, x_ctr, y_ctr):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Given a vector of widths (ws) and heights (hs) around a center</div><div class="line">    (x_ctr, y_ctr), output a set of anchors (windows).</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    ws = ws[:, np.newaxis]  #将数组转置成 X*1 维的矩阵，X为ws数组中元素的个数</div><div class="line">    hs = hs[:, np.newaxis]</div><div class="line">    anchors = np.hstack((x_ctr - 0.5 * (ws - 1),  #水平方向上将数组堆叠起来，得到一个X*4维的矩阵</div><div class="line">                         y_ctr - 0.5 * (hs - 1),  #[[-3.5,  2, 18.5, 13]</div><div class="line">                         x_ctr + 0.5 * (ws - 1),  # [   0,  0,   15, 15]</div><div class="line">                         y_ctr + 0.5 * (hs - 1))) # [ 2.5, -3, 12.5, 18]]</div><div class="line">    return anchors</div><div class="line"></div><div class="line"># 枚举一个anchor的三种宽高比，ratios[0.5，1，2]</div><div class="line">def _ratio_enum(anchor, ratios):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Enumerate a set of anchors for each aspect ratio wrt an anchor.</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    w, h, x_ctr, y_ctr = _whctrs(anchor) #得到框、高、中心点</div><div class="line">    size = w * h  </div><div class="line">    size_ratios = size / ratios          #[512，256，128]</div><div class="line">    ws = np.round(np.sqrt(size_ratios))  #[23，16，11]</div><div class="line">    hs = np.round(ws * ratios)           #[12，16，22]</div><div class="line">    anchors = _mkanchors(ws, hs, x_ctr, y_ctr) #输出三个预测窗口</div><div class="line">    return anchors</div><div class="line"></div><div class="line"># 枚举输入anchor的三种尺度，scales[8，16，32]</div><div class="line">def _scale_enum(anchor, scales):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Enumerate a set of anchors for each scale wrt an anchor.</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    w, h, x_ctr, y_ctr = _whctrs(anchor)</div><div class="line">    ws = w * scales  #同比例扩大宽高</div><div class="line">    hs = h * scales</div><div class="line">    anchors = _mkanchors(ws, hs, x_ctr, y_ctr)</div><div class="line">    return anchors</div><div class="line"></div><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">    import time</div><div class="line">    t = time.time()</div><div class="line">    a = generate_anchors()  #入口函数</div><div class="line">    print time.time() - t</div><div class="line">    print a</div><div class="line">    from IPython import embed; embed()</div></pre></td></tr></table></figure>
 
       
-       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 jaytp@qq.com </span>
+       <hr><span style="font-style: italic;color: gray;"> 本博客为个人学习总结随笔，所有文章非特殊标注皆为原创，转载请务必注明出处！欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。 </span>
     </div>
 </article>
 
@@ -1016,7 +1041,7 @@
 
 <div class="article_copyright">
     <p><span>文章标题:</span>【代码阅读】generate_anchors.py</p>
-    
+    <p><span>文章字数:</span><span class="post-count">786</span></p>
     <p><span>本文作者:</span><a href="javascript:void(0)" title="夏天的风">夏天的风</a></p>
     <p><span>发布时间:</span>2017-12-05, 09:42:49</p>
     <p><span>最后更新:</span>2017-12-05, 10:53:37</p>
@@ -1033,7 +1058,7 @@
 
     </div>
     <div class="copyright">
-        <p class="footer-entry">©2017 Yelog</p>
+        <p class="footer-entry">©2018 xiaqunfeng</p>
 <p class="footer-entry">Buit with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
 
     </div>
@@ -1465,7 +1490,7 @@
         width: 100%;
         height: 100%;
         opacity: 0.1;
-        background: url("http://oncj6b2vl.bkt.clouddn.com/FlSExUGfRSaqxkK5v42CpuI-tXAL.jpg");
+        background: url("http://oow6unnib.bkt.clouddn.com/0844C6E9-3F8D-423A-9ABF-3061674AD63E-8278-00000666B57CB13E_tmp.PNG");
         background-repeat: no-repeat;
         background-position: 50% 0;
         -ms-background-size: cover;
@@ -1543,5 +1568,17 @@
 
 
 
+
+<div class="mobile-menus-out" >
+
+</div>
+<div class="mobile-menus">
+    
+    
+    <a class="dynamic-menu site_url"   href="/photo">相册</a>
+    
+    
+    
+</div>
 
 </html>
