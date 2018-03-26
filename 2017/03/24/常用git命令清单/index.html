@@ -38,6 +38,9 @@
   
 
 </head>
+<!-- 加载gitment的css和js文件 -->
+<link rel="stylesheet" href="/gitment.css"> 
+<script src="/gitment.js"></script>
 
 <body>
   <div id="container" q-class="show:isCtnShow">
@@ -382,26 +385,6 @@
 
 
   
-  <div class="duoshuo">
-	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="常用git命令清单" data-title="常用git命令清单" data-url="http://xiaqunfeng.cc/2017/03/24/常用git命令清单/"></div>
-	<!-- 多说评论框 end -->
-	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-	<script type="text/javascript">
-	var duoshuoQuery = {short_name:"true"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		 || document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-	<!-- 多说公共JS代码 end -->
-</div>
-
-  
   
   
 
@@ -410,6 +393,28 @@
   
 
   
+
+<div id="gitment"></div>
+
+<!-- 主页不要加载gitment -->
+
+
+<script>
+var gitment = new Gitment({
+  owner: 'xiaqunfeng',
+  repo: 'xiaqunfeng.github.io',
+  oauth: {
+    client_id: '21c3a01653d904d670a4',
+    client_secret: 'cf0e1ef08aa2e2fdfa0654901492f1738382c5d3',
+  },
+})
+gitment.render('gitment')
+</script>
+ 
+
+}
+})}
+
 
 
           </div>
