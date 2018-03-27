@@ -2,177 +2,471 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://xiaqunfeng.cc/about/index.html</loc>
+    <loc>http://xiaqunfeng.cc/2017/06/23/wget%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDhttp%E7%9B%AE%E5%BD%95%E5%8F%8A%E6%96%87%E4%BB%B6/</loc>
     
-    <lastmod>2018-03-26T01:13:10.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2018/03/21/mtcnn-note/</loc>
-    
-    <lastmod>2018-03-22T08:41:46.000Z</lastmod>
+    <lastmod>2018-03-27T01:11:13.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://xiaqunfeng.cc/2018/03/18/Mac-Tensorflow-Keras/</loc>
+    <loc>http://xiaqunfeng.cc/2017/05/07/firewalld%E5%92%8Ciptables/</loc>
     
-    <lastmod>2018-03-18T02:44:10.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2018/03/13/mac%E4%B8%8AMatplotlib%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/</loc>
-    
-    <lastmod>2018-03-13T02:36:13.000Z</lastmod>
+    <lastmod>2018-03-27T01:10:21.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://xiaqunfeng.cc/2018/03/11/inkscope%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</loc>
+    <loc>http://xiaqunfeng.cc/2017/07/12/fio%E6%B5%8B%E8%AF%95ceph/</loc>
     
-    <lastmod>2018-03-11T12:52:24.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2018/03/08/%E5%AE%A2%E6%88%B7%E7%AB%AFrbd%E7%8E%AF%E5%A2%83%E6%A3%80%E6%9F%A5/</loc>
-    
-    <lastmod>2018-03-08T12:51:51.000Z</lastmod>
+    <lastmod>2018-03-27T01:09:59.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://xiaqunfeng.cc/2018/03/08/ceph-osd%E6%9D%83%E9%87%8D%E8%B0%83%E6%95%B4/</loc>
+    <loc>http://xiaqunfeng.cc/2017/05/11/cpu%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84/</loc>
     
-    <lastmod>2018-03-08T12:45:30.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2018/03/04/ceph-luminous%E6%9C%80%E4%BD%B3%E9%83%A8%E7%BD%B2%E5%AE%9E%E8%B7%B5/</loc>
-    
-    <lastmod>2018-03-04T12:23:45.000Z</lastmod>
+    <lastmod>2018-03-27T01:09:42.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://xiaqunfeng.cc/2018/02/28/ceph-iscsi%E7%BD%91%E5%85%B3/</loc>
+    <loc>http://xiaqunfeng.cc/2017/03/09/cow%E5%92%8Crow%E5%BF%AB%E7%85%A7%E6%9C%BA%E5%88%B6%E7%9A%84%E5%8C%BA%E5%88%AB/</loc>
     
-    <lastmod>2018-02-28T12:11:43.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2018/02/28/ceph-ansible%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/</loc>
-    
-    <lastmod>2018-02-28T12:04:08.000Z</lastmod>
+    <lastmod>2018-03-27T01:09:12.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://xiaqunfeng.cc/2017/03/09/Machine-Learning-Yearning-5%E3%80%816/</loc>
+    <loc>http://xiaqunfeng.cc/2017/07/17/ceph%E9%83%A8%E7%BD%B2%E5%AE%8C%E5%85%A8%E6%89%8B%E5%86%8C/</loc>
     
-    <lastmod>2018-02-06T02:02:09.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/03/03/Machine-Learning-Yearning-3%E3%80%814/</loc>
-    
-    <lastmod>2018-02-06T02:01:38.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/03/02/Machine-Learning-Yearning-%E5%BC%80%E7%AF%87%E3%80%811%E3%80%812/</loc>
-    
-    <lastmod>2018-02-06T02:01:14.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/11/05/mac%E4%B8%8A%E5%AE%89%E8%A3%85caffe%E5%B9%B6%E8%AE%AD%E7%BB%83mnist/</loc>
-    
-    <lastmod>2018-01-08T08:03:36.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/11/24/R-CNN/</loc>
-    
-    <lastmod>2017-12-29T08:25:43.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/11/25/Fast-R-CNN/</loc>
-    
-    <lastmod>2017-12-29T08:25:21.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/12/14/Faster-R-CNN/</loc>
-    
-    <lastmod>2017-12-29T08:24:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/12/05/faster-r-cnn-generate-anchors/</loc>
-    
-    <lastmod>2017-12-05T02:53:37.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/11/18/ceph%E5%86%99%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/</loc>
-    
-    <lastmod>2017-11-18T10:01:54.000Z</lastmod>
+    <lastmod>2018-03-27T01:08:57.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://xiaqunfeng.cc/2017/09/27/ceph%E6%8C%87%E5%AE%9A%E7%89%88%E6%9C%AC%E5%AE%89%E8%A3%85/</loc>
     
-    <lastmod>2017-09-27T03:40:41.000Z</lastmod>
+    <lastmod>2018-03-27T01:08:33.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://xiaqunfeng.cc/2017/09/21/linux-command-day-day-up/</loc>
+    <loc>http://xiaqunfeng.cc/2017/11/18/ceph%E5%86%99%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/</loc>
     
-    <lastmod>2017-09-27T03:24:44.000Z</lastmod>
+    <lastmod>2018-03-27T01:08:20.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://xiaqunfeng.cc/2017/09/19/awk-study-notes/</loc>
+    <loc>http://xiaqunfeng.cc/2017/05/23/ceph%E6%97%A5%E5%BF%97%E8%BF%81%E7%A7%BB/</loc>
     
-    <lastmod>2017-09-19T11:38:38.000Z</lastmod>
+    <lastmod>2018-03-27T01:07:59.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/02/04/ceph%E5%8D%87%E7%BA%A7%E5%88%B0kraken%E7%89%88%E6%9C%AC/</loc>
+    
+    <lastmod>2018-03-27T01:07:44.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/06/06/ceph-rbd-map-failed/</loc>
+    
+    <lastmod>2018-03-27T01:07:26.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/07/28/ceph-placement-group/</loc>
+    
+    <lastmod>2018-03-27T01:07:13.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/08/01/ceph-peering%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/</loc>
+    
+    <lastmod>2018-03-27T01:06:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/08/17/ceph-osd%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/</loc>
+    
+    <lastmod>2018-03-27T01:06:36.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2018/03/08/ceph-osd%E6%9D%83%E9%87%8D%E8%B0%83%E6%95%B4/</loc>
+    
+    <lastmod>2018-03-27T01:06:26.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/05/26/ceph-mon%E6%97%B6%E9%92%9F%E5%81%8F%E7%A7%BB%E9%97%AE%E9%A2%98/</loc>
+    
+    <lastmod>2018-03-27T01:06:14.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/07/06/ceph-luminous%E6%96%B0%E5%91%BD%E4%BB%A4%E6%8E%A2%E7%B4%A2/</loc>
+    
+    <lastmod>2018-03-27T01:05:56.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2018/02/28/ceph-iscsi%E7%BD%91%E5%85%B3/</loc>
+    
+    <lastmod>2018-03-27T01:05:42.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2018/02/28/ceph-ansible%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/</loc>
+    
+    <lastmod>2018-03-27T01:05:24.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://xiaqunfeng.cc/2017/09/18/ceph-PGs-per-Pool-Calculator/</loc>
     
-    <lastmod>2017-09-18T06:17:50.000Z</lastmod>
+    <lastmod>2018-03-27T01:05:02.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/07/04/ceph-Luminous%E6%96%B0%E5%8A%9F%E8%83%BD%E4%B9%8Bcrush-class/</loc>
+    
+    <lastmod>2018-03-27T01:04:45.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2018/03/04/ceph-luminous%E6%9C%80%E4%BD%B3%E9%83%A8%E7%BD%B2%E5%AE%9E%E8%B7%B5/</loc>
+    
+    <lastmod>2018-03-27T01:04:29.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/06/29/ceph-Luminous%E5%88%9D%E6%8E%A2/</loc>
+    
+    <lastmod>2018-03-27T01:04:17.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/07/17/centos%E4%B8%8Bceph%E9%83%A8%E7%BD%B2/</loc>
+    
+    <lastmod>2018-03-27T01:04:01.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/06/16/centos-7%E4%B8%8B%E6%93%8D%E7%BA%B5ceph%E8%BF%9B%E7%A8%8B/</loc>
+    
+    <lastmod>2018-03-27T01:03:45.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/09/19/awk-study-notes/</loc>
+    
+    <lastmod>2018-03-27T01:03:24.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/07/06/XFS-vs-EXT4/</loc>
+    
+    <lastmod>2018-03-27T01:03:16.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/05/02/VSM%E9%83%A8%E7%BD%B2/</loc>
+    
+    <lastmod>2018-03-27T01:02:25.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/08/29/Syntax-error-unexpected/</loc>
+    
+    <lastmod>2018-03-27T01:02:06.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/05/07/S-M-A-R-T-%E7%A3%81%E7%9B%98%E5%81%A5%E5%BA%B7%E7%8A%B6%E6%80%81%E7%9B%91%E6%B5%8B%E5%B7%A5%E5%85%B7/</loc>
+    
+    <lastmod>2018-03-27T01:01:44.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/02/23/RocksDB%E7%9B%B8%E6%AF%94LevelDB%E7%9A%84%E6%96%B0%E7%89%B9%E6%80%A7/</loc>
+    
+    <lastmod>2018-03-27T01:01:08.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/07/28/Remove-Big-RBD-Image/</loc>
+    
+    <lastmod>2018-03-27T01:00:42.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/02/10/RBD-%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/</loc>
+    
+    <lastmod>2018-03-27T01:00:30.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/06/07/Map-RBD-Devices-on-NBD/</loc>
+    
+    <lastmod>2018-03-27T01:00:11.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/03/02/Machine-Learning-Yearning-%E5%BC%80%E7%AF%87%E3%80%811%E3%80%812/</loc>
+    
+    <lastmod>2018-03-27T00:59:49.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/03/09/Machine-Learning-Yearning-5%E3%80%816/</loc>
+    
+    <lastmod>2018-03-27T00:59:39.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/03/03/Machine-Learning-Yearning-3%E3%80%814/</loc>
+    
+    <lastmod>2018-03-27T00:59:25.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/05/26/GPG-key-retrieval-failure/</loc>
+    
+    <lastmod>2018-03-27T00:58:32.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/02/03/Flashcache-vs-Cache-tier/</loc>
+    
+    <lastmod>2018-03-27T00:58:09.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/02/03/Dm-cache-vs-Bcache/</loc>
+    
+    <lastmod>2018-03-27T00:57:41.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/06/28/Ceph-v12-1-0-Luminous-RC-released/</loc>
+    
+    <lastmod>2018-03-27T00:56:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/02/23/Bluestore%E8%B0%83%E7%A0%94/</loc>
+    
+    <lastmod>2018-03-27T00:56:36.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/01/06/hexo%E7%9A%84%E6%90%AD%E5%BB%BA/</loc>
+    
+    <lastmod>2018-03-27T00:54:54.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2018/03/11/inkscope%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</loc>
+    
+    <lastmod>2018-03-27T00:54:36.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/05/04/iterm2%E9%85%8D%E8%89%B2/</loc>
+    
+    <lastmod>2018-03-27T00:52:35.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/05/02/iterm2%E5%BF%AB%E6%8D%B7%E9%94%AE%E7%9A%84%E4%BD%BF%E7%94%A8/</loc>
+    
+    <lastmod>2018-03-27T00:52:08.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/09/21/linux-command-day-day-up/</loc>
+    
+    <lastmod>2018-03-27T00:51:38.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/08/30/lsblk%E5%91%BD%E4%BB%A4/</loc>
+    
+    <lastmod>2018-03-27T00:51:19.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2018/03/13/mac%E4%B8%8AMatplotlib%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/</loc>
+    
+    <lastmod>2018-03-27T00:49:29.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/05/03/nginx%E4%BD%BF%E7%94%A8%E5%92%8C%E9%85%8D%E7%BD%AE/</loc>
+    
+    <lastmod>2018-03-27T00:48:51.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://xiaqunfeng.cc/2017/09/15/too-many-PGs-per-OSD/</loc>
     
-    <lastmod>2017-09-15T13:02:23.000Z</lastmod>
+    <lastmod>2018-03-27T00:48:28.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/02/07/%E5%9C%A8Kraken-release%E7%89%88%E6%9C%AC%E4%B8%8A%E6%B5%8B%E8%AF%95Ceph-BlueStore/</loc>
+    
+    <lastmod>2018-03-27T00:47:55.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2018/03/26/%E6%B7%BB%E5%8A%A0gitment%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F/</loc>
+    
+    <lastmod>2018-03-27T00:46:48.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/02/10/%E8%8E%B7%E5%8F%96%E6%AF%8F%E4%B8%AAosd%E7%9A%84PG%E6%95%B0/</loc>
+    
+    <lastmod>2018-03-27T00:46:05.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2018/03/08/%E5%AE%A2%E6%88%B7%E7%AB%AFrbd%E7%8E%AF%E5%A2%83%E6%A3%80%E6%9F%A5/</loc>
+    
+    <lastmod>2018-03-27T00:45:41.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/06/15/vim%E7%A7%BB%E5%8A%A8%E5%85%89%E6%A0%87/</loc>
+    
+    <lastmod>2018-03-27T00:42:04.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/05/25/mac%E4%B8%8A%E5%AE%9E%E7%8E%B0vim%E7%9A%84markdown%E9%A2%84%E8%A7%88/</loc>
+    
+    <lastmod>2018-03-27T00:41:07.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://xiaqunfeng.cc/2017/09/11/mac%E4%B8%8A%E5%AE%89%E8%A3%85python3/</loc>
     
-    <lastmod>2017-09-11T07:49:43.000Z</lastmod>
+    <lastmod>2018-03-27T00:40:06.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/08/05/python3-OS-module/</loc>
+    
+    <lastmod>2018-03-27T00:39:17.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/12/14/Faster-R-CNN/</loc>
+    
+    <lastmod>2018-03-27T00:36:12.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/11/25/Fast-R-CNN/</loc>
+    
+    <lastmod>2018-03-27T00:35:58.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/11/24/R-CNN/</loc>
+    
+    <lastmod>2018-03-27T00:35:35.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/11/05/mac%E4%B8%8A%E5%AE%89%E8%A3%85caffe%E5%B9%B6%E8%AE%AD%E7%BB%83mnist/</loc>
+    
+    <lastmod>2018-03-27T00:34:54.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/12/05/faster-r-cnn-generate-anchors/</loc>
+    
+    <lastmod>2018-03-27T00:33:59.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2018/03/18/Mac-Tensorflow-Keras/</loc>
+    
+    <lastmod>2018-03-27T00:32:56.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2018/03/21/mtcnn-note/</loc>
+    
+    <lastmod>2018-03-26T07:13:25.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/about/index.html</loc>
+    
+    <lastmod>2018-03-26T02:11:28.000Z</lastmod>
     
   </url>
   
@@ -184,86 +478,9 @@
   </url>
   
   <url>
-    <loc>http://xiaqunfeng.cc/2017/08/30/lsblk%E5%91%BD%E4%BB%A4/</loc>
-    
-    <lastmod>2017-08-30T08:08:19.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/08/29/Syntax-error-unexpected/</loc>
-    
-    <lastmod>2017-08-29T11:55:44.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/08/17/ceph-osd%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/</loc>
-    
-    <lastmod>2017-08-17T08:49:42.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/08/05/python3-OS-module/</loc>
-    
-    <lastmod>2017-08-05T02:38:38.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://xiaqunfeng.cc/2017/08/03/%E4%B8%BA%E4%BB%80%E4%B9%88%E5%AF%B9%E4%BA%8E%E4%BC%81%E4%B8%9ANAS%E6%9D%A5%E8%AF%B4NFS-ganesha%E6%98%AF%E4%B8%80%E4%B8%AA%E6%9B%B4%E5%A5%BD%E7%9A%84NFS-server/</loc>
     
     <lastmod>2017-08-04T03:36:01.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/08/01/ceph-peering%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/</loc>
-    
-    <lastmod>2017-08-01T09:01:33.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/07/28/ceph-placement-group/</loc>
-    
-    <lastmod>2017-07-28T07:47:52.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/07/28/Remove-Big-RBD-Image/</loc>
-    
-    <lastmod>2017-07-28T03:03:34.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/07/06/ceph-luminous%E6%96%B0%E5%91%BD%E4%BB%A4%E6%8E%A2%E7%B4%A2/</loc>
-    
-    <lastmod>2017-07-26T03:17:21.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/07/17/centos%E4%B8%8Bceph%E9%83%A8%E7%BD%B2/</loc>
-    
-    <lastmod>2017-07-17T10:35:26.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/07/17/ceph%E9%83%A8%E7%BD%B2%E5%AE%8C%E5%85%A8%E6%89%8B%E5%86%8C/</loc>
-    
-    <lastmod>2017-07-17T08:58:52.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/07/12/fio%E6%B5%8B%E8%AF%95ceph/</loc>
-    
-    <lastmod>2017-07-13T07:07:14.000Z</lastmod>
     
   </url>
   
@@ -275,44 +492,9 @@
   </url>
   
   <url>
-    <loc>http://xiaqunfeng.cc/2017/07/06/XFS-vs-EXT4/</loc>
-    
-    <lastmod>2017-07-06T09:05:19.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/07/04/ceph-Luminous%E6%96%B0%E5%8A%9F%E8%83%BD%E4%B9%8Bcrush-class/</loc>
-    
-    <lastmod>2017-07-04T07:05:27.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/06/29/ceph-Luminous%E5%88%9D%E6%8E%A2/</loc>
-    
-    <lastmod>2017-06-29T09:13:27.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/06/28/Ceph-v12-1-0-Luminous-RC-released/</loc>
-    
-    <lastmod>2017-06-29T08:11:07.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://xiaqunfeng.cc/googlea245ce220ad05de3.html</loc>
     
     <lastmod>2017-06-29T02:39:51.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/01/06/hexo%E7%9A%84%E6%90%AD%E5%BB%BA/</loc>
-    
-    <lastmod>2017-06-25T06:03:43.000Z</lastmod>
     
   </url>
   
@@ -324,121 +506,9 @@
   </url>
   
   <url>
-    <loc>http://xiaqunfeng.cc/2017/06/23/wget%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDhttp%E7%9B%AE%E5%BD%95%E5%8F%8A%E6%96%87%E4%BB%B6/</loc>
-    
-    <lastmod>2017-06-23T11:20:26.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://xiaqunfeng.cc/2017/06/16/%E5%85%AC%E6%9C%89%E4%BA%91%E5%92%8C%E7%A7%81%E6%9C%89%E4%BA%91%E7%9A%84%E5%8C%BA%E5%88%AB/</loc>
     
     <lastmod>2017-06-16T07:13:35.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/05/25/mac%E4%B8%8A%E5%AE%9E%E7%8E%B0vim%E7%9A%84markdown%E9%A2%84%E8%A7%88/</loc>
-    
-    <lastmod>2017-06-16T06:27:11.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/06/16/centos-7%E4%B8%8B%E6%93%8D%E7%BA%B5ceph%E8%BF%9B%E7%A8%8B/</loc>
-    
-    <lastmod>2017-06-16T03:06:12.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/06/15/vim%E7%A7%BB%E5%8A%A8%E5%85%89%E6%A0%87/</loc>
-    
-    <lastmod>2017-06-15T11:23:17.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/06/07/Map-RBD-Devices-on-NBD/</loc>
-    
-    <lastmod>2017-06-07T07:03:38.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/06/06/ceph-rbd-map-failed/</loc>
-    
-    <lastmod>2017-06-06T07:37:00.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/05/26/ceph-mon%E6%97%B6%E9%92%9F%E5%81%8F%E7%A7%BB%E9%97%AE%E9%A2%98/</loc>
-    
-    <lastmod>2017-05-27T02:45:51.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/05/26/GPG-key-retrieval-failure/</loc>
-    
-    <lastmod>2017-05-26T01:39:38.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/05/11/cpu%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84/</loc>
-    
-    <lastmod>2017-05-23T10:56:17.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/05/23/ceph%E6%97%A5%E5%BF%97%E8%BF%81%E7%A7%BB/</loc>
-    
-    <lastmod>2017-05-23T09:35:33.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/05/02/VSM%E9%83%A8%E7%BD%B2/</loc>
-    
-    <lastmod>2017-05-10T01:27:01.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/05/07/S-M-A-R-T-%E7%A3%81%E7%9B%98%E5%81%A5%E5%BA%B7%E7%8A%B6%E6%80%81%E7%9B%91%E6%B5%8B%E5%B7%A5%E5%85%B7/</loc>
-    
-    <lastmod>2017-05-07T08:12:50.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/05/07/firewalld%E5%92%8Ciptables/</loc>
-    
-    <lastmod>2017-05-07T08:12:19.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/05/04/iterm2%E9%85%8D%E8%89%B2/</loc>
-    
-    <lastmod>2017-05-05T08:37:19.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/05/02/iterm2%E5%BF%AB%E6%8D%B7%E9%94%AE%E7%9A%84%E4%BD%BF%E7%94%A8/</loc>
-    
-    <lastmod>2017-05-05T08:35:09.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/05/03/nginx%E4%BD%BF%E7%94%A8%E5%92%8C%E9%85%8D%E7%BD%AE/</loc>
-    
-    <lastmod>2017-05-04T12:30:14.000Z</lastmod>
     
   </url>
   
@@ -457,30 +527,9 @@
   </url>
   
   <url>
-    <loc>http://xiaqunfeng.cc/2017/03/09/cow%E5%92%8Crow%E5%BF%AB%E7%85%A7%E6%9C%BA%E5%88%B6%E7%9A%84%E5%8C%BA%E5%88%AB/</loc>
-    
-    <lastmod>2017-03-09T03:51:26.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://xiaqunfeng.cc/2017/03/01/%E5%BC%82%E6%AD%A5IO/</loc>
     
     <lastmod>2017-03-01T06:06:14.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/02/23/Bluestore%E8%B0%83%E7%A0%94/</loc>
-    
-    <lastmod>2017-02-23T08:41:11.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/02/23/RocksDB%E7%9B%B8%E6%AF%94LevelDB%E7%9A%84%E6%96%B0%E7%89%B9%E6%80%A7/</loc>
-    
-    <lastmod>2017-02-23T03:46:02.000Z</lastmod>
     
   </url>
   
@@ -506,51 +555,9 @@
   </url>
   
   <url>
-    <loc>http://xiaqunfeng.cc/2017/02/10/%E8%8E%B7%E5%8F%96%E6%AF%8F%E4%B8%AAosd%E7%9A%84PG%E6%95%B0/</loc>
-    
-    <lastmod>2017-02-10T12:24:41.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/02/10/RBD-%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/</loc>
-    
-    <lastmod>2017-02-10T07:54:26.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/02/07/%E5%9C%A8Kraken-release%E7%89%88%E6%9C%AC%E4%B8%8A%E6%B5%8B%E8%AF%95Ceph-BlueStore/</loc>
-    
-    <lastmod>2017-02-07T03:23:51.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/02/04/ceph%E5%8D%87%E7%BA%A7%E5%88%B0kraken%E7%89%88%E6%9C%AC/</loc>
-    
-    <lastmod>2017-02-06T01:51:14.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://xiaqunfeng.cc/2017/02/04/%E7%94%A8%E6%88%B7%E6%80%81%E5%92%8C%E5%86%85%E6%A0%B8%E6%80%81/</loc>
     
     <lastmod>2017-02-04T12:09:58.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/02/03/Dm-cache-vs-Bcache/</loc>
-    
-    <lastmod>2017-02-03T09:46:46.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/02/03/Flashcache-vs-Cache-tier/</loc>
-    
-    <lastmod>2017-02-03T09:32:11.000Z</lastmod>
     
   </url>
   

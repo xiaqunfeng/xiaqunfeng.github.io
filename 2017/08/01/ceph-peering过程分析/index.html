@@ -16,7 +16,7 @@
 <meta property="og:description" content="总结分析peering过程中的一些笔记，介绍peering的各个阶段和状态转换。">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/FullSizeRender%204.jpg">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/peering.png">
-<meta property="og:updated_time" content="2017-08-01T09:01:33.000Z">
+<meta property="og:updated_time" content="2018-03-27T01:06:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ceph peering过程分析">
 <meta name="twitter:description" content="总结分析peering过程中的一些笔记，介绍peering的各个阶段和状态转换。">
@@ -88,10 +88,6 @@
 				
 					<a class="github" target="_blank" href="https://github.com/xiaqunfeng" title="github"><i class="icon-github"></i></a>
 		        
-					<a class="mail" target="_blank" href="/xiaqunfeng123@126.com" title="mail"><i class="icon-mail"></i></a>
-		        
-					<a class="google" target="_blank" href="https://blog.csdn.net/xiaqunfeng123" title="google"><i class="icon-google"></i></a>
-		        
 			</div>
 		</nav>
 	</header>		
@@ -128,10 +124,6 @@
 				<div class="social">
 					
 						<a class="github" target="_blank" href="https://github.com/xiaqunfeng" title="github"><i class="icon-github"></i></a>
-			        
-						<a class="mail" target="_blank" href="/xiaqunfeng123@126.com" title="mail"><i class="icon-mail"></i></a>
-			        
-						<a class="google" target="_blank" href="https://blog.csdn.net/xiaqunfeng123" title="google"><i class="icon-google"></i></a>
 			        
 				</div>
 			</nav>
@@ -205,17 +197,16 @@
 </ul>
 <h2 id="三个阶段"><a href="#三个阶段" class="headerlink" title="三个阶段"></a>三个阶段</h2><p>由状态转换过程可知，peering过程基本分为以下三个步骤</p>
 <ul>
-<li><strong>步骤一：GetInfo</strong></li>
+<li><p><strong>步骤一：GetInfo</strong></p>
+<p>​PG的主OSD通过发送消息获取所有从OSD的pg_info信息。</p>
+</li>
+<li><p><strong>步骤二：GetLog</strong></p>
+<p>​根据各个副本获取的pg_info信息的比较，选择一个拥有权威日志的OSD。如果主OSD不是拥有权威日志的OSD，就从该OSD上拉取权威日志。主OSD完成拉取权威日志后也就拥有了权威日志。</p>
+</li>
+<li><p><strong>步骤三：GetMissing</strong></p>
+<p>​主OSD拉取其他OSD的PG日志。通过与本地权威日志的比较，来计算该OSD上缺失的object信息，作为后续recover操作过程的依据。</p>
+</li>
 </ul>
-<p>​    PG的主OSD通过发送消息获取所有从OSD的pg_info信息。</p>
-<ul>
-<li><strong>步骤二：GetLog</strong></li>
-</ul>
-<p>​    根据各个副本获取的pg_info信息的比较，选择一个拥有权威日志的OSD。如果主OSD不是拥有权威日志的OSD，就从该OSD上拉取权威日志。主OSD完成拉取权威日志后也就拥有了权威日志。</p>
-<ul>
-<li><strong>步骤三：GetMissing</strong></li>
-</ul>
-<p>​    主OSD拉取其他OSD的PG日志。通过与本地权威日志的比较，来计算该OSD上缺失的object信息，作为后续recover操作过程的依据。</p>
 <p>最后通过active操作激活主OSD，并发送notify通知消息，激活相应的从OSD。</p>
 <h3 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h3><p> <img src="http://oow6unnib.bkt.clouddn.com/peering.png" alt="peering"></p>
 <h2 id="GetInfo"><a href="#GetInfo" class="headerlink" title="GetInfo"></a>GetInfo</h2><p>获取该PG在其他OSD上的 pg_info 信息。</p>
@@ -302,18 +293,18 @@
     <div class="article-info article-info-index">
       
       
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">ceph</a>
+        			<a href="/categories/Ceph//" class="article-tag-list-link color5">Ceph</a>
         		</li>
       		
 		</ul>
 	</div>
 
-      
 
       
 
@@ -564,7 +555,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">storage</a>
+                <a href="javascript:void(0)" class="js-tag color5">bluestore</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -572,11 +567,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">deeplearning</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">centos</a>
+                <a href="javascript:void(0)" class="js-tag color3">storage</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -588,7 +579,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">machine learning</a>
+                <a href="javascript:void(0)" class="js-tag color2">centos</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Keras</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">rbd</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -596,7 +595,35 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+                <a href="javascript:void(0)" class="js-tag color3">monitor</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">pg</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">iscsi</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">mon</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">osd</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -604,7 +631,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">mac</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -612,11 +651,27 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">fio</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cmd</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">iterm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
+                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -679,7 +734,7 @@ MathJax.Hub.Queue(function() {
     
     	<section class="tools-section tools-section-me" q-show="aboutme">
   	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">还没想好写啥。。。&lt;br&gt;后续添加&lt;br&gt;</div>
+  	  		<div class="aboutme-wrap" id="js-aboutme">没事情做了吗？&lt;br&gt;&lt;br&gt;想想你的竞争对手&lt;br&gt;&lt;br&gt;想想你多久没给爸妈寄钱了&lt;br&gt;&lt;br&gt;想想你的工资单&lt;br&gt;&lt;br&gt;想想你的银行存款&lt;br&gt;&lt;br&gt;想想你什么时候交房租&lt;br&gt;&lt;br&gt;想想你遥不可及的梦想&lt;br&gt;&lt;br&gt;想想你平淡的人生&lt;br&gt;&lt;br&gt;想想你喜欢的车&lt;br&gt;&lt;br&gt;想想你中意的房&lt;br&gt;&lt;br&gt;现在，有事做了吗？&lt;br&gt;</div>
   	  	
     	</section>
     

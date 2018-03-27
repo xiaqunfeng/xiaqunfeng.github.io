@@ -4,11 +4,56 @@
   
     
     <entry>
+      <title><![CDATA[添加gitment评论系统]]></title>
+      <url>http://xiaqunfeng.cc/2018/03/26/%E6%B7%BB%E5%8A%A0gitment%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F/</url>
+      <content type="html"><![CDATA[<p>给自己的博客配置了一个评论系统，该系统使用GitHub账号登陆，使用GitHub Issues来写评论，比较方便。<br><a id="more"></a></p>
+<h2 id="注册OAuth-Application"><a href="#注册OAuth-Application" class="headerlink" title="注册OAuth Application"></a>注册OAuth Application</h2><p>链接: <a href="https://github.com/settings/applications/new" target="_blank" rel="external">https://github.com/settings/applications/new</a></p>
+<p>因为Gitment使用了GitHub的服务，因此需要注册OAuth application。</p>
+<p>注意：<strong>Authorization callback URL</strong>必须填写博客的域名。</p>
+<p>注册成功之后将获取<strong>Client ID</strong>与<strong>Client Secret</strong>。</p>
+<p>我的填写如下所示：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/OAuth-Application.jpg" alt="OAuth"></p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="主题带有gitment选项"><a href="#主题带有gitment选项" class="headerlink" title="主题带有gitment选项"></a>主题带有gitment选项</h3><p>那只需要填写以下信息就可以了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">#Gitment</div><div class="line">gitment_owner: &apos;#&apos;         #你的 GitHub ID</div><div class="line">gitment_repo: &apos;#&apos;          #存储评论的 repo</div><div class="line">gitment_oauth:</div><div class="line">  client_id: &apos;#&apos;           #client ID</div><div class="line">  client_secret: &apos;#&apos;       #client secret</div></pre></td></tr></table></figure>
+<h3 id="主题带没有gitment选项"><a href="#主题带没有gitment选项" class="headerlink" title="主题带没有gitment选项"></a>主题带没有gitment选项</h3><p>如果主题没有gitment选项可配置，可手动添加，步骤如下</p>
+<p>1、加载Gitment的CSS与JS文件</p>
+<p>下载<a href="https://imsun.github.io/gitment/style/default.css" target="_blank" rel="external">gitment.css</a>与<a href="https://imsun.github.io/gitment/dist/gitment.browser.js" target="_blank" rel="external">gitment.js</a>，分别放入主题目录的<strong>source/css</strong>与<strong>source/js</strong>目录中</p>
+<p>在<strong>layout/partial/head.ejs</strong>中添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 加载gitment的css和js文件 --&gt;</div><div class="line">&lt;link rel=&quot;stylesheet&quot; href=&quot;/css/gitment.css&quot;&gt; </div><div class="line">&lt;script src=&quot;/js/gitment.js&quot;&gt;&lt;/script&gt;</div></pre></td></tr></table></figure>
+<p>2、配置Gitment</p>
+<p>添加<strong>layout/partial/gitment.ejs</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">&lt;div id=&quot;gitment&quot;&gt;&lt;/div&gt;</div><div class="line"></div><div class="line">&lt;!-- 主页不要加载gitment --&gt;</div><div class="line">&lt;% if (!index)&#123; %&gt;</div><div class="line"></div><div class="line">&lt;script&gt;</div><div class="line">var gitment = new Gitment(&#123;</div><div class="line">  owner: &apos;xiaqunfeng&apos;,</div><div class="line">  repo: &apos;xiaqunfeng.github.io&apos;,</div><div class="line">  oauth: &#123;</div><div class="line">    client_id: &apos;XXX&apos;,</div><div class="line">    client_secret: &apos;XXXX&apos;,</div><div class="line">  &#125;,</div><div class="line">&#125;)</div><div class="line">gitment.render(&apos;gitment&apos;)</div><div class="line">&lt;/script&gt;</div><div class="line"> </div><div class="line">&lt;% &#125; %&gt;</div></pre></td></tr></table></figure>
+<ul>
+<li><strong>client_id</strong>与<strong>client_secret</strong>为第1步注册OAuth Application所获取的<strong>Client ID</strong>与<strong>Client Secret</strong></li>
+<li><strong>owner</strong>为你的GitHub账户名</li>
+<li><strong>repo</strong>为你保存评论的GitHub仓库名称，所有的评论将保存在该仓库的Issues</li>
+</ul>
+<p>在<strong>layout/partial/article.ejs</strong>中添加:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;%- partial(&apos;gitment&apos;) %&gt;</div></pre></td></tr></table></figure>
+<p>3、初始化Gitment</p>
+<p>以上步骤完成后就可以在博客页面的最下方看到如图所示的评论框。使用GitHub账号登录之后，就可以对评论进行初始化，然后开始写评论了。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/gitment.jpg" alt="gitment"></p>
+<blockquote>
+<p>每一篇博客的评论，对应于GitHub仓库一个issue。但是这些issue是不存在的，因此对于每一篇博客都需要进行初始化Gitment去创建issue。</p>
+</blockquote>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> hexo </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[【论文阅读】mtcnn]]></title>
       <url>http://xiaqunfeng.cc/2018/03/21/mtcnn-note/</url>
       <content type="html"><![CDATA[<p>一篇2016年的论文MTCNN阅读笔记<br><a id="more"></a></p>
 <p>MTCNN 全称 Multi-task convolutional neural networks</p>
 <p>论文首页：<a href="https://kpzhang93.github.io/MTCNN_face_detection_alignment/index.html?from=timeline&amp;isappinstalled=1" target="_blank" rel="external">Joint Face Detection and Alignment using Multi-task Cascaded Convolutional Networks</a></p>
+<p>Github: <a href="https://github.com/kpzhang93/MTCNN_face_detection_alignment" target="_blank" rel="external">https://github.com/kpzhang93/MTCNN_face_detection_alignment</a></p>
 <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>提供了一个新的框架，通过多任务学习统一级联CNN来整合面部检测和对齐这两项任务。提供的CNN由三个阶段组成。</p>
 <p>第一阶段，通过一个浅的CNN快速产生候选窗口。</p>
 <p>第二阶段，通过一个更复杂的CNN来优化，拒绝大量的非面部窗口。</p>
@@ -27,6 +72,17 @@
 <p><img src="http://img.blog.csdn.net/20160926113327249" alt="JDA Network2"></p>
 <p><strong>Stage3: Output Net</strong></p>
 <p><img src="http://img.blog.csdn.net/20160926113334297" alt="JDA Network3"></p>
+<p>prototxt参见mtcnn的python&amp;caffe版本：<a href="https://github.com/DuinoDu/mtcnn" target="_blank" rel="external">https://github.com/DuinoDu/mtcnn</a></p>
+<p><strong>用Netscope画出来的网络结构图如下：</strong></p>
+<p>1、P-NET</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/mtcnn-pnet.jpg" alt="p-net"></p>
+<p>2、R-NET</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/mtcnn-rnet.jpg" alt="r-net"></p>
+<p>3、O-NET</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/mtcnn-onet.jpg" alt="o-net"></p>
+<blockquote>
+<p>更详细的网络结构图可用caffe工具 draw_net.py 来绘制。</p>
+</blockquote>
 <h3 id="Training"><a href="#Training" class="headerlink" title="Training"></a>Training</h3><p>利用三个任务来训练我们的CNN检测器：面部/非面部分类器，边界框回归以及面部特征定位。</p>
 <p>1、Face classification</p>
 <p>学习目标被定义为一个二分类问题。对于每一个样本，使用交叉熵损失函数</p>
@@ -101,10 +157,16 @@
 <p>参数 <code>image_data_format</code> 是 <code>channels_last</code> ，对于Theano来说，这个参数是<code>channels_first</code>。因为在TensorFlow中图像的存储方式是<code>[height, width, channels]</code>，Theano中是 <code>[channels, height, width]</code>。</p>
 ]]></content>
       
+        <categories>
+            
+            <category> DeepLearning </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> deeplearning </tag>
+            <tag> Keras </tag>
             
         </tags>
         
@@ -144,12 +206,12 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">#coding:utf-8</div></pre></td></tr></table></figure>
 ]]></content>
       
+        <categories>
+            
+            <category> Mac </category>
+            
+        </categories>
         
-        <tags>
-            
-            <tag> mac </tag>
-            
-        </tags>
         
     </entry>
     
@@ -294,10 +356,16 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo rm -r /var/log/mongodb   </div><div class="line">sudo rm -r /var/lib/mongo</div></pre></td></tr></table></figure>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> monitor </tag>
             
         </tags>
         
@@ -316,10 +384,16 @@
 <h3 id="正常情形"><a href="#正常情形" class="headerlink" title="正常情形"></a>正常情形</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># cat /run/udev/data/b251\:0 </div><div class="line">S:rbd/rbd/rbd0</div><div class="line">I:163204714535</div><div class="line">E:ID_FS_UUID=d0296c84-56d7-4adb-89b1-9f60c6a54309</div><div class="line">E:ID_FS_UUID_ENC=d0296c84-56d7-4adb-89b1-9f60c6a54309</div><div class="line">E:ID_FS_TYPE=xfs</div><div class="line">E:ID_FS_USAGE=filesystem</div><div class="line">G:systemd</div><div class="line"></div><div class="line"># python ceph-client-env-rbd-test.py rbd</div><div class="line">[PASS] get device fstype okay.</div></pre></td></tr></table></figure>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> rbd </tag>
             
         </tags>
         
@@ -467,10 +541,16 @@
 <p>脚本地址：<a href="https://github.com/xiaqunfeng/ceph-ansible/tree/master/tools/ceph-pg-reweight" target="_blank" rel="external">https://github.com/xiaqunfeng/ceph-ansible/tree/master/tools/ceph-pg-reweight</a></p>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> osd </tag>
             
         </tags>
         
@@ -542,10 +622,16 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># lsblk</div><div class="line">NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</div><div class="line">sr0     11:0    1  436K  0 rom</div><div class="line">vda    253:0    0   20G  0 disk</div><div class="line">├─vda1 253:1    0    2M  0 part</div><div class="line">├─vda2 253:2    0  500M  0 part /boot</div><div class="line">└─vda3 253:3    0 19.5G  0 part /</div><div class="line">vdd    253:48   0   50G  0 disk</div><div class="line">├─vdd1 253:49   0 1023M  0 part /var/lib/ceph/osd/ceph-0</div><div class="line">├─vdd2 253:50   0   10G  0 part</div><div class="line">├─vdd3 253:51   0   10G  0 part</div><div class="line">└─vdd4 253:52   0   29G  0 part</div></pre></td></tr></table></figure>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> luminous </tag>
             
         </tags>
         
@@ -632,10 +718,16 @@
 <p><a href="http://chuansong.me/n/2297546" target="_blank" rel="external">ceph iscsi gateway demo 安装配置</a></p>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> iscsi </tag>
             
         </tags>
         
@@ -676,10 +768,16 @@
 <p>更多关于ansible的部署情况可以参见官方文档：<a href="https://github.com/ceph/ceph-ansible/wiki" target="_blank" rel="external">https://github.com/ceph/ceph-ansible/wiki</a></p>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> ansible </tag>
             
         </tags>
         
@@ -739,12 +837,16 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">1. Stage 1 RPN, init from ImageNet model (M0 -&gt; M1)</div><div class="line">2. Stage1 RPN, generate proposals (M1 -&gt; P1)</div><div class="line">3. Stage1 Fast R-CNN using RPN  proposals, init from ImageNet model (M0, P1 -&gt; M2)</div><div class="line">4. Stage2 RPN, init from stage 1 Fast R-CNN model (M2 -&gt; M3)</div><div class="line">5. Stage2 RPN, generate proposals (M3 -&gt; P2)</div><div class="line">6. Stage2 Fast R-CNN, init from stage 2 RPN R-CNN model (M3,P2 -&gt; M4)</div></pre></td></tr></table></figure>
 ]]></content>
       
+        <categories>
+            
+            <category> DeepLearning </category>
+            
+        </categories>
+        
         
         <tags>
             
             <tag> paper </tag>
-            
-            <tag> deeplearning </tag>
             
         </tags>
         
@@ -761,6 +863,12 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div></pre></td><td class="code"><pre><div class="line"># --------------------------------------------------------</div><div class="line"># Faster R-CNN</div><div class="line"># Copyright (c) 2015 Microsoft</div><div class="line"># Licensed under The MIT License [see LICENSE for details]</div><div class="line"># Written by Ross Girshick and Sean Bell</div><div class="line"># --------------------------------------------------------</div><div class="line"></div><div class="line">import numpy as np</div><div class="line"></div><div class="line"># Verify that we compute the same anchors as Shaoqing&apos;s matlab implementation:</div><div class="line">#</div><div class="line">#    &gt;&gt; load output/rpn_cachedir/faster_rcnn_VOC2007_ZF_stage1_rpn/anchors.mat</div><div class="line">#    &gt;&gt; anchors</div><div class="line">#</div><div class="line">#    anchors =</div><div class="line">#</div><div class="line">#       -83   -39   100    56</div><div class="line">#      -175   -87   192   104</div><div class="line">#      -359  -183   376   200</div><div class="line">#       -55   -55    72    72</div><div class="line">#      -119  -119   136   136</div><div class="line">#      -247  -247   264   264</div><div class="line">#       -35   -79    52    96</div><div class="line">#       -79  -167    96   184</div><div class="line">#      -167  -343   184   360</div><div class="line"></div><div class="line">#array([[ -83.,  -39.,  100.,   56.],</div><div class="line">#       [-175.,  -87.,  192.,  104.],</div><div class="line">#       [-359., -183.,  376.,  200.],</div><div class="line">#       [ -55.,  -55.,   72.,   72.],</div><div class="line">#       [-119., -119.,  136.,  136.],</div><div class="line">#       [-247., -247.,  264.,  264.],</div><div class="line">#       [ -35.,  -79.,   52.,   96.],</div><div class="line">#       [ -79., -167.,   96.,  184.],</div><div class="line">#       [-167., -343.,  184.,  360.]])</div><div class="line"></div><div class="line"># base_size =16 是因为从conv4层出来的最小的检测大小是16个像素</div><div class="line"># 在 fast_rcnn/config.py中有定义：__C.TRAIN.RPN_MIN_SIZE = 16</div><div class="line"># ratios 是宽高比，即 w:h = 1:2, 1:1, 2:1</div><div class="line"># scales = 8, 16, 32</div><div class="line"># [0，0，15，15]这四个数分别表示[x_l,y_l,x_r,y_r]，表示左上角和右下角的坐标</div><div class="line">def generate_anchors(base_size=16, ratios=[0.5, 1, 2],</div><div class="line">                     scales=2**np.arange(3, 6)):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Generate anchor (reference) windows by enumerating aspect ratios X</div><div class="line">    scales wrt a reference (0, 0, 15, 15) window.</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    base_anchor = np.array([1, 1, base_size, base_size]) - 1  #初始基准anchor[0，0，15，15]</div><div class="line">    ratio_anchors = _ratio_enum(base_anchor, ratios)  #枚举三种宽高比，得到3*4维anchor矩阵</div><div class="line">    #垂直方向上堆叠数组</div><div class="line">    anchors = np.vstack([_scale_enum(ratio_anchors[i, :], scales)</div><div class="line">                         for i in xrange(ratio_anchors.shape[0])]) #读取矩阵第一维大小，为3</div><div class="line">    return anchors</div><div class="line"></div><div class="line"># 根据输入的anchor[x,y,w,h]，返回宽、高、中心坐标：w,h,(x_ctr, y_ctr)</div><div class="line">def _whctrs(anchor):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Return width, height, x center, and y center for an anchor (window).</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    w = anchor[2] - anchor[0] + 1  #anchor里第三个值减去第一个值得到w</div><div class="line">    h = anchor[3] - anchor[1] + 1  #anchor里第四个值减去第二个值得到h</div><div class="line">    x_ctr = anchor[0] + 0.5 * (w - 1)  #通过左下角的点和w、h得到中心点</div><div class="line">    y_ctr = anchor[1] + 0.5 * (h - 1)</div><div class="line">    return w, h, x_ctr, y_ctr</div><div class="line"></div><div class="line"># 给定一组宽高向量，输出向量维度个数个anchor</div><div class="line">def _mkanchors(ws, hs, x_ctr, y_ctr):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Given a vector of widths (ws) and heights (hs) around a center</div><div class="line">    (x_ctr, y_ctr), output a set of anchors (windows).</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    ws = ws[:, np.newaxis]  #将数组转置成 X*1 维的矩阵，X为ws数组中元素的个数</div><div class="line">    hs = hs[:, np.newaxis]</div><div class="line">    anchors = np.hstack((x_ctr - 0.5 * (ws - 1),  #水平方向上将数组堆叠起来，得到一个X*4维的矩阵</div><div class="line">                         y_ctr - 0.5 * (hs - 1),  #[[-3.5,  2, 18.5, 13]</div><div class="line">                         x_ctr + 0.5 * (ws - 1),  # [   0,  0,   15, 15]</div><div class="line">                         y_ctr + 0.5 * (hs - 1))) # [ 2.5, -3, 12.5, 18]]</div><div class="line">    return anchors</div><div class="line"></div><div class="line"># 枚举一个anchor的三种宽高比，ratios[0.5，1，2]</div><div class="line">def _ratio_enum(anchor, ratios):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Enumerate a set of anchors for each aspect ratio wrt an anchor.</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    w, h, x_ctr, y_ctr = _whctrs(anchor) #得到框、高、中心点</div><div class="line">    size = w * h  </div><div class="line">    size_ratios = size / ratios          #[512，256，128]</div><div class="line">    ws = np.round(np.sqrt(size_ratios))  #[23，16，11]</div><div class="line">    hs = np.round(ws * ratios)           #[12，16，22]</div><div class="line">    anchors = _mkanchors(ws, hs, x_ctr, y_ctr) #输出三个预测窗口</div><div class="line">    return anchors</div><div class="line"></div><div class="line"># 枚举输入anchor的三种尺度，scales[8，16，32]</div><div class="line">def _scale_enum(anchor, scales):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Enumerate a set of anchors for each scale wrt an anchor.</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    w, h, x_ctr, y_ctr = _whctrs(anchor)</div><div class="line">    ws = w * scales  #同比例扩大宽高</div><div class="line">    hs = h * scales</div><div class="line">    anchors = _mkanchors(ws, hs, x_ctr, y_ctr)</div><div class="line">    return anchors</div><div class="line"></div><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">    import time</div><div class="line">    t = time.time()</div><div class="line">    a = generate_anchors()  #入口函数</div><div class="line">    print time.time() - t</div><div class="line">    print a</div><div class="line">    from IPython import embed; embed()</div></pre></td></tr></table></figure>
 ]]></content>
       
+        <categories>
+            
+            <category> DeepLearning </category>
+            
+        </categories>
+        
         
         <tags>
             
@@ -847,12 +955,16 @@
 </ul>
 ]]></content>
       
+        <categories>
+            
+            <category> DeepLearning </category>
+            
+        </categories>
+        
         
         <tags>
             
             <tag> paper </tag>
-            
-            <tag> deeplearning </tag>
             
         </tags>
         
@@ -948,12 +1060,16 @@
 <p>候选区域经过CNN得到的特征向量要存在到disk内，然后在训练SVM和bbox回归再取出来，这需要大量的磁盘空间，并且很耗费时间。</p>
 ]]></content>
       
+        <categories>
+            
+            <category> DeepLearning </category>
+            
+        </categories>
+        
         
         <tags>
             
             <tag> paper </tag>
-            
-            <tag> deeplearning </tag>
             
         </tags>
         
@@ -987,10 +1103,16 @@
 <p>​    关键代码序列图如下：<img src="http://oow6unnib.bkt.clouddn.com/file_write_Fotor.jpg" alt="file_write"></p>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> code </tag>
             
         </tags>
         
@@ -1214,6 +1336,12 @@
 <p>在 channel URLs 中有新添加的镜像地址，表示已生效。</p>
 ]]></content>
       
+        <categories>
+            
+            <category> DeepLearning </category>
+            
+        </categories>
+        
         
         <tags>
             
@@ -1260,10 +1388,16 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph -v</div><div class="line">ceph version 11.2.0 (f223e27eeb35991352ebc1f67423d4ebc252adb7)</div></pre></td></tr></table></figure>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> install </tag>
             
         </tags>
         
@@ -1400,10 +1534,16 @@
 <h2 id="TO-BE-ADD"><a href="#TO-BE-ADD" class="headerlink" title="TO BE ADD"></a>TO BE ADD</h2><p>TODO</p>
 ]]></content>
       
+        <categories>
+            
+            <category> Linux </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> Linux </tag>
+            <tag> cmd </tag>
             
         </tags>
         
@@ -1503,10 +1643,16 @@
 <p>官网参考信息：<a href="http://ceph.com/pgcalc/" target="_blank" rel="external">http://ceph.com/pgcalc/</a></p>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> pg </tag>
             
         </tags>
         
@@ -1587,10 +1733,16 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph --show-config  | grep osd_pool_default_pg_num</div><div class="line">osd_pool_default_pg_num = 8</div></pre></td></tr></table></figure>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> osd </tag>
             
         </tags>
         
@@ -1620,12 +1772,12 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">▶ python3 test.py</div></pre></td></tr></table></figure>
 ]]></content>
       
+        <categories>
+            
+            <category> Python </category>
+            
+        </categories>
         
-        <tags>
-            
-            <tag> mac </tag>
-            
-        </tags>
         
     </entry>
     
@@ -1702,10 +1854,16 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># lsblk -n -o FSTYPE /dev/vdb2</div><div class="line">xfs</div></pre></td></tr></table></figure>
 ]]></content>
       
+        <categories>
+            
+            <category> Linux </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> storage </tag>
+            <tag> cmd </tag>
             
         </tags>
         
@@ -1889,10 +2047,16 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ll /dev/disk/by-uuid/ | grep vdb1</div><div class="line">lrwxrwxrwx 1 root root  10 Apr  1 16:13 cad11e23-e104-419d-9b61-3a1b6dc27fc9 -&gt; ../../vdb1</div></pre></td></tr></table></figure>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> osd </tag>
             
         </tags>
         
@@ -2114,12 +2278,12 @@
 </blockquote>
 ]]></content>
       
+        <categories>
+            
+            <category> Python3 </category>
+            
+        </categories>
         
-        <tags>
-            
-            <tag> python </tag>
-            
-        </tags>
         
     </entry>
     
@@ -2277,17 +2441,16 @@
 </ul>
 <h2 id="三个阶段"><a href="#三个阶段" class="headerlink" title="三个阶段"></a>三个阶段</h2><p>由状态转换过程可知，peering过程基本分为以下三个步骤</p>
 <ul>
-<li><strong>步骤一：GetInfo</strong></li>
+<li><p><strong>步骤一：GetInfo</strong></p>
+<p>​PG的主OSD通过发送消息获取所有从OSD的pg_info信息。</p>
+</li>
+<li><p><strong>步骤二：GetLog</strong></p>
+<p>​根据各个副本获取的pg_info信息的比较，选择一个拥有权威日志的OSD。如果主OSD不是拥有权威日志的OSD，就从该OSD上拉取权威日志。主OSD完成拉取权威日志后也就拥有了权威日志。</p>
+</li>
+<li><p><strong>步骤三：GetMissing</strong></p>
+<p>​主OSD拉取其他OSD的PG日志。通过与本地权威日志的比较，来计算该OSD上缺失的object信息，作为后续recover操作过程的依据。</p>
+</li>
 </ul>
-<p>​    PG的主OSD通过发送消息获取所有从OSD的pg_info信息。</p>
-<ul>
-<li><strong>步骤二：GetLog</strong></li>
-</ul>
-<p>​    根据各个副本获取的pg_info信息的比较，选择一个拥有权威日志的OSD。如果主OSD不是拥有权威日志的OSD，就从该OSD上拉取权威日志。主OSD完成拉取权威日志后也就拥有了权威日志。</p>
-<ul>
-<li><strong>步骤三：GetMissing</strong></li>
-</ul>
-<p>​    主OSD拉取其他OSD的PG日志。通过与本地权威日志的比较，来计算该OSD上缺失的object信息，作为后续recover操作过程的依据。</p>
 <p>最后通过active操作激活主OSD，并发送notify通知消息，激活相应的从OSD。</p>
 <h3 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h3><p> <img src="http://oow6unnib.bkt.clouddn.com/peering.png" alt="peering"></p>
 <h2 id="GetInfo"><a href="#GetInfo" class="headerlink" title="GetInfo"></a>GetInfo</h2><p>获取该PG在其他OSD上的 pg_info 信息。</p>
@@ -2337,12 +2500,12 @@
 <p>部分参考资料：<a href="https://www.ustack.com/blog/ceph%EF%BC%8Dpg-peering/" target="_blank" rel="external">Ceph：pg peering过程分析</a></p>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
         
-        <tags>
-            
-            <tag> ceph </tag>
-            
-        </tags>
         
     </entry>
     
@@ -2527,12 +2690,12 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph pg dump_stuck [unclean|inactive|stale|undersized|degraded]</div></pre></td></tr></table></figure>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
         
-        <tags>
-            
-            <tag> ceph </tag>
-            
-        </tags>
         
     </entry>
     
@@ -2573,10 +2736,16 @@
 <p>本文为译文，原文链接：<a href="http://cephnotes.ksperis.com/blog/2014/07/04/remove-big-rbd-image" target="_blank" rel="external">Remove Big RBD Image</a></p>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> rbd </tag>
             
         </tags>
         
@@ -2622,10 +2791,14 @@
 <p>更多cento 7 上操纵集群命令详见文章：<a href="http://xiaqunfeng.cc/2017/06/16/centos-7%E4%B8%8B%E6%93%8D%E7%BA%B5ceph%E8%BF%9B%E7%A8%8B/">centos 7下操纵ceph进程</a></p>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
-            
-            <tag> ceph </tag>
             
             <tag> centos </tag>
             
@@ -2806,10 +2979,16 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">root@ceph-cli:~# dd if=/dev/zero of=/mnt/ceph-disk1/file1 count=100 bs=1M</div><div class="line">100+0 records in</div><div class="line">100+0 records out</div><div class="line">104857600 bytes (105 MB) copied, 0.12931 s, 811 MB/s</div></pre></td></tr></table></figure>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> install </tag>
             
             <tag> ubuntu </tag>
             
@@ -2852,10 +3031,16 @@
 <h2 id="fio测试filestore"><a href="#fio测试filestore" class="headerlink" title="fio测试filestore"></a>fio测试filestore</h2><p>TODO</p>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> fio </tag>
             
         </tags>
         
@@ -3011,7 +3196,7 @@
         
         <tags>
             
-            <tag> Linux </tag>
+            <tag> filesystem </tag>
             
         </tags>
         
@@ -3117,10 +3302,16 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># ceph mon feature list</div><div class="line">all features</div><div class="line">	supported: [kraken,luminous]</div><div class="line">	persistent: [kraken,luminous]</div><div class="line">on current monmap (epoch 1)</div><div class="line">	persistent: [kraken,luminous]</div><div class="line">	required: [kraken,luminous]</div></pre></td></tr></table></figure>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> luminous </tag>
             
         </tags>
         
@@ -3188,10 +3379,16 @@
 <p>发现对象确实只写在 ssd class 所对应的 3个OSD（osd.3 osd.4 osd.5）上，rule绑定成功。</p>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> luminous </tag>
             
         </tags>
         
@@ -3235,10 +3432,16 @@
 <p>3、比起ceph周边的监控软件：calamari、VSM、inkscope、grafana等，相去甚远，当然，可以简单展示基本信息，还是不错的。</p>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> luminous </tag>
             
         </tags>
         
@@ -3372,10 +3575,16 @@
 </ul>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> luminous </tag>
             
         </tags>
         
@@ -3448,12 +3657,12 @@
 <p>以上</p>
 ]]></content>
       
+        <categories>
+            
+            <category> Linux </category>
+            
+        </categories>
         
-        <tags>
-            
-            <tag> ceph </tag>
-            
-        </tags>
         
     </entry>
     
@@ -3514,10 +3723,14 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo systemctl stop ceph-osd@1</div><div class="line">sudo systemctl stop ceph-mon@ceph-server</div><div class="line">sudo systemctl stop ceph-mds@ceph-server</div></pre></td></tr></table></figure>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
-            
-            <tag> ceph </tag>
             
             <tag> centos </tag>
             
@@ -3561,10 +3774,16 @@
 <p>拷贝整个文件：<code>ggyG</code></p>
 ]]></content>
       
+        <categories>
+            
+            <category> Linux </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> Linux </tag>
+            <tag> vim </tag>
             
         </tags>
         
@@ -3626,10 +3845,16 @@
 </ul>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> rbd </tag>
             
         </tags>
         
@@ -3721,10 +3946,16 @@
 <p>具体该设为多少可以通过上面BIT值查表计算得出。</p>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> rbd </tag>
             
         </tags>
         
@@ -3811,10 +4042,16 @@
 <p>OK，问题解决！</p>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> mon </tag>
             
         </tags>
         
@@ -3849,6 +4086,12 @@
 <p>这个问题的原因是网站无法访问</p>
 ]]></content>
       
+        <categories>
+            
+            <category> Linux </category>
+            
+        </categories>
+        
         
         <tags>
             
@@ -3896,10 +4139,16 @@
 <p>本篇博客的实时预览截图如下：（可以看到，端口为9183）<br><img src="http://oow6unnib.bkt.clouddn.com/markdown-preview.png" alt="markdown-preview"></p>
 ]]></content>
       
+        <categories>
+            
+            <category> Mac </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> mac </tag>
+            <tag> vim </tag>
             
         </tags>
         
@@ -3922,12 +4171,12 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">chown -R ceph:ceph /var/lib/ceph/osd/ceph-0/journal</div><div class="line">chown -R ceph:ceph /dev/sdb1</div></pre></td></tr></table></figure>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
         
-        <tags>
-            
-            <tag> ceph </tag>
-            
-        </tags>
         
     </entry>
     
@@ -4012,12 +4261,16 @@
 <p><img src="http://oow6unnib.bkt.clouddn.com/hwloc.png" alt="hwloc"></p>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
-            
-            <tag> Linux </tag>
+            <tag> cpu </tag>
             
         </tags>
         
@@ -4041,12 +4294,16 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo yum install iptables-services</div><div class="line">sudo systemctl enable iptables &amp;&amp; sudo systemctl enable ip6tables</div><div class="line">sudo systemctl start iptables &amp;&amp; sudo systemctl start ip6tables</div></pre></td></tr></table></figure>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
             <tag> centos </tag>
-            
-            <tag> Linux </tag>
             
         </tags>
         
@@ -4126,7 +4383,7 @@
         
         <tags>
             
-            <tag> Linux </tag>
+            <tag> storage </tag>
             
         </tags>
         
@@ -4178,10 +4435,16 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source ~/.zshrc</div></pre></td></tr></table></figure>
 ]]></content>
       
+        <categories>
+            
+            <category> Mac </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> mac </tag>
+            <tag> iterm </tag>
             
         </tags>
         
@@ -4300,10 +4563,16 @@
 <p>有空学习，mark之。</p>
 ]]></content>
       
+        <categories>
+            
+            <category> Linux </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> Linux </tag>
+            <tag> nginx </tag>
             
         </tags>
         
@@ -4354,10 +4623,16 @@
 <p>从光标处删至字首/尾：ctrl + w / k</p>
 ]]></content>
       
+        <categories>
+            
+            <category> Mac </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> mac </tag>
+            <tag> iterm </tag>
             
         </tags>
         
@@ -4431,10 +4706,16 @@
 <h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>关于在非ceph集群集群上安装并创建ceph集群后续有空补充。</p>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> monitor </tag>
             
         </tags>
         
@@ -4639,6 +4920,12 @@
 </blockquote>
 ]]></content>
       
+        <categories>
+            
+            <category> Distribute </category>
+            
+        </categories>
+        
         
         <tags>
             
@@ -4662,15 +4949,15 @@
 <ul>
 <li>训练集 - 学习算法运行在这上面。</li>
 <li>Dev（开发）集 - 用于调整参数，选择特征，以及对学习算法做出其他决定。 有时也称为维持交叉验证集(hold-out cross validation set)。</li>
-<li>测试集 - 用于评估算法的性能，但不要做出关于使用什么学习算法或参数的任何决定。</li>
+<li><p>测试集 - 用于评估算法的性能，但不要做出关于使用什么学习算法或参数的任何决定。</p>
+<p>​你定义一个开发集和测试集，你的团队会尝试很多想法，如不同的学习算法参数，看看什么是最好的。 开发集和测试集能够使你的团队快速看到你的算法做得有多好。</p>
+<p>​换句话说，开发和测试集的目的是指导你的团队对机器学习系统进行最重要的更改。<br>​所以，你应该做如下事情：</p>
+</li>
+<li><p>选择开发和测试集，以反映您期望在未来获得的数据，并希望做好。</p>
+<p>​换句话说，您的测试集不应该只是可用数据的30％这么简单，特别是如果您期望您的未来数据（移动app图片）在性质上与您的训练集（网站图像）不同时。</p>
+<p>​如果您尚未启动移动app，可能还没有任何用户，因此可能无法获取准确反映您未来需要做的更好的数据。 但你可能仍然尝试去靠近它。 例如，请你的朋友拍一些手机图片，并发送给你。 一旦app启动后，您可以使用实际的用户数据更新您的开发集/测试集。<br>​如果你真的没有任何方法来获得接近你期望的未来数据，也许你可以从使用网站图像开始。 但是你应该意识到这将导致系统不能一般化的很好的风险。<br>​我们需要判断去决定多少投资开发好的开发集和测试集。 但是不要假定你的训练分布与你的测试分布是一样的。 尝试选择反映您最终想要表现良好的测试样本，而不是训练遇到的任何数据。</p>
+</li>
 </ul>
-<p>​    你定义一个开发集和测试集，你的团队会尝试很多想法，如不同的学习算法参数，看看什么是最好的。 开发集和测试集能够使你的团队快速看到你的算法做得有多好。</p>
-<p>​    换句话说，开发和测试集的目的是指导你的团队对机器学习系统进行最重要的更改。<br>​    所以，你应该做如下事情：</p>
-<ul>
-<li>选择开发和测试集，以反映您期望在未来获得的数据，并希望做好。</li>
-</ul>
-<p>​    换句话说，您的测试集不应该只是可用数据的30％这么简单，特别是如果您期望您的未来数据（移动app图片）在性质上与您的训练集（网站图像）不同时。</p>
-<p>​    如果您尚未启动移动app，可能还没有任何用户，因此可能无法获取准确反映您未来需要做的更好的数据。 但你可能仍然尝试去靠近它。 例如，请你的朋友拍一些手机图片，并发送给你。 一旦app启动后，您可以使用实际的用户数据更新您的开发集/测试集。<br>​    如果你真的没有任何方法来获得接近你期望的未来数据，也许你可以从使用网站图像开始。 但是你应该意识到这将导致系统不能一般化的很好的风险。<br>​    我们需要判断去决定多少投资开发好的开发集和测试集。 但是不要假定你的训练分布与你的测试分布是一样的。 尝试选择反映您最终想要表现良好的测试样本，而不是训练遇到的任何数据。</p>
 <h2 id="Chapter-6、Your-dev-and-test-sets-should-come-from-the-same-distribution"><a href="#Chapter-6、Your-dev-and-test-sets-should-come-from-the-same-distribution" class="headerlink" title="Chapter 6、Your dev and test sets should come from the same distribution"></a>Chapter 6、Your dev and test sets should come from the same distribution</h2><p><strong>你的开发集和测试集应该来自相同的分布</strong></p>
 <p>根据您最大的市场，将猫应用图片数据分为四个区域：（i）美国，（ii）中国，（iii）印度和（iv）其他。要想出一个开发集和一个测试集，我们可以随机分配这两个区域到开发集，另外两个到测试集，对吧？ 比如美国和印度在开发集; 中国和其他在测试集。</p>
 <p><img src="http://img.blog.csdn.net/20161209022552344?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
@@ -4679,21 +4966,22 @@
 <ul>
 <li>1、在开发集上过拟合。</li>
 <li>2、测试集比开发集更难。所以你的算法可能做的和预期一样好，因此没有进一步的重大改进的可能了。</li>
-<li>3、测试集不一定更难，但只是和开发集不同。所以在开发集上表现很好但并不能在测试集上表现一样。这种情况下，之前很多提高开发集性能的努力可能都白费了。</li>
+<li><p>3、测试集不一定更难，但只是和开发集不同。所以在开发集上表现很好但并不能在测试集上表现一样。这种情况下，之前很多提高开发集性能的努力可能都白费了。</p>
+<p>​在机器学习应用程序上工作是很艰难的。具有不匹配的开发和测试集引入了关于是否改进开发集分布也提高测试集性能额外的不确定性。具有不匹配的开发和测试集，使得更难找出什么是有效和无效的努力，因此使得更难以确定工作的优先级。<br>​如果你面临的是第三方基准测试 问题，他们的创建者可能会指定开发集和测试集来自不同的分布。相比开发和测试集来自同一分布，此时运气，而不是技术，将对这样的基准的性能有更大的影响。开发一个在一个分布上训练的很好同时能够很好的推广到另一个分布中的学习算法是一个重要的研究问题。但是如果你的目标是在一个特定的机器学习应用中取得进展，而不是研究进展，我建议尝试选择开发集和测试集从相同的分布。这将使您的团队更有效率。</p>
+</li>
 </ul>
-<p>​    在机器学习应用程序上工作是很艰难的。具有不匹配的开发和测试集引入了关于是否改进开发集分布也提高测试集性能额外的不确定性。具有不匹配的开发和测试集，使得更难找出什么是有效和无效的努力，因此使得更难以确定工作的优先级。<br>​    如果你面临的是第三方基准测试 问题，他们的创建者可能会指定开发集和测试集来自不同的分布。相比开发和测试集来自同一分布，此时运气，而不是技术，将对这样的基准的性能有更大的影响。开发一个在一个分布上训练的很好同时能够很好的推广到另一个分布中的学习算法是一个重要的研究问题。但是如果你的目标是在一个特定的机器学习应用中取得进展，而不是研究进展，我建议尝试选择开发集和测试集从相同的分布。这将使您的团队更有效率。</p>
 <h2 id="Chapter-7、How-large-do-the-dev-test-sets-need-to-be"><a href="#Chapter-7、How-large-do-the-dev-test-sets-need-to-be" class="headerlink" title="Chapter 7、How large do the dev/test sets need to be?"></a>Chapter 7、How large do the dev/test sets need to be?</h2><p><strong>开发集/测试集需要多大？</strong></p>
 <p>​    开发集应该足够大，以检测您尝试的算法之间的差异。例如，如果分类器A具有90.0％的准确度，分类器B具有90.1％的准确度，那么100个样本的开发集将不能检测出这0.1％的差异。与我看到的其他机器学习问题相比，100个样本的开发集太小了。常见的开发集的大小在1,000到10,000个样本之间。有10,000个样本，你将有很好的机会检测到这0.1％的提升。[2]<br>​    对于成熟和重要的应用，例如广告，网络搜索和产品建议 - 我也看到了很多团队，甚至为提升0.01％积极努力，因为它对公司的利润有直接影响。在这种情况下，开发集可以远大于10,000，以便检测出更小的提升。<br>​    测试集的大小应该多大？它应该足够大，使得对系统的整体性能有一个高的信心。一个流行的启发式方法是将30％的数据用于测试集。当你有适量的样本，比如100到10,000的样本，它会工作的很好。但在大数据的时代，我们现在有机器学习问题，有时会超过十亿个样本，分配给开发集/测试集的比例一直在缩小，即使开发集 /测试集中的样本绝对数量一直在增长。除了需要评估算法的性能之外，没有必要提供过大的开发集/测试集。</p>
 <p>——————————</p>
 <p>[2]. 在理论上，我们可以测试算法的变化是否对开发集产生统计上显着的差异。 在实践中，大多数团队不会为此困扰（除非他们出版学术研究论文），我通常没法发现统计意义的测试对测量临时进展是有用的。</p>
 ]]></content>
       
+        <categories>
+            
+            <category> MachineLearning </category>
+            
+        </categories>
         
-        <tags>
-            
-            <tag> machine learning </tag>
-            
-        </tags>
         
     </entry>
     
@@ -4720,12 +5008,12 @@
 <p>[1]这个图表展示了NN在小数据集下做得更好。这种效果不如NNs在大数据集中表现良好的效果一致。 在小数据系统中，取决于特征是如何手工设计的，传统算法可能做的很好，也可能做得并不好。 例如，如果你有20个训练样本，那么使用逻辑回归还是神经网络可能并不重要; 手工特征的选择将比算法的选择产生更大的影响。 但如果你有100万的样本，我更倾向于神经网络。</p>
 ]]></content>
       
+        <categories>
+            
+            <category> MachineLearning </category>
+            
+        </categories>
         
-        <tags>
-            
-            <tag> machine learning </tag>
-            
-        </tags>
         
     </entry>
     
@@ -4775,12 +5063,12 @@
 <p><img src="http://img.blog.csdn.net/20161208232515575?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
 ]]></content>
       
+        <categories>
+            
+            <category> MachineLearning </category>
+            
+        </categories>
         
-        <tags>
-            
-            <tag> machine learning </tag>
-            
-        </tags>
         
     </entry>
     
@@ -4907,10 +5195,16 @@
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> bluestore </tag>
             
         </tags>
         
@@ -4982,6 +5276,12 @@
 <p>英文原文链接：<a href="https://github.com/facebook/rocksdb/wiki/Features-Not-in-LevelDB" target="_blank" rel="external">Features Not in LevelDB</a></p>
 ]]></content>
       
+        <categories>
+            
+            <category> Distribute </category>
+            
+        </categories>
+        
         
         <tags>
             
@@ -5290,12 +5590,18 @@
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
-            
             <tag> shell </tag>
+            
+            <tag> osd </tag>
             
         </tags>
         
@@ -5363,10 +5669,16 @@
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> rbd </tag>
             
         </tags>
         
@@ -5415,10 +5727,16 @@
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> bluestore </tag>
             
         </tags>
         
@@ -5485,10 +5803,16 @@
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> kraken </tag>
             
         </tags>
         
@@ -5520,6 +5844,12 @@
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 ]]></content>
       
+        <categories>
+            
+            <category> Distribute </category>
+            
+        </categories>
+        
         
         <tags>
             
@@ -5612,6 +5942,12 @@
 
 ]]></content>
       
+        <categories>
+            
+            <category> Distribute </category>
+            
+        </categories>
+        
         
         <tags>
             
@@ -6689,10 +7025,16 @@
 <p>等待生效，一般几分钟就好了，然后就可通过域名浏览你的博客主页了。</p>
 ]]></content>
       
+        <categories>
+            
+            <category> Mac </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> mac </tag>
+            <tag> hexo </tag>
             
         </tags>
         

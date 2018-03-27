@@ -3,10 +3,1278 @@
 
 
     
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/06/23/wget%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDhttp%E7%9B%AE%E5%BD%95%E5%8F%8A%E6%96%87%E4%BB%B6/</loc>
+    <lastmod>2018-03-27T01:11:13.000Z</lastmod>
+    <data>
+        <display>
+        <title>wget批量下载http目录及文件</title>
+        <pubTime>2017-06-23T10:21:12.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="Linux" url="http://xiaqunfeng.cc/categories/Linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/05/07/firewalld%E5%92%8Ciptables/</loc>
+    <lastmod>2018-03-27T01:10:21.000Z</lastmod>
+    <data>
+        <display>
+        <title>firewalld和iptables</title>
+        <pubTime>2017-05-07T08:08:01.000Z</pubTime>
+        
+        <tag>centos</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/07/12/fio%E6%B5%8B%E8%AF%95ceph/</loc>
+    <lastmod>2018-03-27T01:09:59.000Z</lastmod>
+    <data>
+        <display>
+        <title>fio测试ceph</title>
+        <pubTime>2017-07-12T03:17:04.000Z</pubTime>
+        
+        <tag>fio</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/05/11/cpu%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84/</loc>
+    <lastmod>2018-03-27T01:09:42.000Z</lastmod>
+    <data>
+        <display>
+        <title>cpu拓扑及ceph使用时的优化</title>
+        <pubTime>2017-05-11T01:23:18.000Z</pubTime>
+        
+        <tag>cpu</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/03/09/cow%E5%92%8Crow%E5%BF%AB%E7%85%A7%E6%9C%BA%E5%88%B6%E7%9A%84%E5%8C%BA%E5%88%AB/</loc>
+    <lastmod>2018-03-27T01:09:12.000Z</lastmod>
+    <data>
+        <display>
+        <title>cow和row快照机制的区别</title>
+        <pubTime>2017-03-09T03:32:24.000Z</pubTime>
+        
+        <tag>storage</tag>
+         
+         
+           
+             
+              <breadCrumb title="Distribute" url="http://xiaqunfeng.cc/categories/Distribute/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/07/17/ceph%E9%83%A8%E7%BD%B2%E5%AE%8C%E5%85%A8%E6%89%8B%E5%86%8C/</loc>
+    <lastmod>2018-03-27T01:08:57.000Z</lastmod>
+    <data>
+        <display>
+        <title>ceph部署完全手册</title>
+        <pubTime>2017-07-17T08:46:33.000Z</pubTime>
+        
+        <tag>install</tag>
+         
+        <tag>ubuntu</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/09/27/ceph%E6%8C%87%E5%AE%9A%E7%89%88%E6%9C%AC%E5%AE%89%E8%A3%85/</loc>
+    <lastmod>2018-03-27T01:08:33.000Z</lastmod>
+    <data>
+        <display>
+        <title>ceph指定版本安装</title>
+        <pubTime>2017-09-27T02:39:21.000Z</pubTime>
+        
+        <tag>install</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/11/18/ceph%E5%86%99%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/</loc>
+    <lastmod>2018-03-27T01:08:20.000Z</lastmod>
+    <data>
+        <display>
+        <title>ceph写流程分析</title>
+        <pubTime>2017-11-18T09:41:38.000Z</pubTime>
+        
+        <tag>code</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/05/23/ceph%E6%97%A5%E5%BF%97%E8%BF%81%E7%A7%BB/</loc>
+    <lastmod>2018-03-27T01:07:59.000Z</lastmod>
+    <data>
+        <display>
+        <title>ceph日志迁移</title>
+        <pubTime>2017-05-23T09:20:48.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/02/04/ceph%E5%8D%87%E7%BA%A7%E5%88%B0kraken%E7%89%88%E6%9C%AC/</loc>
+    <lastmod>2018-03-27T01:07:44.000Z</lastmod>
+    <data>
+        <display>
+        <title>ceph升级到kraken版本</title>
+        <pubTime>2017-02-04T11:06:40.000Z</pubTime>
+        
+        <tag>kraken</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/06/06/ceph-rbd-map-failed/</loc>
+    <lastmod>2018-03-27T01:07:26.000Z</lastmod>
+    <data>
+        <display>
+        <title>ceph rbd map failed</title>
+        <pubTime>2017-06-06T03:29:17.000Z</pubTime>
+        
+        <tag>rbd</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/07/28/ceph-placement-group/</loc>
+    <lastmod>2018-03-27T01:07:13.000Z</lastmod>
+    <data>
+        <display>
+        <title>ceph placement group</title>
+        <pubTime>2017-07-28T07:20:25.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/08/01/ceph-peering%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/</loc>
+    <lastmod>2018-03-27T01:06:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>ceph peering过程分析</title>
+        <pubTime>2017-08-01T08:47:05.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/08/17/ceph-osd%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/</loc>
+    <lastmod>2018-03-27T01:06:36.000Z</lastmod>
+    <data>
+        <display>
+        <title>ceph osd相关操作</title>
+        <pubTime>2017-08-17T08:07:13.000Z</pubTime>
+        
+        <tag>osd</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2018/03/08/ceph-osd%E6%9D%83%E9%87%8D%E8%B0%83%E6%95%B4/</loc>
+    <lastmod>2018-03-27T01:06:26.000Z</lastmod>
+    <data>
+        <display>
+        <title>ceph osd权重调整</title>
+        <pubTime>2018-03-08T12:22:36.000Z</pubTime>
+        
+        <tag>osd</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/05/26/ceph-mon%E6%97%B6%E9%92%9F%E5%81%8F%E7%A7%BB%E9%97%AE%E9%A2%98/</loc>
+    <lastmod>2018-03-27T01:06:14.000Z</lastmod>
+    <data>
+        <display>
+        <title>ceph mon时钟偏移问题</title>
+        <pubTime>2017-05-26T01:47:05.000Z</pubTime>
+        
+        <tag>mon</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/07/06/ceph-luminous%E6%96%B0%E5%91%BD%E4%BB%A4%E6%8E%A2%E7%B4%A2/</loc>
+    <lastmod>2018-03-27T01:05:56.000Z</lastmod>
+    <data>
+        <display>
+        <title>ceph luminous新命令探索</title>
+        <pubTime>2017-07-06T06:27:33.000Z</pubTime>
+        
+        <tag>luminous</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2018/02/28/ceph-iscsi%E7%BD%91%E5%85%B3/</loc>
+    <lastmod>2018-03-27T01:05:42.000Z</lastmod>
+    <data>
+        <display>
+        <title>ceph iscsi网关</title>
+        <pubTime>2018-02-28T12:06:46.000Z</pubTime>
+        
+        <tag>iscsi</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2018/02/28/ceph-ansible%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/</loc>
+    <lastmod>2018-03-27T01:05:24.000Z</lastmod>
+    <data>
+        <display>
+        <title>ceph ansible使用手册</title>
+        <pubTime>2018-02-28T11:59:56.000Z</pubTime>
+        
+        <tag>ansible</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/09/18/ceph-PGs-per-Pool-Calculator/</loc>
+    <lastmod>2018-03-27T01:05:02.000Z</lastmod>
+    <data>
+        <display>
+        <title>ceph PGs per Pool Calculator</title>
+        <pubTime>2017-09-18T02:07:45.000Z</pubTime>
+        
+        <tag>pg</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/07/04/ceph-Luminous%E6%96%B0%E5%8A%9F%E8%83%BD%E4%B9%8Bcrush-class/</loc>
+    <lastmod>2018-03-27T01:04:45.000Z</lastmod>
+    <data>
+        <display>
+        <title>ceph Luminous新功能之crush class</title>
+        <pubTime>2017-07-04T03:07:57.000Z</pubTime>
+        
+        <tag>luminous</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2018/03/04/ceph-luminous%E6%9C%80%E4%BD%B3%E9%83%A8%E7%BD%B2%E5%AE%9E%E8%B7%B5/</loc>
+    <lastmod>2018-03-27T01:04:29.000Z</lastmod>
+    <data>
+        <display>
+        <title>ceph luminous最佳部署实践</title>
+        <pubTime>2018-03-04T12:17:03.000Z</pubTime>
+        
+        <tag>luminous</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/06/29/ceph-Luminous%E5%88%9D%E6%8E%A2/</loc>
+    <lastmod>2018-03-27T01:04:17.000Z</lastmod>
+    <data>
+        <display>
+        <title>ceph Luminous dashboard初探</title>
+        <pubTime>2017-06-29T07:45:15.000Z</pubTime>
+        
+        <tag>luminous</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/07/17/centos%E4%B8%8Bceph%E9%83%A8%E7%BD%B2/</loc>
+    <lastmod>2018-03-27T01:04:01.000Z</lastmod>
+    <data>
+        <display>
+        <title>centos下ceph部署</title>
+        <pubTime>2017-07-17T10:27:42.000Z</pubTime>
+        
+        <tag>centos</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/06/16/centos-7%E4%B8%8B%E6%93%8D%E7%BA%B5ceph%E8%BF%9B%E7%A8%8B/</loc>
+    <lastmod>2018-03-27T01:03:45.000Z</lastmod>
+    <data>
+        <display>
+        <title>centos 7下操纵ceph进程</title>
+        <pubTime>2017-06-16T02:57:50.000Z</pubTime>
+        
+        <tag>centos</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/09/19/awk-study-notes/</loc>
+    <lastmod>2018-03-27T01:03:24.000Z</lastmod>
+    <data>
+        <display>
+        <title>awk study notes</title>
+        <pubTime>2017-09-19T07:34:15.000Z</pubTime>
+        
+        <tag>shell</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/07/06/XFS-vs-EXT4/</loc>
+    <lastmod>2018-03-27T01:03:16.000Z</lastmod>
+    <data>
+        <display>
+        <title>XFS vs EXT4</title>
+        <pubTime>2017-07-06T08:55:54.000Z</pubTime>
+        
+        <tag>filesystem</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/05/02/VSM%E9%83%A8%E7%BD%B2/</loc>
+    <lastmod>2018-03-27T01:02:25.000Z</lastmod>
+    <data>
+        <display>
+        <title>VSM部署</title>
+        <pubTime>2017-05-02T06:16:59.000Z</pubTime>
+        
+        <tag>monitor</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/08/29/Syntax-error-unexpected/</loc>
+    <lastmod>2018-03-27T01:02:06.000Z</lastmod>
+    <data>
+        <display>
+        <title>Syntax error: '(' unexpected</title>
+        <pubTime>2017-08-29T11:31:11.000Z</pubTime>
+        
+        <tag>shell</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/05/07/S-M-A-R-T-%E7%A3%81%E7%9B%98%E5%81%A5%E5%BA%B7%E7%8A%B6%E6%80%81%E7%9B%91%E6%B5%8B%E5%B7%A5%E5%85%B7/</loc>
+    <lastmod>2018-03-27T01:01:44.000Z</lastmod>
+    <data>
+        <display>
+        <title>S.M.A.R.T--磁盘健康状态监测工具</title>
+        <pubTime>2017-05-07T07:25:21.000Z</pubTime>
+        
+        <tag>storage</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/02/23/RocksDB%E7%9B%B8%E6%AF%94LevelDB%E7%9A%84%E6%96%B0%E7%89%B9%E6%80%A7/</loc>
+    <lastmod>2018-03-27T01:01:08.000Z</lastmod>
+    <data>
+        <display>
+        <title>RocksDB相比LevelDB的新特性</title>
+        <pubTime>2017-02-23T03:22:32.000Z</pubTime>
+        
+        <tag>rocksdb</tag>
+         
+         
+           
+             
+              <breadCrumb title="Distribute" url="http://xiaqunfeng.cc/categories/Distribute/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/07/28/Remove-Big-RBD-Image/</loc>
+    <lastmod>2018-03-27T01:00:42.000Z</lastmod>
+    <data>
+        <display>
+        <title>Remove Big RBD Image</title>
+        <pubTime>2017-07-28T01:50:45.000Z</pubTime>
+        
+        <tag>rbd</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/02/10/RBD-%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/</loc>
+    <lastmod>2018-03-27T01:00:30.000Z</lastmod>
+    <data>
+        <display>
+        <title>RBD 相关操作</title>
+        <pubTime>2017-02-10T07:47:18.000Z</pubTime>
+        
+        <tag>rbd</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/06/07/Map-RBD-Devices-on-NBD/</loc>
+    <lastmod>2018-03-27T01:00:11.000Z</lastmod>
+    <data>
+        <display>
+        <title>Map RBD Devices on NBD</title>
+        <pubTime>2017-06-07T02:51:42.000Z</pubTime>
+        
+        <tag>rbd</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/03/02/Machine-Learning-Yearning-%E5%BC%80%E7%AF%87%E3%80%811%E3%80%812/</loc>
+    <lastmod>2018-03-27T00:59:49.000Z</lastmod>
+    <data>
+        <display>
+        <title>Machine Learning Yearning(开篇、1、2)</title>
+        <pubTime>2017-03-02T02:00:29.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="MachineLearning" url="http://xiaqunfeng.cc/categories/MachineLearning/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/03/09/Machine-Learning-Yearning-5%E3%80%816/</loc>
+    <lastmod>2018-03-27T00:59:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>Machine Learning Yearning(5、6、7)</title>
+        <pubTime>2017-03-09T02:38:35.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="MachineLearning" url="http://xiaqunfeng.cc/categories/MachineLearning/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/03/03/Machine-Learning-Yearning-3%E3%80%814/</loc>
+    <lastmod>2018-03-27T00:59:25.000Z</lastmod>
+    <data>
+        <display>
+        <title>Machine Learning Yearning(3、4)</title>
+        <pubTime>2017-03-03T01:14:50.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="MachineLearning" url="http://xiaqunfeng.cc/categories/MachineLearning/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/05/26/GPG-key-retrieval-failure/</loc>
+    <lastmod>2018-03-27T00:58:32.000Z</lastmod>
+    <data>
+        <display>
+        <title>GPG key retrieval failure</title>
+        <pubTime>2017-05-26T01:13:24.000Z</pubTime>
+        
+        <tag>centos</tag>
+         
+         
+           
+             
+              <breadCrumb title="Linux" url="http://xiaqunfeng.cc/categories/Linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/02/03/Flashcache-vs-Cache-tier/</loc>
+    <lastmod>2018-03-27T00:58:09.000Z</lastmod>
+    <data>
+        <display>
+        <title>Flashcache vs Cache tier</title>
+        <pubTime>2017-02-03T09:15:15.000Z</pubTime>
+        
+        <tag>storage</tag>
+         
+         
+           
+             
+              <breadCrumb title="Distribute" url="http://xiaqunfeng.cc/categories/Distribute/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/02/03/Dm-cache-vs-Bcache/</loc>
+    <lastmod>2018-03-27T00:57:41.000Z</lastmod>
+    <data>
+        <display>
+        <title>Dm-cache vs Bcache</title>
+        <pubTime>2017-02-03T09:37:45.000Z</pubTime>
+        
+        <tag>storage</tag>
+         
+         
+           
+             
+              <breadCrumb title="Distribute" url="http://xiaqunfeng.cc/categories/Distribute/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/06/28/Ceph-v12-1-0-Luminous-RC-released/</loc>
+    <lastmod>2018-03-27T00:56:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>Ceph v12.1.0 Luminous RC released</title>
+        <pubTime>2017-06-28T03:44:27.000Z</pubTime>
+        
+        <tag>luminous</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/02/23/Bluestore%E8%B0%83%E7%A0%94/</loc>
+    <lastmod>2018-03-27T00:56:36.000Z</lastmod>
+    <data>
+        <display>
+        <title>Bluestore调研</title>
+        <pubTime>2017-02-23T08:30:39.000Z</pubTime>
+        
+        <tag>bluestore</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/01/06/hexo%E7%9A%84%E6%90%AD%E5%BB%BA/</loc>
+    <lastmod>2018-03-27T00:54:54.000Z</lastmod>
+    <data>
+        <display>
+        <title>Mac上hexo博客的搭建</title>
+        <pubTime>2017-01-06T07:47:18.000Z</pubTime>
+        
+        <tag>hexo</tag>
+         
+         
+           
+             
+              <breadCrumb title="Mac" url="http://xiaqunfeng.cc/categories/Mac/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2018/03/11/inkscope%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</loc>
+    <lastmod>2018-03-27T00:54:36.000Z</lastmod>
+    <data>
+        <display>
+        <title>inkscope安装配置</title>
+        <pubTime>2018-03-11T12:49:42.000Z</pubTime>
+        
+        <tag>monitor</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/05/04/iterm2%E9%85%8D%E8%89%B2/</loc>
+    <lastmod>2018-03-27T00:52:35.000Z</lastmod>
+    <data>
+        <display>
+        <title>iterm2配色--zsh & oh-my-zsh</title>
+        <pubTime>2017-05-04T12:32:26.000Z</pubTime>
+        
+        <tag>iterm</tag>
+         
+         
+           
+             
+              <breadCrumb title="Mac" url="http://xiaqunfeng.cc/categories/Mac/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/05/02/iterm2%E5%BF%AB%E6%8D%B7%E9%94%AE%E7%9A%84%E4%BD%BF%E7%94%A8/</loc>
+    <lastmod>2018-03-27T00:52:08.000Z</lastmod>
+    <data>
+        <display>
+        <title>iterm2快捷键的使用</title>
+        <pubTime>2017-05-02T12:46:35.000Z</pubTime>
+        
+        <tag>iterm</tag>
+         
+         
+           
+             
+              <breadCrumb title="Mac" url="http://xiaqunfeng.cc/categories/Mac/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/09/21/linux-command-day-day-up/</loc>
+    <lastmod>2018-03-27T00:51:38.000Z</lastmod>
+    <data>
+        <display>
+        <title>linux command day day up</title>
+        <pubTime>2017-09-21T12:41:47.000Z</pubTime>
+        
+        <tag>cmd</tag>
+         
+         
+           
+             
+              <breadCrumb title="Linux" url="http://xiaqunfeng.cc/categories/Linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/08/30/lsblk%E5%91%BD%E4%BB%A4/</loc>
+    <lastmod>2018-03-27T00:51:19.000Z</lastmod>
+    <data>
+        <display>
+        <title>lsblk命令</title>
+        <pubTime>2017-08-30T06:36:20.000Z</pubTime>
+        
+        <tag>cmd</tag>
+         
+         
+           
+             
+              <breadCrumb title="Linux" url="http://xiaqunfeng.cc/categories/Linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2018/03/13/mac%E4%B8%8AMatplotlib%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/</loc>
+    <lastmod>2018-03-27T00:49:29.000Z</lastmod>
+    <data>
+        <display>
+        <title>mac上Matplotlib中文乱码问题</title>
+        <pubTime>2018-03-13T01:29:33.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="Mac" url="http://xiaqunfeng.cc/categories/Mac/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/05/03/nginx%E4%BD%BF%E7%94%A8%E5%92%8C%E9%85%8D%E7%BD%AE/</loc>
+    <lastmod>2018-03-27T00:48:51.000Z</lastmod>
+    <data>
+        <display>
+        <title>nginx使用和配置</title>
+        <pubTime>2017-05-03T00:17:44.000Z</pubTime>
+        
+        <tag>nginx</tag>
+         
+         
+           
+             
+              <breadCrumb title="Linux" url="http://xiaqunfeng.cc/categories/Linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/09/15/too-many-PGs-per-OSD/</loc>
+    <lastmod>2018-03-27T00:48:28.000Z</lastmod>
+    <data>
+        <display>
+        <title>too many PGs per OSD</title>
+        <pubTime>2017-09-14T22:48:04.000Z</pubTime>
+        
+        <tag>osd</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/02/07/%E5%9C%A8Kraken-release%E7%89%88%E6%9C%AC%E4%B8%8A%E6%B5%8B%E8%AF%95Ceph-BlueStore/</loc>
+    <lastmod>2018-03-27T00:47:55.000Z</lastmod>
+    <data>
+        <display>
+        <title>在Kraken release版本上测试Ceph BlueStore</title>
+        <pubTime>2017-02-07T03:13:16.000Z</pubTime>
+        
+        <tag>bluestore</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2018/03/26/%E6%B7%BB%E5%8A%A0gitment%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F/</loc>
+    <lastmod>2018-03-27T00:46:48.000Z</lastmod>
+    <data>
+        <display>
+        <title>添加gitment评论系统</title>
+        <pubTime>2018-03-26T02:13:12.000Z</pubTime>
+        
+        <tag>hexo</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/02/10/%E8%8E%B7%E5%8F%96%E6%AF%8F%E4%B8%AAosd%E7%9A%84PG%E6%95%B0/</loc>
+    <lastmod>2018-03-27T00:46:05.000Z</lastmod>
+    <data>
+        <display>
+        <title>获取每个osd的PG数</title>
+        <pubTime>2017-02-10T12:14:20.000Z</pubTime>
+        
+        <tag>shell</tag>
+         
+        <tag>osd</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2018/03/08/%E5%AE%A2%E6%88%B7%E7%AB%AFrbd%E7%8E%AF%E5%A2%83%E6%A3%80%E6%9F%A5/</loc>
+    <lastmod>2018-03-27T00:45:41.000Z</lastmod>
+    <data>
+        <display>
+        <title>客户端rbd环境检查</title>
+        <pubTime>2018-03-08T12:47:49.000Z</pubTime>
+        
+        <tag>rbd</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/06/15/vim%E7%A7%BB%E5%8A%A8%E5%85%89%E6%A0%87/</loc>
+    <lastmod>2018-03-27T00:42:04.000Z</lastmod>
+    <data>
+        <display>
+        <title>vim移动光标</title>
+        <pubTime>2017-06-15T11:17:41.000Z</pubTime>
+        
+        <tag>vim</tag>
+         
+         
+           
+             
+              <breadCrumb title="Linux" url="http://xiaqunfeng.cc/categories/Linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/05/25/mac%E4%B8%8A%E5%AE%9E%E7%8E%B0vim%E7%9A%84markdown%E9%A2%84%E8%A7%88/</loc>
+    <lastmod>2018-03-27T00:41:07.000Z</lastmod>
+    <data>
+        <display>
+        <title>mac上实现vim的markdown预览</title>
+        <pubTime>2017-05-25T02:11:55.000Z</pubTime>
+        
+        <tag>vim</tag>
+         
+         
+           
+             
+              <breadCrumb title="Mac" url="http://xiaqunfeng.cc/categories/Mac/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/09/11/mac%E4%B8%8A%E5%AE%89%E8%A3%85python3/</loc>
+    <lastmod>2018-03-27T00:40:06.000Z</lastmod>
+    <data>
+        <display>
+        <title>mac上安装python3</title>
+        <pubTime>2017-09-11T07:35:30.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="Python" url="http://xiaqunfeng.cc/categories/Python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/08/05/python3-OS-module/</loc>
+    <lastmod>2018-03-27T00:39:17.000Z</lastmod>
+    <data>
+        <display>
+        <title>python3 OS module</title>
+        <pubTime>2017-08-05T02:36:11.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="Python3" url="http://xiaqunfeng.cc/categories/Python3/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/12/14/Faster-R-CNN/</loc>
+    <lastmod>2018-03-27T00:36:12.000Z</lastmod>
+    <data>
+        <display>
+        <title>【论文阅读】Faster-R-CNN</title>
+        <pubTime>2017-12-14T05:08:34.000Z</pubTime>
+        
+        <tag>paper</tag>
+         
+         
+           
+             
+              <breadCrumb title="DeepLearning" url="http://xiaqunfeng.cc/categories/DeepLearning/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/11/25/Fast-R-CNN/</loc>
+    <lastmod>2018-03-27T00:35:58.000Z</lastmod>
+    <data>
+        <display>
+        <title>【论文阅读】Fast R-CNN</title>
+        <pubTime>2017-11-25T03:44:13.000Z</pubTime>
+        
+        <tag>paper</tag>
+         
+         
+           
+             
+              <breadCrumb title="DeepLearning" url="http://xiaqunfeng.cc/categories/DeepLearning/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/11/24/R-CNN/</loc>
+    <lastmod>2018-03-27T00:35:35.000Z</lastmod>
+    <data>
+        <display>
+        <title>【论文阅读】R-CNN</title>
+        <pubTime>2017-11-24T12:08:43.000Z</pubTime>
+        
+        <tag>paper</tag>
+         
+         
+           
+             
+              <breadCrumb title="DeepLearning" url="http://xiaqunfeng.cc/categories/DeepLearning/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/11/05/mac%E4%B8%8A%E5%AE%89%E8%A3%85caffe%E5%B9%B6%E8%AE%AD%E7%BB%83mnist/</loc>
+    <lastmod>2018-03-27T00:34:54.000Z</lastmod>
+    <data>
+        <display>
+        <title>mac上安装caffe并训练mnist</title>
+        <pubTime>2017-11-05T11:57:53.000Z</pubTime>
+        
+        <tag>caffe</tag>
+         
+         
+           
+             
+              <breadCrumb title="DeepLearning" url="http://xiaqunfeng.cc/categories/DeepLearning/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/12/05/faster-r-cnn-generate-anchors/</loc>
+    <lastmod>2018-03-27T00:33:59.000Z</lastmod>
+    <data>
+        <display>
+        <title>【代码阅读】generate_anchors.py</title>
+        <pubTime>2017-12-05T01:42:49.000Z</pubTime>
+        
+        <tag>code</tag>
+         
+         
+           
+             
+              <breadCrumb title="DeepLearning" url="http://xiaqunfeng.cc/categories/DeepLearning/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2018/03/18/Mac-Tensorflow-Keras/</loc>
+    <lastmod>2018-03-27T00:32:56.000Z</lastmod>
+    <data>
+        <display>
+        <title>Mac-Tensorflow-Keras</title>
+        <pubTime>2018-03-18T02:30:48.000Z</pubTime>
+        
+        <tag>Keras</tag>
+         
+         
+           
+             
+              <breadCrumb title="DeepLearning" url="http://xiaqunfeng.cc/categories/DeepLearning/"/>
+          
+        </display>
+    </data>
+    </url>
+
     
   <url>
     <loc>http://xiaqunfeng.cc/2018/03/21/mtcnn-note/</loc>
-    <lastmod>2018-03-22T08:41:46.000Z</lastmod>
+    <lastmod>2018-03-26T07:13:25.000Z</lastmod>
     <data>
         <display>
         <title>【论文阅读】mtcnn</title>
@@ -24,402 +1292,6 @@
     </url>
 
     
-  <url>
-    <loc>http://xiaqunfeng.cc/2018/03/18/Mac-Tensorflow-Keras/</loc>
-    <lastmod>2018-03-18T02:44:10.000Z</lastmod>
-    <data>
-        <display>
-        <title>Mac-Tensorflow-Keras</title>
-        <pubTime>2018-03-18T02:30:48.000Z</pubTime>
-        
-        <tag>deeplearning</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2018/03/13/mac%E4%B8%8AMatplotlib%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/</loc>
-    <lastmod>2018-03-13T02:36:13.000Z</lastmod>
-    <data>
-        <display>
-        <title>mac上Matplotlib中文乱码问题</title>
-        <pubTime>2018-03-13T01:29:33.000Z</pubTime>
-        
-        <tag>mac</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2018/03/11/inkscope%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</loc>
-    <lastmod>2018-03-11T12:52:24.000Z</lastmod>
-    <data>
-        <display>
-        <title>inkscope安装配置</title>
-        <pubTime>2018-03-11T12:49:42.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2018/03/08/%E5%AE%A2%E6%88%B7%E7%AB%AFrbd%E7%8E%AF%E5%A2%83%E6%A3%80%E6%9F%A5/</loc>
-    <lastmod>2018-03-08T12:51:51.000Z</lastmod>
-    <data>
-        <display>
-        <title>客户端rbd环境检查</title>
-        <pubTime>2018-03-08T12:47:49.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2018/03/08/ceph-osd%E6%9D%83%E9%87%8D%E8%B0%83%E6%95%B4/</loc>
-    <lastmod>2018-03-08T12:45:30.000Z</lastmod>
-    <data>
-        <display>
-        <title>ceph osd权重调整</title>
-        <pubTime>2018-03-08T12:22:36.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2018/03/04/ceph-luminous%E6%9C%80%E4%BD%B3%E9%83%A8%E7%BD%B2%E5%AE%9E%E8%B7%B5/</loc>
-    <lastmod>2018-03-04T12:23:45.000Z</lastmod>
-    <data>
-        <display>
-        <title>ceph luminous最佳部署实践</title>
-        <pubTime>2018-03-04T12:17:03.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2018/02/28/ceph-iscsi%E7%BD%91%E5%85%B3/</loc>
-    <lastmod>2018-02-28T12:11:43.000Z</lastmod>
-    <data>
-        <display>
-        <title>ceph iscsi网关</title>
-        <pubTime>2018-02-28T12:06:46.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2018/02/28/ceph-ansible%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/</loc>
-    <lastmod>2018-02-28T12:04:08.000Z</lastmod>
-    <data>
-        <display>
-        <title>ceph ansible使用手册</title>
-        <pubTime>2018-02-28T11:59:56.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/03/09/Machine-Learning-Yearning-5%E3%80%816/</loc>
-    <lastmod>2018-02-06T02:02:09.000Z</lastmod>
-    <data>
-        <display>
-        <title>Machine Learning Yearning(5、6、7)</title>
-        <pubTime>2017-03-09T02:38:35.000Z</pubTime>
-        
-        <tag>machine learning</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/03/03/Machine-Learning-Yearning-3%E3%80%814/</loc>
-    <lastmod>2018-02-06T02:01:38.000Z</lastmod>
-    <data>
-        <display>
-        <title>Machine Learning Yearning(3、4)</title>
-        <pubTime>2017-03-03T01:14:50.000Z</pubTime>
-        
-        <tag>machine learning</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/03/02/Machine-Learning-Yearning-%E5%BC%80%E7%AF%87%E3%80%811%E3%80%812/</loc>
-    <lastmod>2018-02-06T02:01:14.000Z</lastmod>
-    <data>
-        <display>
-        <title>Machine Learning Yearning(开篇、1、2)</title>
-        <pubTime>2017-03-02T02:00:29.000Z</pubTime>
-        
-        <tag>machine learning</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/11/05/mac%E4%B8%8A%E5%AE%89%E8%A3%85caffe%E5%B9%B6%E8%AE%AD%E7%BB%83mnist/</loc>
-    <lastmod>2018-01-08T08:03:36.000Z</lastmod>
-    <data>
-        <display>
-        <title>mac上安装caffe并训练mnist</title>
-        <pubTime>2017-11-05T11:57:53.000Z</pubTime>
-        
-        <tag>caffe</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/11/24/R-CNN/</loc>
-    <lastmod>2017-12-29T08:25:43.000Z</lastmod>
-    <data>
-        <display>
-        <title>【论文阅读】R-CNN</title>
-        <pubTime>2017-11-24T12:08:43.000Z</pubTime>
-        
-        <tag>paper</tag>
-         
-        <tag>deeplearning</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/11/25/Fast-R-CNN/</loc>
-    <lastmod>2017-12-29T08:25:21.000Z</lastmod>
-    <data>
-        <display>
-        <title>【论文阅读】Fast R-CNN</title>
-        <pubTime>2017-11-25T03:44:13.000Z</pubTime>
-        
-        <tag>paper</tag>
-         
-        <tag>deeplearning</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/12/14/Faster-R-CNN/</loc>
-    <lastmod>2017-12-29T08:24:58.000Z</lastmod>
-    <data>
-        <display>
-        <title>【论文阅读】Faster-R-CNN</title>
-        <pubTime>2017-12-14T05:08:34.000Z</pubTime>
-        
-        <tag>paper</tag>
-         
-        <tag>deeplearning</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/12/05/faster-r-cnn-generate-anchors/</loc>
-    <lastmod>2017-12-05T02:53:37.000Z</lastmod>
-    <data>
-        <display>
-        <title>【代码阅读】generate_anchors.py</title>
-        <pubTime>2017-12-05T01:42:49.000Z</pubTime>
-        
-        <tag>code</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/11/18/ceph%E5%86%99%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/</loc>
-    <lastmod>2017-11-18T10:01:54.000Z</lastmod>
-    <data>
-        <display>
-        <title>ceph写流程分析</title>
-        <pubTime>2017-11-18T09:41:38.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/09/27/ceph%E6%8C%87%E5%AE%9A%E7%89%88%E6%9C%AC%E5%AE%89%E8%A3%85/</loc>
-    <lastmod>2017-09-27T03:40:41.000Z</lastmod>
-    <data>
-        <display>
-        <title>ceph指定版本安装</title>
-        <pubTime>2017-09-27T02:39:21.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/09/21/linux-command-day-day-up/</loc>
-    <lastmod>2017-09-27T03:24:44.000Z</lastmod>
-    <data>
-        <display>
-        <title>linux command day day up</title>
-        <pubTime>2017-09-21T12:41:47.000Z</pubTime>
-        
-        <tag>Linux</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/09/19/awk-study-notes/</loc>
-    <lastmod>2017-09-19T11:38:38.000Z</lastmod>
-    <data>
-        <display>
-        <title>awk study notes</title>
-        <pubTime>2017-09-19T07:34:15.000Z</pubTime>
-        
-        <tag>shell</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/09/18/ceph-PGs-per-Pool-Calculator/</loc>
-    <lastmod>2017-09-18T06:17:50.000Z</lastmod>
-    <data>
-        <display>
-        <title>ceph PGs per Pool Calculator</title>
-        <pubTime>2017-09-18T02:07:45.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/09/15/too-many-PGs-per-OSD/</loc>
-    <lastmod>2017-09-15T13:02:23.000Z</lastmod>
-    <data>
-        <display>
-        <title>too many PGs per OSD</title>
-        <pubTime>2017-09-14T22:48:04.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/09/11/mac%E4%B8%8A%E5%AE%89%E8%A3%85python3/</loc>
-    <lastmod>2017-09-11T07:49:43.000Z</lastmod>
-    <data>
-        <display>
-        <title>mac上安装python3</title>
-        <pubTime>2017-09-11T07:35:30.000Z</pubTime>
-        
-        <tag>mac</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
     
   <url>
     <loc>http://xiaqunfeng.cc/2017/08/07/git%E5%B8%B8%E7%94%A8%E5%91%BD%E5%90%8D%E6%80%BB%E7%BB%93/</loc>
@@ -430,74 +1302,6 @@
         <pubTime>2017-08-07T09:24:32.000Z</pubTime>
         
         <tag>git</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/08/30/lsblk%E5%91%BD%E4%BB%A4/</loc>
-    <lastmod>2017-08-30T08:08:19.000Z</lastmod>
-    <data>
-        <display>
-        <title>lsblk命令</title>
-        <pubTime>2017-08-30T06:36:20.000Z</pubTime>
-        
-        <tag>storage</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/08/29/Syntax-error-unexpected/</loc>
-    <lastmod>2017-08-29T11:55:44.000Z</lastmod>
-    <data>
-        <display>
-        <title>Syntax error: '(' unexpected</title>
-        <pubTime>2017-08-29T11:31:11.000Z</pubTime>
-        
-        <tag>shell</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/08/17/ceph-osd%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/</loc>
-    <lastmod>2017-08-17T08:49:42.000Z</lastmod>
-    <data>
-        <display>
-        <title>ceph osd相关操作</title>
-        <pubTime>2017-08-17T08:07:13.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/08/05/python3-OS-module/</loc>
-    <lastmod>2017-08-05T02:38:38.000Z</lastmod>
-    <data>
-        <display>
-        <title>python3 OS module</title>
-        <pubTime>2017-08-05T02:36:11.000Z</pubTime>
-        
-        <tag>python</tag>
          
          
            
@@ -524,129 +1328,6 @@
 
     
   <url>
-    <loc>http://xiaqunfeng.cc/2017/08/01/ceph-peering%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/</loc>
-    <lastmod>2017-08-01T09:01:33.000Z</lastmod>
-    <data>
-        <display>
-        <title>ceph peering过程分析</title>
-        <pubTime>2017-08-01T08:47:05.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/07/28/ceph-placement-group/</loc>
-    <lastmod>2017-07-28T07:47:52.000Z</lastmod>
-    <data>
-        <display>
-        <title>ceph placement group</title>
-        <pubTime>2017-07-28T07:20:25.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/07/28/Remove-Big-RBD-Image/</loc>
-    <lastmod>2017-07-28T03:03:34.000Z</lastmod>
-    <data>
-        <display>
-        <title>Remove Big RBD Image</title>
-        <pubTime>2017-07-28T01:50:45.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/07/06/ceph-luminous%E6%96%B0%E5%91%BD%E4%BB%A4%E6%8E%A2%E7%B4%A2/</loc>
-    <lastmod>2017-07-26T03:17:21.000Z</lastmod>
-    <data>
-        <display>
-        <title>ceph luminous新命令探索</title>
-        <pubTime>2017-07-06T06:27:33.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/07/17/centos%E4%B8%8Bceph%E9%83%A8%E7%BD%B2/</loc>
-    <lastmod>2017-07-17T10:35:26.000Z</lastmod>
-    <data>
-        <display>
-        <title>centos下ceph部署</title>
-        <pubTime>2017-07-17T10:27:42.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-        <tag>centos</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/07/17/ceph%E9%83%A8%E7%BD%B2%E5%AE%8C%E5%85%A8%E6%89%8B%E5%86%8C/</loc>
-    <lastmod>2017-07-17T08:58:52.000Z</lastmod>
-    <data>
-        <display>
-        <title>ceph部署完全手册</title>
-        <pubTime>2017-07-17T08:46:33.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-        <tag>ubuntu</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/07/12/fio%E6%B5%8B%E8%AF%95ceph/</loc>
-    <lastmod>2017-07-13T07:07:14.000Z</lastmod>
-    <data>
-        <display>
-        <title>fio测试ceph</title>
-        <pubTime>2017-07-12T03:17:04.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://xiaqunfeng.cc/2017/07/07/centos7%E4%B8%8A%E5%AE%89%E8%A3%85python3/</loc>
     <lastmod>2017-07-07T09:29:28.000Z</lastmod>
     <data>
@@ -663,109 +1344,7 @@
     </url>
 
     
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/07/06/XFS-vs-EXT4/</loc>
-    <lastmod>2017-07-06T09:05:19.000Z</lastmod>
-    <data>
-        <display>
-        <title>XFS vs EXT4</title>
-        <pubTime>2017-07-06T08:55:54.000Z</pubTime>
-        
-        <tag>Linux</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
     
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/07/04/ceph-Luminous%E6%96%B0%E5%8A%9F%E8%83%BD%E4%B9%8Bcrush-class/</loc>
-    <lastmod>2017-07-04T07:05:27.000Z</lastmod>
-    <data>
-        <display>
-        <title>ceph Luminous新功能之crush class</title>
-        <pubTime>2017-07-04T03:07:57.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/06/29/ceph-Luminous%E5%88%9D%E6%8E%A2/</loc>
-    <lastmod>2017-06-29T09:13:27.000Z</lastmod>
-    <data>
-        <display>
-        <title>ceph Luminous dashboard初探</title>
-        <pubTime>2017-06-29T07:45:15.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/06/28/Ceph-v12-1-0-Luminous-RC-released/</loc>
-    <lastmod>2017-06-29T08:11:07.000Z</lastmod>
-    <data>
-        <display>
-        <title>Ceph v12.1.0 Luminous RC released</title>
-        <pubTime>2017-06-28T03:44:27.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/01/06/hexo%E7%9A%84%E6%90%AD%E5%BB%BA/</loc>
-    <lastmod>2017-06-25T06:03:43.000Z</lastmod>
-    <data>
-        <display>
-        <title>Mac上hexo博客的搭建</title>
-        <pubTime>2017-01-06T07:47:18.000Z</pubTime>
-        
-        <tag>mac</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/06/23/wget%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDhttp%E7%9B%AE%E5%BD%95%E5%8F%8A%E6%96%87%E4%BB%B6/</loc>
-    <lastmod>2017-06-23T11:20:26.000Z</lastmod>
-    <data>
-        <display>
-        <title>wget批量下载http目录及文件</title>
-        <pubTime>2017-06-23T10:21:12.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
     
   <url>
     <loc>http://xiaqunfeng.cc/2017/06/16/%E5%85%AC%E6%9C%89%E4%BA%91%E5%92%8C%E7%A7%81%E6%9C%89%E4%BA%91%E7%9A%84%E5%8C%BA%E5%88%AB/</loc>
@@ -776,267 +1355,6 @@
         <pubTime>2017-06-16T06:38:40.000Z</pubTime>
         
         <tag>cloud</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/05/25/mac%E4%B8%8A%E5%AE%9E%E7%8E%B0vim%E7%9A%84markdown%E9%A2%84%E8%A7%88/</loc>
-    <lastmod>2017-06-16T06:27:11.000Z</lastmod>
-    <data>
-        <display>
-        <title>mac上实现vim的markdown预览</title>
-        <pubTime>2017-05-25T02:11:55.000Z</pubTime>
-        
-        <tag>mac</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/06/16/centos-7%E4%B8%8B%E6%93%8D%E7%BA%B5ceph%E8%BF%9B%E7%A8%8B/</loc>
-    <lastmod>2017-06-16T03:06:12.000Z</lastmod>
-    <data>
-        <display>
-        <title>centos 7下操纵ceph进程</title>
-        <pubTime>2017-06-16T02:57:50.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-        <tag>centos</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/06/15/vim%E7%A7%BB%E5%8A%A8%E5%85%89%E6%A0%87/</loc>
-    <lastmod>2017-06-15T11:23:17.000Z</lastmod>
-    <data>
-        <display>
-        <title>vim移动光标</title>
-        <pubTime>2017-06-15T11:17:41.000Z</pubTime>
-        
-        <tag>Linux</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/06/07/Map-RBD-Devices-on-NBD/</loc>
-    <lastmod>2017-06-07T07:03:38.000Z</lastmod>
-    <data>
-        <display>
-        <title>Map RBD Devices on NBD</title>
-        <pubTime>2017-06-07T02:51:42.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/06/06/ceph-rbd-map-failed/</loc>
-    <lastmod>2017-06-06T07:37:00.000Z</lastmod>
-    <data>
-        <display>
-        <title>ceph rbd map failed</title>
-        <pubTime>2017-06-06T03:29:17.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/05/26/ceph-mon%E6%97%B6%E9%92%9F%E5%81%8F%E7%A7%BB%E9%97%AE%E9%A2%98/</loc>
-    <lastmod>2017-05-27T02:45:51.000Z</lastmod>
-    <data>
-        <display>
-        <title>ceph mon时钟偏移问题</title>
-        <pubTime>2017-05-26T01:47:05.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/05/26/GPG-key-retrieval-failure/</loc>
-    <lastmod>2017-05-26T01:39:38.000Z</lastmod>
-    <data>
-        <display>
-        <title>GPG key retrieval failure</title>
-        <pubTime>2017-05-26T01:13:24.000Z</pubTime>
-        
-        <tag>centos</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/05/11/cpu%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84/</loc>
-    <lastmod>2017-05-23T10:56:17.000Z</lastmod>
-    <data>
-        <display>
-        <title>cpu拓扑及ceph使用时的优化</title>
-        <pubTime>2017-05-11T01:23:18.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-        <tag>Linux</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/05/23/ceph%E6%97%A5%E5%BF%97%E8%BF%81%E7%A7%BB/</loc>
-    <lastmod>2017-05-23T09:35:33.000Z</lastmod>
-    <data>
-        <display>
-        <title>ceph日志迁移</title>
-        <pubTime>2017-05-23T09:20:48.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/05/02/VSM%E9%83%A8%E7%BD%B2/</loc>
-    <lastmod>2017-05-10T01:27:01.000Z</lastmod>
-    <data>
-        <display>
-        <title>VSM部署</title>
-        <pubTime>2017-05-02T06:16:59.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/05/07/S-M-A-R-T-%E7%A3%81%E7%9B%98%E5%81%A5%E5%BA%B7%E7%8A%B6%E6%80%81%E7%9B%91%E6%B5%8B%E5%B7%A5%E5%85%B7/</loc>
-    <lastmod>2017-05-07T08:12:50.000Z</lastmod>
-    <data>
-        <display>
-        <title>S.M.A.R.T--磁盘健康状态监测工具</title>
-        <pubTime>2017-05-07T07:25:21.000Z</pubTime>
-        
-        <tag>Linux</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/05/07/firewalld%E5%92%8Ciptables/</loc>
-    <lastmod>2017-05-07T08:12:19.000Z</lastmod>
-    <data>
-        <display>
-        <title>firewalld和iptables</title>
-        <pubTime>2017-05-07T08:08:01.000Z</pubTime>
-        
-        <tag>centos</tag>
-         
-        <tag>Linux</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/05/04/iterm2%E9%85%8D%E8%89%B2/</loc>
-    <lastmod>2017-05-05T08:37:19.000Z</lastmod>
-    <data>
-        <display>
-        <title>iterm2配色--zsh & oh-my-zsh</title>
-        <pubTime>2017-05-04T12:32:26.000Z</pubTime>
-        
-        <tag>mac</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/05/02/iterm2%E5%BF%AB%E6%8D%B7%E9%94%AE%E7%9A%84%E4%BD%BF%E7%94%A8/</loc>
-    <lastmod>2017-05-05T08:35:09.000Z</lastmod>
-    <data>
-        <display>
-        <title>iterm2快捷键的使用</title>
-        <pubTime>2017-05-02T12:46:35.000Z</pubTime>
-        
-        <tag>mac</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/05/03/nginx%E4%BD%BF%E7%94%A8%E5%92%8C%E9%85%8D%E7%BD%AE/</loc>
-    <lastmod>2017-05-04T12:30:14.000Z</lastmod>
-    <data>
-        <display>
-        <title>nginx使用和配置</title>
-        <pubTime>2017-05-03T00:17:44.000Z</pubTime>
-        
-        <tag>Linux</tag>
          
          
            
@@ -1082,23 +1400,6 @@
 
     
   <url>
-    <loc>http://xiaqunfeng.cc/2017/03/09/cow%E5%92%8Crow%E5%BF%AB%E7%85%A7%E6%9C%BA%E5%88%B6%E7%9A%84%E5%8C%BA%E5%88%AB/</loc>
-    <lastmod>2017-03-09T03:51:26.000Z</lastmod>
-    <data>
-        <display>
-        <title>cow和row快照机制的区别</title>
-        <pubTime>2017-03-09T03:32:24.000Z</pubTime>
-        
-        <tag>storage</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://xiaqunfeng.cc/2017/03/01/%E5%BC%82%E6%AD%A5IO/</loc>
     <lastmod>2017-03-01T06:06:14.000Z</lastmod>
     <data>
@@ -1107,40 +1408,6 @@
         <pubTime>2017-03-01T06:03:07.000Z</pubTime>
         
         <tag>Linux</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/02/23/Bluestore%E8%B0%83%E7%A0%94/</loc>
-    <lastmod>2017-02-23T08:41:11.000Z</lastmod>
-    <data>
-        <display>
-        <title>Bluestore调研</title>
-        <pubTime>2017-02-23T08:30:39.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/02/23/RocksDB%E7%9B%B8%E6%AF%94LevelDB%E7%9A%84%E6%96%B0%E7%89%B9%E6%80%A7/</loc>
-    <lastmod>2017-02-23T03:46:02.000Z</lastmod>
-    <data>
-        <display>
-        <title>RocksDB相比LevelDB的新特性</title>
-        <pubTime>2017-02-23T03:22:32.000Z</pubTime>
-        
-        <tag>rocksdb</tag>
          
          
            
@@ -1201,76 +1468,6 @@
 
     
   <url>
-    <loc>http://xiaqunfeng.cc/2017/02/10/%E8%8E%B7%E5%8F%96%E6%AF%8F%E4%B8%AAosd%E7%9A%84PG%E6%95%B0/</loc>
-    <lastmod>2017-02-10T12:24:41.000Z</lastmod>
-    <data>
-        <display>
-        <title>获取每个osd的PG数</title>
-        <pubTime>2017-02-10T12:14:20.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-        <tag>shell</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/02/10/RBD-%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/</loc>
-    <lastmod>2017-02-10T07:54:26.000Z</lastmod>
-    <data>
-        <display>
-        <title>RBD 相关操作</title>
-        <pubTime>2017-02-10T07:47:18.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/02/07/%E5%9C%A8Kraken-release%E7%89%88%E6%9C%AC%E4%B8%8A%E6%B5%8B%E8%AF%95Ceph-BlueStore/</loc>
-    <lastmod>2017-02-07T03:23:51.000Z</lastmod>
-    <data>
-        <display>
-        <title>在Kraken release版本上测试Ceph BlueStore</title>
-        <pubTime>2017-02-07T03:13:16.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/02/04/ceph%E5%8D%87%E7%BA%A7%E5%88%B0kraken%E7%89%88%E6%9C%AC/</loc>
-    <lastmod>2017-02-06T01:51:14.000Z</lastmod>
-    <data>
-        <display>
-        <title>ceph升级到kraken版本</title>
-        <pubTime>2017-02-04T11:06:40.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://xiaqunfeng.cc/2017/02/04/%E7%94%A8%E6%88%B7%E6%80%81%E5%92%8C%E5%86%85%E6%A0%B8%E6%80%81/</loc>
     <lastmod>2017-02-04T12:09:58.000Z</lastmod>
     <data>
@@ -1279,40 +1476,6 @@
         <pubTime>2017-02-04T12:09:58.000Z</pubTime>
         
         <tag>Linux</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/02/03/Dm-cache-vs-Bcache/</loc>
-    <lastmod>2017-02-03T09:46:46.000Z</lastmod>
-    <data>
-        <display>
-        <title>Dm-cache vs Bcache</title>
-        <pubTime>2017-02-03T09:37:45.000Z</pubTime>
-        
-        <tag>storage</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/02/03/Flashcache-vs-Cache-tier/</loc>
-    <lastmod>2017-02-03T09:32:11.000Z</lastmod>
-    <data>
-        <display>
-        <title>Flashcache vs Cache tier</title>
-        <pubTime>2017-02-03T09:15:15.000Z</pubTime>
-        
-        <tag>storage</tag>
          
          
            

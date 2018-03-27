@@ -18,13 +18,16 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20160926113319264">
 <meta property="og:image" content="http://img.blog.csdn.net/20160926113327249">
 <meta property="og:image" content="http://img.blog.csdn.net/20160926113334297">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/mtcnn-pnet.jpg">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/mtcnn-rnet.jpg">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/mtcnn-onet.jpg">
 <meta property="og:image" content="http://img.blog.csdn.net/20160927151710209">
 <meta property="og:image" content="http://img.blog.csdn.net/20160927151729296">
 <meta property="og:image" content="http://img.blog.csdn.net/20160927151747812">
 <meta property="og:image" content="http://img.blog.csdn.net/20160927151808203">
 <meta property="og:image" content="http://img.blog.csdn.net/20160926115216571">
 <meta property="og:image" content="http://img.blog.csdn.net/20160926114956302">
-<meta property="og:updated_time" content="2018-03-22T08:41:46.000Z">
+<meta property="og:updated_time" content="2018-03-26T07:13:25.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【论文阅读】mtcnn">
 <meta name="twitter:description" content="一篇2016年的论文MTCNN阅读笔记">
@@ -96,10 +99,6 @@
 				
 					<a class="github" target="_blank" href="https://github.com/xiaqunfeng" title="github"><i class="icon-github"></i></a>
 		        
-					<a class="mail" target="_blank" href="/xiaqunfeng123@126.com" title="mail"><i class="icon-mail"></i></a>
-		        
-					<a class="google" target="_blank" href="https://blog.csdn.net/xiaqunfeng123" title="google"><i class="icon-google"></i></a>
-		        
 			</div>
 		</nav>
 	</header>		
@@ -136,10 +135,6 @@
 				<div class="social">
 					
 						<a class="github" target="_blank" href="https://github.com/xiaqunfeng" title="github"><i class="icon-github"></i></a>
-			        
-						<a class="mail" target="_blank" href="/xiaqunfeng123@126.com" title="mail"><i class="icon-mail"></i></a>
-			        
-						<a class="google" target="_blank" href="https://blog.csdn.net/xiaqunfeng123" title="google"><i class="icon-google"></i></a>
 			        
 				</div>
 			</nav>
@@ -188,6 +183,7 @@
         <p>一篇2016年的论文MTCNN阅读笔记<br><a id="more"></a></p>
 <p>MTCNN 全称 Multi-task convolutional neural networks</p>
 <p>论文首页：<a href="https://kpzhang93.github.io/MTCNN_face_detection_alignment/index.html?from=timeline&amp;isappinstalled=1" target="_blank" rel="external">Joint Face Detection and Alignment using Multi-task Cascaded Convolutional Networks</a></p>
+<p>Github: <a href="https://github.com/kpzhang93/MTCNN_face_detection_alignment" target="_blank" rel="external">https://github.com/kpzhang93/MTCNN_face_detection_alignment</a></p>
 <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>提供了一个新的框架，通过多任务学习统一级联CNN来整合面部检测和对齐这两项任务。提供的CNN由三个阶段组成。</p>
 <p>第一阶段，通过一个浅的CNN快速产生候选窗口。</p>
 <p>第二阶段，通过一个更复杂的CNN来优化，拒绝大量的非面部窗口。</p>
@@ -206,6 +202,17 @@
 <p><img src="http://img.blog.csdn.net/20160926113327249" alt="JDA Network2"></p>
 <p><strong>Stage3: Output Net</strong></p>
 <p><img src="http://img.blog.csdn.net/20160926113334297" alt="JDA Network3"></p>
+<p>prototxt参见mtcnn的python&amp;caffe版本：<a href="https://github.com/DuinoDu/mtcnn" target="_blank" rel="external">https://github.com/DuinoDu/mtcnn</a></p>
+<p><strong>用Netscope画出来的网络结构图如下：</strong></p>
+<p>1、P-NET</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/mtcnn-pnet.jpg" alt="p-net"></p>
+<p>2、R-NET</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/mtcnn-rnet.jpg" alt="r-net"></p>
+<p>3、O-NET</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/mtcnn-onet.jpg" alt="o-net"></p>
+<blockquote>
+<p>更详细的网络结构图可用caffe工具 draw_net.py 来绘制。</p>
+</blockquote>
 <h3 id="Training"><a href="#Training" class="headerlink" title="Training"></a>Training</h3><p>利用三个任务来训练我们的CNN检测器：面部/非面部分类器，边界框回归以及面部特征定位。</p>
 <p>1、Face classification</p>
 <p>学习目标被定义为一个二分类问题。对于每一个样本，使用交叉熵损失函数</p>
@@ -367,6 +374,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/2018/03/26/添加gitment评论系统/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          添加gitment评论系统
+        
+      </div>
+    </a>
   
   
     <a href="/2018/03/18/Mac-Tensorflow-Keras/" id="article-nav-older" class="article-nav-link-wrap">
@@ -546,7 +562,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">storage</a>
+                <a href="javascript:void(0)" class="js-tag color5">bluestore</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -554,11 +574,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">deeplearning</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">centos</a>
+                <a href="javascript:void(0)" class="js-tag color3">storage</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -570,7 +586,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">machine learning</a>
+                <a href="javascript:void(0)" class="js-tag color2">centos</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Keras</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">rbd</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -578,7 +602,35 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+                <a href="javascript:void(0)" class="js-tag color3">monitor</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">pg</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">iscsi</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">mon</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">osd</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -586,7 +638,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">mac</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -594,11 +658,27 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">fio</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cmd</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">iterm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
+                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -661,7 +741,7 @@ MathJax.Hub.Queue(function() {
     
     	<section class="tools-section tools-section-me" q-show="aboutme">
   	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">还没想好写啥。。。&lt;br&gt;后续添加&lt;br&gt;</div>
+  	  		<div class="aboutme-wrap" id="js-aboutme">没事情做了吗？&lt;br&gt;&lt;br&gt;想想你的竞争对手&lt;br&gt;&lt;br&gt;想想你多久没给爸妈寄钱了&lt;br&gt;&lt;br&gt;想想你的工资单&lt;br&gt;&lt;br&gt;想想你的银行存款&lt;br&gt;&lt;br&gt;想想你什么时候交房租&lt;br&gt;&lt;br&gt;想想你遥不可及的梦想&lt;br&gt;&lt;br&gt;想想你平淡的人生&lt;br&gt;&lt;br&gt;想想你喜欢的车&lt;br&gt;&lt;br&gt;想想你中意的房&lt;br&gt;&lt;br&gt;现在，有事做了吗？&lt;br&gt;</div>
   	  	
     	</section>
     
