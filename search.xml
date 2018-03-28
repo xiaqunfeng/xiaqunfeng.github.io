@@ -4,6 +4,37 @@
   
     
     <entry>
+      <title><![CDATA[解决Mac不能写入NTFS磁盘的问题(免安装)]]></title>
+      <url>http://xiaqunfeng.cc/2018/03/27/mac-NTFS/</url>
+      <content type="html"><![CDATA[<p>使用Mac的同学都知道Mac默认不能在NTFS格式的磁盘中写入内容。下面介绍一个简单的方法，简单几行命令解决所有问题。<br><a id="more"></a></p>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>Mac自动挂载的时候没有开放写权限，我们自己手动挂载一遍，把写权限加上即可。</p>
+<h3 id="第一步：查看磁盘设备文件名"><a href="#第一步：查看磁盘设备文件名" class="headerlink" title="第一步：查看磁盘设备文件名"></a>第一步：查看磁盘设备文件名</h3><p>这一步需要看一下，目标磁盘叫什么名字</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">diskutil list</div></pre></td></tr></table></figure>
+<p><img src="http://oow6unnib.bkt.clouddn.com/diskutil.png" alt="diskutil_list"></p>
+<p>可以看到我移动硬盘被挂载了disk2的位置上，其中Windows那个磁盘<strong>设备文件名</strong>为<strong>disk2s4</strong></p>
+<p>以上信息告诉我们：1. 在<code>/dev</code>目录下； 2. 设备名称为<code>disk2s4</code></p>
+<h3 id="第二步：新建挂载点"><a href="#第二步：新建挂载点" class="headerlink" title="第二步：新建挂载点"></a>第二步：新建挂载点</h3><p>其实他的意思也就是要告诉电脑，你这张盘要放在那里，就好像Windows电脑在你点击<strong>我的电脑</strong>之后可以看到所有的盘一样。<br>这里选择放在桌面。<br>其实是在桌面上新建一个叫<code>Windows</code>的文件夹：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkdir ~/Desktop/Windows</div></pre></td></tr></table></figure>
+<h3 id="第三步：推出磁盘（重新挂载）"><a href="#第三步：推出磁盘（重新挂载）" class="headerlink" title="第三步：推出磁盘（重新挂载）"></a>第三步：推出磁盘（重新挂载）</h3><p>Mac默认挂载的时候不可写磁盘，这里我们需要重新挂载一次，但是在此之前，需要先取消挂载（等同于鼠标右键菜单中的<strong>推出</strong>，但是不要选择推出全部）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo umount /dev/disk2s4</div></pre></td></tr></table></figure>
+<p><img src="http://oow6unnib.bkt.clouddn.com/umount.png" alt="umount"></p>
+<h3 id="第四部：重新挂载"><a href="#第四部：重新挂载" class="headerlink" title="第四部：重新挂载"></a>第四部：重新挂载</h3><p>手动挂载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo mount_ntfs -o rw,nobrowse /dev/disk2s4 ~/Desktop/Windows</div></pre></td></tr></table></figure>
+<h5 id="成功，磁盘可以正常读写了！！！"><a href="#成功，磁盘可以正常读写了！！！" class="headerlink" title="成功，磁盘可以正常读写了！！！"></a>成功，磁盘可以正常读写了！！！</h5><blockquote>
+<p>本文为转载，亲测可用。原文链接：<a href="https://blog.plcent.com/archives/209" target="_blank" rel="external">https://blog.plcent.com/archives/209</a></p>
+</blockquote>
+]]></content>
+      
+        <categories>
+            
+            <category> Mac </category>
+            
+        </categories>
+        
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[添加gitment评论系统]]></title>
       <url>http://xiaqunfeng.cc/2018/03/26/%E6%B7%BB%E5%8A%A0gitment%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F/</url>
       <content type="html"><![CDATA[<p>给自己的博客配置了一个评论系统，该系统使用GitHub账号登陆，使用GitHub Issues来写评论，比较方便。<br><a id="more"></a></p>
