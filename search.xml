@@ -67,6 +67,16 @@
 <blockquote>
 <p>每一篇博客的评论，对应于GitHub仓库一个issue。但是这些issue是不存在的，因此对于每一篇博客都需要进行初始化Gitment去创建issue。</p>
 </blockquote>
+<h2 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h2><p>1、我遇到的坑</p>
+<p>点击 <code>Initialize Comments</code> 的时候，出现 <code>Error: Validation Failed</code> </p>
+<p>原因：</p>
+<p>gitment有一项id配置是<code>window.location.pathname</code>，id有长度限制，当标题太长时，会导致id不合法</p>
+<p>解决方法：</p>
+<p>修改id，把id改成时间，或者其他的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">id: &apos;&lt;%= page.date %&gt;&apos;</div></pre></td></tr></table></figure>
+<p>我用的是yilia的主题，要修改的文件是 <code>gitment.ejs</code>，路径如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">▶ cat themes/yilia/layout/_partial/post/gitment.ejs</div><div class="line">&lt;div id=&quot;gitment-ctn&quot;&gt;&lt;/div&gt;</div><div class="line">&lt;link rel=&quot;stylesheet&quot; href=&quot;//imsun.github.io/gitment/style/default.css&quot;&gt;</div><div class="line">&lt;script src=&quot;//imsun.github.io/gitment/dist/gitment.browser.js&quot;&gt;&lt;/script&gt;</div><div class="line">&lt;script&gt;</div><div class="line">var gitment = new Gitment(&#123;</div><div class="line">  id: &quot;&lt;%=url%&gt;&quot;,						// 要改这一行！</div><div class="line">  owner: &apos;&lt;%=theme.gitment_owner%&gt;&apos;,</div><div class="line">  repo: &apos;&lt;%=theme.gitment_repo%&gt;&apos;,</div><div class="line">  oauth: &#123;</div><div class="line">    client_id: &apos;&lt;%=theme.gitment_oauth.client_id%&gt;&apos;,</div><div class="line">    client_secret: &apos;&lt;%=theme.gitment_oauth.client_secret%&gt;&apos;,</div><div class="line">  &#125;,</div><div class="line">&#125;)</div><div class="line">gitment.render(&apos;gitment-ctn&apos;)</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
+<p>2、其他各种坑，详见<a href="http://xichen.pub/2018/01/31/2018-01-31-gitment/" target="_blank" rel="external">添加Gitment评论系统踩过的坑</a></p>
 ]]></content>
       
         
