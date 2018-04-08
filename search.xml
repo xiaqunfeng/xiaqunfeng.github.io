@@ -4,6 +4,125 @@
   
     
     <entry>
+      <title><![CDATA[AP(affinity propagation)聚类算法]]></title>
+      <url>http://xiaqunfeng.cc/2018/04/08/affinity-propagation/</url>
+      <content type="html"><![CDATA[<p>一种半监督聚类算法，近邻传播聚类算法<br><a id="more"></a></p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Affinity Propagation聚类算法简称AP， 是基于数据点间的”信息传递”的一种聚类算法。算法的基本思想是将全部样本看作网络的节点，然后通过网络中各条边的消息传递计算出各样本的聚类中心。聚类过程中，共有两种消息在各节点间传递，分别是吸引度( responsibility)和归属度(availability) 。AP算法通过迭代过程不断更新每一个点的吸引度和归属度值，直到产生m个高质量的Exemplar（类似于质心），同时将其余的数据点分配到相应的聚类中。</p>
+<p>AP论文：<a href="http://www.psi.toronto.edu/affinitypropagation/FreyDueckScience07.pdf" target="_blank" rel="external">Clustering by Passing Messages Between Data Points</a></p>
+<h3 id="名词介绍"><a href="#名词介绍" class="headerlink" title="名词介绍"></a>名词介绍</h3><ul>
+<li>Exemplar：指的是聚类中心，K-Means中的质心。</li>
+<li>Similarity：数据点i和点j的相似度记为s(i, j)，是指点j作为点i的聚类中心的相似度。一般使用欧氏距离来计算，一般点与点的相似度值全部取为负值；因此，相似度值越大说明点与点的距离越近，便于后面的比较计算。</li>
+<li>Preference：数据点i的参考度称为p(i)或s(i,i)，是指点i作为聚类中心的参考度。一般取s相似度值的中值。</li>
+<li>Responsibility：r(i,k)用来描述点k适合作为数据点i的聚类中心的程度。</li>
+<li>Availability：a(i,k)用来描述点i选择点k作为其聚类中心的适合程度。</li>
+<li>Damping factor(阻尼系数)：为了避免振荡，AP算法更新信息时引入了衰减系数 λ。每条信息被设置为它前次迭代更新值的 λ 倍加上本次信息更新值的1-λ倍。其中，衰减系数 λ 是介于0到1之间的实数。</li>
+</ul>
+<p>在实际计算应用中，最重要的两个参数（也是需要手动指定）：</p>
+<ul>
+<li>Preference - 指定聚类数量的多少，值越大聚类数量越多</li>
+<li>Damping factor - 控制算法收敛效果</li>
+</ul>
+<p>阻尼系数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">r(i,k)new = λ*r(i,k)old + (1-λ)*r(i,k)</div><div class="line">a(i,k)new = λ*a(i,k)old + (1-λ)*a(i,k)</div></pre></td></tr></table></figure>
+<h3 id="聚类过程"><a href="#聚类过程" class="headerlink" title="聚类过程"></a>聚类过程</h3><p>有一些详细的原理上的东西就不说了，直接说计算过程吧。聚类就是个不断迭代的过程，迭代的过程主要更新两个矩阵：</p>
+<ul>
+<li>代表(Responsibility)矩阵<em>R =</em>[r(i,k)]N×N</li>
+<li><p>适选(Availabilities)矩阵A=[a(i,k)]N×N</p>
+<p>这两个矩阵才初始化为0，N是所有样本的数目。<em>r(i,k)</em>表示第<em>k</em>个样本适合作为第<em>i</em>个样本的类代表点的代表程度，<em>a(i,k)</em>表示第<em>i</em>个样本选择第<em>k</em>个样本作为类代表样本的适合程度。</p>
+</li>
+</ul>
+<p>迭代更新公式如下：</p>
+<p><img src="http://kylen314.com/wp-content/uploads/2013/11/APgengxingongshi.jpg" alt="1"></p>
+<p>一个比较通俗的聚类过程解释：</p>
+<ul>
+<li>所有人都参加选举（大家都是选民也都是参选人），要选出几个作为代表 </li>
+<li>s(i,k)就相当于i对选k这个人的一个固有的偏好程度 </li>
+<li>r(i,k)表示用s(i,k)减去最强竞争者的评分，可以理解为k在对i这个选民的竞争中的优势程度 </li>
+<li>r(i,k)的更新过程对应选民i对各个参选人的挑选（越出众越有吸引力） </li>
+<li>a(i,k)：从公式里可以看到，所有r(i’,k)&gt;0的值都对a有正的加成。对应到我们这个比喻中，就相当于选民i通过网上关于k的民意调查看到：有很多人（即i’们）都觉得k不错（r(i’,k)&gt;0），那么选民i也就会相应地觉得k不错，是个可以相信的选择 </li>
+<li>a(i,k)的更新过程对应关于参选人k的民意调查对于选民i的影响（已经有了很多跟随者的人更有吸引力） </li>
+<li>两者交替的过程也就可以理解为选民在各个参选人之间不断地比较和不断地参考各个参选人给出的民意调查。 </li>
+<li>r(i,k)的思想反映的是竞争，a(i,k)则是为了让聚类更成功。 </li>
+</ul>
+<blockquote>
+<p>源于参考资料2</p>
+</blockquote>
+<h2 id="与k-means的比较"><a href="#与k-means的比较" class="headerlink" title="与k-means的比较"></a>与k-means的比较</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><p>AP聚类算法与经典的 K-Means 和 k-centers 聚类算法相比，具有很多独特之处：</p>
+<ol>
+<li>无需指定聚类“数量”参数。AP聚类不需要指定K（经典的K-Means）或者是其他描述聚类个数（SOM中的网络结构和规模）的参数，这使得先验经验成为应用的非必需条件，人群应用范围增加。</li>
+<li>明确的质心（聚类中心点）。样本中的所有数据点都可能成为AP算法中的质心，叫做Examplar，而不是由多个数据点求平均而得到的聚类中心（如K-Means）。</li>
+<li>对距离矩阵的对称性没要求。AP通过输入相似度矩阵来启动算法，因此允许数据呈非对称，数据适用范围非常大。</li>
+<li>初始值不敏感。多次执行AP聚类算法，得到的结果是完全一样的，即不需要进行随机选取初值步骤（还是对比K-Means的随机初始值）。</li>
+<li>若以误差平方和来衡量算法间的优劣，AP聚类比其他方法的误差平方和都要低。（无论k-center clustering重复多少次，都达不到AP那么低的误差平方和）</li>
+<li>AP算法相对K-Means鲁棒性强且准确度较高</li>
+</ol>
+<blockquote>
+<p>参考资料1</p>
+</blockquote>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li><p>AP聚类应用中需要手动指定Preference和Damping factor，这其实是原有的聚类“数量”控制的变体。</p>
+</li>
+<li><p>算法复杂度较高，为O(N<em>N</em>logN)，而K-Means只是O(N*K)的复杂度。因此运行较慢。当N比较大时(N&gt;3000)，AP聚类算法往往需要算很久。</p>
+<p>​</p>
+</li>
+</ul>
+<p>参考资料：</p>
+<p>1、<a href="https://www.dataivy.cn/blog/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95affinity-propagation_ap/" target="_blank" rel="external">https://www.dataivy.cn/blog/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95affinity-propagation_ap/</a></p>
+<p>2、<a href="https://www.zhihu.com/question/25384514" target="_blank" rel="external">https://www.zhihu.com/question/25384514</a></p>
+<p>3、<a href="http://www.cnblogs.com/huadongw/p/4202492.html（相关公式）" target="_blank" rel="external">http://www.cnblogs.com/huadongw/p/4202492.html（相关公式）</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> Deeplearning </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> cluster </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[【论文阅读】A Rank-Order Distance based Clustering Algorithm for Face Tagging]]></title>
+      <url>http://xiaqunfeng.cc/2018/04/04/rank-order-clustering/</url>
+      <content type="html"><![CDATA[<p>一篇关于人脸聚类的文章<br><a id="more"></a></p>
+<p>原文链接：<a href="https://pdfs.semanticscholar.org/efd6/4b7641bea8ca536f4e179be6e2dd25d519d6.pdf" target="_blank" rel="external">2011_CVPR_A Rank-Order Distance based Clustering Algorithm for Face Tagging</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Rank-Order distance, which measures the dissimilarity between two faces using their neighboring information in the dataset. </div><div class="line">The Rank-Order distance is motivated by an observation that faces of the same person usually share their top neigh- bors.</div></pre></td></tr></table></figure>
+<p>由于人脸的复杂场景，比如光照、姿态、表情等因素，绝对距离的度量方式可能会造成相同人的不同照片相似度很低，而不同人的照片反而相似度很高，所以单纯的L1或L2距离已不再适用。</p>
+<p>由于大部分家庭照片都拍摄于不同的环境，对于人脸聚类会有一些要求和挑战：</p>
+<p>1、相册中的人脸通常会在高维空间形成几个脸部簇，并具有不同的密度，大小和形状。这种非均匀分布使得绝对距离（例如，两个人脸识别特征之间的L1或L2距离）容易失败。如下图所示，男孩的群集比女孩的群集更稀疏。如果我们在这个例子中使用绝对距离，那么这个在中间男孩的脸更接近女孩群。</p>
+<p>2、人脸检测通常会返回一些背景中不感兴趣或不喜欢的人脸。通常，我们不想标记这些面孔。聚类算法应该能够处理这些噪声和异常值。</p>
+<p>3、算法的运行时间应该满足快速用户交互的要求。</p>
+<p>由于复杂的人脸分布，同一人的所有人脸通常由几个子集群组成。由于这些子聚类相对比较紧密，因此可以通过简单的阈值法以Rank-Order距离来强健地识别它们。然而，由于光照，姿态，表达等变化的干扰，子簇之间的连接通常较弱且稀疏。为了解决这个问题，我们提出了一种基于排序距离的聚类算法，以迭代方式合并子簇凝聚的方式。聚类算法结合了聚类级别的秩距离和聚类级别的距离。在每个迭代步骤中，合并任意两个具有较小Rank-Order距离和较小归一化距离的人脸聚类。以这种方式，来自同一个人的不同子集群被有效连接。</p>
+<p>Rank-order distance来度量两个人脸的相似度。这个距离是基于一个有趣的观察：同一个人的两张脸有许多共享的top邻居，但是来自不同人的人脸的邻居通常差异很大。</p>
+<p>Rank-Order Distance</p>
+<p><img src="https://pminmin.github.io/img/rank-order-1.png" alt="1"></p>
+<h3 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h3><p><a href="https://pminmin.github.io/img/rank-order-2.png" target="_blank" rel="external"><img src="https://pminmin.github.io/img/rank-order-2.png" alt="img"></a></p>
+<p>该算法的时间复杂度是O(N2)O(N2)，其中DRDR和DNDN对应的两个阈值是固定参数，而K近邻是可以选择的参数，该参数大小直接影响最后聚类的簇数目。</p>
+<p>参考资料：<a href="https://pminmin.github.io/2016/12/13/rank-order/" target="_blank" rel="external">https://pminmin.github.io/2016/12/13/rank-order/</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> Deeplearning </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> paper </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[解决Mac不能写入NTFS磁盘的问题(免安装)]]></title>
       <url>http://xiaqunfeng.cc/2018/03/27/mac-NTFS/</url>
       <content type="html"><![CDATA[<p>使用Mac的同学都知道Mac默认不能在NTFS格式的磁盘中写入内容。下面介绍一个简单的方法，简单几行命令解决所有问题。<br><a id="more"></a></p>
