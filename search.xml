@@ -15,7 +15,7 @@
 <p>3）密度直达：如果xi位于xj的ϵ-邻域中，且xj是核心对象，则称xi由xj密度直达。</p>
 <p>4）密度可达：对于xi和xj,如果存在样本序列p1,p2,…,pT,满足p1=xi,pT=xj, 且pt+1由pt密度直达，则称xj由xi密度可达。也就是说，密度可达满足传递性。此时序列中的传递样本p1,p2,…,pT−1均为核心对象，因为只有核心对象才能使其他样本密度直达。</p>
 <p>5）密度相连：对于xi和xj，如果存在核心对象样本xk，使xi和xj均由xk密度可达，则称xi和xj密度相连。</p>
-<p><img src="https://images2015.cnblogs.com/blog/1042406/201612/1042406-20161222112847323-1346197243.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/dbscan.jpg" alt="img"></p>
 <blockquote>
 <p>参考资料2</p>
 </blockquote>
