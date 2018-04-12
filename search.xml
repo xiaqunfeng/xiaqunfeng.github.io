@@ -4,6 +4,91 @@
   
     
     <entry>
+      <title><![CDATA[DBSCAN聚类算法]]></title>
+      <url>http://xiaqunfeng.cc/2018/04/10/DBSCAN-cluster/</url>
+      <content type="html"><![CDATA[<p>一种基于密度的聚类算法，可用于非凸样本集。<br><a id="more"></a></p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>DBSCAN（Density-Based Spatial Clustering of Applications with Noise，具有噪声的基于密度的聚类方法）一种很典型的密度聚类算法，和K-Means，BIRCH这些一般只适用于凸样本集的聚类相比，DBSCAN既可以适用于凸样本集，也可以适用于非凸样本集。</p>
+<p>它是一种基于高密度连通区域的、基于密度的聚类算法，能够将具有足够高密度的区域划分为簇，并在具有噪声的数据中发现任意形状的簇，即密度相连的点的最大集合。</p>
+<h2 id="名词定义"><a href="#名词定义" class="headerlink" title="名词定义"></a>名词定义</h2><p>假设样本集是D=(x1,x2,…,xm)</p>
+<p>1） ϵ-邻域：对于xj∈D，其ϵ-邻域包含样本集D中与xj的距离不大于ϵ的子样本集</p>
+<p>2) 核心对象：对于任一样本xj∈D，如果其ϵ-邻域对应的子样本集个数至少包含MinPts个样本，则xj是核心对象。　</p>
+<p>3）密度直达：如果xi位于xj的ϵ-邻域中，且xj是核心对象，则称xi由xj密度直达。</p>
+<p>4）密度可达：对于xi和xj,如果存在样本序列p1,p2,…,pT,满足p1=xi,pT=xj, 且pt+1由pt密度直达，则称xj由xi密度可达。也就是说，密度可达满足传递性。此时序列中的传递样本p1,p2,…,pT−1均为核心对象，因为只有核心对象才能使其他样本密度直达。</p>
+<p>5）密度相连：对于xi和xj，如果存在核心对象样本xk，使xi和xj均由xk密度可达，则称xi和xj密度相连。</p>
+<p><img src="https://images2015.cnblogs.com/blog/1042406/201612/1042406-20161222112847323-1346197243.png" alt="img"></p>
+<blockquote>
+<p>参考资料2</p>
+</blockquote>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><p>1、DBSCAN算法从一个未被访问的任意的数据点开始。这个点的邻域是用距离epsilon来定义（即该点ε距离范围内的所有点都是邻域点）。</p>
+<p>2、如果在该邻域内有足够数量的点（根据minPoints的值），则聚类过程开始，并且当前数据点成为新簇中的第一个点。否则，该点将被标记为噪声（稍后，这个噪声点可能成为聚类中的一部分）。在这两种情况下，该点都会被标记为“已访问”。</p>
+<p>3、对于新簇中的第一个点，它的ε距离邻域内的点也会成为同簇的一部分。这个过程使ε邻域内的所有点都属于同一个簇，然后对才添加到簇中的所有新点重复上述过程。</p>
+<p>4、重复步骤2和3两个过程直到确定了聚类中的所有点才停止，即访问和标记了聚类的ε邻域内的所有点。</p>
+<p>5、一旦我们完成了当前的聚类，就检索和处理新的未访问的点，就能进一步发现新的簇或者是噪声。重复上述过程，直到所有点被标记为已访问才停止。由于所有点已经被访问完毕，每个点都被标记为属于一个簇或是噪声。</p>
+<blockquote>
+<p>参考资料1</p>
+</blockquote>
+<h2 id="输入"><a href="#输入" class="headerlink" title="输入"></a>输入</h2><p>算法是基于一组邻域来描述样本集的紧密程度的，参数(ϵ, MinPts)用来描述邻域的样本分布紧密程度，即用户的输入。</p>
+<ul>
+<li>ϵ - 某一样本的邻域距离阈值（即领域半径）</li>
+<li>MinPts - 某一样本的距离为 ϵ 的邻域中样本个数的阈值（即最少点个数）</li>
+</ul>
+<p>一般由经验得来，如果点P以 ϵ 为半径的邻域内至少包含MinPts个点，则称点P为核心点（核心对象）</p>
+<blockquote>
+<p>该算法需要选择一种距离度量，任意两个点之间的距离，反映了点之间的密度，由于DBSCAN算法对高维数据定义密度很困难，所以对于二维空间中的点，可以用欧氏距离来度量</p>
+</blockquote>
+<h2 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h2><p><strong>时间复杂度：</strong></p>
+<p>DBSCAN 对数据库里的每一点进行访问，可能多于一次（例如作为不同聚类的候选者），但在现实的考虑中，时间复杂度主要受regionQuery 的调用次数影响，DBSCAN 对每点都进行刚好一次调用，且如果使用了特别的编号结构，则总平均时间复杂度为 O(n log n) ，最差时间复杂度则为 O(n^2) 。</p>
+<p><strong>空间复杂度：</strong></p>
+<p>可以使用 O(n^2) 空间复杂度的距离矩阵以避免重复计算距离，但若不使用距离矩阵，DBSCAN 的空间复杂度为 O(n)。</p>
+<blockquote>
+<p>参考资料3</p>
+</blockquote>
+<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p><strong>优点：</strong></p>
+<ul>
+<li>不需要确定簇的数量</li>
+<li>不同于Mean-shift算法，当数据点非常不同时，会将它们单纯地引入簇中，DBSCAN能将异常值识别为噪声（对噪声不敏感）</li>
+<li>与k-means算法相比，DBSCAN可以发现任意形状的簇类</li>
+<li>DBSCAN 只需两个参数，且对数据库内的点的次序几乎不敏感</li>
+<li>DBSCAN 被设计成能配合可加速范围访问的数据库结构，例如 <a href="https://zh.wikipedia.org/wiki/R*%E6%A0%91" target="_blank" rel="external">R*树</a>。</li>
+<li>如果对资料有足够的了解，可以选择适当的参数以获得最佳的分类。</li>
+<li>DBSCAN只需扫描一遍数据集即可完成聚类，而不用迭代执行</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>当数据簇密度不均匀时，它的效果不如其他算法好。这是因为当密度变化时，用于识别邻近点的距离阈值ε和minPoints的设置将随着簇而变化。</li>
+<li>DBSCAN 聚类分析的质量受所使用的度量影响，最常用的度量是欧几里得距离，尤其在高维度资料中，由于受所谓“维数灾难”影响，很难找出一个合适的 ε 。</li>
+<li>如果没有对资料和比例的足够理解，将很难选择适合的 ε 参数。</li>
+</ul>
+<p><strong>其他阅读</strong></p>
+<p>一种关于人脸聚类方法，里面使用了DBSCAN方法。</p>
+<p>算法简要描述:</p>
+<ul>
+<li>获取第一照片类和第二照片类，所述第一照片类包括聚类得到的至少两张人脸照片；</li>
+<li>对所述第一照片类中的所述人脸照片进行聚类，得到至少一个照片子类；</li>
+<li>将所述至少一个照片子类中的一个照片子类确定为正确人脸子类； </li>
+<li>计算所述正确人脸子类与所述第二照片类之间的距离；</li>
+<li>若所述距离大于阈值，则将所述第一照片类和所述第二照片类分别聚类至不同的照片类。</li>
+</ul>
+<p>算法链接如下：<br><a href="https://patents.google.com/patent/CN105426878A/zh" target="_blank" rel="external">https://patents.google.com/patent/CN105426878A/zh</a></p>
+<p><strong>参考资料：</strong><br>1、<a href="http://www.10tiao.com/html/368/201802/2650784228/1.html" target="_blank" rel="external">http://www.10tiao.com/html/368/201802/2650784228/1.html</a><br>2、<a href="https://www.cnblogs.com/pinard/p/6208966.html" target="_blank" rel="external">https://www.cnblogs.com/pinard/p/6208966.html</a><br>3、<a href="https://zh.wikipedia.org/wiki/DBSCAN" target="_blank" rel="external">https://zh.wikipedia.org/wiki/DBSCAN</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> Deeplearning </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> cluster </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[AP(affinity propagation)聚类算法]]></title>
       <url>http://xiaqunfeng.cc/2018/04/08/affinity-propagation/</url>
       <content type="html"><![CDATA[<p>一种半监督聚类算法，近邻传播聚类算法<br><a id="more"></a></p>

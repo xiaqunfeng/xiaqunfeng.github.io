@@ -6,24 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
-  <title>ceph写流程分析 | 夏天的风的博客</title>
+  <title>DBSCAN聚类算法 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="之前总结的ceph写流程分析笔记，代码是基于jewel版本10.2.0，现分享出来，欢迎指点。">
+  <meta name="description" content="一种基于密度的聚类算法，可用于非凸样本集。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ceph写流程分析">
-<meta property="og:url" content="http://xiaqunfeng.cc/2017/11/18/ceph写流程分析/index.html">
+<meta property="og:title" content="DBSCAN聚类算法">
+<meta property="og:url" content="http://xiaqunfeng.cc/2018/04/10/DBSCAN-cluster/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="之前总结的ceph写流程分析笔记，代码是基于jewel版本10.2.0，现分享出来，欢迎指点。">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/ceph_data_map.jpg">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/ceph_rw_arc.jpg">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/libRBD_write_Fotor.jpg">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/osd_write_Fotor.jpg">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/file_write_Fotor.jpg">
-<meta property="og:updated_time" content="2018-03-27T01:08:20.000Z">
+<meta property="og:description" content="一种基于密度的聚类算法，可用于非凸样本集。">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/1042406/201612/1042406-20161222112847323-1346197243.png">
+<meta property="og:updated_time" content="2018-04-12T01:35:03.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ceph写流程分析">
-<meta name="twitter:description" content="之前总结的ceph写流程分析笔记，代码是基于jewel版本10.2.0，现分享出来，欢迎指点。">
-<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/ceph_data_map.jpg">
+<meta name="twitter:title" content="DBSCAN聚类算法">
+<meta name="twitter:description" content="一种基于密度的聚类算法，可用于非凸样本集。">
+<meta name="twitter:image" content="https://images2015.cnblogs.com/blog/1042406/201612/1042406-20161222112847323-1346197243.png">
   
     <link rel="alternative" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
   
@@ -162,49 +158,91 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-ceph写流程分析" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-DBSCAN-cluster" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      ceph写流程分析
+      DBSCAN聚类算法
     </h1>
   
 
         
-        <a href="/2017/11/18/ceph写流程分析/" class="archive-article-date">
-  	<time datetime="2017-11-18T09:41:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-18</time>
+        <a href="/2018/04/10/DBSCAN-cluster/" class="archive-article-date">
+  	<time datetime="2018-04-10T00:34:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-10</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>之前总结的ceph写流程分析笔记，代码是基于jewel版本10.2.0，现分享出来，欢迎指点。<br><a id="more"></a></p>
-<h2 id="一、rbd到OSD映射关系"><a href="#一、rbd到OSD映射关系" class="headerlink" title="一、rbd到OSD映射关系"></a>一、rbd到OSD映射关系</h2><p>​    客户端使用RBD设备，使用librbd、librados库进行访问管理块设备。</p>
-<p>​    1、创建 一个pool，为这个pool指定pg的数量，同时在这个pool中指明保存数据的副本数（通常为3个副本）。</p>
-<p>​    2、在这个pool中创建一个rbd设备rbd0，那么这个rbd0都会保存三份，在创建rbd0时必须指定rbd的size，对于这个rbd0的任何操作不能超过这个size。</p>
-<p>​    3、将这个块设备进行切块，每个块的大小默认为4M，并且每个块都有一个名字，名字就是object+序号。</p>
-<p>​    4、将每个object通过pg进行副本位置的分配，pg会寻找3个osd，把这个object分别保存在这三个osd上。最后对于object的存储就变成了存储一个文件 <code>rbd0.object1.file</code>。数据层次映射图如下： <img src="http://oow6unnib.bkt.clouddn.com/ceph_data_map.jpg" alt="ceph数据的映射层次">​</p>
-<p>​    经过pool，rbd，object、pg的层层映射关系，在PG这一层中，已经知道存储数据的3个OSD所在位置及主从关系。</p>
-<p>​    客户端与primay OSD建立SOCKET 通信，将要写入的数据传给primary OSD，由primary OSD再将数据发送给其他replica OSD数据节点。</p>
-<p>​    读写框架图： <img src="http://oow6unnib.bkt.clouddn.com/ceph_rw_arc.jpg" alt="ceph读写框架"></p>
-<h2 id="二、写请求流程"><a href="#二、写请求流程" class="headerlink" title="二、写请求流程"></a>二、写请求流程</h2><h3 id="1、rbd上的处理"><a href="#1、rbd上的处理" class="headerlink" title="1、rbd上的处理"></a>1、rbd上的处理</h3><p>​    在rbd中一个操作对象为一个image，这个请求经过处理拆分成object对象的请求，拆分后交给Objector进行处理，找到目标osd的集合及主osd。</p>
-<p>​    将请求封装成MOSDOp消息，交由SimpleMessenger处理，SimpleMessager会尝试查找 / 创建一个OSDSession，并且为这个OSDSession创建一个数据通道pipe。消息从SimpleMessager收到后会保存到pipe的outq队列中。</p>
-<p>​    pipe 与目标osd建立Socket通信通道，并有专门的写线程writer来负责socket通信。writer线程同时监视这个outq队列，当队列中存在消息等待发送时，会就将消息写入socket，发送给目标OSD。</p>
-<p>​    OSD将数据消息处理完成之后，进行回调，反馈执行结果。</p>
-<p>​    关键代码序列图如下： <img src="http://oow6unnib.bkt.clouddn.com/libRBD_write_Fotor.jpg" alt="libRBD write"></p>
-<h3 id="2、osd上的处理"><a href="#2、osd上的处理" class="headerlink" title="2、osd上的处理"></a>2、osd上的处理</h3><p>​    OSD接收到message信息以后，解析并将消息转换成OpRequest，加入dispatch队列。同时从message中得到pool及PG的信息，将message交由PG进行相关处理。此时从OSD处理的message转化为了PG处理的op，添加到osd-&gt;op_wq队列中。PG中创建一个OpContext结构，接管message中的所有ops的操作。</p>
-<p>​    解析出OpRequest中的所有op与data，用Transaction结构进行管理，即将ops与Transaction绑定，将操作和数据打包成事务，并发送给其他副本，同时管理自己和其他副本的数据处理统计，创建repop 所有的applied与commit的管理。</p>
-<p>​    提交事务后，交由filestore进行处理。</p>
-<p>​    如果数据处理完成了，使用eval_repop()进行收尾的工作，将结果回调给客户端。</p>
-<p>​    关键代码序列图如下：  <img src="http://oow6unnib.bkt.clouddn.com/osd_write_Fotor.jpg" alt="osd write"></p>
-<h3 id="3、filestore上的处理"><a href="#3、filestore上的处理" class="headerlink" title="3、filestore上的处理"></a>3、filestore上的处理</h3><p>​    当数据进行写入的时候需要写到journal中一份，当data数据失败的时候可以从journal中进行恢复。从_op_journal_transactions()开始激发写入日志的操作，回调函数C_JournaledAhead的会在日志完成之后进行回调处理，将data写入磁盘。</p>
-<p>​    将日志保存完成的回调ondisk交给ondisk_finisher，ondisk注册回调为C_OSD_OnOpApplied，在后续finisher线程中处理。在该函数中，循环处理需要回调的请求，回复刚开始接收到请求的MOSDOp的操作，将请求发还给客户端。</p>
-<p>​    写完data的回调函数注册的为C_OSD_OnOpCommit，该函数处理并回复OSD一些状态的逻辑。</p>
-<p>​    关键代码序列图如下：<img src="http://oow6unnib.bkt.clouddn.com/file_write_Fotor.jpg" alt="file_write"></p>
+        <p>一种基于密度的聚类算法，可用于非凸样本集。<br><a id="more"></a></p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>DBSCAN（Density-Based Spatial Clustering of Applications with Noise，具有噪声的基于密度的聚类方法）一种很典型的密度聚类算法，和K-Means，BIRCH这些一般只适用于凸样本集的聚类相比，DBSCAN既可以适用于凸样本集，也可以适用于非凸样本集。</p>
+<p>它是一种基于高密度连通区域的、基于密度的聚类算法，能够将具有足够高密度的区域划分为簇，并在具有噪声的数据中发现任意形状的簇，即密度相连的点的最大集合。</p>
+<h2 id="名词定义"><a href="#名词定义" class="headerlink" title="名词定义"></a>名词定义</h2><p>假设样本集是D=(x1,x2,…,xm)</p>
+<p>1） ϵ-邻域：对于xj∈D，其ϵ-邻域包含样本集D中与xj的距离不大于ϵ的子样本集</p>
+<p>2) 核心对象：对于任一样本xj∈D，如果其ϵ-邻域对应的子样本集个数至少包含MinPts个样本，则xj是核心对象。　</p>
+<p>3）密度直达：如果xi位于xj的ϵ-邻域中，且xj是核心对象，则称xi由xj密度直达。</p>
+<p>4）密度可达：对于xi和xj,如果存在样本序列p1,p2,…,pT,满足p1=xi,pT=xj, 且pt+1由pt密度直达，则称xj由xi密度可达。也就是说，密度可达满足传递性。此时序列中的传递样本p1,p2,…,pT−1均为核心对象，因为只有核心对象才能使其他样本密度直达。</p>
+<p>5）密度相连：对于xi和xj，如果存在核心对象样本xk，使xi和xj均由xk密度可达，则称xi和xj密度相连。</p>
+<p><img src="https://images2015.cnblogs.com/blog/1042406/201612/1042406-20161222112847323-1346197243.png" alt="img"></p>
+<blockquote>
+<p>参考资料2</p>
+</blockquote>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><p>1、DBSCAN算法从一个未被访问的任意的数据点开始。这个点的邻域是用距离epsilon来定义（即该点ε距离范围内的所有点都是邻域点）。</p>
+<p>2、如果在该邻域内有足够数量的点（根据minPoints的值），则聚类过程开始，并且当前数据点成为新簇中的第一个点。否则，该点将被标记为噪声（稍后，这个噪声点可能成为聚类中的一部分）。在这两种情况下，该点都会被标记为“已访问”。</p>
+<p>3、对于新簇中的第一个点，它的ε距离邻域内的点也会成为同簇的一部分。这个过程使ε邻域内的所有点都属于同一个簇，然后对才添加到簇中的所有新点重复上述过程。</p>
+<p>4、重复步骤2和3两个过程直到确定了聚类中的所有点才停止，即访问和标记了聚类的ε邻域内的所有点。</p>
+<p>5、一旦我们完成了当前的聚类，就检索和处理新的未访问的点，就能进一步发现新的簇或者是噪声。重复上述过程，直到所有点被标记为已访问才停止。由于所有点已经被访问完毕，每个点都被标记为属于一个簇或是噪声。</p>
+<blockquote>
+<p>参考资料1</p>
+</blockquote>
+<h2 id="输入"><a href="#输入" class="headerlink" title="输入"></a>输入</h2><p>算法是基于一组邻域来描述样本集的紧密程度的，参数(ϵ, MinPts)用来描述邻域的样本分布紧密程度，即用户的输入。</p>
+<ul>
+<li>ϵ - 某一样本的邻域距离阈值（即领域半径）</li>
+<li>MinPts - 某一样本的距离为 ϵ 的邻域中样本个数的阈值（即最少点个数）</li>
+</ul>
+<p>一般由经验得来，如果点P以 ϵ 为半径的邻域内至少包含MinPts个点，则称点P为核心点（核心对象）</p>
+<blockquote>
+<p>该算法需要选择一种距离度量，任意两个点之间的距离，反映了点之间的密度，由于DBSCAN算法对高维数据定义密度很困难，所以对于二维空间中的点，可以用欧氏距离来度量</p>
+</blockquote>
+<h2 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h2><p><strong>时间复杂度：</strong></p>
+<p>DBSCAN 对数据库里的每一点进行访问，可能多于一次（例如作为不同聚类的候选者），但在现实的考虑中，时间复杂度主要受regionQuery 的调用次数影响，DBSCAN 对每点都进行刚好一次调用，且如果使用了特别的编号结构，则总平均时间复杂度为 O(n log n) ，最差时间复杂度则为 O(n^2) 。</p>
+<p><strong>空间复杂度：</strong></p>
+<p>可以使用 O(n^2) 空间复杂度的距离矩阵以避免重复计算距离，但若不使用距离矩阵，DBSCAN 的空间复杂度为 O(n)。</p>
+<blockquote>
+<p>参考资料3</p>
+</blockquote>
+<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p><strong>优点：</strong></p>
+<ul>
+<li>不需要确定簇的数量</li>
+<li>不同于Mean-shift算法，当数据点非常不同时，会将它们单纯地引入簇中，DBSCAN能将异常值识别为噪声（对噪声不敏感）</li>
+<li>与k-means算法相比，DBSCAN可以发现任意形状的簇类</li>
+<li>DBSCAN 只需两个参数，且对数据库内的点的次序几乎不敏感</li>
+<li>DBSCAN 被设计成能配合可加速范围访问的数据库结构，例如 <a href="https://zh.wikipedia.org/wiki/R*%E6%A0%91" target="_blank" rel="external">R*树</a>。</li>
+<li>如果对资料有足够的了解，可以选择适当的参数以获得最佳的分类。</li>
+<li>DBSCAN只需扫描一遍数据集即可完成聚类，而不用迭代执行</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>当数据簇密度不均匀时，它的效果不如其他算法好。这是因为当密度变化时，用于识别邻近点的距离阈值ε和minPoints的设置将随着簇而变化。</li>
+<li>DBSCAN 聚类分析的质量受所使用的度量影响，最常用的度量是欧几里得距离，尤其在高维度资料中，由于受所谓“维数灾难”影响，很难找出一个合适的 ε 。</li>
+<li>如果没有对资料和比例的足够理解，将很难选择适合的 ε 参数。</li>
+</ul>
+<p><strong>其他阅读</strong></p>
+<p>一种关于人脸聚类方法，里面使用了DBSCAN方法。</p>
+<p>算法简要描述:</p>
+<ul>
+<li>获取第一照片类和第二照片类，所述第一照片类包括聚类得到的至少两张人脸照片；</li>
+<li>对所述第一照片类中的所述人脸照片进行聚类，得到至少一个照片子类；</li>
+<li>将所述至少一个照片子类中的一个照片子类确定为正确人脸子类； </li>
+<li>计算所述正确人脸子类与所述第二照片类之间的距离；</li>
+<li>若所述距离大于阈值，则将所述第一照片类和所述第二照片类分别聚类至不同的照片类。</li>
+</ul>
+<p>算法链接如下：<br><a href="https://patents.google.com/patent/CN105426878A/zh" target="_blank" rel="external">https://patents.google.com/patent/CN105426878A/zh</a></p>
+<p><strong>参考资料：</strong><br>1、<a href="http://www.10tiao.com/html/368/201802/2650784228/1.html" target="_blank" rel="external">http://www.10tiao.com/html/368/201802/2650784228/1.html</a><br>2、<a href="https://www.cnblogs.com/pinard/p/6208966.html" target="_blank" rel="external">https://www.cnblogs.com/pinard/p/6208966.html</a><br>3、<a href="https://zh.wikipedia.org/wiki/DBSCAN" target="_blank" rel="external">https://zh.wikipedia.org/wiki/DBSCAN</a></p>
 
       
 
@@ -249,7 +287,7 @@ var _hmt = _hmt || [];
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">code</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">cluster</a>
         		</li>
       		
 		</ul>
@@ -261,7 +299,7 @@ var _hmt = _hmt || [];
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Ceph//" class="article-tag-list-link color5">Ceph</a>
+        			<a href="/categories/Deeplearning//" class="article-tag-list-link color3">Deeplearning</a>
         		</li>
       		
 		</ul>
@@ -316,7 +354,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/11/18/ceph写流程分析/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2018/04/10/DBSCAN-cluster/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -330,18 +368,9 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2017/11/24/R-CNN/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          【论文阅读】R-CNN
-        
-      </div>
-    </a>
   
-  
-    <a href="/2017/11/05/mac上安装caffe并训练mnist/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">mac上安装caffe并训练mnist</div>
+    <a href="/2018/04/08/affinity-propagation/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">AP(affinity propagation)聚类算法</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -368,7 +397,7 @@ var _hmt = _hmt || [];
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、rbd到OSD映射关系"><span class="toc-number">1.</span> <span class="toc-text">一、rbd到OSD映射关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、写请求流程"><span class="toc-number">2.</span> <span class="toc-text">二、写请求流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、rbd上的处理"><span class="toc-number">2.1.</span> <span class="toc-text">1、rbd上的处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、osd上的处理"><span class="toc-number">2.2.</span> <span class="toc-text">2、osd上的处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、filestore上的处理"><span class="toc-number">2.3.</span> <span class="toc-text">3、filestore上的处理</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#名词定义"><span class="toc-number">2.</span> <span class="toc-text">名词定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#步骤"><span class="toc-number">3.</span> <span class="toc-text">步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#输入"><span class="toc-number">4.</span> <span class="toc-text">输入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#复杂度"><span class="toc-number">5.</span> <span class="toc-text">复杂度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#优缺点"><span class="toc-number">6.</span> <span class="toc-text">优缺点</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -393,7 +422,7 @@ var _hmt = _hmt || [];
 <script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
 <script>
 var gitment = new Gitment({
-  id: "Sat Nov 18 2017 17:41:38 GMT+0800",
+  id: "Tue Apr 10 2018 08:34:53 GMT+0800",
   owner: 'xiaqunfeng',
   repo: 'xiaqunfeng.github.io',
   oauth: {
