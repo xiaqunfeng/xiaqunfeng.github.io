@@ -6,17 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
-  <title>Category: Deeplearning | 夏天的风的博客</title>
+  <title>在jupyter中添加conda环境 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="关注深度学习、分布式存储、云计算">
-<meta property="og:type" content="website">
-<meta property="og:title" content="夏天的风的博客">
-<meta property="og:url" content="http://xiaqunfeng.cc/categories/Deeplearning/index.html">
+  <meta name="description" content="解决在mac下启动jupyter后不能应用conda环境的问题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在jupyter中添加conda环境">
+<meta property="og:url" content="http://xiaqunfeng.cc/2018/04/13/jupyter-conda/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="关注深度学习、分布式存储、云计算">
+<meta property="og:description" content="解决在mac下启动jupyter后不能应用conda环境的问题">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/jupyter-conda-1.jpg">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/jupyter-conda-2.jpg">
+<meta property="og:updated_time" content="2018-04-13T02:14:20.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="夏天的风的博客">
-<meta name="twitter:description" content="关注深度学习、分布式存储、云计算">
+<meta name="twitter:title" content="在jupyter中添加conda环境">
+<meta name="twitter:description" content="解决在mac下启动jupyter后不能应用conda环境的问题">
+<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/jupyter-conda-1.jpg">
   
     <link rel="alternative" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
   
@@ -155,169 +159,242 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-jupyter-conda" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      在jupyter中添加conda环境
+    </h1>
+  
+
+        
+        <a href="/2018/04/13/jupyter-conda/" class="archive-article-date">
+  	<time datetime="2018-04-13T01:50:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-13</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>解决在mac下启动jupyter后不能应用conda环境的问题<br><a id="more"></a></p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>在本机利用conda启动了一个虚拟环境，通过命令行使用python环境没问题，但是通过 <code>jupyter notebook</code> 启动jupyter notebook之后却找不到虚拟环境。</p>
+<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>在虚拟环境下缺少kernel.json文件</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>1、首先安装ipykernel</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">conda install ipykernel</div></pre></td></tr></table></figure>
+<p>2、在虚拟环境下创建kernel文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">conda install -n 环境名称 ipykernel</div></pre></td></tr></table></figure>
+<p>我这里想要再自己创建的python36环境中创建kernel文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">conda install -n python36 ipykernel</div></pre></td></tr></table></figure>
+<blockquote>
+<p>前两步不需要启动conda环境，当然，已经启动了也没关系</p>
+</blockquote>
+<p>3、激活conda环境</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source activate 环境名称</div></pre></td></tr></table></figure>
+<p>我这里启动 python36</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source activate python36</div></pre></td></tr></table></figure>
+<p>当然，在启动环境前，还需要执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source ~/.bash_profile</div></pre></td></tr></table></figure>
+<p>这是使conda环境生效的操作</p>
+<p>4、将环境写入notebook的kernel中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python -m ipykernel install --user --name 环境名称 --display-name &quot;Python (环境名称)&quot;</div></pre></td></tr></table></figure>
+<p>我这里的操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">▶ python -m ipykernel install --user --name 3.6env --display-name &quot;Python (3.6env)&quot;</div><div class="line">Installed kernelspec 3.6env in /Users/xiaqunfeng/Library/Jupyter/kernels/3.6env</div><div class="line">(python36)</div></pre></td></tr></table></figure>
+<p>5、查看环境信息</p>
+<p>查看所有conda环境</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">▶ conda info --envs</div><div class="line"># conda environments:</div><div class="line">#</div><div class="line">python27                 /Users/xiaqunfeng/anaconda2/envs/python27</div><div class="line">python36              *  /Users/xiaqunfeng/anaconda2/envs/python36</div><div class="line">root                     /Users/xiaqunfeng/anaconda2</div><div class="line"></div><div class="line">(python36)</div></pre></td></tr></table></figure>
+<p>查看已安装的 jupyter kernel</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">▶ ls ~/Library/Jupyter/kernels</div><div class="line">3.6env</div><div class="line">(python36)</div></pre></td></tr></table></figure>
+<p>当前只安装了一个jupter kernel</p>
+<p>6、打开notebook服务器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">jupyter notebook</div></pre></td></tr></table></figure>
+<p>新建时指定python环境</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/jupyter-conda-1.jpg" alt="1"></p>
+<p>对于已有的 ipynb 文件，可以更换kernel</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/jupyter-conda-2.jpg" alt="2"></p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>O(∩_∩)O谢谢!<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/alipay.jpg">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/weixin.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/10/DBSCAN-cluster/" class="archive-article-date">
-  	<time datetime="2018-04-10T00:34:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/10/DBSCAN-cluster/">DBSCAN聚类算法</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">cluster</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Deeplearning//" class="article-tag-list-link color3">Deeplearning</a>
+        			<a href="/categories/Mac//" class="article-tag-list-link color4">Mac</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2018/04/13/jupyter-conda/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/08/affinity-propagation/" class="archive-article-date">
-  	<time datetime="2018-04-08T03:35:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-08</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2018/04/10/DBSCAN-cluster/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">DBSCAN聚类算法</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/08/affinity-propagation/">AP(affinity propagation)聚类算法</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">cluster</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Deeplearning//" class="article-tag-list-link color3">Deeplearning</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#问题"><span class="toc-number">1.</span> <span class="toc-text">问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#原因"><span class="toc-number">2.</span> <span class="toc-text">原因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方法"><span class="toc-number">3.</span> <span class="toc-text">解决方法</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/04/rank-order-clustering/" class="archive-article-date">
-  	<time datetime="2018-04-04T09:32:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-04</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/04/rank-order-clustering/">【论文阅读】A Rank-Order Distance based Clustering Algorithm for Face Tagging</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">paper</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Deeplearning//" class="article-tag-list-link color3">Deeplearning</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+
   
   
-    </div></section>
   
 
-    
+  
+
+  
+
+  
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
+<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: "Fri Apr 13 2018 09:50:39 GMT+0800",
+  owner: 'xiaqunfeng',
+  repo: 'xiaqunfeng.github.io',
+  oauth: {
+    client_id: '21c3a01653d904d670a4',
+    client_secret: 'cf0e1ef08aa2e2fdfa0654901492f1738382c5d3',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+
+  
+
 
 
           </div>
@@ -340,10 +417,10 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
-		isCategory: true,
+		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
 		root: "/",
@@ -546,150 +623,6 @@ MathJax.Hub.Queue(function() {
                 <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
              
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">vim</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">network</a>
-              </li>
-            
-            <div class="clearfix"></div>
-          </ul>
-        </div>
-        <ul class="search-ul">
-          <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
-            缺失模块。<br/>1、请确保node版本大于6.2<br/>2、在博客根目录（注意不是yilia根目录）执行以下命令：<br/> npm i hexo-generator-json-content --save<br/><br/>
-            3、在根目录_config.yml里添加配置：
-<pre style="font-size: 12px;" q-show="jsonFail">
-  jsonContent:
-    meta: false
-    pages: false
-    posts:
-      title: true
-      date: true
-      path: true
-      text: false
-      raw: false
-      content: false
-      slug: false
-      updated: false
-      comments: false
-      link: false
-      permalink: false
-      excerpt: false
-      categories: false
-      tags: true
-</pre>
-          </p>
-          <li class="search-li" q-repeat="items" q-show="isShow">
-            <a q-attr="href:path|urlformat" class="search-title"><i class="icon-quo-left icon"></i><span q-text="title"></span></a>
-            <p class="search-time">
-              <i class="icon-calendar icon"></i>
-              <span q-text="date|dateformat"></span>
-            </p>
-            <p class="search-tag">
-              <i class="icon-price-tags icon"></i>
-              <span q-repeat="tags" q-on="click:choseTag(e, name)" q-text="name|tagformat"></span>
-            </p>
-          </li>
-        </ul>
-    	</section>
-    
-
-    
-
-    
-    	<section class="tools-section tools-section-me" q-show="aboutme">
-  	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">没事情做了吗？&lt;br&gt;&lt;br&gt;想想你的竞争对手&lt;br&gt;&lt;br&gt;想想你多久没给爸妈寄钱了&lt;br&gt;想想你的工资单&lt;br&gt;想想你的银行存款&lt;br&gt;想想你什么时候交房租&lt;br&gt;&lt;br&gt;想想你喜欢的车&lt;br&gt;想想你中意的房&lt;br&gt;&lt;br&gt;想想你平淡的人生&lt;br&gt;现想想你遥不可及的梦想&lt;br&gt;&lt;br&gt;现在，有事做了吗？&lt;br&gt;</div>
-  	  	
-    	</section>
-    
-  </div>
-  
-</div>
-    <!-- Root element of PhotoSwipe. Must have class pswp. -->
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    <!-- Background of PhotoSwipe. 
-         It's a separate element as animating opacity is faster than rgba(). -->
-    <div class="pswp__bg"></div>
-
-    <!-- Slides wrapper with overflow:hidden. -->
-    <div class="pswp__scroll-wrap">
-
-        <!-- Container that holds slides. 
-            PhotoSwipe keeps only 3 of them in the DOM to save memory.
-            Don't modify these 3 pswp__item elements, data is added later on. -->
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                <!--  Controls are self-explanatory. Order can be changed. -->
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
-                <!-- element will get class pswp__preloader--active when preloader is running -->
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                      <div class="pswp__preloader__cut">
-                        <div class="pswp__preloader__donut"></div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div> 
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-  </div>
-</body>
-</html> 
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
               </li>
