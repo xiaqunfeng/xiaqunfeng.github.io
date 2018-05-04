@@ -23,9 +23,16 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$$x=\frac&#123;-b\pm\sqrt&#123;b^2-4ac&#125;&#125;&#123;2a&#125;$$</div><div class="line">\\(x=\frac&#123;-b\pm\sqrt&#123;b^2-4ac&#125;&#125;&#123;2a&#125;\\)</div></pre></td></tr></table></figure>
 <p>显示公式如下：<br>$$x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$$<br>\(x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}\)</p>
 <blockquote>
-<p>注：编辑器 Typora 不能正常显示公式，但是 Macdown、Markdownpad等编辑器都可以正常显示。</p>
+<p>注：</p>
+<p>1、编辑器 Typora 不能正常显示公式，但是 Macdown、Markdownpad等编辑器都可以正常显示。</p>
+<p>2、markdown文件中的<code>_</code>前需要加上<code>\</code> 转义字符</p>
 </blockquote>
 <h2 id="github"><a href="#github" class="headerlink" title="github"></a>github</h2><p>如果是 Chrome 浏览器的话，安装一个插件 <a href="https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima" target="_blank" rel="external">Github with MathJax</a> 即可正常显示本地markdown 编辑的 MathJax 公式。</p>
+<blockquote>
+<p>注：</p>
+<p>1、不需要在md文件中添加 mathjax cdn 代码段</p>
+<p>2、公式只能显示居中，不能靠左</p>
+</blockquote>
 <h2 id="Hexo博客"><a href="#Hexo博客" class="headerlink" title="Hexo博客"></a>Hexo博客</h2><p>1、安装 hexo-math 插件</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-math --save</div></pre></td></tr></table></figure>
 <p>2、在根目录下的 <code>_config.yml</code> 文件中添加</p>
