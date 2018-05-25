@@ -6,18 +6,18 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
-  <title>在Markdown上编辑数学公式 | 夏天的风的博客</title>
+  <title>文本工具 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="使用 MathJax 在markdown上显示公式">
+  <meta name="description" content="一些处理文本的工具总结，记录之。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="在Markdown上编辑数学公式">
-<meta property="og:url" content="http://xiaqunfeng.cc/2018/05/03/MathJax-Markdown/index.html">
+<meta property="og:title" content="文本工具">
+<meta property="og:url" content="http://xiaqunfeng.cc/2018/05/25/txt-tools/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="使用 MathJax 在markdown上显示公式">
-<meta property="og:updated_time" content="2018-05-07T01:37:23.000Z">
+<meta property="og:description" content="一些处理文本的工具总结，记录之。">
+<meta property="og:updated_time" content="2018-05-25T02:10:10.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="在Markdown上编辑数学公式">
-<meta name="twitter:description" content="使用 MathJax 在markdown上显示公式">
+<meta name="twitter:title" content="文本工具">
+<meta name="twitter:description" content="一些处理文本的工具总结，记录之。">
   
     <link rel="alternative" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
   
@@ -156,64 +156,52 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-MathJax-Markdown" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-txt-tools" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      在Markdown上编辑数学公式
+      文本工具
     </h1>
   
 
         
-        <a href="/2018/05/03/MathJax-Markdown/" class="archive-article-date">
-  	<time datetime="2018-05-03T05:46:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-03</time>
+        <a href="/2018/05/25/txt-tools/" class="archive-article-date">
+  	<time datetime="2018-05-25T01:24:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-25</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>使用 MathJax 在markdown上显示公式<br><a id="more"></a></p>
-<p>最简单的用法是使用 MathJax 的<a href="https://docs.mathjax.org/en/latest/start.html#mathjax-cdn" target="_blank" rel="external">内容分发（CDN）</a>服务。</p>
-<h2 id="本地编辑器"><a href="#本地编辑器" class="headerlink" title="本地编辑器"></a>本地编辑器</h2><p>1、在markdown文件中，添加 MathJax CDN</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;script type=&quot;text/javascript&quot;</div><div class="line">   src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot;&gt;</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
-<p>此时，就可以在 md 文件中插入公式了。</p>
-<p>2、显示方式</p>
-<p>公式显示居中：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$$ 此处插入公式 $$</div></pre></td></tr></table></figure>
-<p>公式显示靠左：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">\\( 此处插入公式 \\)</div></pre></td></tr></table></figure>
-<p>3、示例</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$$x=\frac&#123;-b\pm\sqrt&#123;b^2-4ac&#125;&#125;&#123;2a&#125;$$</div><div class="line">\\(x=\frac&#123;-b\pm\sqrt&#123;b^2-4ac&#125;&#125;&#123;2a&#125;\\)</div></pre></td></tr></table></figure>
-<p>显示公式如下：<br>$$x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}$$<br>\(x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}\)</p>
-<blockquote>
-<p>注：</p>
-<p>1、编辑器 Typora 不能正常显示公式，但是 Macdown、Markdownpad等编辑器都可以正常显示。</p>
-<p>2、markdown文件中的<code>_</code>前需要加上<code>\</code> 转义字符</p>
-</blockquote>
-<h2 id="github"><a href="#github" class="headerlink" title="github"></a>github</h2><p>如果是 Chrome 浏览器的话，安装一个插件 <a href="https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima" target="_blank" rel="external">Github with MathJax</a> 即可正常显示本地markdown 编辑的 MathJax 公式。</p>
-<blockquote>
-<p>注：</p>
-<p>1、不需要在md文件中添加 mathjax cdn 代码段</p>
-<p>2、公式只能显示居中，不能靠左</p>
-</blockquote>
-<h2 id="Hexo博客"><a href="#Hexo博客" class="headerlink" title="Hexo博客"></a>Hexo博客</h2><p>1、安装 hexo-math 插件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-math --save</div></pre></td></tr></table></figure>
-<p>2、在根目录下的 <code>_config.yml</code> 文件中添加</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">plugins: </div><div class="line">  hexo-math</div></pre></td></tr></table></figure>
-<p>3、重新生成并部署网站即可</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo d -g</div></pre></td></tr></table></figure>
-<blockquote>
-<p>参考资料：</p>
-<p><a href="http://cwiki.apachecn.org/pages/viewpage.action?pageId=8159393" target="_blank" rel="external">http://cwiki.apachecn.org/pages/viewpage.action?pageId=8159393</a></p>
-<p><a href="https://weilai5432.github.io/2017/01/11/MathJax-%E5%9C%A8MarkDown%E4%B8%AD%E6%8F%92%E5%85%A5%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F/" target="_blank" rel="external">https://weilai5432.github.io/2017/01/11/MathJax-%E5%9C%A8MarkDown%E4%B8%AD%E6%8F%92%E5%85%A5%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F/</a></p>
-</blockquote>
+        <p>一些处理文本的工具总结，记录之。<br><a id="more"></a></p>
+<p>系统环境：Mac</p>
+<h2 id="shuf"><a href="#shuf" class="headerlink" title="shuf"></a>shuf</h2><p>功能：将输入行的随机排列写入标准输出</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">▶ brew install coreutils</div><div class="line">...</div><div class="line">==&gt; make install</div><div class="line">==&gt; Caveats</div><div class="line">All commands have been installed with the prefix &apos;g&apos;.</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>注意上面这一行说明，命令前加了一个前缀 <code>g</code>，即<code>gshuf</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">▶ gshuf --help</div><div class="line">Usage: gshuf [OPTION]... [FILE]</div><div class="line">  or:  gshuf -e [OPTION]... [ARG]...</div><div class="line">  or:  gshuf -i LO-HI [OPTION]...</div><div class="line">Write a random permutation of the input lines to standard output.</div><div class="line"></div><div class="line">With no FILE, or when FILE is -, read standard input.</div><div class="line"></div><div class="line">Mandatory arguments to long options are mandatory for short options too.</div><div class="line">  -e, --echo                treat each ARG as an input line</div><div class="line">  -i, --input-range=LO-HI   treat each number LO through HI as an input line</div><div class="line">  -n, --head-count=COUNT    output at most COUNT lines</div><div class="line">  -o, --output=FILE         write result to FILE instead of standard output</div><div class="line">      --random-source=FILE  get random bytes from FILE</div><div class="line">  -r, --repeat              output lines can be repeated</div><div class="line">  -z, --zero-terminated     line delimiter is NUL, not newline</div><div class="line">      --help     display this help and exit</div><div class="line">      --version  output version information and exit</div></pre></td></tr></table></figure>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">▶ cat test.txt</div><div class="line">aaa</div><div class="line">bbb</div><div class="line">ccc</div><div class="line">ddd</div><div class="line">eeeee</div><div class="line">ff</div></pre></td></tr></table></figure>
+<p>1、文本行乱序</p>
+<p>将原文件里的行随机打乱输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">▶ gshuf test.txt</div><div class="line">bbb</div><div class="line">ccc</div><div class="line">ddd</div><div class="line">aaa</div><div class="line">eeeee</div><div class="line">ff</div></pre></td></tr></table></figure>
+<p>2、随机抽取N行数据</p>
+<p>使用参数 <code>-n</code>，指定随机抽取的行数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">▶ gshuf -n 3 test.txt</div><div class="line">eeeee</div><div class="line">bbb</div><div class="line">aaa</div></pre></td></tr></table></figure>
+<p>以上两种都可以将输出指定存储到输出文件中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">▶ gshuf test.txt -o test-random.txt</div></pre></td></tr></table></figure>
+<h2 id="split"><a href="#split" class="headerlink" title="split"></a>split</h2><p>功能：分割文本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">▶ split --help</div><div class="line">split: illegal option -- -</div><div class="line">usage: split [-a sufflen] [-b byte_count] [-l line_count] [-p pattern]</div><div class="line">             [file [prefix]]</div></pre></td></tr></table></figure>
+<p>参数解析：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">-a, --suffix-length=N   使用长度为 N 的后缀 (默认 2)，是字母后缀</div><div class="line">-b, --bytes=SIZE        设置输出文件的大小。支持单位：m,k</div><div class="line">-l, --lines=NUMBER      设备输出文件的行数</div><div class="line">-d, --numeric-suffixes  使用数字后缀代替字母(mac上不可用)</div><div class="line">file, prifix			指定分割后文件的前缀</div></pre></td></tr></table></figure>
+<p>可以指定行数、文件大小分割</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">▶ split -a 3 -l 100 test.json split-</div></pre></td></tr></table></figure>
+<p>输出结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">split-aaa split-aab</div></pre></td></tr></table></figure>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>1、文本合并</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat 1.txt 2.txt 3.txt &gt; merge.txt</div></pre></td></tr></table></figure>
+<p>2、TO BE ADD</p>
 
       
 
@@ -314,7 +302,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2018/05/03/MathJax-Markdown/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2018/05/25/txt-tools/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -328,18 +316,9 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2018/05/09/kcf-tracking/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          KCF跟踪算法
-        
-      </div>
-    </a>
   
-  
-    <a href="/2018/04/24/git-ignore-ds-store/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">git全局忽略.DS_Store等文件</div>
+    <a href="/2018/05/09/kcf-tracking/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">KCF跟踪算法</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -366,7 +345,7 @@ var _hmt = _hmt || [];
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#本地编辑器"><span class="toc-number">1.</span> <span class="toc-text">本地编辑器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#github"><span class="toc-number">2.</span> <span class="toc-text">github</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo博客"><span class="toc-number">3.</span> <span class="toc-text">Hexo博客</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#shuf"><span class="toc-number">1.</span> <span class="toc-text">shuf</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装"><span class="toc-number">1.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#应用"><span class="toc-number">1.2.</span> <span class="toc-text">应用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#split"><span class="toc-number">2.</span> <span class="toc-text">split</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-number">3.</span> <span class="toc-text">其他</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -391,7 +370,7 @@ var _hmt = _hmt || [];
 <script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
 <script>
 var gitment = new Gitment({
-  id: "Thu May 03 2018 13:46:03 GMT+0800",
+  id: "Fri May 25 2018 09:24:31 GMT+0800",
   owner: 'xiaqunfeng',
   repo: 'xiaqunfeng.github.io',
   oauth: {

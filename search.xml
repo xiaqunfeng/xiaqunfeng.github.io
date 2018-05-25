@@ -4,6 +4,46 @@
   
     
     <entry>
+      <title><![CDATA[文本工具]]></title>
+      <url>http://xiaqunfeng.cc/2018/05/25/txt-tools/</url>
+      <content type="html"><![CDATA[<p>一些处理文本的工具总结，记录之。<br><a id="more"></a></p>
+<p>系统环境：Mac</p>
+<h2 id="shuf"><a href="#shuf" class="headerlink" title="shuf"></a>shuf</h2><p>功能：将输入行的随机排列写入标准输出</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">▶ brew install coreutils</div><div class="line">...</div><div class="line">==&gt; make install</div><div class="line">==&gt; Caveats</div><div class="line">All commands have been installed with the prefix &apos;g&apos;.</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>注意上面这一行说明，命令前加了一个前缀 <code>g</code>，即<code>gshuf</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">▶ gshuf --help</div><div class="line">Usage: gshuf [OPTION]... [FILE]</div><div class="line">  or:  gshuf -e [OPTION]... [ARG]...</div><div class="line">  or:  gshuf -i LO-HI [OPTION]...</div><div class="line">Write a random permutation of the input lines to standard output.</div><div class="line"></div><div class="line">With no FILE, or when FILE is -, read standard input.</div><div class="line"></div><div class="line">Mandatory arguments to long options are mandatory for short options too.</div><div class="line">  -e, --echo                treat each ARG as an input line</div><div class="line">  -i, --input-range=LO-HI   treat each number LO through HI as an input line</div><div class="line">  -n, --head-count=COUNT    output at most COUNT lines</div><div class="line">  -o, --output=FILE         write result to FILE instead of standard output</div><div class="line">      --random-source=FILE  get random bytes from FILE</div><div class="line">  -r, --repeat              output lines can be repeated</div><div class="line">  -z, --zero-terminated     line delimiter is NUL, not newline</div><div class="line">      --help     display this help and exit</div><div class="line">      --version  output version information and exit</div></pre></td></tr></table></figure>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">▶ cat test.txt</div><div class="line">aaa</div><div class="line">bbb</div><div class="line">ccc</div><div class="line">ddd</div><div class="line">eeeee</div><div class="line">ff</div></pre></td></tr></table></figure>
+<p>1、文本行乱序</p>
+<p>将原文件里的行随机打乱输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">▶ gshuf test.txt</div><div class="line">bbb</div><div class="line">ccc</div><div class="line">ddd</div><div class="line">aaa</div><div class="line">eeeee</div><div class="line">ff</div></pre></td></tr></table></figure>
+<p>2、随机抽取N行数据</p>
+<p>使用参数 <code>-n</code>，指定随机抽取的行数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">▶ gshuf -n 3 test.txt</div><div class="line">eeeee</div><div class="line">bbb</div><div class="line">aaa</div></pre></td></tr></table></figure>
+<p>以上两种都可以将输出指定存储到输出文件中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">▶ gshuf test.txt -o test-random.txt</div></pre></td></tr></table></figure>
+<h2 id="split"><a href="#split" class="headerlink" title="split"></a>split</h2><p>功能：分割文本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">▶ split --help</div><div class="line">split: illegal option -- -</div><div class="line">usage: split [-a sufflen] [-b byte_count] [-l line_count] [-p pattern]</div><div class="line">             [file [prefix]]</div></pre></td></tr></table></figure>
+<p>参数解析：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">-a, --suffix-length=N   使用长度为 N 的后缀 (默认 2)，是字母后缀</div><div class="line">-b, --bytes=SIZE        设置输出文件的大小。支持单位：m,k</div><div class="line">-l, --lines=NUMBER      设备输出文件的行数</div><div class="line">-d, --numeric-suffixes  使用数字后缀代替字母(mac上不可用)</div><div class="line">file, prifix			指定分割后文件的前缀</div></pre></td></tr></table></figure>
+<p>可以指定行数、文件大小分割</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">▶ split -a 3 -l 100 test.json split-</div></pre></td></tr></table></figure>
+<p>输出结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">split-aaa split-aab</div></pre></td></tr></table></figure>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>1、文本合并</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat 1.txt 2.txt 3.txt &gt; merge.txt</div></pre></td></tr></table></figure>
+<p>2、TO BE ADD</p>
+]]></content>
+      
+        <categories>
+            
+            <category> Mac </category>
+            
+        </categories>
+        
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[KCF跟踪算法]]></title>
       <url>http://xiaqunfeng.cc/2018/05/09/kcf-tracking/</url>
       <content type="html"><![CDATA[<p>没有看论文原文及复杂的公式推理，查阅了一些KCF的资料，了解KCF算法的原理及优缺点，记录之。<br><a id="more"></a></p>
