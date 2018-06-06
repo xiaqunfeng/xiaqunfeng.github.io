@@ -30,8 +30,10 @@
 <p>输出结果</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">split-aaa split-aab</div></pre></td></tr></table></figure>
 <h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>1、文本合并</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat 1.txt 2.txt 3.txt &gt; merge.txt</div></pre></td></tr></table></figure>
-<p>2、TO BE ADD</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">▶ cat 1.txt 2.txt 3.txt &gt; merge.txt</div></pre></td></tr></table></figure>
+<p>2、批量文文件添加前后缀</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">▶ for i in split-*; do mv $i “pre-”$i&quot;.json&quot;; done</div></pre></td></tr></table></figure>
+<p>3、TO BE ADD</p>
 ]]></content>
       
         <categories>
@@ -129,10 +131,13 @@
 <p>2、markdown文件中的<code>_</code>前需要加上<code>\</code> 转义字符</p>
 </blockquote>
 <h2 id="github"><a href="#github" class="headerlink" title="github"></a>github</h2><p>如果是 Chrome 浏览器的话，安装一个插件 <a href="https://chrome.google.com/webstore/detail/github-with-mathjax/ioemnmodlmafdkllaclgeombjnmnbima" target="_blank" rel="external">Github with MathJax</a> 即可正常显示本地markdown 编辑的 MathJax 公式。</p>
+<p>显示方式：（和以上略有不同）</p>
+<p>公式显示居中（该行只显示该公式）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$$ 此处插入公式 $$</div></pre></td></tr></table></figure>
+<p>行内公式（前后可以有文字）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ 此处插入公式 $</div></pre></td></tr></table></figure>
 <blockquote>
-<p>注：</p>
-<p>1、不需要在md文件中添加 mathjax cdn 代码段</p>
-<p>2、公式只能显示居中，不能靠左</p>
+<p>注：不需要在md文件中添加 mathjax cdn 代码段</p>
 </blockquote>
 <h2 id="Hexo博客"><a href="#Hexo博客" class="headerlink" title="Hexo博客"></a>Hexo博客</h2><p>1、安装 hexo-math 插件</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-math --save</div></pre></td></tr></table></figure>

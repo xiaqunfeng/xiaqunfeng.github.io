@@ -14,7 +14,7 @@
 <meta property="og:url" content="http://xiaqunfeng.cc/2018/05/25/txt-tools/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="一些处理文本的工具总结，记录之。">
-<meta property="og:updated_time" content="2018-05-25T02:10:10.000Z">
+<meta property="og:updated_time" content="2018-05-25T02:44:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="文本工具">
 <meta name="twitter:description" content="一些处理文本的工具总结，记录之。">
@@ -200,8 +200,10 @@ var _hmt = _hmt || [];
 <p>输出结果</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">split-aaa split-aab</div></pre></td></tr></table></figure>
 <h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>1、文本合并</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat 1.txt 2.txt 3.txt &gt; merge.txt</div></pre></td></tr></table></figure>
-<p>2、TO BE ADD</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">▶ cat 1.txt 2.txt 3.txt &gt; merge.txt</div></pre></td></tr></table></figure>
+<p>2、批量文文件添加前后缀</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">▶ for i in split-*; do mv $i “pre-”$i&quot;.json&quot;; done</div></pre></td></tr></table></figure>
+<p>3、TO BE ADD</p>
 
       
 
