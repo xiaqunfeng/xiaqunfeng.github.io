@@ -14,7 +14,7 @@
 <meta property="og:url" content="http://xiaqunfeng.cc/2018/05/25/txt-tools/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="一些处理文本的工具总结，记录之。">
-<meta property="og:updated_time" content="2018-05-25T02:44:12.000Z">
+<meta property="og:updated_time" content="2018-07-05T06:45:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="文本工具">
 <meta name="twitter:description" content="一些处理文本的工具总结，记录之。">
@@ -199,6 +199,29 @@ var _hmt = _hmt || [];
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">▶ split -a 3 -l 100 test.json split-</div></pre></td></tr></table></figure>
 <p>输出结果</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">split-aaa split-aab</div></pre></td></tr></table></figure>
+<h3 id="找出文件的相同与不同"><a href="#找出文件的相同与不同" class="headerlink" title="找出文件的相同与不同"></a>找出文件的相同与不同</h3><p>有时候会遇到这样的需求，就是从一个文件中随机取一部分数据，然后又要取一部分数据，那么怎样保证数据是否有重复，这就需要比较。</p>
+<p>有两个文本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"># cat test1.txt</div><div class="line">a</div><div class="line">bb</div><div class="line">ccc</div><div class="line">dddd</div><div class="line">eeeee</div><div class="line"># cat test2.txt</div><div class="line">111111</div><div class="line">33333</div><div class="line">8888</div><div class="line">ccc</div><div class="line">777777777</div><div class="line">dkahkah</div><div class="line">a</div></pre></td></tr></table></figure>
+<p>1、列出两个文件中不同的行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># cat test1.txt test2.txt | sort | uniq -u | sort -n</div><div class="line">bb</div><div class="line">dddd</div><div class="line">dkahkah</div><div class="line">eeeee</div><div class="line">8888</div><div class="line">33333</div><div class="line">111111</div><div class="line">777777777</div></pre></td></tr></table></figure>
+<blockquote>
+<p>uniq -u：仅显示出一次的行列</p>
+</blockquote>
+<p>2、列出两个文件中相同的行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># grep -f test1.txt test2.txt</div><div class="line">ccc</div><div class="line">dkahkah</div><div class="line">a</div></pre></td></tr></table></figure>
+<blockquote>
+<p>这里发现第二行不对，以为此时是拿‘a’去匹配的，如果每一行都没有这么短的字符，那没什么问题</p>
+</blockquote>
+<p>查看<a href="http://man.linuxde.net/grep" target="_blank" rel="external">grep</a>的用法：</p>
+<ul>
+<li>-f&lt;范本文件&gt; 指定范本文件，其内容有一个或多个范本样式，让grep查找符合范本条件的文件内容，格式为每一列的范本样式。</li>
+<li>-v 反转查找。</li>
+</ul>
+<p>这里将test1.txt和test2.txt中的‘a’都改为‘aa’</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># grep -f test1.txt test2.txt</div><div class="line">ccc</div><div class="line">aa</div></pre></td></tr></table></figure>
+<p>3、列出文件 test2.txt 中有，test1.txt中没有的行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># grep -vf test1.txt test2.txt</div><div class="line">111111</div><div class="line">33333</div><div class="line">8888</div><div class="line">777777777</div><div class="line">dkahkah</div></pre></td></tr></table></figure>
+<p>注：还有一个命令<a href="http://man.linuxde.net/comm" target="_blank" rel="external">comm</a>也可以用来比较两个文件的交集、差集、求差。但是要求两个文件都是已排序过的。所以也可以sort后用该命令来实现上面的想法。</p>
 <h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>1、文本合并</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">▶ cat 1.txt 2.txt 3.txt &gt; merge.txt</div></pre></td></tr></table></figure>
 <p>2、批量文文件添加前后缀</p>
@@ -347,7 +370,7 @@ var _hmt = _hmt || [];
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#shuf"><span class="toc-number">1.</span> <span class="toc-text">shuf</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装"><span class="toc-number">1.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#应用"><span class="toc-number">1.2.</span> <span class="toc-text">应用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#split"><span class="toc-number">2.</span> <span class="toc-text">split</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-number">3.</span> <span class="toc-text">其他</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#shuf"><span class="toc-number">1.</span> <span class="toc-text">shuf</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装"><span class="toc-number">1.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#应用"><span class="toc-number">1.2.</span> <span class="toc-text">应用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#split"><span class="toc-number">2.</span> <span class="toc-text">split</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#找出文件的相同与不同"><span class="toc-number">2.1.</span> <span class="toc-text">找出文件的相同与不同</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-number">3.</span> <span class="toc-text">其他</span></a></li></ol>
                     </div>
                 </span>
             </div>
