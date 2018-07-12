@@ -4,6 +4,87 @@
   
     
     <entry>
+      <title><![CDATA[git rebase]]></title>
+      <url>http://xiaqunfeng.cc/2018/07/11/git-rebase/</url>
+      <content type="html"><![CDATA[<p>三种使用场景：一是合并多个commit；二是基于不同branch在执行merge时的rebase；三是拆分commit。</p>
+<a id="more"></a>
+<h2 id="合并多个commit"><a href="#合并多个commit" class="headerlink" title="合并多个commit"></a>合并多个commit</h2><p>使用场景：</p>
+<p>在开发一个功能时，由于种种原因提交了多个临时和失误的 commit，而这些 commit 拼接起来才是一个完整的任务。为了避免过多 commit 造成的版本控制混乱，通常需要将这些 commit 合并成一个。</p>
+<h3 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h3><p>选择了一个项目，查看log信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">▶ git log</div><div class="line">commit 532c6e1481e78ba0e27c56f4492a7e8d3cc36597</div><div class="line">Author: Joseph Redmon &lt;pjreddie@gmail.com&gt;</div><div class="line">Date:   Tue Oct 10 13:35:28 2017 -0700</div><div class="line"></div><div class="line">    hm......</div><div class="line"></div><div class="line">commit fbd48ab606dd91f076eaa68588f285c1d5f436fb</div><div class="line">Author: Joseph Redmon &lt;pjreddie@gmail.com&gt;</div><div class="line">Date:   Wed Oct 4 16:51:41 2017 -0700</div><div class="line"></div><div class="line">    grouped convolutions :snake: :snake: :snake:</div><div class="line"></div><div class="line">commit 62b781af4d01fc5f074407590cf556b36c70e837</div><div class="line">Author: Joseph Redmon &lt;pjreddie@gmail.com&gt;</div><div class="line">Date:   Mon Oct 2 15:17:48 2017 -0700</div><div class="line"></div><div class="line">    resnet that works</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>需要将 <code>532c6e</code> 和 <code>fbd48a</code> 合并成一个commit，操作如下：</p>
+<p>1、执行rebase命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git rebase -i 62b781</div></pre></td></tr></table></figure>
+<p>其中，-i 的参数是不需要合并的 commit 的 hash 值，也就是它们前一条 commit。接着就进入 vi 编辑模式，信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">pick fbd48ab grouped convolutions :snake: :snake: :snake:</div><div class="line">pick 532c6e1 hm......</div><div class="line"></div><div class="line"># Rebase 62b781a..532c6e1 onto 62b781a (2 command(s))</div><div class="line">#</div><div class="line"># Commands:</div><div class="line"># p, pick = use commit</div><div class="line"># r, reword = use commit, but edit the commit message</div><div class="line"># e, edit = use commit, but stop for amending</div><div class="line"># s, squash = use commit, but meld into previous commit</div><div class="line"># f, fixup = like &quot;squash&quot;, but discard this commit&apos;s log message</div><div class="line"># x, exec = run command (the rest of the line) using shell</div><div class="line"># d, drop = remove commit</div><div class="line">#</div><div class="line"># These lines can be re-ordered; they are executed from top to bottom.</div><div class="line">#</div><div class="line"># If you remove a line here THAT COMMIT WILL BE LOST.</div><div class="line">#</div><div class="line"># However, if you remove everything, the rebase will be aborted.</div><div class="line">#</div><div class="line"># Note that empty commits are commented out</div></pre></td></tr></table></figure>
+<p>未注释部分格式：<code>Command commit-hash commit-content</code></p>
+<p>注释部分：指令使用说明</p>
+<ul>
+<li><strong>pick：正常选中</strong></li>
+<li>reword：选中，并且修改提交信息</li>
+<li>edit：选中，rebase时会暂停，允许你修改这个commit</li>
+<li><strong>squash：选中，会将当前commit与上一个commit合并</strong></li>
+<li><strong>fixup：与squash相同，但不会保存当前commit的提交信息</strong></li>
+<li>exec：执行其他shell命令</li>
+<li>drop：移除commit</li>
+</ul>
+<p>2、将第二个commit前的command修改为 <code>squash</code> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">pick fbd48ab grouped convolutions :snake: :snake: :snake:</div><div class="line">squash 532c6e1 hm......</div></pre></td></tr></table></figure>
+<p>保存退出（:x）</p>
+<p>3、这时会进入 commit message 的编辑页面：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"># This is a combination of 2 commits.</div><div class="line"># The first commit&apos;s message is:</div><div class="line"></div><div class="line">grouped convolutions :snake: :snake: :snake:</div><div class="line"></div><div class="line"># This is the 2nd commit message:</div><div class="line"></div><div class="line">hm......</div><div class="line"></div><div class="line"># Please enter the commit message for your changes. Lines starting</div><div class="line"># with &apos;#&apos; will be ignored, and an empty message aborts the commit.</div><div class="line">#</div><div class="line"># Author:    Joseph Redmon &lt;pjreddie@gmail.com&gt;</div><div class="line"># Date:      Wed Oct 4 16:51:41 2017 -0700</div><div class="line">#</div><div class="line"># interactive rebase in progress; onto 62b781a</div><div class="line"># Last commands done (2 commands done):</div><div class="line">#    pick fbd48ab grouped convolutions :snake: :snake: :snake:</div><div class="line">#    squash 532c6e1 hm......</div><div class="line"># No commands remaining.</div><div class="line"># You are currently editing a commit while rebasing branch &apos;master&apos; on &apos;62b781a&apos;.</div><div class="line">#</div><div class="line"># Changes to be committed:</div><div class="line">#       modified:   cfg/darknet.cfg</div><div class="line">#       modified:   cfg/tiny.cfg</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>将两次 commit message 修改成新的commit：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># This is a combination of 2 commits.</div><div class="line">This is a combination of 2 commmits by xiaqunfeng.</div><div class="line"></div><div class="line"># Please enter the commit message for your changes. Lines starting</div><div class="line"># with &apos;#&apos; will be ignored, and an empty message aborts the commit.</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>4、保存退出</p>
+<p>显示信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[detached HEAD 2863a92] This is a combination of 2 commmits by xiaqunfeng.</div><div class="line"> Author: Joseph Redmon &lt;pjreddie@gmail.com&gt;</div><div class="line"> Date: Wed Oct 4 16:51:41 2017 -0700</div><div class="line"> 16 files changed, 251 insertions(+), 175 deletions(-)</div><div class="line">Successfully rebased and updated refs/heads/master.</div></pre></td></tr></table></figure>
+<p>5、再次查看 git log</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">commit 2863a92ea8faef9d2172f8cee343e11cc22d5670</div><div class="line">Author: Joseph Redmon &lt;pjreddie@gmail.com&gt;</div><div class="line">Date:   Wed Oct 4 16:51:41 2017 -0700</div><div class="line"></div><div class="line">    This is a combination of 2 commmits by xiaqunfeng.</div><div class="line"></div><div class="line">commit 62b781af4d01fc5f074407590cf556b36c70e837</div><div class="line">Author: Joseph Redmon &lt;pjreddie@gmail.com&gt;</div><div class="line">Date:   Mon Oct 2 15:17:48 2017 -0700</div><div class="line"></div><div class="line">    resnet that works</div></pre></td></tr></table></figure>
+<p>发现前两个commit已经被合并了。</p>
+<h3 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h3><p>如果还想将这两个commit合并，这时候前面没有其他commit了</p>
+<p>使用命令，提取最近2笔commit</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git rebase -i HEAD~2</div></pre></td></tr></table></figure>
+<p>如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">pick 62b781a resnet that works</div><div class="line">pick 2863a92 This is a combination of 2 commmits by xiaqunfeng.</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>其余操作步骤同上。</p>
+<h3 id="示例3"><a href="#示例3" class="headerlink" title="示例3"></a>示例3</h3><p>继续实践，rebase最近3个commit</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git rebase -i HEAD~3</div></pre></td></tr></table></figure>
+<p>进入编辑界面</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">pick a4ae313 FIX OPENCV :snake:</div><div class="line">pick 1b001a7 :bug: :bug: :bug:</div><div class="line">pick ce8cf62 resnet that works</div><div class="line"></div><div class="line"># Rebase 1e72980..ce8cf62 onto 1e72980 (3 command(s))</div></pre></td></tr></table></figure>
+<p>修改</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">pick a4ae313 FIX OPENCV :snake:</div><div class="line">squash 1b001a7 :bug: :bug: :bug:</div><div class="line">fixup ce8cf62 resnet that works</div></pre></td></tr></table></figure>
+<p>继续进入vim编辑界面</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># This is a combination of 3 commits.</div><div class="line"># The first commit&apos;s message is:</div><div class="line">FIX OPENCV :snake:</div><div class="line"></div><div class="line"># This is the 2nd commit message:</div><div class="line"></div><div class="line">:bug: :bug: :bug:</div><div class="line"></div><div class="line"># The 3rd commit message will be skipped:</div><div class="line"></div><div class="line">#       resnet that works</div></pre></td></tr></table></figure>
+<p>修改方法和之前相同。</p>
+<p>可以看出，fixup就相当于直接将该commit丢弃掉了。</p>
+<blockquote>
+<p>如果有两个commit，你想使用第一个作为最终的commit，那么就只需要将第二个commit直接fixup就好了，不需要squash，这样还省了一次编辑合并后的commit的时间。</p>
+</blockquote>
+<h2 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h2><p>1、如果你的 vim 配置了<code>YouCompleteMe</code>，会提示你如下信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">YouCompleteMe unavailable: requires Vim 7.4.1578+.</div></pre></td></tr></table></figure>
+<p>导致你进不去vi编辑界面。</p>
+<p>解决方法</p>
+<p>将git默认的编辑器从vi改为vim，执行如下命令即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git config --global core.editor /usr/bin/vim</div></pre></td></tr></table></figure>
+<p>2、push的时候会出现如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">hint: Updates were rejected because the tip of your current branch is behind</div><div class="line">hint: its remote counterpart. Integrate the remote changes (e.g.</div><div class="line">hint: &apos;git pull ...&apos;) before pushing again.</div><div class="line">hint: See the &apos;Note about fast-forwards&apos; in &apos;git push --help&apos; for details.</div></pre></td></tr></table></figure>
+<p>解决方法：加 <code>-f</code> 进行push。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>1、关于分支的rebase，参考<a href="http://gitbook.liuhui998.com/4_2.html" target="_blank" rel="external">rebase</a>。</p>
+<p>2、修改最近一次commit</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git commit -amend</div></pre></td></tr></table></figure>
+<p>3、当然，还有拆分提交的功能，可以自行搜之。不过强烈不推荐，特别是代码两次提交代码耦合比较紧密的情况，很难拆分。</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> git </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[文本工具]]></title>
       <url>http://xiaqunfeng.cc/2018/05/25/txt-tools/</url>
       <content type="html"><![CDATA[<p>一些处理文本的工具总结，记录之。<br><a id="more"></a></p>
