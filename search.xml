@@ -2662,7 +2662,7 @@
     </entry>
     
     <entry>
-      <title><![CDATA[git常用命名总结]]></title>
+      <title><![CDATA[git常用命令总结]]></title>
       <url>http://xiaqunfeng.cc/2017/08/07/git%E5%B8%B8%E7%94%A8%E5%91%BD%E5%90%8D%E6%80%BB%E7%BB%93/</url>
       <content type="html"><![CDATA[<p>总结记录自己最常用的git命令，然后将一些命令分类，便于翻阅。<br><a id="more"></a></p>
 <h2 id="最常用"><a href="#最常用" class="headerlink" title="最常用"></a>最常用</h2><p>1、下载一个项目和它的整个代码历史</p>
