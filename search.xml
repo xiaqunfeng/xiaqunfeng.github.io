@@ -4,6 +4,47 @@
   
     
     <entry>
+      <title><![CDATA[Chinese Whispers]]></title>
+      <url>http://xiaqunfeng.cc/2018/08/14/Chinese-Whispers/</url>
+      <content type="html"><![CDATA[<p>学习一下适用于大规模人脸的无监督聚类方法。不需要指定聚类个数。<br><a id="more"></a></p>
+<h3 id="论文中CW描述"><a href="#论文中CW描述" class="headerlink" title="论文中CW描述"></a>论文中CW描述</h3><p>CW是一种非常基础的，但有效的算法，用来分割加权的无向图节点。它来源于同名的儿童游戏，孩子们在哪里低声互相耳语？游戏的目标是通过几个带干扰的通道传递后，将原来的信息衍生成一些更有趣的信息。CW算法的目标就是查找传播相同信息到相邻节点的节点组。它可以被看做一个基于代理的社交网络的模拟。</p>
+<p>该算法的原理如下：</p>
+<ul>
+<li>首先，所有的节点都分成不同的类。</li>
+<li>然后对节点进行少量的迭代处理，并继承它邻近节点中最大的类别，即对当前节点的边权重值最大的节点所在的类。如果有多个最大的类别，则随机选择一个。</li>
+<li>同一类的区域在迭代过程中趋于稳定，直到到达另一个类的稳定区域边界为止。</li>
+</ul>
+<h3 id="算法核心"><a href="#算法核心" class="headerlink" title="算法核心"></a>算法核心</h3><p>构建无向图：</p>
+<ul>
+<li>将每个人脸做为无向图中的一个节点，人脸之间的相似度，作为节点之间的边</li>
+<li>设定阈值threshold，当相似度超过threshold，将两个节点相连形成关联边，权重为相似度</li>
+<li>如果人脸之间的相似度小于设定的阈值，那么这两个人脸对应的节点之间就没有边</li>
+</ul>
+<p>初始化：</p>
+<p>将每个人脸都赋予一个id，该id作为该人脸的类别。初始化时,每个人脸都是一个类别。</p>
+<p>迭代：</p>
+<ul>
+<li><p>随机选取某个节点，对该节点的所有邻居依次进行如下处理:</p>
+</li>
+<li><p>就将所有邻居中权重最大的节点对应的类做为该节点的类别，完成对该节点的类别更新。</p>
+</li>
+<li><p>如果有两个邻居属于同一个类，那么就将同一个类下的邻居权重累加。最后，比较该节点下的所有邻居节点所属的类别的累加权重，取权重最大的类别作为当前节点的类别。</p>
+</li>
+<li><p>当所有的节点都完成后，一次迭代完成。</p>
+</li>
+<li><p>重复迭代步骤，直到达到迭代次数</p>
+</li>
+</ul>
+<blockquote>
+<p>该算法的结果主要依赖于模型的效果和阈值的选择,在迭代时,将相似度作为权重.</p>
+</blockquote>
+<p>python代码实现参考: <a href="https://blog.csdn.net/shubao0071/article/details/79086096" target="_blank" rel="external">Chinese-whisper:一种简洁的分类方法</a></p>
+]]></content>
+      
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[git rebase]]></title>
       <url>http://xiaqunfeng.cc/2018/07/11/git-rebase/</url>
       <content type="html"><![CDATA[<p>三种使用场景：一是合并多个commit；二是基于不同branch在执行merge时的rebase；三是拆分commit。</p>
