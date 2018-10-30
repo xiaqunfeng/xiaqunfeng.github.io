@@ -6,22 +6,18 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
-  <title>Remove Big RBD Image | 夏天的风的博客</title>
+  <title>安装nvidia显卡驱动 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="对较大的RBD image采用两种方法进行移除实验，并给出结果对比。">
+  <meta name="description" content="记录在GPU机器上安装显卡驱动的过程。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Remove Big RBD Image">
-<meta property="og:url" content="http://xiaqunfeng.cc/2017/07/28/Remove-Big-RBD-Image/index.html">
+<meta property="og:title" content="安装nvidia显卡驱动">
+<meta property="og:url" content="http://xiaqunfeng.cc/2018/10/30/nvidia-driver-install/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="对较大的RBD image采用两种方法进行移除实验，并给出结果对比。">
-<meta property="og:image" content="http://cephnotes.ksperis.com/images/img012.png">
-<meta property="og:image" content="http://cephnotes.ksperis.com/images/img010.png">
-<meta property="og:image" content="http://cephnotes.ksperis.com/images/img011.png">
-<meta property="og:updated_time" content="2018-03-27T01:00:42.000Z">
+<meta property="og:description" content="记录在GPU机器上安装显卡驱动的过程。">
+<meta property="og:updated_time" content="2018-10-30T11:53:41.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Remove Big RBD Image">
-<meta name="twitter:description" content="对较大的RBD image采用两种方法进行移除实验，并给出结果对比。">
-<meta name="twitter:image" content="http://cephnotes.ksperis.com/images/img012.png">
+<meta name="twitter:title" content="安装nvidia显卡驱动">
+<meta name="twitter:description" content="记录在GPU机器上安装显卡驱动的过程。">
   
     <link rel="alternative" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
   
@@ -160,58 +156,59 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Remove-Big-RBD-Image" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-nvidia-driver-install" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Remove Big RBD Image
+      安装nvidia显卡驱动
     </h1>
   
 
         
-        <a href="/2017/07/28/Remove-Big-RBD-Image/" class="archive-article-date">
-  	<time datetime="2017-07-28T01:50:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-28</time>
+        <a href="/2018/10/30/nvidia-driver-install/" class="archive-article-date">
+  	<time datetime="2018-10-30T11:52:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-30</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>对较大的RBD image采用两种方法进行移除实验，并给出结果对比。<br><a id="more"></a></p>
-<p>创建一个容量疯狂大的磁盘很有趣，但是有一点难移除。</p>
-<center><img src="http://cephnotes.ksperis.com/images/img012.png" alt="img"></center>
-
-<p>这里有一个移除特别大image的小技巧（谨慎使用！），使用 <code>rm rbd</code> 命令（如果image没有初始化，或者没有填充满）。</p>
-<h2 id="Image-format-1"><a href="#Image-format-1" class="headerlink" title="Image format 1 :"></a>Image format 1 :</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ rbd info rbdbigsize</div><div class="line">rbd image &apos;rbdbigsize&apos;:</div><div class="line">    size 1862 PB in 500000000000 objects</div><div class="line">    order 22 (4096 kB objects)</div><div class="line">    block_name_prefix: rb.0.47aa.74b0dc51</div><div class="line">    format: 1</div></pre></td></tr></table></figure>
-<p>删除头文件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ rados -p rbd rm rbdbigsize.rbd</div></pre></td></tr></table></figure>
-<p>删除所有rbd数据：(这可能需要一些时间，取决于块设备上已经使用的空间)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ rados -p rbd ls | grep &apos;^rb.0.47aa.74b0dc51&apos; | xargs -n 200  rados -p rbd rm</div></pre></td></tr></table></figure>
-<p>最后，从rbd list中删除：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ rbd rm rbdbigsize</div><div class="line">2014-06-12 16:27:20.838596 7fd86dff3760 -1 librbd::ImageCtx: error finding header: (2) No such file or directory</div><div class="line">Removing image: 100% complete...done.</div></pre></td></tr></table></figure>
-<h2 id="Image-format-2"><a href="#Image-format-2" class="headerlink" title="Image format 2 :"></a>Image format 2 :</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$  rbd info rbdbigsize</div><div class="line">rbd image &apos;rbdbigsize&apos;:</div><div class="line">        size 1024 TB in 268435456 objects</div><div class="line">        order 22 (4096 kB objects)</div><div class="line">        block_name_prefix: rbd_data.81d12ae8944a</div><div class="line">        format: 2</div><div class="line">        features: layering</div></pre></td></tr></table></figure>
-<p>删除头文件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ rados -p rbd rm rbd_id.rbdbigsize </div><div class="line">$ rados -p rbd rm rbd_header.81d12ae8944a</div></pre></td></tr></table></figure>
-<p>删除所有rbd 数据:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ rados -p rbd ls | grep &apos;^rbd_data.81d12ae8944a.&apos; | xargs -n 200  rados -p rbd rm</div></pre></td></tr></table></figure>
-<p>从 rbd list中删除 :</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ rbd rm rbdbigsize</div><div class="line">2014-06-12 17:37:24.483587 7f413506c760 -1 librbd::ImageCtx: error finding header: (2) No such file or directory</div><div class="line">Removing image: 100% complete...done.</div></pre></td></tr></table></figure>
-<h2 id="时间对比"><a href="#时间对比" class="headerlink" title="时间对比"></a>时间对比</h2><p>1PB 已格式化块设备删除时间示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ rbd create rbdbigsize --size=1073741824 --image-format=2</div><div class="line">$ rbd map rbdbigsize</div><div class="line">$ mkfs.xfs /dev/rbd0</div><div class="line">$ rbd unmap /dev/rbd0</div><div class="line"></div><div class="line">$ rados -p rbd ls | grep &apos;^rbd_data.81d12ae8944a.&apos; | wc -l</div><div class="line">1536</div></pre></td></tr></table></figure>
-<p>块设备仅由 1536 个块组成，可以通过 <code>rados rm</code> 快速删除：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ time rados -p rbd ls | grep &apos;^rbd_data.81d12ae8944a.&apos; | xargs -n 200  rados -p rbd rm</div><div class="line">real    0m10.073s</div><div class="line">user    0m1.244s</div><div class="line">sys 0m0.228s</div></pre></td></tr></table></figure>
-<p>对比：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ time rbd rm rbdbigsize</div><div class="line">Removing image: 100% complete...done.</div><div class="line"></div><div class="line">real    1123m5.409s</div><div class="line">user    686m19.924s</div><div class="line">sys     229m56.596s</div></pre></td></tr></table></figure>
-<center><img src="http://cephnotes.ksperis.com/images/img010.png" alt="img"></center>
-
-<h2 id="Fully-initialized-image"><a href="#Fully-initialized-image" class="headerlink" title="Fully initialized image :"></a>Fully initialized image :</h2><p>当然，删除一个完全初始化的 image 使用 <code>rbd rm</code> 更快</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">$ rbd create rbdbigsize --size 1048576</div><div class="line">$ rbd map rbdbigsize; dd if=/dev/zero of=/dev/rbd0; rbd unmap /dev/rbd0;</div><div class="line">$ time (rados -p rbd ls | grep `rbd info rbdbigsize | grep block_name_prefix | grep -o &apos;rb.*$&apos;` | xargs -n 200  rados -p rbd rm; rados -p rbd rm rbdbigsize.rbd; rbd rm rbdbigsize)</div><div class="line"></div><div class="line">real    143m6.373s</div><div class="line">user    2m49.100s</div><div class="line">sys     0m22.080s</div><div class="line"></div><div class="line"></div><div class="line">$ rbd create rbdbigsize --size 1048576</div><div class="line">$ rbd map rbdbigsize; dd if=/dev/zero of=/dev/rbd0; rbd unmap /dev/rbd0;</div><div class="line">$ time rbd rm rbdbigsize</div><div class="line"></div><div class="line">real   88m44.121s</div><div class="line">user    1m5.464s</div><div class="line">sys     0m25.244s</div></pre></td></tr></table></figure>
-<center><img src="http://cephnotes.ksperis.com/images/img011.png" alt="img"></center>
-
-<p>本文为译文，原文链接：<a href="http://cephnotes.ksperis.com/blog/2014/07/04/remove-big-rbd-image" target="_blank" rel="external">Remove Big RBD Image</a></p>
+        <p>记录在GPU机器上安装显卡驱动的过程。<br><a id="more"></a></p>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>1、系统版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">root@jqgpu34:~# lsb_release -a</div><div class="line">No LSB modules are available.</div><div class="line">Distributor ID:	Ubuntu</div><div class="line">Description:	Ubuntu 16.04.2 LTS</div><div class="line">Release:	16.04</div><div class="line">Codename:	xenial</div></pre></td></tr></table></figure>
+<p>2、内核版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root@jqgpu34:~# uname -r</div><div class="line">4.4.0-62-generic</div></pre></td></tr></table></figure>
+<p>3、显卡</p>
+<p>显卡型号：Tesla P4</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">root@jqgpu34:~# lspci | grep -i nvidia</div><div class="line">04:00.0 3D controller: NVIDIA Corporation Device 1bb3 (rev a1)</div><div class="line">05:00.0 3D controller: NVIDIA Corporation Device 1bb3 (rev a1)</div><div class="line">08:00.0 3D controller: NVIDIA Corporation Device 1bb3 (rev a1)</div><div class="line">09:00.0 3D controller: NVIDIA Corporation Device 1bb3 (rev a1)</div><div class="line">85:00.0 3D controller: NVIDIA Corporation Device 1bb3 (rev a1)</div><div class="line">86:00.0 3D controller: NVIDIA Corporation Device 1bb3 (rev a1)</div><div class="line">89:00.0 3D controller: NVIDIA Corporation Device 1bb3 (rev a1)</div><div class="line">8a:00.0 3D controller: NVIDIA Corporation Device 1bb3 (rev a1)</div></pre></td></tr></table></figure>
+<p>显示有8张卡。</p>
+<h2 id="卸载掉原有驱动"><a href="#卸载掉原有驱动" class="headerlink" title="卸载掉原有驱动"></a>卸载掉原有驱动</h2><p>如果没有安装驱动，忽略</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get remove –purge nvidia*</div></pre></td></tr></table></figure>
+<h2 id="禁用nouveau"><a href="#禁用nouveau" class="headerlink" title="禁用nouveau"></a>禁用nouveau</h2><p>安装NVIDIA需要把系统自带的驱动禁用</p>
+<p>禁用前：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">root@jqgpu34:~# lsmod | grep nouveau</div><div class="line">nouveau              1495040  0</div><div class="line">video                  40960  1 nouveau</div><div class="line">ttm                    94208  2 ast,nouveau</div><div class="line">drm_kms_helper        155648  2 ast,nouveau</div><div class="line">mxm_wmi                16384  1 nouveau</div><div class="line">i2c_algo_bit           16384  3 ast,igb,nouveau</div><div class="line">drm                   364544  5 ast,ttm,drm_kms_helper,nouveau</div><div class="line">wmi                    20480  2 mxm_wmi,nouveau</div></pre></td></tr></table></figure>
+<p>1、打开文件: <code>/etc/modprobe.d/blacklist.conf</code>，在末尾添加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">blacklist nouveau</div></pre></td></tr></table></figure>
+<p>2、执行生效命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">root@jqgpu34:~# update-initramfs -u</div><div class="line">update-initramfs: Generating /boot/initrd.img-4.4.0-62-generic</div><div class="line">cryptsetup: WARNING: could not determine root device from /etc/fstab</div><div class="line">W: Possible missing firmware /lib/firmware/ast_dp501_fw.bin for module ast</div><div class="line">W: mdadm: /etc/mdadm/mdadm.conf defines no arrays.</div></pre></td></tr></table></figure>
+<p>忽略warning。</p>
+<p>3、重启并输入如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">root@jqgpu34:~# lsmod | grep nouveau</div></pre></td></tr></table></figure>
+<p>无任何输出，表示禁用成功。</p>
+<h2 id="安装nvidia显卡驱动"><a href="#安装nvidia显卡驱动" class="headerlink" title="安装nvidia显卡驱动"></a>安装nvidia显卡驱动</h2><p>1、下载并安装</p>
+<p>下载驱动：<a href="https://www.nvidia.cn/Download/index.aspx?lang=cn" target="_blank" rel="external">https://www.nvidia.cn/Download/index.aspx?lang=cn</a></p>
+<p>根据系统和显卡情况正确选择并下载驱动</p>
+<p>将下载的驱动文件拷贝到GPU机器上</p>
+<p>添加可执行权限并运行</p>
+<p>注：Tesla P4 + Ubuntu1604 + 64-bit + CUDA Toolkit 10.0 + Chinese <a href="http://p926l57yp.bkt.clouddn.com/NVIDIA-Linux-x86_64-410.72.run" target="_blank" rel="external">下载链接</a>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">root@jqgpu34:~# chmod a+x NVIDIA-Linux-x86_64-410.72.run</div><div class="line">root@jqgpu34:~# ./NVIDIA-Linux-x86_64-410.72.run</div><div class="line">Verifying archive integrity... OK</div><div class="line">Uncompressing NVIDIA Accelerated Graphics Driver for Linux-x86_64 410.72...................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................</div></pre></td></tr></table></figure>
+<p>中间会出现 <code>WARNING</code>，一路回车忽略。</p>
+<p>2、检查是否安装成功</p>
+<p>显示如下表示安装成功</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">root@jqgpu34:~# nvidia-smi</div><div class="line">Tue Oct 30 16:37:24 2018</div><div class="line">+-----------------------------------------------------------------------------+</div><div class="line">| NVIDIA-SMI 410.72       Driver Version: 410.72       CUDA Version: 10.0     |</div><div class="line">|-------------------------------+----------------------+----------------------+</div><div class="line">| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |</div><div class="line">| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |</div><div class="line">|===============================+======================+======================|</div><div class="line">|   0  Tesla P4            Off  | 00000000:04:00.0 Off |                  N/A |</div><div class="line">| N/A   38C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</div><div class="line">+-------------------------------+----------------------+----------------------+</div><div class="line">|   1  Tesla P4            Off  | 00000000:05:00.0 Off |                  N/A |</div><div class="line">| N/A   39C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</div><div class="line">+-------------------------------+----------------------+----------------------+</div><div class="line">|   2  Tesla P4            Off  | 00000000:08:00.0 Off |                  N/A |</div><div class="line">| N/A   39C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</div><div class="line">+-------------------------------+----------------------+----------------------+</div><div class="line">|   3  Tesla P4            Off  | 00000000:09:00.0 Off |                  N/A |</div><div class="line">| N/A   38C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</div><div class="line">+-------------------------------+----------------------+----------------------+</div><div class="line">|   4  Tesla P4            Off  | 00000000:85:00.0 Off |                  N/A |</div><div class="line">| N/A   35C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</div><div class="line">+-------------------------------+----------------------+----------------------+</div><div class="line">|   5  Tesla P4            Off  | 00000000:86:00.0 Off |                  N/A |</div><div class="line">| N/A   38C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</div><div class="line">+-------------------------------+----------------------+----------------------+</div><div class="line">|   6  Tesla P4            Off  | 00000000:89:00.0 Off |                  N/A |</div><div class="line">| N/A   37C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</div><div class="line">+-------------------------------+----------------------+----------------------+</div><div class="line">|   7  Tesla P4            Off  | 00000000:8A:00.0 Off |                  N/A |</div><div class="line">| N/A   38C    P0    23W /  75W |      0MiB /  7611MiB |      4%      Default |</div><div class="line">+-------------------------------+----------------------+----------------------+</div><div class="line"></div><div class="line">+-----------------------------------------------------------------------------+</div><div class="line">| Processes:                                                       GPU Memory |</div><div class="line">|  GPU       PID   Type   Process name                             Usage      |</div><div class="line">|=============================================================================|</div><div class="line">|  No running processes found                                                 |</div><div class="line">+-----------------------------------------------------------------------------+</div></pre></td></tr></table></figure>
 
       
 
@@ -251,29 +248,7 @@ var _hmt = _hmt || [];
     <div class="article-info article-info-index">
       
       
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">rbd</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
       
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Ceph//" class="article-tag-list-link color5">Ceph</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
 
       
 
@@ -323,7 +298,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/07/28/Remove-Big-RBD-Image/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2018/10/30/nvidia-driver-install/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -337,18 +312,9 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2017/07/28/ceph-placement-group/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          ceph placement group
-        
-      </div>
-    </a>
   
-  
-    <a href="/2017/07/17/centos下ceph部署/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">centos下ceph部署</div>
+    <a href="/2018/10/18/Hive/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hive架构及应用介绍【转】</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -375,7 +341,7 @@ var _hmt = _hmt || [];
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Image-format-1"><span class="toc-number">1.</span> <span class="toc-text">Image format 1 :</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Image-format-2"><span class="toc-number">2.</span> <span class="toc-text">Image format 2 :</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#时间对比"><span class="toc-number">3.</span> <span class="toc-text">时间对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Fully-initialized-image"><span class="toc-number">4.</span> <span class="toc-text">Fully initialized image :</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#环境"><span class="toc-number">1.</span> <span class="toc-text">环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#卸载掉原有驱动"><span class="toc-number">2.</span> <span class="toc-text">卸载掉原有驱动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#禁用nouveau"><span class="toc-number">3.</span> <span class="toc-text">禁用nouveau</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装nvidia显卡驱动"><span class="toc-number">4.</span> <span class="toc-text">安装nvidia显卡驱动</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -400,7 +366,7 @@ var _hmt = _hmt || [];
 <script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
 <script>
 var gitment = new Gitment({
-  id: "Fri Jul 28 2017 09:50:45 GMT+0800",
+  id: "Tue Oct 30 2018 19:52:15 GMT+0800",
   owner: 'xiaqunfeng',
   repo: 'xiaqunfeng.github.io',
   oauth: {
