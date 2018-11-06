@@ -4,13 +4,15 @@
 
     
   <url>
-    <loc>http://xiaqunfeng.cc/2018/10/30/nvidia-driver-install/</loc>
-    <lastmod>2018-10-30T11:53:41.000Z</lastmod>
+    <loc>http://xiaqunfeng.cc/2018/10/18/Hive/</loc>
+    <lastmod>2018-11-06T02:43:10.000Z</lastmod>
     <data>
         <display>
-        <title>安装nvidia显卡驱动</title>
-        <pubTime>2018-10-30T11:52:15.000Z</pubTime>
+        <title>Hive架构及应用介绍【转】</title>
+        <pubTime>2018-10-18T03:40:51.000Z</pubTime>
         
+        <tag>architecture</tag>
+         
          
            
         </display>
@@ -19,15 +21,35 @@
 
     
   <url>
-    <loc>http://xiaqunfeng.cc/2018/10/18/Hive/</loc>
-    <lastmod>2018-10-18T09:17:01.000Z</lastmod>
+    <loc>http://xiaqunfeng.cc/2018/10/30/nvidia-driver-install/</loc>
+    <lastmod>2018-11-06T02:40:39.000Z</lastmod>
     <data>
         <display>
-        <title>Hive架构及应用介绍【转】</title>
-        <pubTime>2018-10-18T03:40:51.000Z</pubTime>
+        <title>安装nvidia显卡驱动</title>
+        <pubTime>2018-10-30T11:52:15.000Z</pubTime>
+        
+        <tag>ubuntu</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2018/08/14/Chinese-Whispers/</loc>
+    <lastmod>2018-11-06T02:40:03.000Z</lastmod>
+    <data>
+        <display>
+        <title>Chinese Whispers</title>
+        <pubTime>2018-08-14T06:22:00.000Z</pubTime>
         
          
            
+             
+              <breadCrumb title="DeepLearning" url="http://xiaqunfeng.cc/categories/DeepLearning/"/>
+          
         </display>
     </data>
     </url>
@@ -48,21 +70,6 @@
              
               <breadCrumb title="DeepLearning" url="http://xiaqunfeng.cc/categories/DeepLearning/"/>
           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2018/08/14/Chinese-Whispers/</loc>
-    <lastmod>2018-08-14T08:26:03.000Z</lastmod>
-    <data>
-        <display>
-        <title>Chinese Whispers</title>
-        <pubTime>2018-08-14T06:22:00.000Z</pubTime>
-        
-         
-           
         </display>
     </data>
     </url>

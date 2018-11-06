@@ -6,18 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
-  <title>ceph osd相关操作 | 夏天的风的博客</title>
+  <title>Tag: architecture | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="ceph osd的相关操作，包括osd的部署（自动和手动部署）、OSD操作、journal软链、uuid等。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="ceph osd相关操作">
-<meta property="og:url" content="http://xiaqunfeng.cc/2017/08/17/ceph-osd相关操作/index.html">
+  <meta name="description" content="关注深度学习、分布式存储、云计算">
+<meta property="og:type" content="website">
+<meta property="og:title" content="夏天的风的博客">
+<meta property="og:url" content="http://xiaqunfeng.cc/tags/architecture/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="ceph osd的相关操作，包括osd的部署（自动和手动部署）、OSD操作、journal软链、uuid等。">
-<meta property="og:updated_time" content="2018-03-27T01:06:36.000Z">
+<meta property="og:description" content="关注深度学习、分布式存储、云计算">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ceph osd相关操作">
-<meta name="twitter:description" content="ceph osd的相关操作，包括osd的部署（自动和手动部署）、OSD操作、journal软链、uuid等。">
+<meta name="twitter:title" content="夏天的风的博客">
+<meta name="twitter:description" content="关注深度学习、分布式存储、云计算">
   
     <link rel="alternative" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
   
@@ -156,369 +155,60 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-ceph-osd相关操作" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      ceph osd相关操作
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2018" class="archive-year">2018</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2018/10/18/Hive/" class="archive-article-date">
+  	<time datetime="2018-10-18T03:40:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-18</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2018/10/18/Hive/">Hive架构及应用介绍【转】</a>
     </h1>
   
 
-        
-        <a href="/2017/08/17/ceph-osd相关操作/" class="archive-article-date">
-  	<time datetime="2017-08-17T08:07:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-17</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>ceph osd的相关操作，包括osd的部署（自动和手动部署）、OSD操作、journal软链、uuid等。<br><a id="more"></a></p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这是之前笔记的一个整理，基于ceph jewel版本。</p>
-<ul>
-<li>自动部署osd可以采用 <code>ceph-deploy</code> ，也可以采用 <code>ceph-disk</code> 命令</li>
-<li>luminous版本中，删除OSD可以直接使用 <code>ceph osd purge</code> 命令，比较省心</li>
-<li>生产环节中磁盘的挂载尽量采用uuid/partuuid</li>
-</ul>
-<h2 id="添加OSD"><a href="#添加OSD" class="headerlink" title="添加OSD"></a>添加OSD</h2><p>查看当前挂载情况</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># lsblk</div><div class="line">NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT</div><div class="line">vda    253:0    0    20G  0 disk </div><div class="line">├─vda1 253:1    0     2M  0 part </div><div class="line">├─vda2 253:2    0   476M  0 part /boot</div><div class="line">└─vda3 253:3    0  19.5G  0 part /</div><div class="line">vdb    253:16   0   200G  0 disk </div><div class="line">└─vdb1 253:17   0 186.3G  0 part /var/lib/ceph/osd/ceph-0</div><div class="line">vdc    253:32   0   200G  0 disk </div><div class="line">└─vdc1 253:33   0 186.3G  0 part /var/lib/ceph/osd/ceph-1</div></pre></td></tr></table></figure>
-<p>在三个机器上：ceph-0, ceph-1, ceph-2 上每个机器挂两块盘，自动添加方式如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">ceph-deploy osd prepare ceph-0:/dev/vdb1 ceph-0:/dev/vdc1</div><div class="line">chown ceph:ceph /dev/vdb1 /dev/vdc1</div><div class="line">ceph-deploy osd activate ceph-0:/dev/vdb1 ceph-0:/dev/vdc1</div><div class="line"></div><div class="line">ceph-deploy osd prepare ceph-1:/dev/vdb1 ceph-1:/dev/vdc1</div><div class="line">ssh ceph-1 &apos;chown ceph:ceph /dev/vdb1 /dev/vdc1&apos;</div><div class="line">ceph-deploy osd activate ceph-1:/dev/vdb1 ceph-1:/dev/vdc1</div><div class="line"></div><div class="line">ceph-deploy osd prepare ceph-2:/dev/vdb1 ceph-2:/dev/vdc1</div><div class="line">ssh ceph-2 &apos;chown ceph:ceph /dev/vdb1 /dev/vdc1&apos;</div><div class="line">ceph-deploy osd activate ceph-2:/dev/vdb1 ceph-2:/dev/vdc1</div></pre></td></tr></table></figure>
-<p>这种方式添加完以后，OSD的状态就已经是 up 和 in 的状态了。</p>
-<h2 id="手动部署OSD"><a href="#手动部署OSD" class="headerlink" title="手动部署OSD"></a>手动部署OSD</h2><h3 id="手动添加一个OSD过程"><a href="#手动添加一个OSD过程" class="headerlink" title="手动添加一个OSD过程"></a>手动添加一个OSD过程</h3><p>可以使用UUID来创建OSD，也可以不用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># uuidgen</div><div class="line">334d3f46-938c-41b7-9dc9-edc7e3036cbe</div><div class="line"># ceph osd create 334d3f46-938c-41b7-9dc9-edc7e3036cbe</div></pre></td></tr></table></figure>
-<p>如果没有事先创建OSD的话，也可以在后面创建</p>
-<p><strong>1、创建OSD目录，并把磁盘挂载到该目录</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mkdir /var/lib/ceph/osd/ceph-0</div><div class="line">mkfs -t xfs -d name=/dev/sda1 -f</div><div class="line">mount -noatime /dev/sda1 /var/lib/ceph/osd/ceph-0/</div></pre></td></tr></table></figure>
-<p>查看挂载</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># mount | egrep sda</div><div class="line">/dev/sda1 on /var/lib/ceph/osd/ceph-0 type xfs (rw)</div></pre></td></tr></table></figure>
-<p><strong>2、初始化OSD数据目录</strong></p>
-<p>不带uuid</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph-osd -i 0 --mkfs --mkkey</div></pre></td></tr></table></figure>
-<p>带uuid</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph-osd -i 0 --mkfs --mkkey --osd-uuid 334d3f46-938c-41b7-9dc9-edc7e3036cbe</div></pre></td></tr></table></figure>
-<p><strong>3、注册OSD的key权限</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph auth add osd.0 osd &apos;allow *&apos; mon &apos;allow profile osd&apos; -i /var/lib/ceph/osd/ceph-0/keyring</div></pre></td></tr></table></figure>
-<p><strong>4、添加OSD节点到 crush map中</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ceph osd crush add-bucket ceph01 host</div><div class="line">ceph osd crush move ceph01 root=default</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ceph create osd		// 如果之前没有创建OSD，那在加入crush map前要调用该命令创建OSD</div><div class="line">ceph osd crush add osd.0 1.0 host=ceph01</div></pre></td></tr></table></figure>
-<p><strong>5、启动OSD</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">start ceph-osd id=0</div></pre></td></tr></table></figure>
-<h3 id="shell脚本示例"><a href="#shell脚本示例" class="headerlink" title="shell脚本示例"></a>shell脚本示例</h3><p>在节点data01上部署osd 0，1，2，3（不包含目录的创建、磁盘格式化和挂载）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line"></div><div class="line">host_name=data01</div><div class="line"># 以下两条命令一个节点执行一次就好了，不需要每添加一个OSD执行一次</div><div class="line">ceph osd crush add-bucket $host_name host		</div><div class="line">ceph osd crush move $host_name root=default		</div><div class="line"></div><div class="line">for osd_num in $(seq 0 3)</div><div class="line">do</div><div class="line">    ceph-osd -i $osd_num --mkfs --mkkey</div><div class="line">    ceph auth add osd.$osd_num osd &apos;allow *&apos; mon &apos;allow rwx&apos; -i /var/lib/ceph/osd/ceph-$osd_num/keyring</div><div class="line">    ceph osd create</div><div class="line">    ceph osd crush add osd.$osd_num 1.0 host=$host_name</div><div class="line">    ceph osd in $osd_num</div><div class="line">    chown -R ceph:ceph /var/lib/ceph/osd/ceph-$osd_num</div><div class="line">    start ceph-osd id=$osd_num</div><div class="line">done</div></pre></td></tr></table></figure>
-<p>注：手动添加方式还可以参考<a href="http://docs.ceph.org.cn/rados/operations/add-or-rm-osds/" target="_blank" rel="external">官方文档</a></p>
-<h2 id="将挂载信息写入fstab"><a href="#将挂载信息写入fstab" class="headerlink" title="将挂载信息写入fstab"></a>将挂载信息写入fstab</h2><blockquote>
-<p>好处是重启以后不需要再去手动mount。</p>
-</blockquote>
-<p>在 <code>/etc/fstab</code> 末尾添加如下信息</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/dev/vdb1	/var/lib/ceph/osd/ceph-0	xfs	defaults	0	2</div><div class="line">/dev/vdc1	/var/lib/ceph/osd/ceph-1	xfs	defaults	0	2</div></pre></td></tr></table></figure>
-<p>然后执行命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mount -a</div></pre></td></tr></table></figure>
-<p>没有任何输出，表示挂载成功。</p>
-<p>查看挂载信息</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># df</div><div class="line">Filesystem     1K-blocks    Used Available Use% Mounted on</div><div class="line">udev             2009636      12   2009624   1% /dev</div><div class="line">tmpfs             404696     552    404144   1% /run</div><div class="line">/dev/vda3       20027260 3009144  15977732  16% /</div><div class="line">none                   4       0         4   0% /sys/fs/cgroup</div><div class="line">none                5120       0      5120   0% /run/lock</div><div class="line">none             2023472      16   2023456   1% /run/shm</div><div class="line">none              102400       0    102400   0% /run/user</div><div class="line">/dev/vda2         463844   44634    390743  11% /boot</div><div class="line">/dev/vdb1      195216252 5282432 189933820   3% /var/lib/ceph/osd/ceph-0</div><div class="line">/dev/vdc1      195216252 5281204 189935048   3% /var/lib/ceph/osd/ceph-1</div></pre></td></tr></table></figure>
-<h2 id="启动OSD"><a href="#启动OSD" class="headerlink" title="启动OSD"></a>启动OSD</h2><p>比如机器重启后，OSD处于 down 和 out 的状态，还没运行，必须先启动 OSD 它才能收数据。（前提是已经挂载好了）</p>
-<p>在 Debian/Ubuntu 上用 Upstart。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo start ceph-osd id=&#123;osd-num&#125;</div></pre></td></tr></table></figure>
-<p>在 CentOS/RHEL 上用 sysvinit 。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo /etc/init.d/ceph start osd.&#123;osd-num&#125;</div></pre></td></tr></table></figure>
-<p>一旦你启动了 OSD ，其状态就由 down 变成 up。</p>
-<p>注：必须去OSD所在节点上执行该命令才可以成功。好像不是的</p>
-<h2 id="踢出和加入集群"><a href="#踢出和加入集群" class="headerlink" title="踢出和加入集群"></a>踢出和加入集群</h2><p>把 OSD 踢出集群</p>
-<p>删除 OSD 前，它通常是 up 且 in 的，要先把它踢出集群，以使 Ceph 启动重新均衡、把数据拷贝到其他 OSD 。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph osd out &#123;osd-num&#125;</div></pre></td></tr></table></figure>
-<p>同样的，把OSD加入集群</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph osd in &#123;osd-num&#125;</div></pre></td></tr></table></figure>
-<h2 id="停止OSD"><a href="#停止OSD" class="headerlink" title="停止OSD"></a>停止OSD</h2><p>把 OSD 踢出集群后，它可能仍在运行，就是说其状态为 up 且 out 。删除前要先停止 OSD 进程。</p>
-<p>CentOS下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ssh &#123;osd-host&#125;</div><div class="line">sudo /etc/init.d/ceph stop osd.&#123;osd-num&#125;</div></pre></td></tr></table></figure>
-<p>ubuntu下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">stop ceph-osd id=&#123;osd-num&#125;</div></pre></td></tr></table></figure>
-<p>停止 OSD 后，状态变为 down 。</p>
-<h2 id="删除OSD"><a href="#删除OSD" class="headerlink" title="删除OSD"></a>删除OSD</h2><p>此步骤依次把一个 OSD 移出集群 CRUSH 图、删除认证密钥、删除 OSD 图条目、删除 ceph.conf 条目。如果主机有多个硬盘，每个硬盘对应的 OSD 都得重复此步骤。</p>
-<p>1、删除 CRUSH 图的对应 OSD 条目，它就不再接收数据了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph osd crush remove &#123;name&#125;		// ex: name = osd.0</div></pre></td></tr></table></figure>
-<p>2、删除 OSD 认证密钥：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph auth del osd.&#123;osd-num&#125;</div></pre></td></tr></table></figure>
-<p>3、ceph-{osd-num} 路径里的 ceph 值是 $cluster-$id ，如果集群名字不是 ceph ，这里要更改。</p>
-<p>删除 OSD 。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph osd rm &#123;osd-num&#125;</div></pre></td></tr></table></figure>
-<p>如果将OSD相关的配置文件写到ceph配置文件中，那接下来还要删除配置文件中相关信息：</p>
-<p>登录到保存 ceph.conf 主拷贝的主机。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ssh &#123;admin-host&#125;</div><div class="line">cd /etc/ceph</div><div class="line">vim ceph.conf</div></pre></td></tr></table></figure>
-<p>从 ceph.conf 配置文件里删除对应条目。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[osd.1]</div><div class="line">        host = &#123;hostname&#125;</div></pre></td></tr></table></figure>
-<p>从保存 ceph.conf 主拷贝的主机，把更新过的 ceph.conf 拷贝到集群其他主机的 /etc/ceph 目录下。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph-deploy --overwrite-conf config push &#123;hostname1&#125; &#123;hostname2&#125;</div></pre></td></tr></table></figure>
-<p>完整的删除流程</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">1）ceph osd crush reweight osd.x 0.0  </div><div class="line">... 等待平衡结束....  </div><div class="line">2）ceph osd out osd.x  </div><div class="line">3）service ceph stop osd.x</div><div class="line"></div><div class="line">4）ceph osd crush remove osd.x  </div><div class="line">5）ceph auth del osd.x  </div><div class="line">6）ceph osd rm X</div></pre></td></tr></table></figure>
-<h2 id="调整osd的权重"><a href="#调整osd的权重" class="headerlink" title="调整osd的权重"></a>调整osd的权重</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph osd crush reweight osd.&#123;osd-no&#125; 1.000</div></pre></td></tr></table></figure>
-<p>一般 1T 盘的权重为1.0，按照这个基准来调整OSD的权重。</p>
-<h2 id="清除ceph信息"><a href="#清除ceph信息" class="headerlink" title="清除ceph信息"></a>清除ceph信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">先停掉ceph相关进程</div><div class="line">rm /etc/ceph/*</div><div class="line">rm /var/lib/ceph/*</div></pre></td></tr></table></figure>
-<p>格式化和挂载</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">umount /var/lib/ceph/osd/ceph-26</div><div class="line">mkfs -t xfs -d name=/dev/sdf14 -f</div><div class="line">mount -noatime /dev/sdf14 /var/lib/ceph/osd/ceph-0</div></pre></td></tr></table></figure>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>问题：运行osd启动命令后发现 osd还是down的状态</p>
-<p>查看日志：<code>vim /var/log/ceph/ceph-osd.x.log</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">2017-04-05 08:52:30.292249 7fe3789f1800  0 set uid:gid to 64045:64045 (ceph:ceph)</div><div class="line">2017-04-05 08:52:30.292263 7fe3789f1800  0 ceph version 10.2.5 (c461ee19ecbc0c5c330aca20f7392c9a00730367), process ceph-osd, pid 27926</div><div class="line">2017-04-05 08:52:30.293056 7fe3789f1800  0 pidfile_write: ignore empty --pid-file</div><div class="line">2017-04-05 08:52:30.310394 7fe3789f1800 -1 filestore(/var/lib/ceph/osd/ceph-0) FileStore::mount: unable to access basedir &apos;/var/lib/ceph/osd/ceph-0&apos;: (13) Permission denied</div><div class="line">2017-04-05 08:52:30.310408 7fe3789f1800 -1 osd.0 0 OSD:init: unable to mount object store</div><div class="line">2017-04-05 08:52:30.310414 7fe3789f1800 -1  ** ERROR: osd init failed: (13) Permission denied</div></pre></td></tr></table></figure>
-<p>权限的问题，修改osd目录权限</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chown -R ceph:ceph /var/lib/ceph/osd</div></pre></td></tr></table></figure>
-<h2 id="journal软链接"><a href="#journal软链接" class="headerlink" title="journal软链接"></a>journal软链接</h2><p>将ceph集群OSD对应的journal软链接到SSD的一个分区，提高journal速度。给每个OSD的journal配置独立的SSD分区有两种方式</p>
-<h3 id="第一种是创建OSD的时候指定分区"><a href="#第一种是创建OSD的时候指定分区" class="headerlink" title="第一种是创建OSD的时候指定分区"></a>第一种是创建OSD的时候指定分区</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ceph-deploy osd prepare ceph-4:/dev/vdb1:/dev/vde1  //前面的是数据盘，后面的是日志盘</div><div class="line">...</div></pre></td></tr></table></figure>
-<h3 id="第二种就是软链接"><a href="#第二种就是软链接" class="headerlink" title="第二种就是软链接"></a>第二种就是软链接</h3><p>以下以 osd.0 为例，使用uuid</p>
-<p>1、设置noout标志，防止集群进行数据恢复</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph osd set noout</div></pre></td></tr></table></figure>
-<p>2、停止OSD进程</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">stop ceph-osd id=0</div></pre></td></tr></table></figure>
-<p>3、下刷journal到OSD中</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph-osd -i 0 --flush-journal</div></pre></td></tr></table></figure>
-<p>4、移除旧的journal</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rm -rf /var/lib/ceph/osd/ceph-0/journal</div></pre></td></tr></table></figure>
-<p>5、将新的journal链接到原来的位置</p>
-<p>查看要链接的SSD分区uuid</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ll /dev/disk/by-partuuid/ | grep sdb1</div><div class="line">lrwxrwxrwx 1 root root  10 Apr  5 11:26 bcb81c86-5c98-4f65-9102-a0da5d1e5241 -&gt; ../../sdb1</div></pre></td></tr></table></figure>
-<p>链接</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ln -s /dev/disk/by-partuuid/bcb81c86-5c98-4f65-9102-a0da5d1e5241 /var/lib/ceph/osd/ceph-0/journal</div></pre></td></tr></table></figure>
-<p>修改权限</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chown ceph:ceph /var/lib/ceph/osd/ceph-0/journal</div></pre></td></tr></table></figure>
-<p>保存uuid</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo bcb81c86-5c98-4f65-9102-a0da5d1e5241 &gt; /var/lib/ceph/osd/ceph-0/journal_uuid</div></pre></td></tr></table></figure>
-<p>6、创建journal</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph-osd -i 0 --mkjournal</div></pre></td></tr></table></figure>
-<p>7、启动osd</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">start ceph-osd id=0</div></pre></td></tr></table></figure>
-<p>8、去除noout标志</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph osd unset noout</div></pre></td></tr></table></figure>
-<blockquote>
-<p>有时候为了图省事，不用uuid，直接使用分区名称，也可以，生产环境中必须用uuid，切记！！</p>
-</blockquote>
-<h3 id="脚本列表"><a href="#脚本列表" class="headerlink" title="脚本列表"></a>脚本列表</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">ceph osd set noout</div><div class="line">stop ceph-osd id=0</div><div class="line">ceph-osd -i 0 --flush-journal </div><div class="line">rm -rf /var/lib/ceph/osd/ceph-0/journal </div><div class="line">ln -s /dev/sdf1 /var/lib/ceph/osd/ceph-0/journal	</div><div class="line">chown -R ceph:ceph /var/lib/ceph/osd/ceph-0/journal</div><div class="line">chown -R ceph:ceph /dev/sdf1</div><div class="line">ceph-osd --mkjournal -i 0</div><div class="line">start ceph-osd id=0</div><div class="line">ceph osd unset noout</div></pre></td></tr></table></figure>
-<p>注意，在软链的时候 <code>ln -s</code> 前面的参数是设备名称 <code>/dev/sdf1</code> ，而不是其所挂载的目录 <code>/mnt/journal/ceph-0</code></p>
-<blockquote>
-<p>注意，也要修改软链设备的权限</p>
-</blockquote>
-<h2 id="persistent-block-device-naming"><a href="#persistent-block-device-naming" class="headerlink" title="persistent block device naming"></a>persistent block device naming</h2><p>如果你的机器上有不止一个 SATA, SCSI 或 IDE 磁盘控制器，那么它们所对应的设备节点将会依随机次序添加。这样就可能导致每次引导时设备的名字如 <code>/dev/sda</code> 与 <code>/dev/sdb</code> 互换了，最终导致系统不可引导、kernel panic、或者设备不可见。持久化命名法可以解决这些问题。</p>
-<p>有四种持久化命名方案：<a href="https://wiki.archlinux.org/index.php/Persistent_block_device_naming_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87" target="_blank" rel="external">by-label</a>#by-label)、<a href="https://wiki.archlinux.org/index.php/Persistent_block_device_naming_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87" target="_blank" rel="external">by-uuid</a>#by-uuid)、<a href="https://wiki.archlinux.org/index.php/Persistent_block_device_naming_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87" target="_blank" rel="external">by-id 和 by-path</a>#by-id_.E5.92.8C_by-path)。对于那些使用<a href="https://wiki.archlinux.org/index.php/GUID_Partition_Table" target="_blank" rel="external">GUID 分区表(GPT)</a>的磁盘，还有额外的两种方案，<a href="https://wiki.archlinux.org/index.php/Persistent_block_device_naming_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87" target="_blank" rel="external">by-partlabel</a>#by-partlabel) 和 <a href="https://wiki.archlinux.org/index.php/Persistent_block_device_naming_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87" target="_blank" rel="external">by-partuuid</a>#by-partuuid)。你也可以<a href="https://wiki.archlinux.org/index.php/Persistent_block_device_naming_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87" target="_blank" rel="external">使用 Udev 静态设备名</a>#.E4.BD.BF.E7.94.A8<em>Udev</em>.E9.9D.99.E6.80.81.E8.AE.BE.E5.A4.87.E5.90.8D)方案。</p>
-<p>GPT分区表的系统应用应该用 <code>blkid</code> 命令查看，列出的uuid和使用 <code>ll /dev/disk/by-uuid</code> 得到的结果一样。</p>
-<blockquote>
-<p>注：by-uuid 和 by-partuuid 得到的结果不一样，使用其中一种命名方式即可</p>
-</blockquote>
-<h3 id="by-uuid"><a href="#by-uuid" class="headerlink" title="by-uuid"></a>by-uuid</h3><p>UUID是一种给每个文件系统唯一标识符的机制。 这些标识符由文件系统实用程序（例如，mkfs。*）生成，当分区被格式化并和设计时不太可能发生冲突。 所有GNU / Linux文件系统（包括原始加密设备的交换和LUKS头）都支持UUID。 FAT和NTFS文件系统（上面的fat和windows标签）不支持UUID，但仍然列在 <code>/dev/disk/by-uuid</code> 中，具有较短的UID（唯一标识符）。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls -l /dev/disk/by-uuid/</div></pre></td></tr></table></figure>
-<p>使用UUID方法的优点是名称冲突发生的可能性远远小于标签。 此外，它在文件系统的创建时自动生成。 例如，即使设备插入另一个系统（可能具有相同标签的设备），它将保持独特。<br>缺点是UUID使得很长的代码行难以读取和中断许多配置文件（例如fstab或crypttab）中的格式化。 每次分区<strong>重新调整大小</strong>或<strong>重新格式化</strong>时，都会生成一个新的UUID，并且必须调整配置（手动）。<br>提示：如果swap分区没有分配UUID，则需要使用mkswap实用程序重置交换分区。</p>
-<h3 id="by-partuuid"><a href="#by-partuuid" class="headerlink" title="by-partuuid"></a>by-partuuid</h3><p>注意：此方法仅涉及具有GUID分区表（GPT）的磁盘。<br>像GPT分区标签一样，GPT分区UUID在GPT磁盘上的分区条目中定义。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls -l /dev/disk/by-partuuid/</div></pre></td></tr></table></figure>
-<p>关于其他的使用方式详见<a href="https://wiki.archlinux.org/index.php/Persistent_block_device_naming_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87" target="_blank" rel="external">wiki</a>)</p>
-<h2 id="关于UUID"><a href="#关于UUID" class="headerlink" title="关于UUID"></a>关于UUID</h2><p>UUID(Universally Unique Identifier)全局唯一标识符,是指在一台机器上生成的数字，它保证对在同一时空中的所有机器都是唯一的。</p>
-<p>使用UUID和使用/dev/sda5这种直接引用分区的方法的一个优点就是，当硬盘中增加了新的分区，或者分区的顺序改变后，仍然能够保证系统加载分区到正确的加载点。插拔盘并不会改变uuid。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># ls /dev/disk/by-</div><div class="line">by-id/           by-parttypeuuid/ by-path/         </div><div class="line">by-partlabel/    by-partuuid/     by-uuid/</div></pre></td></tr></table></figure>
-<p>查看uuid的命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># blkid</div><div class="line">/dev/vda1: SEC_TYPE=&quot;msdos&quot; LABEL=&quot;BOOT&quot; UUID=&quot;9485-0659&quot; TYPE=&quot;vfat&quot; </div><div class="line">/dev/vda2: UUID=&quot;30cb52e3-c54e-468c-944a-b27f2fe2dc4f&quot; TYPE=&quot;ext4&quot; </div><div class="line">/dev/vda3: UUID=&quot;012def77-c10e-47df-a669-85143d2e8073&quot; TYPE=&quot;ext4&quot; </div><div class="line">/dev/vdb1: UUID=&quot;cad11e23-e104-419d-9b61-3a1b6dc27fc9&quot; TYPE=&quot;xfs&quot;</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># blkid /dev/vdb1</div><div class="line">/dev/vdb1: UUID=&quot;cad11e23-e104-419d-9b61-3a1b6dc27fc9&quot; TYPE=&quot;xfs&quot;</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ll /dev/disk/by-uuid/ | grep vdb1</div><div class="line">lrwxrwxrwx 1 root root  10 Apr  1 16:13 cad11e23-e104-419d-9b61-3a1b6dc27fc9 -&gt; ../../vdb1</div></pre></td></tr></table></figure>
-
-      
-
-      
-        <div class="page-reward">
-          <a href="javascript:;" class="page-reward-btn tooltip-top">
-            <div class="tooltip tooltip-east">
-            <span class="tooltip-item">
-              赏
-            </span>
-            <span class="tooltip-content">
-              <span class="tooltip-text">
-                <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>O(∩_∩)O谢谢!<i class="icon icon-quo-right"></i></p>
-                  <div class="reward-box">
-                    
-                    <div class="reward-box-item">
-                      <img class="reward-img" src="/assets/img/alipay.jpg">
-                      <span class="reward-type">支付宝</span>
-                    </div>
-                    
-                    
-                    <div class="reward-box-item">
-                      <img class="reward-img" src="/assets/img/weixin.jpg">
-                      <span class="reward-type">微信</span>
-                    </div>
-                    
-                  </div>
-                </span>
-              </span>
-            </span>
-          </div>
-          </a>
-        </div>
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">osd</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">architecture</a>
         		</li>
       		
 		</ul>
 	</div>
 
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Ceph//" class="article-tag-list-link color5">Ceph</a>
-        		</li>
-      		
-		</ul>
-	</div>
+          
 
-
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/08/17/ceph-osd相关操作/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2017/08/29/Syntax-error-unexpected/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Syntax error: &#39;(&#39; unexpected
-        
-      </div>
-    </a>
   
   
-    <a href="/2017/08/07/git常用命名总结/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">git常用命令总结</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-        <div class="toc-container tooltip-left">
-            <i class="icon-font icon-category"></i>
-            <div class="tooltip tooltip-east">
-                <span class="tooltip-item">
-                </span>
-                <span class="tooltip-content">
-                    <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加OSD"><span class="toc-number">2.</span> <span class="toc-text">添加OSD</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#手动部署OSD"><span class="toc-number">3.</span> <span class="toc-text">手动部署OSD</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#手动添加一个OSD过程"><span class="toc-number">3.1.</span> <span class="toc-text">手动添加一个OSD过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shell脚本示例"><span class="toc-number">3.2.</span> <span class="toc-text">shell脚本示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#将挂载信息写入fstab"><span class="toc-number">4.</span> <span class="toc-text">将挂载信息写入fstab</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#启动OSD"><span class="toc-number">5.</span> <span class="toc-text">启动OSD</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#踢出和加入集群"><span class="toc-number">6.</span> <span class="toc-text">踢出和加入集群</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#停止OSD"><span class="toc-number">7.</span> <span class="toc-text">停止OSD</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#删除OSD"><span class="toc-number">8.</span> <span class="toc-text">删除OSD</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#调整osd的权重"><span class="toc-number">9.</span> <span class="toc-text">调整osd的权重</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#清除ceph信息"><span class="toc-number">10.</span> <span class="toc-text">清除ceph信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题"><span class="toc-number">11.</span> <span class="toc-text">问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#journal软链接"><span class="toc-number">12.</span> <span class="toc-text">journal软链接</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#第一种是创建OSD的时候指定分区"><span class="toc-number">12.1.</span> <span class="toc-text">第一种是创建OSD的时候指定分区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第二种就是软链接"><span class="toc-number">12.2.</span> <span class="toc-text">第二种就是软链接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#脚本列表"><span class="toc-number">12.3.</span> <span class="toc-text">脚本列表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#persistent-block-device-naming"><span class="toc-number">13.</span> <span class="toc-text">persistent block device naming</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#by-uuid"><span class="toc-number">13.1.</span> <span class="toc-text">by-uuid</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#by-partuuid"><span class="toc-number">13.2.</span> <span class="toc-text">by-partuuid</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于UUID"><span class="toc-number">14.</span> <span class="toc-text">关于UUID</span></a></li></ol>
-                    </div>
-                </span>
-            </div>
-        </div>
-        
-    </div>
-</aside>
-
-
-
-  
-  
+    </div></section>
   
 
-  
-
-  
-
-  
-  <div id="gitment-ctn"></div> 
-<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
-<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
-<script>
-var gitment = new Gitment({
-  id: "Thu Aug 17 2017 16:07:13 GMT+0800",
-  owner: 'xiaqunfeng',
-  repo: 'xiaqunfeng.github.io',
-  oauth: {
-    client_id: '21c3a01653d904d670a4',
-    client_secret: 'cf0e1ef08aa2e2fdfa0654901492f1738382c5d3',
-  },
-})
-gitment.render('gitment-ctn')
-</script>
-
-  
-
+    
 
 
           </div>
@@ -541,9 +231,9 @@ gitment.render('gitment-ctn')
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: true,
+		isPost: false,
 		isArchive: false,
-		isTag: false,
+		isTag: true,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,

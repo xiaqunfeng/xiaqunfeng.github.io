@@ -42,6 +42,12 @@
 ]]></content>
       
         
+        <tags>
+            
+            <tag> ubuntu </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -134,6 +140,12 @@
 </blockquote>
 ]]></content>
       
+        
+        <tags>
+            
+            <tag> architecture </tag>
+            
+        </tags>
         
     </entry>
     
@@ -334,6 +346,12 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <p>python代码实现参考: <a href="https://blog.csdn.net/shubao0071/article/details/79086096" target="_blank" rel="external">Chinese-whisper:一种简洁的分类方法</a></p>
 ]]></content>
       
+        <categories>
+            
+            <category> DeepLearning </category>
+            
+        </categories>
+        
         
     </entry>
     
