@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://xiaqunfeng.cc/2018/11/06/kubernetes-deploy/</loc>
+    <lastmod>2018-11-06T09:03:09.000Z</lastmod>
+    <data>
+        <display>
+        <title>用kubeadm在Ubuntu1604上构建k8s集群</title>
+        <pubTime>2018-11-06T09:00:06.000Z</pubTime>
+        
+        <tag>ubuntu</tag>
+         
+         
+           
+             
+              <breadCrumb title="k8s" url="http://xiaqunfeng.cc/categories/k8s/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://xiaqunfeng.cc/2018/10/18/Hive/</loc>
     <lastmod>2018-11-06T02:43:10.000Z</lastmod>
     <data>
