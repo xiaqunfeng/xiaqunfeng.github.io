@@ -641,6 +641,38 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <p>3、列出文件 test2.txt 中有，test1.txt中没有的行</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># grep -vf test1.txt test2.txt</div><div class="line">111111</div><div class="line">33333</div><div class="line">8888</div><div class="line">777777777</div><div class="line">dkahkah</div></pre></td></tr></table></figure>
 <p>注：还有一个命令<a href="http://man.linuxde.net/comm" target="_blank" rel="external">comm</a>也可以用来比较两个文件的交集、差集、求差。但是要求两个文件都是已排序过的。所以也可以sort后用该命令来实现上面的想法。</p>
+<h2 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h2><h3 id="替换字符串"><a href="#替换字符串" class="headerlink" title="替换字符串"></a>替换字符串</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed -i &apos;s/oldstring/newstring/g&apos; full-path-file</div></pre></td></tr></table></figure>
+<ul>
+<li>如果字符串中含反斜杠<code>/</code>，则使用冒号<code>:</code>作为分隔符。如果在shell脚本中替换字符串是变量，需要使用双引号。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">NEW_STRING=&quot;CCC/DDD&quot;</div><div class="line">sed -i &quot;s:ccc/ddd:$&#123;NEW_STRING&#125;:&quot; test-sed.txt</div></pre></td></tr></table></figure>
+<ul>
+<li><p>如果字符串中同时含有反斜杠<code>/</code>和冒号<code>:</code>，如<code>http://xxx</code>则可使用井号<code>#</code>作为分割符。</p>
+</li>
+<li><p>如果字符串中含有引号，需要转义，使用反斜杠“\”，比如替换<code>&quot;&#39;&#39;div</code>，如果需要将它替换成<code>‘div</code>，可以使用<code>sed -i s#\&quot;\&#39;\&#39;#\&#39;#g</code>。</p>
+</li>
+</ul>
+<h3 id="批量替换多个文件的字符串"><a href="#批量替换多个文件的字符串" class="headerlink" title="批量替换多个文件的字符串"></a>批量替换多个文件的字符串</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ./* 表示当前目录</div><div class="line">grep “oldString” -rl ./* | xargs sed -i ‘s/oldString/newString/g’</div></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># /path 表示指定的目录</div><div class="line">sed -i &apos;s/oldString/newString/g&apos; `grep “oldString” -rl /path`</div></pre></td></tr></table></figure>
+<h3 id="mac和linux下sed-i的区别"><a href="#mac和linux下sed-i的区别" class="headerlink" title="mac和linux下sed -i的区别"></a>mac和linux下<code>sed -i</code>的区别</h3><p>在mac上执行会出现如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed: 1: command c expects \ followed by text</div></pre></td></tr></table></figure>
+<p>而在centos和ubuntu上却没问题。</p>
+<p>分别在mac和ubuntu/centos上使用命令<code>man sed</code>来查看命令参数<code>-i</code>的详细说明：</p>
+<p>mac上：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">-i extension</div><div class="line">     Edit files in-place, saving backups with the specified extension.  If a zero-length extension is given, no backup will be saved.  It is not recommended to give a zero-length extension when in-place editing files, as you risk corruption or partial content in situations where disk space is exhausted, etc.</div></pre></td></tr></table></figure>
+<p>替换之前是要求提供后缀进行备份的，当然也可以使用空字符串来取消备份。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># 直接在file文件中替换</div><div class="line">sed -i &apos;&apos; &apos;s/oldstring/newstring/g&apos; file</div><div class="line"></div><div class="line"># 直接在file文件中替换，但同时备份原文件为 file_bak</div><div class="line">sed -i _bak &apos;s/oldstring/newstring/g&apos; file</div></pre></td></tr></table></figure>
+<p>linux上：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">-i[SUFFIX], --in-place[=SUFFIX]</div><div class="line">      edit files in place (makes backup if SUFFIX supplied)</div></pre></td></tr></table></figure>
+<p>默认不备份，如果提供后缀，则进行备份。</p>
+<blockquote>
+<p>注：也可在mac上通过安装gnu-sed来替代sed，和linux上sed表现一样</p>
+<p>1.brew install gnu-sed –with-default-names</p>
+<p>2.vim ~/.zshrc<br>export PATH=”/usr/local/opt/gnu-sed/libexec/gnubin:$PATH”</p>
+<p>3.source ~/.zshrc </p>
+</blockquote>
 <h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>1、文本合并</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">▶ cat 1.txt 2.txt 3.txt &gt; merge.txt</div></pre></td></tr></table></figure>
 <p>2、批量文文件添加前后缀</p>
