@@ -655,6 +655,37 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <h3 id="批量替换多个文件的字符串"><a href="#批量替换多个文件的字符串" class="headerlink" title="批量替换多个文件的字符串"></a>批量替换多个文件的字符串</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ./* 表示当前目录</div><div class="line">grep “oldString” -rl ./* | xargs sed -i ‘s/oldString/newString/g’</div></pre></td></tr></table></figure>
 <p>或者</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># /path 表示指定的目录</div><div class="line">sed -i &apos;s/oldString/newString/g&apos; `grep “oldString” -rl /path`</div></pre></td></tr></table></figure>
+<p>###删除匹配行</p>
+<ul>
+<li>删除开头为a的匹配行</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed -i &apos;/^a.*/d&apos; tmp.txt</div></pre></td></tr></table></figure>
+<ul>
+<li>删除开头为非a的匹配行</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed -i &apos;/^a.*/!d&apos; tmp.txt</div></pre></td></tr></table></figure>
+<h3 id="添加字符串"><a href="#添加字符串" class="headerlink" title="添加字符串"></a>添加字符串</h3><ul>
+<li>sed在行首添加字符串</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed ‘s/^/string/&apos;  filename &gt; output</div></pre></td></tr></table></figure>
+<ul>
+<li>sed在行尾添加字符串</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed ‘s/$/string/&apos; filename &gt; output</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意，写入原文件要加 -i</p>
+</blockquote>
+<h3 id="替换换行符"><a href="#替换换行符" class="headerlink" title="替换换行符"></a>替换换行符</h3><ul>
+<li>linux下将字符串string替换成换行符</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed -i &quot;s/string/\n/g&quot;</div></pre></td></tr></table></figure>
+<ul>
+<li>mac下匹配换行符</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed －i &apos;&apos; &apos;s/string/&lt;回车&gt;/g&apos; filename</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：mac下和linux不同，不能简单的写<code>\n</code>，&lt;回车&gt; 需要通过 ctrl + v，然后按回车键 按出，按出来长这样 <code>^M</code></p>
+</blockquote>
 <h3 id="mac和linux下sed-i的区别"><a href="#mac和linux下sed-i的区别" class="headerlink" title="mac和linux下sed -i的区别"></a>mac和linux下<code>sed -i</code>的区别</h3><p>在mac上执行会出现如下错误：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed: 1: command c expects \ followed by text</div></pre></td></tr></table></figure>
 <p>而在centos和ubuntu上却没问题。</p>
