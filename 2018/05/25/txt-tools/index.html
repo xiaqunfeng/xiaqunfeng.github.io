@@ -14,7 +14,7 @@
 <meta property="og:url" content="http://xiaqunfeng.cc/2018/05/25/txt-tools/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="一些处理文本的工具总结，记录之。">
-<meta property="og:updated_time" content="2018-11-21T05:45:19.488Z">
+<meta property="og:updated_time" content="2018-11-22T12:04:01.313Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="文本工具">
 <meta name="twitter:description" content="一些处理文本的工具总结，记录之。">
@@ -236,8 +236,7 @@ var _hmt = _hmt || [];
 <h3 id="批量替换多个文件的字符串"><a href="#批量替换多个文件的字符串" class="headerlink" title="批量替换多个文件的字符串"></a>批量替换多个文件的字符串</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ./* 表示当前目录</div><div class="line">grep “oldString” -rl ./* | xargs sed -i ‘s/oldString/newString/g’</div></pre></td></tr></table></figure>
 <p>或者</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># /path 表示指定的目录</div><div class="line">sed -i &apos;s/oldString/newString/g&apos; `grep “oldString” -rl /path`</div></pre></td></tr></table></figure>
-<p>###删除匹配行</p>
-<ul>
+<h3 id="删除匹配行"><a href="#删除匹配行" class="headerlink" title="删除匹配行"></a>删除匹配行</h3><ul>
 <li>删除开头为a的匹配行</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed -i &apos;/^a.*/d&apos; tmp.txt</div></pre></td></tr></table></figure>
@@ -266,6 +265,16 @@ var _hmt = _hmt || [];
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed －i &apos;&apos; &apos;s/string/&lt;回车&gt;/g&apos; filename</div></pre></td></tr></table></figure>
 <blockquote>
 <p>注意：mac下和linux不同，不能简单的写<code>\n</code>，&lt;回车&gt; 需要通过 ctrl + v，然后按回车键 按出，按出来长这样 <code>^M</code></p>
+</blockquote>
+<h3 id="删除行首行尾的空格"><a href="#删除行首行尾的空格" class="headerlink" title="删除行首行尾的空格"></a>删除行首行尾的空格</h3><p>删除行首空格</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed -i &apos;s/[ \t]*$//g&apos; file.txt</div></pre></td></tr></table></figure>
+<p>删除行尾空格</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed &apos;s/^[ \t]*//g&apos; file.txt</div></pre></td></tr></table></figure>
+<p>合并两个命令一次性去除行首、行末的空格和tab</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed  -e &apos;s/^[ \t]*//g’ -e ‘s/[ \t]*$//g&apos; file.txt</div></pre></td></tr></table></figure>
+<blockquote>
+<p>sed在处理字符串的时候并不对源文件进行直接处理，先创建一个buffer，但是加g表示对原buffer进行替换</p>
+<p>-e 用于多个匹配</p>
 </blockquote>
 <h3 id="mac和linux下sed-i的区别"><a href="#mac和linux下sed-i的区别" class="headerlink" title="mac和linux下sed -i的区别"></a>mac和linux下<code>sed -i</code>的区别</h3><p>在mac上执行会出现如下错误：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed: 1: command c expects \ followed by text</div></pre></td></tr></table></figure>
@@ -442,7 +451,7 @@ var _hmt = _hmt || [];
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#shuf"><span class="toc-number">1.</span> <span class="toc-text">shuf</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装"><span class="toc-number">1.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#应用"><span class="toc-number">1.2.</span> <span class="toc-text">应用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#split"><span class="toc-number">2.</span> <span class="toc-text">split</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#找出文件的相同与不同"><span class="toc-number">2.1.</span> <span class="toc-text">找出文件的相同与不同</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sed"><span class="toc-number">3.</span> <span class="toc-text">sed</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#替换字符串"><span class="toc-number">3.1.</span> <span class="toc-text">替换字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#批量替换多个文件的字符串"><span class="toc-number">3.2.</span> <span class="toc-text">批量替换多个文件的字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加字符串"><span class="toc-number">3.3.</span> <span class="toc-text">添加字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#替换换行符"><span class="toc-number">3.4.</span> <span class="toc-text">替换换行符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mac和linux下sed-i的区别"><span class="toc-number">3.5.</span> <span class="toc-text">mac和linux下sed -i的区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-number">4.</span> <span class="toc-text">其他</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#shuf"><span class="toc-number">1.</span> <span class="toc-text">shuf</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装"><span class="toc-number">1.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#应用"><span class="toc-number">1.2.</span> <span class="toc-text">应用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#split"><span class="toc-number">2.</span> <span class="toc-text">split</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#找出文件的相同与不同"><span class="toc-number">2.1.</span> <span class="toc-text">找出文件的相同与不同</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sed"><span class="toc-number">3.</span> <span class="toc-text">sed</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#替换字符串"><span class="toc-number">3.1.</span> <span class="toc-text">替换字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#批量替换多个文件的字符串"><span class="toc-number">3.2.</span> <span class="toc-text">批量替换多个文件的字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除匹配行"><span class="toc-number">3.3.</span> <span class="toc-text">删除匹配行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加字符串"><span class="toc-number">3.4.</span> <span class="toc-text">添加字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#替换换行符"><span class="toc-number">3.5.</span> <span class="toc-text">替换换行符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除行首行尾的空格"><span class="toc-number">3.6.</span> <span class="toc-text">删除行首行尾的空格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mac和linux下sed-i的区别"><span class="toc-number">3.7.</span> <span class="toc-text">mac和linux下sed -i的区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-number">4.</span> <span class="toc-text">其他</span></a></li></ol>
                     </div>
                 </span>
             </div>
