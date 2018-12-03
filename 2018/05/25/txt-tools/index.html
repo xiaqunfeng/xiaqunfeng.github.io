@@ -14,7 +14,7 @@
 <meta property="og:url" content="http://xiaqunfeng.cc/2018/05/25/txt-tools/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="一些处理文本的工具总结，记录之。">
-<meta property="og:updated_time" content="2018-11-22T12:04:01.313Z">
+<meta property="og:updated_time" content="2018-12-03T07:51:21.067Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="文本工具">
 <meta name="twitter:description" content="一些处理文本的工具总结，记录之。">
@@ -293,6 +293,38 @@ var _hmt = _hmt || [];
 <p>1.brew install gnu-sed –with-default-names</p>
 <p>2.vim ~/.zshrc<br>export PATH=”/usr/local/opt/gnu-sed/libexec/gnubin:$PATH”</p>
 <p>3.source ~/.zshrc </p>
+<p>参考资料：<a href="https://stackoverflow.com/questions/30003570/how-to-use-gnu-sed-on-mac-os-x" target="_blank" rel="external">https://stackoverflow.com/questions/30003570/how-to-use-gnu-sed-on-mac-os-x</a></p>
+</blockquote>
+<h3 id="多个匹配"><a href="#多个匹配" class="headerlink" title="多个匹配"></a>多个匹配</h3><p>有时候需要一次替换多个模式，有两种方式，第一种是采用分号<code>;</code>，第二种是采用参数<code>-e</code>。</p>
+<p>示例：第一个模式把第一行到第三行的my替换成your，第二个则把第3行以后的This替换成了That。</p>
+<p>方法一：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed &apos;1,3s/my/your/g; 3,$s/This/That/g&apos; my.txt</div></pre></td></tr></table></figure>
+<p>方法二：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed -e &apos;1,3s/my/your/g&apos; -e &apos;3,$s/This/That/g&apos; my.txt</div></pre></td></tr></table></figure>
+<h3 id="a命令、i命令、c命令"><a href="#a命令、i命令、c命令" class="headerlink" title="a命令、i命令、c命令"></a>a命令、i命令、c命令</h3><p>a和i用来添加行：a命令就是append， i命令就是insert。c命令用来替换匹配行</p>
+<p>1、<code>1i</code>表明，其要在第1行前插入一行（insert）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed &quot;1 i hello, world&quot; my.txt</div></pre></td></tr></table></figure>
+<p>2、<code>$a</code>表明，其要在最后一行后追加一行（append）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed &quot;$ a goodbye&quot; my.txt</div></pre></td></tr></table></figure>
+<p>3、匹配添加：<code>/fish/a</code>表明匹配到fish就在该行后追加一行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed &quot;/fish/a xxxxxxxxxx&quot; my.txt</div></pre></td></tr></table></figure>
+<p>4、c用法同a和i，只不过不是添加，是替换</p>
+<blockquote>
+<p>以上这几个在linux上通过，在mac上不同</p>
+</blockquote>
+<p>5、mac上追加示例</p>
+<p>在第二行后追加一行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">▶ sed &apos;2 a\</div><div class="line">◀ xxx</div><div class="line">◀ &apos; my.txt</div><div class="line">This is my cat, my cat&apos;s name is betty</div><div class="line">This is my dog, my dog&apos;s name is frank</div><div class="line">xxx</div><div class="line">This is my fish, my fish&apos;s name is george</div><div class="line">This is my goat, my goat&apos;s name is adam</div></pre></td></tr></table></figure>
+<p>匹配到my后追加<code>---</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">▶ sed &apos;/my/a\</div><div class="line">◀ ---</div><div class="line">◀ &apos; my.txt</div><div class="line">This is my cat, my cat&apos;s name is betty</div><div class="line">---</div><div class="line">This is my dog, my dog&apos;s name is frank</div><div class="line">---</div><div class="line">This is my fish, my fish&apos;s name is george</div><div class="line">---</div><div class="line">This is my goat, my goat&apos;s name is adam</div><div class="line">---</div></pre></td></tr></table></figure>
+<h3 id="命令行嵌套"><a href="#命令行嵌套" class="headerlink" title="命令行嵌套"></a>命令行嵌套</h3><p>1、对3行到第6行，匹配到<code>This</code>则删除</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed &apos;3,6 &#123;/This/d&#125;&apos; test.txt</div></pre></td></tr></table></figure>
+<p>2、对3行到第6行，匹配<code>This</code>成功后，再匹配<code>fish</code>，成功后执行d命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed &apos;3,6 &#123;/This/&#123;/fish/d&#125;&#125;&apos; test.txt</div></pre></td></tr></table></figure>
+<p>3、从第一行到最后一行，如果匹配到<code>This</code>，则删除之；如果前面有空格，则去除空格（这里是多个匹配）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed &apos;1,$&#123;/This/d;s/^ *//g&#125;&apos; test.txt</div></pre></td></tr></table></figure>
+<blockquote>
+<p>以上这几个在mac上还是有点问题，linux通过</p>
 </blockquote>
 <h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>1、文本合并</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">▶ cat 1.txt 2.txt 3.txt &gt; merge.txt</div></pre></td></tr></table></figure>
@@ -451,7 +483,7 @@ var _hmt = _hmt || [];
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#shuf"><span class="toc-number">1.</span> <span class="toc-text">shuf</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装"><span class="toc-number">1.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#应用"><span class="toc-number">1.2.</span> <span class="toc-text">应用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#split"><span class="toc-number">2.</span> <span class="toc-text">split</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#找出文件的相同与不同"><span class="toc-number">2.1.</span> <span class="toc-text">找出文件的相同与不同</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sed"><span class="toc-number">3.</span> <span class="toc-text">sed</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#替换字符串"><span class="toc-number">3.1.</span> <span class="toc-text">替换字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#批量替换多个文件的字符串"><span class="toc-number">3.2.</span> <span class="toc-text">批量替换多个文件的字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除匹配行"><span class="toc-number">3.3.</span> <span class="toc-text">删除匹配行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加字符串"><span class="toc-number">3.4.</span> <span class="toc-text">添加字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#替换换行符"><span class="toc-number">3.5.</span> <span class="toc-text">替换换行符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除行首行尾的空格"><span class="toc-number">3.6.</span> <span class="toc-text">删除行首行尾的空格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mac和linux下sed-i的区别"><span class="toc-number">3.7.</span> <span class="toc-text">mac和linux下sed -i的区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-number">4.</span> <span class="toc-text">其他</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#shuf"><span class="toc-number">1.</span> <span class="toc-text">shuf</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装"><span class="toc-number">1.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#应用"><span class="toc-number">1.2.</span> <span class="toc-text">应用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#split"><span class="toc-number">2.</span> <span class="toc-text">split</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#找出文件的相同与不同"><span class="toc-number">2.1.</span> <span class="toc-text">找出文件的相同与不同</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sed"><span class="toc-number">3.</span> <span class="toc-text">sed</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#替换字符串"><span class="toc-number">3.1.</span> <span class="toc-text">替换字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#批量替换多个文件的字符串"><span class="toc-number">3.2.</span> <span class="toc-text">批量替换多个文件的字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除匹配行"><span class="toc-number">3.3.</span> <span class="toc-text">删除匹配行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加字符串"><span class="toc-number">3.4.</span> <span class="toc-text">添加字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#替换换行符"><span class="toc-number">3.5.</span> <span class="toc-text">替换换行符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除行首行尾的空格"><span class="toc-number">3.6.</span> <span class="toc-text">删除行首行尾的空格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mac和linux下sed-i的区别"><span class="toc-number">3.7.</span> <span class="toc-text">mac和linux下sed -i的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多个匹配"><span class="toc-number">3.8.</span> <span class="toc-text">多个匹配</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#a命令、i命令、c命令"><span class="toc-number">3.9.</span> <span class="toc-text">a命令、i命令、c命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#命令行嵌套"><span class="toc-number">3.10.</span> <span class="toc-text">命令行嵌套</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-number">4.</span> <span class="toc-text">其他</span></a></li></ol>
                     </div>
                 </span>
             </div>
