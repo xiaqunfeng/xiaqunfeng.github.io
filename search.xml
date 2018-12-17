@@ -695,6 +695,13 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <p>sed在处理字符串的时候并不对源文件进行直接处理，先创建一个buffer，但是加g表示对原buffer进行替换</p>
 <p>-e 用于多个匹配</p>
 </blockquote>
+<h3 id="打印匹配行"><a href="#打印匹配行" class="headerlink" title="打印匹配行"></a>打印匹配行</h3><p>命令行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># sed -n -e &apos;/string/p&apos; file.txt</div></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">▶ cat 11.txt</div><div class="line">myddddd</div><div class="line">dddddddd</div><div class="line">ddddmyddddd</div><div class="line">dddd</div><div class="line">▶ sed -e &apos;/my/p&apos; 11.txt</div><div class="line">myddddd</div><div class="line">myddddd</div><div class="line">dddddddd</div><div class="line">ddddmyddddd</div><div class="line">ddddmyddddd</div><div class="line">dddd</div><div class="line">▶ sed -n -e &apos;/my/p&apos; 11.txt</div><div class="line">myddddd</div><div class="line">ddddmyddddd</div></pre></td></tr></table></figure>
+<blockquote>
+<p>-n表示只输出匹配后的行，不加-n默认输出所有的行，如果匹配到，则匹配行再输出一遍</p>
+</blockquote>
 <h3 id="mac和linux下sed-i的区别"><a href="#mac和linux下sed-i的区别" class="headerlink" title="mac和linux下sed -i的区别"></a>mac和linux下<code>sed -i</code>的区别</h3><p>在mac上执行会出现如下错误：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed: 1: command c expects \ followed by text</div></pre></td></tr></table></figure>
 <p>而在centos和ubuntu上却没问题。</p>
