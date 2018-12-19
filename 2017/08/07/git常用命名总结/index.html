@@ -6,17 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
-  <title>git常用命令总结 | 夏天的风的博客</title>
+  <title>git常用命令和功能 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="总结记录自己最常用的git命令，然后将一些命令分类，便于翻阅。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="git常用命令总结">
+<meta property="og:title" content="git常用命令和功能">
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/08/07/git常用命名总结/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="总结记录自己最常用的git命令，然后将一些命令分类，便于翻阅。">
-<meta property="og:updated_time" content="2018-08-08T09:23:07.000Z">
+<meta property="og:updated_time" content="2018-12-19T12:41:27.598Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="git常用命令总结">
+<meta name="twitter:title" content="git常用命令和功能">
 <meta name="twitter:description" content="总结记录自己最常用的git命令，然后将一些命令分类，便于翻阅。">
   
     <link rel="alternative" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
@@ -163,7 +163,7 @@ var _hmt = _hmt || [];
         
   
     <h1 class="article-title" itemprop="name">
-      git常用命令总结
+      git常用命令和功能
     </h1>
   
 
@@ -295,6 +295,25 @@ var _hmt = _hmt || [];
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git config --global user.email &quot;email@example.com&quot;</div><div class="line">$ git config --global user.name &quot;yourname&quot;</div></pre></td></tr></table></figure>
 <p>为某个仓库配置的话，在该仓库目录下操作</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git config user.email &quot;email@example.com&quot;</div><div class="line">$ git config user.name &quot;yourname&quot;</div></pre></td></tr></table></figure>
+<h2 id="将已有项目添加到github"><a href="#将已有项目添加到github" class="headerlink" title="将已有项目添加到github"></a>将已有项目添加到github</h2><blockquote>
+<p>已有本地项目，文件夹名为gitRepo</p>
+</blockquote>
+<p>1、初始化本地仓库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd gitRepo</div><div class="line">git init</div></pre></td></tr></table></figure>
+<p>2、添加全部文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git add .      // git add -A</div></pre></td></tr></table></figure>
+<blockquote>
+<p>如果没有README.md，可以创建一个先</p>
+</blockquote>
+<p>3、提交说明</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git commit -m &apos;xxxxx&apos;</div></pre></td></tr></table></figure>
+<p>4、github上创建仓库</p>
+<p>在github上新建仓库，名称为<code>gitRepo</code>，必须和文件夹同名！</p>
+<p>5、添加远程仓库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git remote add origin git@github.com:yourgithubID/gitRepo.git</div></pre></td></tr></table></figure>
+<p>6、将本地仓库push到远程仓库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git push -u origin master</div></pre></td></tr></table></figure>
+<p>以上。</p>
 <h2 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h2><p><strong>Q1</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">▶ git checkout v12.1.4</div><div class="line">warning: refname &apos;v12.1.4&apos; is ambiguous.</div><div class="line">Switched to branch &apos;v12.1.4&apos;</div></pre></td></tr></table></figure>
 <p>原因：这个branch的名称是危险的，因为这是可能是一个标识名、tag名等。所以，rename一下就好。</p>
@@ -455,7 +474,7 @@ var _hmt = _hmt || [];
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#最常用"><span class="toc-number">1.</span> <span class="toc-text">最常用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#仓库-repository"><span class="toc-number">2.</span> <span class="toc-text">仓库 - repository</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分支-branch"><span class="toc-number">3.</span> <span class="toc-text">分支 - branch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#版本-tag"><span class="toc-number">4.</span> <span class="toc-text">版本 - tag</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#日志-log"><span class="toc-number">5.</span> <span class="toc-text">日志 - log</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-number">6.</span> <span class="toc-text">其他</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#同步fork"><span class="toc-number">7.</span> <span class="toc-text">同步fork</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Configuring-a-remote-for-a-fork"><span class="toc-number">7.1.</span> <span class="toc-text">Configuring a remote for a fork</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Syncing-a-fork"><span class="toc-number">7.2.</span> <span class="toc-text">Syncing a fork</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置文件"><span class="toc-number">8.</span> <span class="toc-text">配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Q-amp-A"><span class="toc-number">9.</span> <span class="toc-text">Q&A</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#最常用"><span class="toc-number">1.</span> <span class="toc-text">最常用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#仓库-repository"><span class="toc-number">2.</span> <span class="toc-text">仓库 - repository</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分支-branch"><span class="toc-number">3.</span> <span class="toc-text">分支 - branch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#版本-tag"><span class="toc-number">4.</span> <span class="toc-text">版本 - tag</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#日志-log"><span class="toc-number">5.</span> <span class="toc-text">日志 - log</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-number">6.</span> <span class="toc-text">其他</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#同步fork"><span class="toc-number">7.</span> <span class="toc-text">同步fork</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Configuring-a-remote-for-a-fork"><span class="toc-number">7.1.</span> <span class="toc-text">Configuring a remote for a fork</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Syncing-a-fork"><span class="toc-number">7.2.</span> <span class="toc-text">Syncing a fork</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置文件"><span class="toc-number">8.</span> <span class="toc-text">配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#将已有项目添加到github"><span class="toc-number">9.</span> <span class="toc-text">将已有项目添加到github</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Q-amp-A"><span class="toc-number">10.</span> <span class="toc-text">Q&A</span></a></li></ol>
                     </div>
                 </span>
             </div>

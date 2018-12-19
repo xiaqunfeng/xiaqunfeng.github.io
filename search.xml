@@ -3281,7 +3281,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     </entry>
     
     <entry>
-      <title><![CDATA[git常用命令总结]]></title>
+      <title><![CDATA[git常用命令和功能]]></title>
       <url>http://xiaqunfeng.cc/2017/08/07/git%E5%B8%B8%E7%94%A8%E5%91%BD%E5%90%8D%E6%80%BB%E7%BB%93/</url>
       <content type="html"><![CDATA[<p>总结记录自己最常用的git命令，然后将一些命令分类，便于翻阅。<br><a id="more"></a></p>
 <h2 id="最常用"><a href="#最常用" class="headerlink" title="最常用"></a>最常用</h2><p>1、下载一个项目和它的整个代码历史</p>
@@ -3402,6 +3402,25 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git config --global user.email &quot;email@example.com&quot;</div><div class="line">$ git config --global user.name &quot;yourname&quot;</div></pre></td></tr></table></figure>
 <p>为某个仓库配置的话，在该仓库目录下操作</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git config user.email &quot;email@example.com&quot;</div><div class="line">$ git config user.name &quot;yourname&quot;</div></pre></td></tr></table></figure>
+<h2 id="将已有项目添加到github"><a href="#将已有项目添加到github" class="headerlink" title="将已有项目添加到github"></a>将已有项目添加到github</h2><blockquote>
+<p>已有本地项目，文件夹名为gitRepo</p>
+</blockquote>
+<p>1、初始化本地仓库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd gitRepo</div><div class="line">git init</div></pre></td></tr></table></figure>
+<p>2、添加全部文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git add .      // git add -A</div></pre></td></tr></table></figure>
+<blockquote>
+<p>如果没有README.md，可以创建一个先</p>
+</blockquote>
+<p>3、提交说明</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git commit -m &apos;xxxxx&apos;</div></pre></td></tr></table></figure>
+<p>4、github上创建仓库</p>
+<p>在github上新建仓库，名称为<code>gitRepo</code>，必须和文件夹同名！</p>
+<p>5、添加远程仓库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git remote add origin git@github.com:yourgithubID/gitRepo.git</div></pre></td></tr></table></figure>
+<p>6、将本地仓库push到远程仓库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git push -u origin master</div></pre></td></tr></table></figure>
+<p>以上。</p>
 <h2 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h2><p><strong>Q1</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">▶ git checkout v12.1.4</div><div class="line">warning: refname &apos;v12.1.4&apos; is ambiguous.</div><div class="line">Switched to branch &apos;v12.1.4&apos;</div></pre></td></tr></table></figure>
 <p>原因：这个branch的名称是危险的，因为这是可能是一个标识名、tag名等。所以，rename一下就好。</p>
