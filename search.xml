@@ -4,7 +4,7 @@
   
     
     <entry>
-      <title><![CDATA[caffe code of SyncedMemory]]></title>
+      <title><![CDATA[【源码分析】caffe code of SyncedMemory]]></title>
       <url>http://xiaqunfeng.cc/2018/12/22/caffe-code-of-SyncedMemory/</url>
       <content type="html"><![CDATA[<p>caffe 代码阅读之 SyncedMemory，本文分析记录了SyncedMemory内存管理模块的数据成员和成员函数，源码文件注释详见 <a href="https://github.com/xiaqunfeng/caffe-study/blob/master/code-analyze/syncedmem-annotation.hpp" target="_blank" rel="external">syncedmem-annotation.hpp</a>，<a href="https://github.com/xiaqunfeng/caffe-study/blob/master/code-analyze/syncedmem-annotation.cpp" target="_blank" rel="external">syncedmem-annotation.cpp</a>。<br><a id="more"></a></p>
 <h2 id="SyncedMemory类"><a href="#SyncedMemory类" class="headerlink" title="SyncedMemory类"></a>SyncedMemory类</h2><p>该类用来管理caffe中Blob的内存，所以在看blob代码之前先看一下该类的实现。内存管理的方法代码都封装在syncedmem.hpp与syncedmem.cpp两个文件中，两个文件代码都比较短，读起来比较方便。</p>
