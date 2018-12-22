@@ -4,6 +4,132 @@
   
     
     <entry>
+      <title><![CDATA[caffe code of SyncedMemory]]></title>
+      <url>http://xiaqunfeng.cc/2018/12/22/caffe-code-of-SyncedMemory/</url>
+      <content type="html"><![CDATA[<p>caffe 代码阅读之 SyncedMemory，本文分析记录了SyncedMemory内存管理模块的数据成员和成员函数，源码文件注释详见 <a href="https://github.com/xiaqunfeng/caffe-study/blob/master/code-analyze/syncedmem-annotation.hpp" target="_blank" rel="external">syncedmem-annotation.hpp</a>，<a href="https://github.com/xiaqunfeng/caffe-study/blob/master/code-analyze/syncedmem-annotation.cpp" target="_blank" rel="external">syncedmem-annotation.cpp</a>。<br><a id="more"></a></p>
+<h2 id="SyncedMemory类"><a href="#SyncedMemory类" class="headerlink" title="SyncedMemory类"></a>SyncedMemory类</h2><p>该类用来管理caffe中Blob的内存，所以在看blob代码之前先看一下该类的实现。内存管理的方法代码都封装在syncedmem.hpp与syncedmem.cpp两个文件中，两个文件代码都比较短，读起来比较方便。</p>
+<p><code>SyncedMemory</code>的两个优点：</p>
+<ul>
+<li>屏蔽了CPU和GPU上的内存管理以及数据同步细节</li>
+<li>使用lazy的内存分配方式（通过<code>enum SyncedHead</code>状态控制来实现），在数据访问时才分配，而不是立马分配，提高效率以及节省内存</li>
+</ul>
+<h3 id="类的数据成员"><a href="#类的数据成员" class="headerlink" title="类的数据成员"></a>类的数据成员</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">class SyncedMemory &#123;</div><div class="line">...</div><div class="line">   private:</div><div class="line">        ...</div><div class="line">        void* cpu_ptr_;</div><div class="line">        void* gpu_ptr_;</div><div class="line">        size_t size_;  </div><div class="line">        SyncedHead head_;</div><div class="line">        bool own_cpu_data_;</div><div class="line">        bool cpu_malloc_use_cuda_;</div><div class="line">        bool own_gpu_data_;</div><div class="line">        int device_;</div><div class="line">        ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>1、其中 head_ 指向目前最新数据块的位置，即最后更新过数据的位置，用于cpu和gpu数据同步。这是一个枚举类型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">enum SyncedHead &#123; UNINITIALIZED, HEAD_AT_CPU, HEAD_AT_GPU, SYNCED &#125;;</div></pre></td></tr></table></figure>
+<p>依次表示：数据未初始化、最新数据在cpu上、最新数据在gpu上、最新数据cpu和gpu共享。</p>
+<p>2、size_ 表示数据所占内存大小</p>
+<p>3、cpu<em>ptr</em> 和 gpu<em>ptr</em> 分别表示指向cpu和gpu侧的指针，通过该指针访问数据</p>
+<p>这两个指针指向的数据空间有两种来源，一种是对象自己内部分配的，一种是外部指定的</p>
+<p>4、own_cpu<em>data</em> 和 own_gpu<em>data</em> 表示对象是否是自己内部分配的</p>
+<ul>
+<li>own_cpu<em>data</em> 为true时，表示cpu<em>ptr</em>是对象内部调用CaffeMallocHost分配的CPU内存</li>
+<li>own_gpu<em>data</em> 为true时，表示gpu<em>ptr</em>是对象内部调用cudaMalloc分配的GPU内存</li>
+</ul>
+<p>这两个标志位在 set_cpu/gpu_data() 及函数析构的时候会用于判断是否需要释放当前的数据，如果是自己内部申请的，就要内部释放。</p>
+<p>5、cpu_malloc_use<em>cuda</em> 为true时，使用cudaMallocHost分配页锁定内存，否则使用系统malloc分配可分页内存</p>
+<p>6、device_ 表示gpu的设备编号</p>
+<h3 id="类的成员函数"><a href="#类的成员函数" class="headerlink" title="类的成员函数"></a>类的成员函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">class SyncedMemory &#123;</div><div class="line"> public:</div><div class="line">  ...</div><div class="line">  const void* cpu_data();</div><div class="line">  void set_cpu_data(void* data);</div><div class="line">  const void* gpu_data();</div><div class="line">  void set_gpu_data(void* data);</div><div class="line">  void* mutable_cpu_data();</div><div class="line">  void* mutable_gpu_data();</div><div class="line">  ...</div><div class="line"></div><div class="line">#ifndef CPU_ONLY</div><div class="line">  void async_gpu_push(const cudaStream_t&amp; stream);</div><div class="line">#endif</div><div class="line"></div><div class="line"> private:</div><div class="line">  void check_device();</div><div class="line">  ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>1、<code>cpu_data()</code> 函数用于获取cpu数据的const指针，只读不写</p>
+<p>cpu_data()函数的核心是to_cpu()函数（在syncedmem.cpp中定义）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">inline void SyncedMemory::to_cpu() &#123;</div><div class="line">  check_device();</div><div class="line">  switch (head_) &#123;</div><div class="line">  case UNINITIALIZED:</div><div class="line">    CaffeMallocHost(&amp;cpu_ptr_, size_, &amp;cpu_malloc_use_cuda_);</div><div class="line">    caffe_memset(size_, 0, cpu_ptr_);</div><div class="line">    head_ = HEAD_AT_CPU;</div><div class="line">    own_cpu_data_ = true;</div><div class="line">    break;</div><div class="line">  case HEAD_AT_GPU:</div><div class="line">#ifndef CPU_ONLY</div><div class="line">    if (cpu_ptr_ == NULL) &#123;</div><div class="line">      CaffeMallocHost(&amp;cpu_ptr_, size_, &amp;cpu_malloc_use_cuda_);</div><div class="line">      own_cpu_data_ = true;</div><div class="line">    &#125;</div><div class="line">    caffe_gpu_memcpy(size_, gpu_ptr_, cpu_ptr_);</div><div class="line">    head_ = SYNCED;</div><div class="line">#else</div><div class="line">    NO_GPU;</div><div class="line">#endif</div><div class="line">    break;</div><div class="line">  case HEAD_AT_CPU:</div><div class="line">  case SYNCED:</div><div class="line">    break;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个函数的作用是检查最新数据的位置（即查看 head_ 的标志）</p>
+<ul>
+<li>数据未初始化 —— 初始化，并将最新数据标志置为位于cpu</li>
+<li>最新数据在gpu上 —— 如果指定了CPU_ONLY，则输出NO_GPU并什么都不做；否则将数据复制到cpu，并将数据标志置为共享</li>
+<li>最新数据在cpu上或者是共享的 —— 什么都不做</li>
+</ul>
+<p>2、<code>mutable_cpu_data()</code> 返回可写的cpu指针</p>
+<p>它与 cpu_data() 的区别是：在执行 to<em>cpu() 后，不论 head</em> 当前状态如何，将最新数据的位置置为位于cpu上，认为cpu侧数据是最新的，所以调用者可以修改cpu侧数据。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">void* SyncedMemory::mutable_cpu_data() &#123;</div><div class="line">  check_device();</div><div class="line">  to_cpu();</div><div class="line">  head_ = HEAD_AT_CPU;</div><div class="line">  return cpu_ptr_;</div><div class="line">&#125;</div><div class="line">const void* SyncedMemory::cpu_data() &#123;</div><div class="line">  check_device();</div><div class="line">  to_cpu();</div><div class="line">  return (const void*)cpu_ptr_;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>3、<code>set_cpu_data(void* data)</code></p>
+<p>设置cpu数据，即将cpu<em>ptr</em> 指针指向外部数据。</p>
+<p>4、<code>gpu_data(), mutable_gpu_data(), set_gpu_data(void* data)</code> 功能同cpu</p>
+<p>5、<code>async_gpu_push(const cudaStream_t&amp; stream)</code></p>
+<p>功能就是以流的形式将数据同步到gpu上。具体操作就是在gpu上分配存储空间，将cpu的数据同步至gpu，并将head_ 置为共享。</p>
+<p>总结一下CPU/GPU数据同步的功能：</p>
+<ul>
+<li>第一次访问某一侧数据时分配该侧内存，如果不曾访问过则不分配内存，按需分配来节省内存。</li>
+<li>用<code>head_</code>来指示最近一次数据更新发生在哪一侧，仅在调用另一侧数据时才将该侧数据同步过去，如果访问的仍是该侧，则不会发生同步。</li>
+<li>当两侧已同步都是最新时，即<code>head_=SYNCED</code>，访问任何一侧都不会发生数据同步。</li>
+</ul>
+<blockquote>
+<p>其他成员函数的实现代码详见syncedmem-annotation.cpp</p>
+</blockquote>
+<h2 id="内存分配与释放"><a href="#内存分配与释放" class="headerlink" title="内存分配与释放"></a>内存分配与释放</h2><p>在 syncedmem.hpp 中有两个内联函数，不属于 SyncedMemory 类：CaffeMallocHost，CaffeFreeHost，用于内存的申请和释放。</p>
+<p>代码逻辑比较简单，如果是CPU模式，那么调用malloc和free（或者intel的mkl模块）来申请/释放内存，否则调用CUDA的 cudaMallocHost 和 cudaFreeHost 来申请/释放显存。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">inline void CaffeMallocHost(void** ptr, size_t size, bool* use_cuda) &#123;</div><div class="line">#ifndef CPU_ONLY</div><div class="line">  if (Caffe::mode() == Caffe::GPU) &#123;</div><div class="line">    CUDA_CHECK(cudaMallocHost(ptr, size));</div><div class="line">    *use_cuda = true;</div><div class="line">    return;</div><div class="line">  &#125;</div><div class="line">#endif</div><div class="line">#ifdef USE_MKL</div><div class="line">  *ptr = mkl_malloc(size ? size:1, 64);</div><div class="line">#else</div><div class="line">  *ptr = malloc(size);</div><div class="line">#endif</div><div class="line">  *use_cuda = false;</div><div class="line">  CHECK(*ptr) &lt;&lt; &quot;host allocation of size &quot; &lt;&lt; size &lt;&lt; &quot; failed&quot;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="关于-Pinned-和-Non-Pinned-Memory"><a href="#关于-Pinned-和-Non-Pinned-Memory" class="headerlink" title="关于 Pinned 和 Non-Pinned Memory"></a>关于 Pinned 和 Non-Pinned Memory</h3><p>当需要分配CPU内存且会传输到GPU时，有两种方式可以选择：<code>pinned</code> 和 <code>non-pinned</code>。</p>
+<p>Pinned memory使用<code>cudaMallocHost</code>来分配CPU内存，可以防止内存页被交换出去，因此可以提供更高的传输速度。Non-pinned memory使用<code>malloc</code>函数分配CPU内存。但是Pinned memory 比Non-pinned memory有更昂贵的内存分配和释放，因为<code>cudaMallocHost</code>分配和释放CPU内存相比<code>malloc</code>更加耗时。</p>
+<p>结论：</p>
+<ul>
+<li>使用<code>Pinned Memory</code>方式的CPU和GPU之间传输速度更大，但是分配和释放的耗时更大</li>
+<li>使用<code>Non-Pinned Memory</code>的方式CPU和GPU之间传输耗时更大，但是分配和释放更快</li>
+<li>当传输的数据比较大，且均需从CPU传至GPU和从GPU传至CPU时，使用<code>Pinned Memory</code>可以获得更好的性能</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> DeepLearning </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> code </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[【源码分析】caffe code of layer factory]]></title>
+      <url>http://xiaqunfeng.cc/2018/12/22/caffe-code-of-layer-factory/</url>
+      <content type="html"><![CDATA[<p>caffe 代码阅读之 layer factory，本文分析记录了layer的注册和创建过程，源码文件注释详见<a href="https://github.com/xiaqunfeng/caffe-study/blob/master/code-analyze/layer_factory-annotation.hpp" target="_blank" rel="external">layer_factory-annotation.hpp</a>。<br><a id="more"></a></p>
+<h2 id="layer-factory"><a href="#layer-factory" class="headerlink" title="layer factory"></a>layer factory</h2><h3 id="LayerRegistry类"><a href="#LayerRegistry类" class="headerlink" title="LayerRegistry类"></a>LayerRegistry类</h3><p>主要的实现是由该类来完成的。内部维护了一个map，key为layer的string（类型名称），value为对应Creator（工厂函数），caffe就是通过该map来管理string和Creator映射关系的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">typedef shared_ptr&lt;Layer&lt;Dtype&gt; &gt; (*Creator)(const LayerParameter&amp;);</div><div class="line">typedef std::map&lt;string, Creator&gt; CreatorRegistry;</div></pre></td></tr></table></figure>
+<p>map类型为<code>CreatorRegistry</code>，实际类型为<code>std::map&lt;string, Creator&gt;</code>。</p>
+<h3 id="layer的注册"><a href="#layer的注册" class="headerlink" title="layer的注册"></a>layer的注册</h3><p>caffe通过两组宏来实现layer的注册：</p>
+<p>1、先来看宏 <code>REGISTER_LAYER_CLASS</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">#define REGISTER_LAYER_CLASS(type)                                             \</div><div class="line">  template &lt;typename Dtype&gt;                                                    \</div><div class="line">  shared_ptr&lt;Layer&lt;Dtype&gt; &gt; Creator_##type##Layer(const LayerParameter&amp; param) \</div><div class="line">  &#123;                                                                            \</div><div class="line">    return shared_ptr&lt;Layer&lt;Dtype&gt; &gt;(new type##Layer&lt;Dtype&gt;(param));           \</div><div class="line">  &#125;                                                                            \</div><div class="line">  REGISTER_LAYER_CREATOR(type, Creator_##type##Layer)`</div></pre></td></tr></table></figure>
+<p>该宏实现为指定type的Layer创建一个Creator工厂函数，然后调用<code>REGISTER_LAYER_CREATOR</code>将工厂函数和Layer的类型名进行注册，支持两种Layer的数据类型，float和double。</p>
+<p>在每个XX_layer.cpp文件末尾处调用，进行layer的添加注册，比如在<code>bias_layer.cpp</code>的末尾：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">REGISTER_LAYER_CLASS(Bias);</div></pre></td></tr></table></figure>
+<p>2、再来看宏 <code>REGISTER_LAYER_CREATOR</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#define REGISTER_LAYER_CREATOR(type, creator)                                  \</div><div class="line">  static LayerRegisterer&lt;float&gt; g_creator_f_##type(#type, creator&lt;float&gt;);     \</div><div class="line">  static LayerRegisterer&lt;double&gt; g_creator_d_##type(#type, creator&lt;double&gt;)    \</div></pre></td></tr></table></figure>
+<p>声明了两个变量，分别对应float和double两种类型，两个变量通过调用LayerRegisterer类的构造函数来完成初始化</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">class LayerRegisterer &#123;</div><div class="line"> public:</div><div class="line">  LayerRegisterer(const string&amp; type,</div><div class="line">                  shared_ptr&lt;Layer&lt;Dtype&gt; &gt; (*creator)(const LayerParameter&amp;)) &#123;</div><div class="line">    // LOG(INFO) &lt;&lt; &quot;Registering layer type: &quot; &lt;&lt; type;</div><div class="line">    LayerRegistry&lt;Dtype&gt;::AddCreator(type, creator);</div><div class="line">  &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h3 id="LayerRegisterer类"><a href="#LayerRegisterer类" class="headerlink" title="LayerRegisterer类"></a>LayerRegisterer类</h3><p>代码如上，该类只有一个方法，即构造函数，在LayerRegisterer的构造方法中调用了<code>LayerRegistry</code>类的静态方法<code>AddCreator</code>，将新的layer和creator注册并添加到registry list中去。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">class LayerRegistry &#123;</div><div class="line">...</div><div class="line">  static CreatorRegistry&amp; Registry() &#123;</div><div class="line">    static CreatorRegistry* g_registry_ = new CreatorRegistry();</div><div class="line">    return *g_registry_;</div><div class="line">  &#125;</div><div class="line">  // Adds a creator.</div><div class="line">  static void AddCreator(const string&amp; type, Creator creator) &#123;</div><div class="line">    CreatorRegistry&amp; registry = Registry();</div><div class="line">    CHECK_EQ(registry.count(type), 0)</div><div class="line">        &lt;&lt; &quot;Layer type &quot; &lt;&lt; type &lt;&lt; &quot; already registered.&quot;;</div><div class="line">    registry[type] = creator;</div><div class="line">  &#125;</div><div class="line">...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>以上实现了动态注册</p>
+<h3 id="创建layer"><a href="#创建layer" class="headerlink" title="创建layer"></a>创建layer</h3><p>注册完后，在xxnet.prototxt中定义相关的layer参数，比如mnist文件夹下的lenet.prototxt中定义type为Pooling的layer：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">layer &#123;</div><div class="line">  name: &quot;pool1&quot;</div><div class="line">  type: &quot;Pooling&quot;</div><div class="line">  bottom: &quot;conv1&quot;</div><div class="line">  top: &quot;pool1&quot;</div><div class="line">  pooling_param &#123;</div><div class="line">    pool: MAX</div><div class="line">    kernel_size: 2</div><div class="line">    stride: 2</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在net.cpp中创建方式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">void Net&lt;Dtype&gt;::Init(const NetParameter&amp; in_param) &#123;</div><div class="line">...</div><div class="line">    // Setup layer.</div><div class="line">    const LayerParameter&amp; layer_param = param.layer(layer_id);</div><div class="line">    if (layer_param.propagate_down_size() &gt; 0) &#123;</div><div class="line">      CHECK_EQ(layer_param.propagate_down_size(),</div><div class="line">          layer_param.bottom_size())</div><div class="line">          &lt;&lt; &quot;propagate_down param must be specified &quot;</div><div class="line">          &lt;&lt; &quot;either 0 or bottom_size times &quot;;</div><div class="line">    &#125;</div><div class="line">    layers_.push_back(LayerRegistry&lt;Dtype&gt;::CreateLayer(layer_param));</div><div class="line">...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>调用<code>LayerRegistry</code>类的静态方法<code>CreateLayer</code>来实现layer的创建</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">class LayerRegistry &#123;</div><div class="line">  ...</div><div class="line">  // Get a layer using a LayerParameter.</div><div class="line">  static shared_ptr&lt;Layer&lt;Dtype&gt; &gt; CreateLayer(const LayerParameter&amp; param) &#123;</div><div class="line">    if (Caffe::root_solver()) &#123;</div><div class="line">      LOG(INFO) &lt;&lt; &quot;Creating layer &quot; &lt;&lt; param.name();</div><div class="line">    &#125;</div><div class="line">    const string&amp; type = param.type();</div><div class="line">    CreatorRegistry&amp; registry = Registry();</div><div class="line">    CHECK_EQ(registry.count(type), 1) &lt;&lt; &quot;Unknown layer type: &quot; &lt;&lt; type</div><div class="line">        &lt;&lt; &quot; (known types: &quot; &lt;&lt; LayerTypeListString() &lt;&lt; &quot;)&quot;;</div><div class="line">    return registry[type](param);</div><div class="line">  &#125;</div><div class="line">  ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>caffe layer的设计用到了设计模式里<a href="https://blog.csdn.net/wuzhekai1985/article/details/6660462" target="_blank" rel="external">工厂模式</a>中的工厂方法模式。</p>
+</blockquote>
+]]></content>
+      
+        <categories>
+            
+            <category> DeepLearning </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> code </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[用kubeadm在Ubuntu1604上构建k8s集群]]></title>
       <url>http://xiaqunfeng.cc/2018/11/06/kubernetes-deploy/</url>
       <content type="html"><![CDATA[<p>介绍在部署k8s集群的过程，以及遇到的问题及解决方法。<br><a id="more"></a></p>
