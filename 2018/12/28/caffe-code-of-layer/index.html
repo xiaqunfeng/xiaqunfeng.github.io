@@ -6,17 +6,18 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
-  <title>Tag: cluster | 夏天的风的博客</title>
+  <title>【源码分析】caffe code of layer | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="关注深度学习、分布式存储、云计算">
-<meta property="og:type" content="website">
-<meta property="og:title" content="夏天的风的博客">
-<meta property="og:url" content="http://xiaqunfeng.cc/tags/cluster/index.html">
+  <meta name="description" content="caffe 代码阅读之 layer，本文分析记录了layer基类的成员变量和成员函数，源码文件注释详见 layer-annotation.hpp 和 layer-annotation.cpp。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【源码分析】caffe code of layer">
+<meta property="og:url" content="http://xiaqunfeng.cc/2018/12/28/caffe-code-of-layer/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="关注深度学习、分布式存储、云计算">
+<meta property="og:description" content="caffe 代码阅读之 layer，本文分析记录了layer基类的成员变量和成员函数，源码文件注释详见 layer-annotation.hpp 和 layer-annotation.cpp。">
+<meta property="og:updated_time" content="2018-12-28T09:25:38.955Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="夏天的风的博客">
-<meta name="twitter:description" content="关注深度学习、分布式存储、云计算">
+<meta name="twitter:title" content="【源码分析】caffe code of layer">
+<meta name="twitter:description" content="caffe 代码阅读之 layer，本文分析记录了layer基类的成员变量和成员函数，源码文件注释详见 layer-annotation.hpp 和 layer-annotation.cpp。">
   
     <link rel="alternative" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
   
@@ -155,120 +156,270 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-caffe-code-of-layer" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/10/DBSCAN-cluster/" class="archive-article-date">
-  	<time datetime="2018-04-10T00:34:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-10</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/10/DBSCAN-cluster/">DBSCAN聚类算法</a>
+    <h1 class="article-title" itemprop="name">
+      【源码分析】caffe code of layer
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2018/12/28/caffe-code-of-layer/" class="archive-article-date">
+  	<time datetime="2018-12-28T09:22:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-12-28</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>caffe 代码阅读之 layer，本文分析记录了layer基类的成员变量和成员函数，源码文件注释详见 <a href="https://github.com/xiaqunfeng/caffe-study/blob/master/code-analyze/layer-annotation.hpp" target="_blank" rel="external">layer-annotation.hpp</a> 和 <a href="https://github.com/xiaqunfeng/caffe-study/blob/master/code-analyze/layer-annotation.cpp" target="_blank" rel="external">layer-annotation.cpp</a>。<br><a id="more"></a></p>
+<h2 id="关于layer"><a href="#关于layer" class="headerlink" title="关于layer"></a>关于layer</h2><p>Layer是Caffe模型的本质内容和执行计算的基本单元。Layer可以进行很多运算，如convolve(卷积)、pool(池化)、inner product(内积)，rectified-linear和sigmoid等非线性运算，元素级的数据变换，normalize(归一化)、load data(数据加载)、softmax和hinge等losses(损失计算)。可在Caffe的<a href="http://caffe.berkeleyvision.org/tutorial/layers.html" target="_blank" rel="external">层目录</a>中查看所有操作，其囊括了绝大部分目前最前沿的深度学习任务所需要的层类型。</p>
+<p>一个layer通过bottom(底部) 连接层接收blobs数据，通过top(顶部)连接层输出blobs数据。Caffe中每种类型layer的参数说明定义在caffe.proto文件中，具体的layer参数值则定义在具体应用的prototxt网络结构说明文件中。</p>
+<p>在Caffe中，一个网络的大部分功能都是以layer的形式去展开的。在创建一个Caffe模型的时候，也是以layer为基础进行的，需按照caffe.proto中定义的网络及参数格式定义网络prototxt文件。在.prototxt文件中会有很多个layer {  } 字段。</p>
+<p>每一个layer都定义了3种重要的运算：setup(初始化设置)，forward(前向传播)，backward(反向传播)。</p>
+<ul>
+<li>(1)、setup：在模型初始化时重置layers及其相互之间的连接；</li>
+<li>(2)、forward：从bottom层中接收数据，进行计算后将输出送人到top层中；</li>
+<li>(3)、backward：给定相对于top层输出的梯度，计算其相对于输入的梯度，并传递到bottom层。一个有参数的layer需要计算相对于各个参数的梯度值并存储在内部。</li>
+</ul>
+<p>特别地，forward和backward函数分别有CPU和GPU两张实现方式。如果没有实现GPU版本，那么layer将转向作为备用选项的CPU方式。这样会增加额外的数据传送成本(输入数据由GPU上复制到CPU，之后输出数据从CPU又复制回到GPU)。</p>
+<p>总的来说，Layer承担了网络的两个核心操作：</p>
+<ul>
+<li>forward pass(前向传播)—-接收输入并计算输出；</li>
+<li>backward pass(反向传播)—-接收关于输出的梯度，计算相对于参数和输入的梯度并反向传播给在它前面的层。</li>
+</ul>
+<p>由此组成了每个layer的前向和反向传播。</p>
+<p>Layer是网络的基本单元，由此派生出了各种层类。在Layer中input data用bottom表示，output data用top表示。由于Caffe网络的组合性和其代码的模块化，自定义layer是很容易的。只要定义好layer的setup(初始化设置)、forward(前向传播，根据input计算output)和backward(反向传播，根据output计算input的梯度)，就可将layer纳入到网络中。</p>
+<blockquote>
+<p>以上摘自Caffe官方教程中译本_CaffeCN社区翻译，并加入少量修改。</p>
+</blockquote>
+<h2 id="message信息"><a href="#message信息" class="headerlink" title="message信息"></a>message信息</h2><p>caffe.proto中，有2个message与blob有关，定义如下：</p>
+<p>Phase</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">enum Phase &#123;</div><div class="line">   TRAIN = 0;</div><div class="line">   TEST = 1;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>LayerParameter</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">message LayerParameter &#123;</div><div class="line">  optional string name = 1; // layer名字，可自定义</div><div class="line">  optional string type = 2; // layer类型，在具体的layer中写定，可通过type()函数获取之</div><div class="line">  repeated string bottom = 3; // 输入bottom blob的名字，可以有多个</div><div class="line">  repeated string top = 4; // 输出top blob的名字，可以有多个</div><div class="line"></div><div class="line">  optional Phase phase = 10; // 计算的阶段，训练还是测试</div><div class="line"></div><div class="line">  repeated float loss_weight = 5; // 和top blob数量相同，每层分配一个默认值，通常为0或1</div><div class="line">  repeated ParamSpec param = 6; // train时用到的参数</div><div class="line">  repeated BlobProto blobs = 7; // 含有数字参数层的blob</div><div class="line">  repeated bool propagate_down = 11; // 是否BP到每个bottom。数量为0或者等于bottom的个数</div><div class="line"></div><div class="line">  // 控制是否以及何时在网络中包含一个layer的规则</div><div class="line">  repeated NetStateRule include = 8;</div><div class="line">  repeated NetStateRule exclude = 9;</div><div class="line"></div><div class="line">  optional TransformationParameter transform_param = 100; // 数据预处理参数</div><div class="line">  optional LossParameter loss_param = 101; // loss层共享的参数</div><div class="line"></div><div class="line">  // 具体layer的参数</div><div class="line">  ...</div><div class="line">  optional BatchNormParameter batch_norm_param = 139;</div><div class="line">  optional BiasParameter bias_param = 141;</div><div class="line">  optional ConvolutionParameter convolution_param = 106;</div><div class="line">  ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="layer类成员变量"><a href="#layer类成员变量" class="headerlink" title="layer类成员变量"></a>layer类成员变量</h2><p>类Layer：抽象基类，有纯虚函数，不能实例化，定义了所有layer的基本接口，具体的每个layer完成一类特定的计算</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">protected:</div><div class="line">  LayerParameter layer_param_;  </div><div class="line">  Phase phase_;         </div><div class="line">  vector&lt;shared_ptr&lt;Blob&lt;Dtype&gt; &gt; &gt; blobs_;  </div><div class="line">  vector&lt;bool&gt; param_propagate_down_;       </div><div class="line">  vector&lt;Dtype&gt; loss_;</div></pre></td></tr></table></figure>
+<ul>
+<li>layer<em>param</em>： protobuf文件中存储的layer参数，具体参数详见caffe.proto中的message LayerParameter</li>
+<li>phase_ ：layer状态：指定参与网络的是train还是test</li>
+<li>blobs_：用于存储layer的学习的参数如权值和偏置，使用向量是因为权值参数和偏置分开保存在两个blob中</li>
+<li>param_propagate<em>down</em>：标志每个可学习参数blob是否需要计算反向传递的梯度值</li>
+<li>loss_：非LossLayer为零，LossLayer中表示每个top blob计算的loss的权重</li>
+</ul>
+<h2 id="layer类成员函数"><a href="#layer类成员函数" class="headerlink" title="layer类成员函数"></a>layer类成员函数</h2><h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">// bottom层的输入数据，blob中的存储空间已申请</div><div class="line">// top层输出数据，blob对象已构造，但是其存储空间未申请</div><div class="line">// 具体空间大小需根据bottom blob大小和layer_param_共同决定，具体在Reshape函数现实</div><div class="line">// 函数功能：实现公共layer的setup功能，此方法非虚函数, 所以不需要重写</div><div class="line">// 1. 检查blobs输入(bottom)和输出(top)个数是否正确，每层处理的输入输出数据不一样</div><div class="line">// 2. 调用LayerSetUp来为各个类型的layer执行特定的setup, 各子类需要重写该函数完成初始化</div><div class="line">// 3. Reshape: 设置blobs输出（top）及内部缓存的大小, 即为top blob分配合适大小的存储空间</div><div class="line">// 4. 为每个损失权重为非零的top blob设置损失权重乘子</div><div class="line">void SetUp(const vector&lt;Blob&lt;Dtype&gt;*&gt;&amp; bottom,</div><div class="line">    const vector&lt;Blob&lt;Dtype&gt;*&gt;&amp; top) &#123;</div><div class="line">  CheckBlobCounts(bottom, top);</div><div class="line">  LayerSetUp(bottom, top);</div><div class="line">  Reshape(bottom, top);</div><div class="line">  SetLossWeights(top);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>初始化的四个函数，除了SetLossWeights是定义在类内的内联函数外，其他三个均为虚函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">// 实现指定层的初始化，包括从layer_param_读入并处理相关的层权值和偏置参数</div><div class="line">// 调用Reshape函数申请top blob的存储空间</div><div class="line">virtual void LayerSetUp(const vector&lt;Blob&lt;Dtype&gt;*&gt;&amp; bottom,</div><div class="line">    const vector&lt;Blob&lt;Dtype&gt;*&gt;&amp; top) &#123;&#125;</div><div class="line"></div><div class="line">// 纯虚函数，每个子类Layer必须重写的Reshape函数，完成top blob形状的设置并为其分配存储空间</div><div class="line">virtual void Reshape(const vector&lt;Blob&lt;Dtype&gt;*&gt;&amp; bottom,</div><div class="line">    const vector&lt;Blob&lt;Dtype&gt;*&gt;&amp; top) = 0;</div></pre></td></tr></table></figure>
+<h3 id="前向传播和反向传播"><a href="#前向传播和反向传播" class="headerlink" title="前向传播和反向传播"></a>前向传播和反向传播</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">// inline函数，调用Forward_cpu和Forward_gpu这两个虚函数来完成数据前向传递</div><div class="line">// 根据执行环境的不同每个子类Layer必须重写CPU和GPU版本</div><div class="line">inline Dtype Forward(const vector&lt;Blob&lt;Dtype&gt;*&gt;&amp; bottom,</div><div class="line">    const vector&lt;Blob&lt;Dtype&gt;*&gt;&amp; top);</div><div class="line">    </div><div class="line">  // 用法类似Forward</div><div class="line">inline void Backward(const vector&lt;Blob&lt;Dtype&gt;*&gt;&amp; top,</div><div class="line">    const vector&lt;bool&gt;&amp; propagate_down,</div><div class="line">    const vector&lt;Blob&lt;Dtype&gt;*&gt;&amp; bottom);</div></pre></td></tr></table></figure>
+<p>这两个函数都在类内声明，类外实现。CPU的前向/反向传播为纯虚函数，由子类实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">protected:</div><div class="line">  // CPU实现layer的前向传播</div><div class="line"> virtual void Forward_cpu(const vector&lt;Blob&lt;Dtype&gt;*&gt;&amp; bottom,</div><div class="line">     const vector&lt;Blob&lt;Dtype&gt;*&gt;&amp; top) = 0;</div><div class="line">     </div><div class="line"> // GPU实现layer的前向传播</div><div class="line"> virtual void Forward_gpu(const vector&lt;Blob&lt;Dtype&gt;*&gt;&amp; bottom,</div><div class="line">     const vector&lt;Blob&lt;Dtype&gt;*&gt;&amp; top) &#123;</div><div class="line">   // LOG(WARNING) &lt;&lt; &quot;Using CPU code as backup.&quot;;</div><div class="line">   return Forward_cpu(bottom, top);</div><div class="line"> &#125;</div><div class="line"> </div><div class="line"> virtual void Backward_cpu(const vector&lt;Blob&lt;Dtype&gt;*&gt;&amp; top,</div><div class="line">     const vector&lt;bool&gt;&amp; propagate_down,</div><div class="line">     const vector&lt;Blob&lt;Dtype&gt;*&gt;&amp; bottom) = 0;</div><div class="line">     </div><div class="line"> virtual void Backward_gpu(const vector&lt;Blob&lt;Dtype&gt;*&gt;&amp; top,</div><div class="line">     const vector&lt;bool&gt;&amp; propagate_down,</div><div class="line">     const vector&lt;Blob&lt;Dtype&gt;*&gt;&amp; bottom) &#123;</div><div class="line">   // LOG(WARNING) &lt;&lt; &quot;Using CPU code as backup.&quot;;</div><div class="line">   Backward_cpu(top, propagate_down, bottom);</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<h3 id="blob相关"><a href="#blob相关" class="headerlink" title="blob相关"></a>blob相关</h3><p>下面几个函数主要设置bottom或者top blob的数量状态，通常需要layer类的派生类重写，因为不同层指定的输入输出数量不同</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">// 获得layer所需的bottom blobs的个数</div><div class="line">virtual inline int ExactNumBottomBlobs() const &#123; return -1; &#125;</div><div class="line">// 获得layer所需的bottom blobs的最少个数</div><div class="line">virtual inline int MinBottomBlobs() const &#123; return -1; &#125;</div><div class="line">// 获得layer所需的bottom blobs的最多个数</div><div class="line">virtual inline int MaxBottomBlobs() const &#123; return -1; &#125;</div><div class="line"></div><div class="line">virtual inline int ExactNumTopBlobs() const &#123; return -1; &#125;</div><div class="line">virtual inline int MinTopBlobs() const &#123; return -1; &#125;</div><div class="line">virtual inline int MaxTopBlobs() const &#123; return -1; &#125;</div><div class="line"></div><div class="line">// 判断layer所需的bottom blobs和top blobs的个数是否相等</div><div class="line">virtual inline bool EqualNumBottomTopBlobs() const &#123; return false; &#125;</div><div class="line"></div><div class="line">// 判断layer所需的的top blobs是否需要由Net::Init来创建</div><div class="line">virtual inline bool AutoTopBlobs() const &#123; return false; &#125;</div><div class="line"></div><div class="line">// 判断layer指定的bottom blob是否需要强制梯度返回</div><div class="line">// 有些layer不需要梯度信息</div><div class="line">virtual inline bool AllowForceBackward(const int bottom_index) const &#123;</div><div class="line">  return true;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>其他函数详见 hpp文件。</p>
+</blockquote>
+<h2 id="内联函数"><a href="#内联函数" class="headerlink" title="内联函数"></a>内联函数</h2><h3 id="Forward"><a href="#Forward" class="headerlink" title="Forward"></a>Forward</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">// Forward and backward wrappers. You should implement the cpu and</div><div class="line">// gpu specific implementations instead, and should not change these</div><div class="line">// functions.</div><div class="line">// 前向传播，通过输入bottom blobs，计算输出top blobs和loss值</div><div class="line">template &lt;typename Dtype&gt;</div><div class="line">inline Dtype Layer&lt;Dtype&gt;::Forward(const vector&lt;Blob&lt;Dtype&gt;*&gt;&amp; bottom,</div><div class="line">    const vector&lt;Blob&lt;Dtype&gt;*&gt;&amp; top) &#123;</div><div class="line">  Dtype loss = 0;</div><div class="line">  Reshape(bottom, top);</div><div class="line">  switch (Caffe::mode()) &#123;</div><div class="line">  case Caffe::CPU:</div><div class="line">    Forward_cpu(bottom, top);</div><div class="line">    for (int top_id = 0; top_id &lt; top.size(); ++top_id) &#123;</div><div class="line">      if (!this-&gt;loss(top_id)) &#123; continue; &#125;</div><div class="line">      const int count = top[top_id]-&gt;count();</div><div class="line">      const Dtype* data = top[top_id]-&gt;cpu_data();</div><div class="line">      const Dtype* loss_weights = top[top_id]-&gt;cpu_diff();</div><div class="line">      loss += caffe_cpu_dot(count, data, loss_weights);</div><div class="line">    &#125;</div><div class="line">    break;</div><div class="line">  case Caffe::GPU:</div><div class="line">    Forward_gpu(bottom, top);</div><div class="line">#ifndef CPU_ONLY</div><div class="line">    for (int top_id = 0; top_id &lt; top.size(); ++top_id) &#123;</div><div class="line">      if (!this-&gt;loss(top_id)) &#123; continue; &#125;</div><div class="line">      const int count = top[top_id]-&gt;count();</div><div class="line">      const Dtype* data = top[top_id]-&gt;gpu_data();</div><div class="line">      const Dtype* loss_weights = top[top_id]-&gt;gpu_diff();</div><div class="line">      Dtype blob_loss = 0;</div><div class="line">      caffe_gpu_dot(count, data, loss_weights, &amp;blob_loss);</div><div class="line">      loss += blob_loss;</div><div class="line">    &#125;</div><div class="line">#endif</div><div class="line">    break;</div><div class="line">  default:</div><div class="line">    LOG(FATAL) &lt;&lt; &quot;Unknown caffe mode.&quot;;</div><div class="line">  &#125;</div><div class="line">  return loss;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="Backward"><a href="#Backward" class="headerlink" title="Backward"></a>Backward</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">// 反向传播，通过给定top blob误差梯度，计算bottom blob误差梯度</div><div class="line">template &lt;typename Dtype&gt;</div><div class="line">inline void Layer&lt;Dtype&gt;::Backward(const vector&lt;Blob&lt;Dtype&gt;*&gt;&amp; top,</div><div class="line">    const vector&lt;bool&gt;&amp; propagate_down,</div><div class="line">    const vector&lt;Blob&lt;Dtype&gt;*&gt;&amp; bottom) &#123;</div><div class="line">  switch (Caffe::mode()) &#123;</div><div class="line">  case Caffe::CPU:</div><div class="line">    Backward_cpu(top, propagate_down, bottom);</div><div class="line">    break;</div><div class="line">  case Caffe::GPU:</div><div class="line">    Backward_gpu(top, propagate_down, bottom);</div><div class="line">    break;</div><div class="line">  default:</div><div class="line">    LOG(FATAL) &lt;&lt; &quot;Unknown caffe mode.&quot;;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="ToProto"><a href="#ToProto" class="headerlink" title="ToProto"></a>ToProto</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// Serialize LayerParameter to protocol buffer</div><div class="line">// 序列化函数，将layer参数写入protobuf文件</div><div class="line">template &lt;typename Dtype&gt;</div><div class="line">void Layer&lt;Dtype&gt;::ToProto(LayerParameter* param, bool write_diff) &#123;</div><div class="line">  param-&gt;Clear();</div><div class="line">  param-&gt;CopyFrom(layer_param_);</div><div class="line">  param-&gt;clear_blobs();</div><div class="line">  for (int i = 0; i &lt; blobs_.size(); ++i) &#123;</div><div class="line">    blobs_[i]-&gt;ToProto(param-&gt;add_blobs(), write_diff);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="Layer-cpp"><a href="#Layer-cpp" class="headerlink" title="Layer.cpp"></a>Layer.cpp</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// 模板显式实例化</div><div class="line">INSTANTIATE_CLASS(Layer);</div></pre></td></tr></table></figure>
+<p>在common.hpp中定义</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">// Instantiate a class with float and double specifications.</div><div class="line">#define INSTANTIATE_CLASS(classname) \</div><div class="line">  char gInstantiationGuard##classname; \</div><div class="line">  template class classname&lt;float&gt;; \</div><div class="line">  template class classname&lt;double&gt;</div></pre></td></tr></table></figure>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>O(∩_∩)O谢谢!<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/alipay.jpg">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/weixin.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">cluster</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">code</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Deeplearning//" class="article-tag-list-link color3">Deeplearning</a>
+        			<a href="/categories/DeepLearning//" class="article-tag-list-link color3">DeepLearning</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2018/12/28/caffe-code-of-layer/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/08/affinity-propagation/" class="archive-article-date">
-  	<time datetime="2018-04-08T03:35:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-08</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2018/12/25/caffe-code-of-blob/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">【源码分析】caffe code of blob</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/08/affinity-propagation/">AP(affinity propagation)聚类算法</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">cluster</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Deeplearning//" class="article-tag-list-link color3">Deeplearning</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#关于layer"><span class="toc-number">1.</span> <span class="toc-text">关于layer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#message信息"><span class="toc-number">2.</span> <span class="toc-text">message信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#layer类成员变量"><span class="toc-number">3.</span> <span class="toc-text">layer类成员变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#layer类成员函数"><span class="toc-number">4.</span> <span class="toc-text">layer类成员函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#初始化"><span class="toc-number">4.1.</span> <span class="toc-text">初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#前向传播和反向传播"><span class="toc-number">4.2.</span> <span class="toc-text">前向传播和反向传播</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#blob相关"><span class="toc-number">4.3.</span> <span class="toc-text">blob相关</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#内联函数"><span class="toc-number">5.</span> <span class="toc-text">内联函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Forward"><span class="toc-number">5.1.</span> <span class="toc-text">Forward</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Backward"><span class="toc-number">5.2.</span> <span class="toc-text">Backward</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ToProto"><span class="toc-number">5.3.</span> <span class="toc-text">ToProto</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Layer-cpp"><span class="toc-number"></span> <span class="toc-text">Layer.cpp</span></a>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+        
+    </div>
+</aside>
+
+
+
   
   
-    </div></section>
   
 
-    
+  
+
+  
+
+  
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
+<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: "Fri Dec 28 2018 17:22:32 GMT+0800",
+  owner: 'xiaqunfeng',
+  repo: 'xiaqunfeng.github.io',
+  oauth: {
+    client_id: '21c3a01653d904d670a4',
+    client_secret: 'cf0e1ef08aa2e2fdfa0654901492f1738382c5d3',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+
+  
+
 
 
           </div>
@@ -291,9 +442,9 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
