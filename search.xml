@@ -8518,9 +8518,9 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <p>某乎<a href="https://www.zhihu.com/question/19551906" target="_blank" rel="external">这里</a>有各种推荐，自己可以参考的看看。</p>
 <p>godaddy地址: <a href="https://www.godaddy.com/" target="_blank" rel="external">https://www.godaddy.com</a></p>
 <p>阿里云域名地址: <a href="http://wanwang.aliyun.com/" target="_blank" rel="external">http://wanwang.aliyun.com</a></p>
-<p><strong> 总结 </strong><br>某乎上那些推荐都看了一遍，也琢磨了一下，最后发现，还是阿里云上的比较便宜，然后操作起来也比较方便，于是就在阿里云上买了。</p>
+<p><strong>总结</strong><br>某乎上那些推荐都看了一遍，也琢磨了一下，最后发现，还是阿里云上的比较便宜，然后操作起来也比较方便，于是就在阿里云上买了。</p>
 <p>我的域名：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">www.xiaqunfeng.cc</div></pre></td></tr></table></figure></p>
-<p><strong> 关于域名选择 </strong></p>
+<p><strong>关于域名选择</strong></p>
 <p>.com .cn .net .org 这种比较适合网站比较大的，当然，价格也贵一点，.com .cn 还需要网站备案什么的。现在一些其他后缀也很不错，比如 .cc .me .im .pro .top .info 等等，这些资料大家可以自己去查，就不细说了，强烈推荐 .me 和 .cc ，不过 .me 比 .cc贵，特别是买的时间越久或者续费都贵。我的 .cc 16块一年，哈哈，便宜，然后也挺好。</p>
 <p>2、域名解析</p>
 <p>域名解析-&gt;解析设置-&gt;添加解析，记录类型选A或CNAME，A记录的记录值就是ip地址，github提供了两个IP地址，192.30.252.153和192.30.252.154，可以随便填一个，或者两个都填，线路就默认，CNAME记录值填你的github博客网址</p>
@@ -8534,6 +8534,18 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <p>注：如果里面填的是 www.xiaqunfeng.cc，那以后就只能用它来访问；如果填的是 xiaqunfeng.cc，那以后用 www.xiaqunfeng.cc 和 xiaqunfeng.cc 都可以访问。</p>
 </blockquote>
 <p>等待生效，一般几分钟就好了，然后就可通过域名浏览你的博客主页了。</p>
+<h2 id="添加站点地图"><a href="#添加站点地图" class="headerlink" title="添加站点地图"></a>添加站点地图</h2><p>1、注册clustrmaps，点击<a href="https://clustrmaps.com/" target="_blank" rel="external">官网</a>进行注册</p>
+<p>2、注册完以后点击<strong>Create New Widget</strong> 创建新的widget，输入自己博客的站点地址；</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/clustrmaps_01.jpg" alt="1"></p>
+<p>3、然后选择你的<strong>Widget</strong> 类型</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/clustrmaps_02.jpg" alt="2"></p>
+<p>4、拷贝所选择的 widget对应的安装代码，将代码添加到对应主题下的 <code>layout/_partial/footer.ejs</code> 中即可</p>
+<p>Map widget</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/clustrmaps_02.jpg" alt="3"></p>
+<p>Globe widget</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/clustrmaps_04.jpg" alt="4"></p>
+<p>我的主题是yilia，所以添加的路径是：<code>themes/yilia/layout/_partial/footer.ejs</code></p>
+<p>最终显示结果，请见本人<a href="http://xiaqunfeng.cc">主页</a>最下面。</p>
 ]]></content>
       
         <categories>
