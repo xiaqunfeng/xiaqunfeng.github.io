@@ -8534,6 +8534,10 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <p>注：如果里面填的是 www.xiaqunfeng.cc，那以后就只能用它来访问；如果填的是 xiaqunfeng.cc，那以后用 www.xiaqunfeng.cc 和 xiaqunfeng.cc 都可以访问。</p>
 </blockquote>
 <p>等待生效，一般几分钟就好了，然后就可通过域名浏览你的博客主页了。</p>
+<blockquote>
+<p>update 2019.01.04。又购买了一个域名，来补充一下</p>
+</blockquote>
+<p>之前购买的.cc域名不能进行ICP备案，因为需要ICP备案的域名，所以就又买了一个，这次购买的比较参考了<a href="https://www.v2ex.com/t/491716" target="_blank" rel="external">v2ex</a>上大家的讨论，我最终比较了四个网站：namesilo、namecheap、name.com和之前购买过的阿里云，最后还是选了阿里云的.site域名，首年8块，我一次性新注册10年，共一百多块钱，还是很便宜的。</p>
 <h2 id="添加站点地图"><a href="#添加站点地图" class="headerlink" title="添加站点地图"></a>添加站点地图</h2><p>1、注册clustrmaps，点击<a href="https://clustrmaps.com/" target="_blank" rel="external">官网</a>进行注册</p>
 <p>2、注册完以后点击<strong>Create New Widget</strong> 创建新的widget，输入自己博客的站点地址；</p>
 <p><img src="http://oow6unnib.bkt.clouddn.com/clustrmaps_01.jpg" alt="1"></p>
