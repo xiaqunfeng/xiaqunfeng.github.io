@@ -4,11 +4,28 @@
 
     
   <url>
-    <loc>http://xiaqunfeng.cc/2019/01/15/python-skill-of-if-else/</loc>
-    <lastmod>2019-01-15T07:46:26.886Z</lastmod>
+    <loc>http://xiaqunfeng.cc/2018/10/18/Hive/</loc>
+    <lastmod>2019-01-21T03:54:14.319Z</lastmod>
     <data>
         <display>
-        <title>【转】Python编写条件分支代码的技巧</title>
+        <title>Hive架构及应用介绍</title>
+        <pubTime>2018-10-18T03:40:51.000Z</pubTime>
+        
+        <tag>architecture</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2019/01/15/python-skill-of-if-else/</loc>
+    <lastmod>2019-01-21T03:52:14.290Z</lastmod>
+    <data>
+        <display>
+        <title>Python编写条件分支代码的技巧</title>
         <pubTime>2019-01-15T07:41:04.000Z</pubTime>
         
         <tag>python</tag>
@@ -170,23 +187,6 @@
              
               <breadCrumb title="k8s" url="http://xiaqunfeng.cc/categories/k8s/"/>
           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2018/10/18/Hive/</loc>
-    <lastmod>2018-11-06T02:43:10.000Z</lastmod>
-    <data>
-        <display>
-        <title>Hive架构及应用介绍【转】</title>
-        <pubTime>2018-10-18T03:40:51.000Z</pubTime>
-        
-        <tag>architecture</tag>
-         
-         
-           
         </display>
     </data>
     </url>
