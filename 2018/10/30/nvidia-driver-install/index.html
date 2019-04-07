@@ -14,7 +14,7 @@
 <meta property="og:url" content="http://xiaqunfeng.cc/2018/10/30/nvidia-driver-install/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="记录在GPU机器上安装显卡驱动的过程。">
-<meta property="og:updated_time" content="2018-11-06T02:40:39.000Z">
+<meta property="og:updated_time" content="2019-03-27T03:22:36.300Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="安装nvidia显卡驱动">
 <meta name="twitter:description" content="记录在GPU机器上安装显卡驱动的过程。">
@@ -209,6 +209,15 @@ var _hmt = _hmt || [];
 <p>2、检查是否安装成功</p>
 <p>显示如下表示安装成功</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">root@jqgpu34:~# nvidia-smi</div><div class="line">Tue Oct 30 16:37:24 2018</div><div class="line">+-----------------------------------------------------------------------------+</div><div class="line">| NVIDIA-SMI 410.72       Driver Version: 410.72       CUDA Version: 10.0     |</div><div class="line">|-------------------------------+----------------------+----------------------+</div><div class="line">| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |</div><div class="line">| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |</div><div class="line">|===============================+======================+======================|</div><div class="line">|   0  Tesla P4            Off  | 00000000:04:00.0 Off |                  N/A |</div><div class="line">| N/A   38C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</div><div class="line">+-------------------------------+----------------------+----------------------+</div><div class="line">|   1  Tesla P4            Off  | 00000000:05:00.0 Off |                  N/A |</div><div class="line">| N/A   39C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</div><div class="line">+-------------------------------+----------------------+----------------------+</div><div class="line">|   2  Tesla P4            Off  | 00000000:08:00.0 Off |                  N/A |</div><div class="line">| N/A   39C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</div><div class="line">+-------------------------------+----------------------+----------------------+</div><div class="line">|   3  Tesla P4            Off  | 00000000:09:00.0 Off |                  N/A |</div><div class="line">| N/A   38C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</div><div class="line">+-------------------------------+----------------------+----------------------+</div><div class="line">|   4  Tesla P4            Off  | 00000000:85:00.0 Off |                  N/A |</div><div class="line">| N/A   35C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</div><div class="line">+-------------------------------+----------------------+----------------------+</div><div class="line">|   5  Tesla P4            Off  | 00000000:86:00.0 Off |                  N/A |</div><div class="line">| N/A   38C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</div><div class="line">+-------------------------------+----------------------+----------------------+</div><div class="line">|   6  Tesla P4            Off  | 00000000:89:00.0 Off |                  N/A |</div><div class="line">| N/A   37C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</div><div class="line">+-------------------------------+----------------------+----------------------+</div><div class="line">|   7  Tesla P4            Off  | 00000000:8A:00.0 Off |                  N/A |</div><div class="line">| N/A   38C    P0    23W /  75W |      0MiB /  7611MiB |      4%      Default |</div><div class="line">+-------------------------------+----------------------+----------------------+</div><div class="line"></div><div class="line">+-----------------------------------------------------------------------------+</div><div class="line">| Processes:                                                       GPU Memory |</div><div class="line">|  GPU       PID   Type   Process name                             Usage      |</div><div class="line">|=============================================================================|</div><div class="line">|  No running processes found                                                 |</div><div class="line">+-----------------------------------------------------------------------------+</div></pre></td></tr></table></figure>
+<h2 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h2><h3 id="添加-NVIDIA-官方-PPA"><a href="#添加-NVIDIA-官方-PPA" class="headerlink" title="添加 NVIDIA 官方 PPA"></a>添加 NVIDIA 官方 PPA</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo add-apt-repository ppa:graphics-drivers/ppa</div></pre></td></tr></table></figure>
+<p>果上面命令执行报<code>sudo: add-apt-repository: command not found</code>，试试下面这个命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install software-properties-common</div></pre></td></tr></table></figure>
+<p>如果上面命令运行后报<code>E: dpkg was interrupted, you must manually run &#39;sudo dpkg --configure -a&#39; to correct the problem.</code>，运行下面命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo dpkg --configure -a</div></pre></td></tr></table></figure>
+<h3 id="安装显卡驱动"><a href="#安装显卡驱动" class="headerlink" title="安装显卡驱动"></a>安装显卡驱动</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ sudo apt update</div><div class="line">$ sudo apt install nvidia-396</div></pre></td></tr></table></figure>
+<p>安装完<code>nvidia-396</code>再执行<code>nvidia-smi</code>，显示如下表示显卡驱动已经装好了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">$ nvidia-smi</div><div class="line"></div><div class="line">Thu Dec 20 20:23:36 2018</div><div class="line">+-----------------------------------------------------------------------------+</div><div class="line">| NVIDIA-SMI 390.46                 Driver Version: 390.46                   |</div><div class="line">|-------------------------------+----------------------+----------------------+</div><div class="line">| GPU Name       Persistence-M| Bus-Id       Disp.A | Volatile Uncorr. ECC |</div><div class="line">| Fan Temp Perf Pwr:Usage/Cap|         Memory-Usage | GPU-Util Compute M. |</div><div class="line">|===============================+======================+======================|</div><div class="line">|   0 Tesla V100-SXM2... Off | 00000000:00:07.0 Off |                    0 |</div><div class="line">| N/A   30C   P0   32W / 300W |     0MiB / 16160MiB |      0%     Default |</div><div class="line">+-------------------------------+----------------------+----------------------+</div><div class="line"></div><div class="line">+-----------------------------------------------------------------------------+</div><div class="line">| Processes:                                                       GPU Memory |</div><div class="line">| GPU       PID   Type   Process name                             Usage     |</div><div class="line">|=============================================================================|</div><div class="line">| No running processes found                                                 |</div><div class="line">+-----------------------------------------------------------------------------+</div></pre></td></tr></table></figure>
+<p>如果驱动安装后，运行<code>nvidia-smi</code>遇到<code>Failed to initialize NVML: Driver/library version mismatch</code>，重启即可。</p>
 
       
 
@@ -361,7 +370,7 @@ var _hmt = _hmt || [];
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#环境"><span class="toc-number">1.</span> <span class="toc-text">环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#卸载掉原有驱动"><span class="toc-number">2.</span> <span class="toc-text">卸载掉原有驱动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#禁用nouveau"><span class="toc-number">3.</span> <span class="toc-text">禁用nouveau</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装nvidia显卡驱动"><span class="toc-number">4.</span> <span class="toc-text">安装nvidia显卡驱动</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#环境"><span class="toc-number">1.</span> <span class="toc-text">环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#卸载掉原有驱动"><span class="toc-number">2.</span> <span class="toc-text">卸载掉原有驱动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#禁用nouveau"><span class="toc-number">3.</span> <span class="toc-text">禁用nouveau</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装nvidia显卡驱动"><span class="toc-number">4.</span> <span class="toc-text">安装nvidia显卡驱动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方法二"><span class="toc-number">5.</span> <span class="toc-text">方法二</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#添加-NVIDIA-官方-PPA"><span class="toc-number">5.1.</span> <span class="toc-text">添加 NVIDIA 官方 PPA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装显卡驱动"><span class="toc-number">5.2.</span> <span class="toc-text">安装显卡驱动</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -511,11 +520,11 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">ceph</a>
+                <a href="javascript:void(0)" class="js-tag color5">bluestore</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">bluestore</a>
+                <a href="javascript:void(0)" class="js-tag color5">ceph</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -523,11 +532,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">storage</a>
+                <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">cluster</a>
+                <a href="javascript:void(0)" class="js-tag color3">storage</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -539,11 +548,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -563,11 +572,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">monitor</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
+                <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -575,11 +584,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">pg</a>
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color3">pg</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -595,11 +604,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">kraken</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
+                <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -627,6 +636,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
              
@@ -643,15 +656,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">

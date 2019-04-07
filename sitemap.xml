@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://xiaqunfeng.cc/2018/10/30/nvidia-driver-install/</loc>
+    
+    <lastmod>2019-03-27T03:22:36.300Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2018/05/29/tensorrt/</loc>
+    
+    <lastmod>2019-03-25T07:25:55.043Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://xiaqunfeng.cc/about/index.html</loc>
     
     <lastmod>2019-02-17T14:42:18.748Z</lastmod>
@@ -75,13 +89,6 @@
     <loc>http://xiaqunfeng.cc/2018/11/06/kubernetes-deploy/</loc>
     
     <lastmod>2018-11-06T09:03:09.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2018/10/30/nvidia-driver-install/</loc>
-    
-    <lastmod>2018-11-06T02:40:39.000Z</lastmod>
     
   </url>
   

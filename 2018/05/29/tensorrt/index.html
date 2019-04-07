@@ -6,17 +6,18 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
-  <title>Category: Mac | 夏天的风的博客</title>
+  <title>TensorRT | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="关注深度学习、分布式存储、云计算">
-<meta property="og:type" content="website">
-<meta property="og:title" content="夏天的风的博客">
-<meta property="og:url" content="http://xiaqunfeng.cc/categories/Mac/index.html">
+  <meta name="description" content="tensorrt简介、安装及python转caffe脚本。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorRT">
+<meta property="og:url" content="http://xiaqunfeng.cc/2018/05/29/tensorrt/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="关注深度学习、分布式存储、云计算">
+<meta property="og:description" content="tensorrt简介、安装及python转caffe脚本。">
+<meta property="og:updated_time" content="2019-03-25T07:25:55.043Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="夏天的风的博客">
-<meta name="twitter:description" content="关注深度学习、分布式存储、云计算">
+<meta name="twitter:title" content="TensorRT">
+<meta name="twitter:description" content="tensorrt简介、安装及python转caffe脚本。">
   
     <link rel="alternative" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
   
@@ -155,467 +156,285 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-tensorrt" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      TensorRT
+    </h1>
+  
+
+        
+        <a href="/2018/05/29/tensorrt/" class="archive-article-date">
+  	<time datetime="2018-05-29T06:49:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-29</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>tensorrt简介、安装及python转caffe脚本。<br><a id="more"></a></p>
+<h2 id="关于TensorRT"><a href="#关于TensorRT" class="headerlink" title="关于TensorRT"></a>关于TensorRT</h2><p>​        NVIDIA TensorRT™是一款高性能的深度学习推理优化器和运行库，可为深度学习应用提供低延迟，高吞吐量的推理。TensorRT可用于快速优化，验证和部署经过训练的神经网络，以推理超大规模数据中心，嵌入式或汽车产品平台。</p>
+<p>​        开发人员可以使用TensorRT以INT8或FP16的优化精度进行快速推理，从而大幅降低延迟，如实时服务（如云上的流式视频分类或嵌入式和汽车平台上的对象检测和分割）所要求的。</p>
+<p>​        有了TensorRT，开发人员可以专注于开发新型的AI驱动的应用程序，而不是推理部署的性能调优。 TensorRT运行时确保最佳的推理性能，可以满足最苛刻的延迟和吞吐量要求。</p>
+<p>​        TensorRT可以部署到数据中心内的Tesla GPU，Jetson嵌入式平台和NVIDIA DRIVE自主驾驶平台。</p>
+<h3 id="TensorRT-3"><a href="#TensorRT-3" class="headerlink" title="TensorRT 3"></a>TensorRT 3</h3><p>TensorRT 3是在Volta GPU上解锁最佳推理性能的关键。与仅使用CPU推理相比，它在低于7ms的实时延迟下提供高达40倍的吞吐量。</p>
+<p>版本亮点：</p>
+<ul>
+<li>在7ms实时延迟下，Tesla V100与Tesla P100的推理速度提高了3.7倍</li>
+<li>与Tesla V100上的TensorFlow框架推理相比，优化和部署TensorFlow模型的速度提高了18倍</li>
+<li>Python API容易使用，提高了生产力</li>
+</ul>
+<h3 id="关键特性"><a href="#关键特性" class="headerlink" title="关键特性"></a>关键特性</h3><ul>
+<li>为低延迟推理生成优化的、部署就绪的运行时引擎</li>
+<li>优化常用的神经网络层，如卷积、全连接、LRN、池化、激活、softmax、concat和反卷积层</li>
+<li>导入使用Caffe和TensorFlow训练的模型或使用Network Definition API指定网络描述</li>
+<li>使用Python API优化、验证和部署模型</li>
+<li>使用全精度（FP32）或降低精度（INT8, FP16）来部署神经网络</li>
+<li>使用用户自定义层API定义和实现独特的功能</li>
+</ul>
+<h2 id="TensorRT-3的安装"><a href="#TensorRT-3的安装" class="headerlink" title="TensorRT 3的安装"></a>TensorRT 3的安装</h2><p><strong>1、查看系统环境</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// 系统版本</div><div class="line"># cat /etc/issue</div><div class="line">Ubuntu 16.04.3 LTS \n \l</div><div class="line"> </div><div class="line">//cuda版本</div><div class="line"># cat /usr/local/cuda/version.txt</div><div class="line">CUDA Version 8.0.61</div><div class="line"> </div><div class="line">//python版本</div><div class="line"># python --version</div><div class="line">Python 2.7.12</div></pre></td></tr></table></figure>
+<p><strong>2、下载对应的安装包</strong></p>
+<p><strong>3、安装 TensorRT</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># sudo dpkg -i nv-tensorrt-repo-ubuntu1604-ga-cuda8.0-trt3.0-20171128_1-1_amd64.deb</div><div class="line"># sudo apt-get update</div><div class="line"># sudo apt-get install tensorrt</div></pre></td></tr></table></figure>
+<p><strong>4、安装python依赖包</strong></p>
+<p>依赖包包括：python-libnvinfer、python-libnvinfer-dev、swig、swig3.0</p>
+<p>执行如下命令安装即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># sudo apt-get install python-libnvinfer-doc</div></pre></td></tr></table></figure>
+<p><strong>5、验证安装</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># dpkg -l | grep TensorRT</div><div class="line">ii  libnvinfer-dev   4.0.1-1+cuda8 amd64         TensorRT development libraries and he</div><div class="line">ii  libnvinfer-sampl 4.0.1-1+cuda8 amd64         TensorRT samples and documentation</div><div class="line">ii  libnvinfer4      4.0.1-1+cuda8 amd64         TensorRT runtime libraries</div><div class="line">ii  python-libnvinfe 4.0.1-1+cuda8 amd64         Python bindings for TensorRT</div><div class="line">ii  tensorrt         3.0.1-1+cuda8 amd64         Meta package of TensorRT</div></pre></td></tr></table></figure>
+<p>至此，tensorrt安装完成</p>
+<p><strong>6、安装Python UFF包</strong></p>
+<p>下载tar包</p>
+<p>进入解压后文件夹</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># cd TensorRT-3.0.1/uff</div><div class="line"># ls</div><div class="line">uff-0.2.0-py2.py3-none-any.whl</div><div class="line"># sudo pip install uff-0.2.0-py2.py3-none-any.whl</div></pre></td></tr></table></figure>
+<h2 id="NVCaffe-Python"><a href="#NVCaffe-Python" class="headerlink" title="NVCaffe Python"></a>NVCaffe Python</h2><p>TensorRT 3.0添加了对TensorRT python API的支持，以加载和优化NVCaffe模型，然后将其作为便携式PLAN文件执行和存储。</p>
+<p><strong>1、package的导入</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">import tensorrt as trt         </div><div class="line">import pycuda.driver as cuda</div><div class="line">import pycuda.autoinit</div><div class="line">import numpy as np</div><div class="line">from PIL import Image</div><div class="line">from tensorrt.parsers import caffeparser</div></pre></td></tr></table></figure>
+<ul>
+<li>tensorrt - 导入tensorrt</li>
+<li>pycuda - PyCUDA处理在GPU上分配内存所需的CUDA操作，并将数据传输到GPU并返回到CPU</li>
+<li>numpy - 存储和移动数据</li>
+<li>Image - 图像处理</li>
+<li>caffeparser - 转换 NVCaffe 模型</li>
+</ul>
+<p><strong>2、定义模型的一些常量和路径</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">INPUT_LAYERS = [&apos;data&apos;]</div><div class="line">OUTPUT_LAYERS = [&apos;prob&apos;]</div><div class="line">INPUT_H = 28</div><div class="line">INPUT_W = 28</div><div class="line">OUTPUT_SIZE = 10</div><div class="line"></div><div class="line">MODEL_PROTOTXT = &apos;/data/mnist/mnist.prototxt&apos;</div><div class="line">CAFFE_MODEL = &apos;/data/mnist/mnist.caffemodel&apos;</div><div class="line">DATA = &apos;/data/mnist/&apos;</div><div class="line">IMAGE_MEAN = &apos;/data/mnist/mnist_mean.binaryproto&apos;</div></pre></td></tr></table></figure>
+<p><strong>3、创建 engine</strong></p>
+<p>使用在 tensorrt.utils 中的 NVCaffe 模型转换工具</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">engine = tensorrt.utils.caffe_to_trt_engine(G_LOGGER,</div><div class="line">                                            MODEL_PROTOTXT,</div><div class="line">                                            CAFFE_MODEL,</div><div class="line">                                            1,</div><div class="line">                                            1 &lt;&lt; 20,</div><div class="line">                                            OUTPUT_LAYERS,</div><div class="line">                                            trt.infer.DataType.FLOAT)</div></pre></td></tr></table></figure>
+<p><strong>4、对输入的image应用 mean</strong></p>
+<p>使用 caffeparper 从 .binaryproto 文件中读取出来</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">parser = caffeparser.create_caffe_parser()</div><div class="line">mean_blob = parser.parse_binary_proto(IMAGE_MEAN)</div><div class="line">parser.destroy()</div><div class="line">mean = mean_blob.get_data(INPUT_W ** 2)</div><div class="line">data = np.empty([INPUT_W ** 2])</div><div class="line">for i in range(INPUT_W ** 2):</div><div class="line">    data[i] = float(img[i]) - mean[i]</div><div class="line">mean_blob.destroy()</div></pre></td></tr></table></figure>
+<p><strong>5、为推理创建一个 runtime，为engine 创建一个 context</strong></p>
+<p><strong>6、运行推理</strong></p>
+<p>在CPU上创建一个空的数组用于存放推理的结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">output = np.empty(output_size, dtype = np.float32)</div></pre></td></tr></table></figure>
+<p><strong>7、使用pycuda在GPU上分配内存并将其注册到engine中</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">d_input = cuda.mem_alloc(1 * img.size * img.dtype.itemsize)</div><div class="line">d_output = cuda.mem_alloc(1 * output.size * output.dtype.itemsize)</div></pre></td></tr></table></figure>
+<p><strong>8、engine需要绑定，作为指向GPU内存的指针，pycuda通过将这些分配转换为 ints 来完成内存分配</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bindings = [int(d_input), int(d_output)]</div></pre></td></tr></table></figure>
+<p><strong>9、创建一个CUDA stream 来运行推理</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">stream = cuda.Stream()</div></pre></td></tr></table></figure>
+<p><strong>10、将数据传输到GPU，运行推理，然后将结果复制回来</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">#transfer input data to device</div><div class="line">cuda.memcpy_htod_async(d_input, img, stream)</div><div class="line">#execute model</div><div class="line">context.enqueue(1, bindings, stream.handle, None)</div><div class="line">#transfer predictions back</div><div class="line">cuda.memcpy_dtoh_async(output, d_output, stream)</div></pre></td></tr></table></figure>
+<p><strong>11、结果的保存和使用</strong></p>
+<p>运行 ArgMax 得到 prediction</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">print (&quot;Prediction: &quot; + str(np.argmax(output)))</div></pre></td></tr></table></figure>
+<p>保存 engine 到文件，以后使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">trt.utils.write_engine_to_file(&quot;/data/mnist/new_mnist.engine&quot;, engine.serialize())</div></pre></td></tr></table></figure>
+<p>加载 engine 文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">new_engine = trt.utils.load_engine(G_LOGGER, &quot;/data/mnist/new_mnist.engine&quot;)</div></pre></td></tr></table></figure>
+<p><strong>12、清理 context、engine 和 runtime</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">context.destroy()</div><div class="line">engine.destroy()</div><div class="line">new_engine.destroy()</div></pre></td></tr></table></figure>
+<h2 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h2><p><strong>问题1</strong>、导入tensorrt的时候出现如下错误</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; import tensorrt as trt</div><div class="line">RuntimeError: module compiled against API version 0xb but this version of numpy is 0xa</div><div class="line">Traceback (most recent call last):</div><div class="line">  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</div><div class="line">  File &quot;/usr/lib/python2.7/dist-packages/tensorrt/__init__.py&quot;, line 77, in &lt;module&gt;</div><div class="line">    from tensorrt import infer, parsers, utils, lite, plugins</div><div class="line">  File &quot;/usr/lib/python2.7/dist-packages/tensorrt/infer/__init__.py&quot;, line 54, in &lt;module&gt;</div><div class="line">    from ._infer_enums import *</div><div class="line">  File &quot;/usr/lib/python2.7/dist-packages/tensorrt/infer/_infer_enums.py&quot;, line 54, in &lt;module&gt;</div><div class="line">    from tensorrt.infer import _nv_infer_bindings as nvinfer</div><div class="line">ImportError: numpy.core.multiarray failed to import</div></pre></td></tr></table></figure>
+<p>解决方法：</p>
+<p>更新NumPy到 &gt;= 1.13.0 版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># pip install -U numpy==1.13.0</div></pre></td></tr></table></figure>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>O(∩_∩)O谢谢!<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/alipay.jpg">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/weixin.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/05/25/txt-tools/" class="archive-article-date">
-  	<time datetime="2018-05-25T01:24:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-25</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/05/25/txt-tools/">文本工具</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Mac//" class="article-tag-list-link color4">Mac</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/05/03/MathJax-Markdown/" class="archive-article-date">
-  	<time datetime="2018-05-03T05:46:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/05/03/MathJax-Markdown/">在Markdown上编辑数学公式</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Mac//" class="article-tag-list-link color4">Mac</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/24/git-ignore-ds-store/" class="archive-article-date">
-  	<time datetime="2018-04-24T02:49:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-24</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/24/git-ignore-ds-store/">git全局忽略.DS_Store等文件</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">git</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Mac//" class="article-tag-list-link color4">Mac</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/04/13/jupyter-conda/" class="archive-article-date">
-  	<time datetime="2018-04-13T01:50:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-13</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/04/13/jupyter-conda/">在jupyter中添加conda环境</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Mac//" class="article-tag-list-link color4">Mac</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/27/mac-NTFS/" class="archive-article-date">
-  	<time datetime="2018-03-27T12:27:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/27/mac-NTFS/">解决Mac不能写入NTFS磁盘的问题(免安装)</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Mac//" class="article-tag-list-link color4">Mac</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/13/mac上Matplotlib中文乱码问题/" class="archive-article-date">
-  	<time datetime="2018-03-13T01:29:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-13</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/13/mac上Matplotlib中文乱码问题/">mac上Matplotlib中文乱码问题</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Mac//" class="article-tag-list-link color4">Mac</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
       
-        </div></section>
+
       
+
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/05/25/mac上实现vim的markdown预览/" class="archive-article-date">
-  	<time datetime="2017-05-25T02:11:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-25</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/05/25/mac上实现vim的markdown预览/">mac上实现vim的markdown预览</a>
-    </h1>
-  
+      </div>
+    </span>
+  </div>
+</div>
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">vim</a>
-        		</li>
-      		
-		</ul>
-	</div>
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2018/05/29/tensorrt/" alt="微信分享二维码">
+    </div>
+</div>
 
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Mac//" class="article-tag-list-link color4">Mac</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/05/04/iterm2配色/" class="archive-article-date">
-  	<time datetime="2017-05-04T12:32:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-04</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2018/07/11/git-rebase/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          git rebase
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/05/25/txt-tools/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">文本工具</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/05/04/iterm2配色/">iterm2配色--zsh &amp; oh-my-zsh</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">iterm</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Mac//" class="article-tag-list-link color4">Mac</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#关于TensorRT"><span class="toc-number">1.</span> <span class="toc-text">关于TensorRT</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TensorRT-3"><span class="toc-number">1.1.</span> <span class="toc-text">TensorRT 3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关键特性"><span class="toc-number">1.2.</span> <span class="toc-text">关键特性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TensorRT-3的安装"><span class="toc-number">2.</span> <span class="toc-text">TensorRT 3的安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NVCaffe-Python"><span class="toc-number">3.</span> <span class="toc-text">NVCaffe Python</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Q-amp-A"><span class="toc-number">4.</span> <span class="toc-text">Q&A</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/05/02/iterm2快捷键的使用/" class="archive-article-date">
-  	<time datetime="2017-05-02T12:46:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-02</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/05/02/iterm2快捷键的使用/">iterm2快捷键的使用</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">iterm</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Mac//" class="article-tag-list-link color4">Mac</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/01/06/hexo的搭建/" class="archive-article-date">
-  	<time datetime="2017-01-06T07:47:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-06</time>
-</a>
-        </div>
-    	 
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/01/06/hexo的搭建/">Mac上hexo博客的搭建</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">hexo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Mac//" class="article-tag-list-link color4">Mac</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+
+  
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
+<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  id: "Tue May 29 2018 14:49:53 GMT+0800",
+  owner: 'xiaqunfeng',
+  repo: 'xiaqunfeng.github.io',
+  oauth: {
+    client_id: '21c3a01653d904d670a4',
+    client_secret: 'cf0e1ef08aa2e2fdfa0654901492f1738382c5d3',
+  },
+})
+gitment.render('gitment-ctn')
+</script>
+
+  
+
 
 
           </div>
@@ -641,10 +460,10 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
-		isCategory: true,
+		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
 		root: "/",

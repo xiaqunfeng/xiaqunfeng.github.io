@@ -3,6 +3,38 @@
 
 
     
+  <url>
+    <loc>http://xiaqunfeng.cc/2018/10/30/nvidia-driver-install/</loc>
+    <lastmod>2019-03-27T03:22:36.300Z</lastmod>
+    <data>
+        <display>
+        <title>安装nvidia显卡驱动</title>
+        <pubTime>2018-10-30T11:52:15.000Z</pubTime>
+        
+        <tag>ubuntu</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2018/05/29/tensorrt/</loc>
+    <lastmod>2019-03-25T07:25:55.043Z</lastmod>
+    <data>
+        <display>
+        <title>TensorRT</title>
+        <pubTime>2018-05-29T06:49:53.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
     
   <url>
     <loc>http://xiaqunfeng.cc/2018/10/18/Hive/</loc>
@@ -188,23 +220,6 @@
              
               <breadCrumb title="k8s" url="http://xiaqunfeng.cc/categories/k8s/"/>
           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2018/10/30/nvidia-driver-install/</loc>
-    <lastmod>2018-11-06T02:40:39.000Z</lastmod>
-    <data>
-        <display>
-        <title>安装nvidia显卡驱动</title>
-        <pubTime>2018-10-30T11:52:15.000Z</pubTime>
-        
-        <tag>ubuntu</tag>
-         
-         
-           
         </display>
     </data>
     </url>
