@@ -1661,8 +1661,33 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
       <title><![CDATA[解决Mac不能写入NTFS磁盘的问题(免安装)]]></title>
       <url>http://xiaqunfeng.cc/2018/03/27/mac-NTFS/</url>
       <content type="html"><![CDATA[<p>使用Mac的同学都知道Mac默认不能在NTFS格式的磁盘中写入内容。下面介绍一个简单的方法，简单几行命令解决所有问题。<br><a id="more"></a></p>
-<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>Mac自动挂载的时候没有开放写权限，我们自己手动挂载一遍，把写权限加上即可。</p>
-<h3 id="第一步：查看磁盘设备文件名"><a href="#第一步：查看磁盘设备文件名" class="headerlink" title="第一步：查看磁盘设备文件名"></a>第一步：查看磁盘设备文件名</h3><p>这一步需要看一下，目标磁盘叫什么名字</p>
+<h2 id="新方法（亲测可用）"><a href="#新方法（亲测可用）" class="headerlink" title="新方法（亲测可用）"></a>新方法（亲测可用）</h2><blockquote>
+<p>Update 2019.04</p>
+</blockquote>
+<h3 id="1、查看磁盘的Volume-Name"><a href="#1、查看磁盘的Volume-Name" class="headerlink" title="1、查看磁盘的Volume Name"></a>1、查看磁盘的Volume Name</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">▶ diskutil list</div><div class="line">/dev/disk0 (internal):</div><div class="line">   #:                       TYPE NAME                    SIZE       IDENTIFIER</div><div class="line">   0:      GUID_partition_scheme                         251.0 GB   disk0</div><div class="line">   1:                        EFI EFI                     314.6 MB   disk0s1</div><div class="line">   2:                 Apple_APFS Container disk1         250.7 GB   disk0s2</div><div class="line"></div><div class="line">/dev/disk1 (synthesized):</div><div class="line">   #:                       TYPE NAME                    SIZE       IDENTIFIER</div><div class="line">   0:      APFS Container Scheme -                      +250.7 GB   disk1</div><div class="line">                                 Physical Store disk0s2</div><div class="line">   1:                APFS Volume Macintosh HD            194.8 GB   disk1s1</div><div class="line">   2:                APFS Volume Preboot                 43.5 MB    disk1s2</div><div class="line">   3:                APFS Volume Recovery                528.8 MB   disk1s3</div><div class="line">   4:                APFS Volume VM                      1.1 GB     disk1s4</div><div class="line"></div><div class="line">/dev/disk2 (external, physical):</div><div class="line">   #:                       TYPE NAME                    SIZE       IDENTIFIER</div><div class="line">   0:      GUID_partition_scheme                        *2.0 TB     disk2</div><div class="line">   1:                        EFI                         523.2 MB   disk2s1</div><div class="line">   2:         Microsoft Reserved                         134.2 MB   disk2s2</div><div class="line">   3:                  Apple_HFS MacOS                   1.1 TB     disk2s3</div><div class="line">   4:       Microsoft Basic Data exFAT                   322.1 GB   disk2s4</div><div class="line">   5:       Microsoft Basic Data NTFS                    569.1 GB   disk2s5</div></pre></td></tr></table></figure>
+<p>可以看到，硬盘对应的设备路径是 <code>/dev/disk2</code>。磁盘是有名称的，这里有的会显示，有的不会显示，但是本地磁盘默认会放在 <code>/Volumes</code> 中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">▶ ls /Volumes</div><div class="line"> MacOS  &apos;Macintosh HD&apos;   NTFS   com.apple.TimeMachine.localsnapshots   exFAT</div></pre></td></tr></table></figure>
+<p>想要操作的盘名称叫 NTFS</p>
+<h3 id="2、更新fstab"><a href="#2、更新fstab" class="headerlink" title="2、更新fstab"></a>2、更新fstab</h3><p>更新 <code>/etc/fstab</code> 文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo nano /etc/fstab</div></pre></td></tr></table></figure>
+<p>写入内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">LABEL=NTFS none ntfs rw,auto,nobrowse</div></pre></td></tr></table></figure>
+<ul>
+<li>ntfs rw：表示把这个分区挂载为可读写的ntfs格式</li>
+<li>nobrowse：这个代表了在finder里不显示这个分区，这个选项非常重要，如果不写入的话挂载是不会成功的（<strong>实际情况是NTFS盘在finder中可以看见</strong>）</li>
+</ul>
+<p>写完这里以后不是按回车，按 Ctrl + X，会出现要不要保存的字样，请按 Y 然后回车。</p>
+<h3 id="3、重启电脑"><a href="#3、重启电脑" class="headerlink" title="3、重启电脑"></a>3、重启电脑</h3><p>这个时候就可以在finder的侧边栏里看到NTFS盘了，但是在桌面上看不到NTFS盘符图标，此时可以对NTFS盘正常写入，而且以后也一直可以写入。</p>
+<h3 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h3><p>如果这个分区在finder里不显示了（我暂时还没遇到，侧边栏直接显示了）</p>
+<p>解决方法：软链接</p>
+<p>因为这个NTFS分区是挂/Volumes下的，我们把这个目录在桌面做一个快捷方式就行了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo ln -s /Volumes/NTFS/ ~/Desktop/NTFS</div></pre></td></tr></table></figure>
+<p>这样在桌面上就能看到NTFS磁盘图标了</p>
+<blockquote>
+<p>用这种方法打开的是系统原生的ntfs功能，稳定实用，比第三方工具要好用的多。</p>
+<p>参考链接：<a href="https://laod.cn/free/mac-ntfs.html" target="_blank" rel="external">https://laod.cn/free/mac-ntfs.html</a></p>
+</blockquote>
+<h2 id="老方法（已废弃）"><a href="#老方法（已废弃）" class="headerlink" title="老方法（已废弃）"></a>老方法（已废弃）</h2><h3 id="第一步：查看磁盘设备文件名"><a href="#第一步：查看磁盘设备文件名" class="headerlink" title="第一步：查看磁盘设备文件名"></a>第一步：查看磁盘设备文件名</h3><p>这一步需要看一下，目标磁盘叫什么名字</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">diskutil list</div></pre></td></tr></table></figure>
 <p><img src="http://oow6unnib.bkt.clouddn.com/diskutil.png" alt="diskutil_list"></p>
 <p>可以看到我移动硬盘被挂载了disk2的位置上，其中Windows那个磁盘<strong>设备文件名</strong>为<strong>disk2s4</strong></p>
