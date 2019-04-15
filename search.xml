@@ -3931,6 +3931,14 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">fatal: refusing to merge unrelated histories</div></pre></td></tr></table></figure>
 <p>参考链接: <a href="https://stackoverflow.com/questions/37937984/git-refusing-to-merge-unrelated-histories" target="_blank" rel="external">git refusing to merge unrelated histories</a></p>
 <p>解决方法：在执行命令后加上选项 <code>--allow-unrelated-histories</code></p>
+<p><strong>Q3</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">error: RPC failed; curl 18 transfer closed with outstanding read data remaining</div><div class="line">git clone error: RPC failed; curl 56 LibreSSL SSL_read: SSL_ERROR_SYSCALL, errno 60</div></pre></td></tr></table></figure>
+<p>解决方法：</p>
+<p>Errno 56，是由于大文件造成的提交或者拉取失败。增大缓存配置，比如下面就是配置提交缓存为 500M。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git config http.postBuffer 524288000</div><div class="line">git config https.postBuffer 524288000</div></pre></td></tr></table></figure>
+<p>还太大的话，在clone的时候加上depth</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone --depth 1 xxx.git</div></pre></td></tr></table></figure>
+<p>再不行就重新安装一下git试试：brew install git</p>
 ]]></content>
       
         
