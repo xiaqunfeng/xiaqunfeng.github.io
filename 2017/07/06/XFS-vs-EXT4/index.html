@@ -9,14 +9,14 @@
   <title>XFS vs EXT4 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="ceph默认的文件系统是XFS，centos7之前的版本默认文件系统是EXT4，现在是XFS，这里对比了一下，然后针对4k大小的随机读写进行了小小的测试。">
-<meta name="keywords" content="filesystem">
+<meta name="keywords" content="storage,ceph">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XFS vs EXT4">
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/07/06/XFS-vs-EXT4/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="ceph默认的文件系统是XFS，centos7之前的版本默认文件系统是EXT4，现在是XFS，这里对比了一下，然后针对4k大小的随机读写进行了小小的测试。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-27T01:03:16.000Z">
+<meta property="og:updated_time" content="2019-10-06T09:50:37.082Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="XFS vs EXT4">
 <meta name="twitter:description" content="ceph默认的文件系统是XFS，centos7之前的版本默认文件系统是EXT4，现在是XFS，这里对比了一下，然后针对4k大小的随机读写进行了小小的测试。">
@@ -292,7 +292,24 @@ var _hmt = _hmt || [];
       
     
     
-      <div class="declare" hidden="hidden"></div>
+      <div class="declare">
+        <strong>本文作者：</strong>
+        
+          夏天的风
+        
+        <br>
+        <strong>本文链接：</strong>
+        <a rel="license" href="http://xiaqunfeng.cc/2017/07/06/XFS-vs-EXT4/">http://xiaqunfeng.cc/2017/07/06/XFS-vs-EXT4/</a>
+        <br>
+        <strong>版权声明：</strong>
+        本作品采用
+        <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+        进行许可。转载请注明出处！
+        
+          <br>
+          <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a>
+        
+      </div>
     
       
         <div class="page-reward">
@@ -335,13 +352,28 @@ var _hmt = _hmt || [];
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">filesystem</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">storage</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">ceph</a>
         		</li>
       		
 		</ul>
 	</div>
 
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Ceph//" class="article-tag-list-link color5">Ceph</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
 
@@ -406,7 +438,7 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2017/07/07/centos7上安装python3/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/07/07/centos7-install-python3/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
@@ -416,7 +448,7 @@ var _hmt = _hmt || [];
     </a>
   
   
-    <a href="/2017/07/06/ceph-luminous新命令探索/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2017/07/06/ceph-luminous-new-cmd/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-title">ceph luminous新命令探索</div>
       <i class="icon-circle-right"></i>
     </a>
@@ -596,15 +628,7 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">bluestore</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">ceph</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">cluster</a>
+                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -612,19 +636,23 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">paper</a>
+                <a href="javascript:void(0)" class="js-tag color2">linuxs</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+                <a href="javascript:void(0)" class="js-tag color1">linux</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">centos</a>
+                <a href="javascript:void(0)" class="js-tag color1">tensorflow</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color5">tool</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">ceph</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -632,59 +660,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Keras</a>
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">rbd</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">rocksdb</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">monitor</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">code</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">pg</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">iscsi</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">mon</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">osd</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">kraken</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">fio</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -696,51 +680,23 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">iterm</a>
+                <a href="javascript:void(0)" class="js-tag color3">os</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cmd</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">vim</a>
+                <a href="javascript:void(0)" class="js-tag color4">k8s</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+                <a href="javascript:void(0)" class="js-tag color4">gpu</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">network</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
+                <a href="javascript:void(0)" class="js-tag color3">bigdata</a>
               </li>
             
             <div class="clearfix"></div>

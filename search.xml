@@ -96,7 +96,16 @@
       <title><![CDATA[文章导航]]></title>
       <url>http://xiaqunfeng.cc/2019/10/01/navigation/</url>
       <content type="html"><![CDATA[<p>将文章进行归类总结 <a id="more"></a></p>
-<p>TODO</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>虽然点击“所有文章”可以根据tag筛选文章，但文章之前打的tag较多，多有不便。文章分类展示的也不是很明显，所以，这里梳理一下。</p>
+<h2 id="导航"><a href="#导航" class="headerlink" title="导航"></a>导航</h2><p>TODO</p>
+<p>大部分文章都打了tag，只有少部分文章加了分类。</p>
+<p>分类想按以下几个主题来：</p>
+<p>AI</p>
+<p>机器学习</p>
+<p>分布式存储</p>
+<p>云计算</p>
+<p>工具</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>还有一些文章没有分类和tag，可通过翻页查看，或直接搜索。</p>
 ]]></content>
       
         
@@ -291,7 +300,7 @@
         
         <tags>
             
-            <tag> code </tag>
+            <tag> caffe </tag>
             
         </tags>
         
@@ -366,7 +375,7 @@
         
         <tags>
             
-            <tag> code </tag>
+            <tag> caffe </tag>
             
         </tags>
         
@@ -446,7 +455,7 @@
         
         <tags>
             
-            <tag> code </tag>
+            <tag> caffe </tag>
             
         </tags>
         
@@ -492,7 +501,7 @@
         
         <tags>
             
-            <tag> code </tag>
+            <tag> caffe </tag>
             
         </tags>
         
@@ -639,16 +648,10 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@jqgpu34:~# kubectl get nodes</span><br><span class="line">NAME      STATUS   ROLES    AGE   VERSION</span><br><span class="line">jqgpu34   Ready    master   20h   v1.12.2</span><br><span class="line">jqgpu35   Ready    &lt;none&gt;   19h   v1.12.2</span><br><span class="line">jqgpu36   Ready    &lt;none&gt;   19h   v1.12.2</span><br></pre></td></tr></table></figure>
 ]]></content>
       
-        <categories>
-            
-            <category> k8s </category>
-            
-        </categories>
-        
         
         <tags>
             
-            <tag> ubuntu </tag>
+            <tag> k8s </tag>
             
         </tags>
         
@@ -701,10 +704,16 @@
 <p>如果驱动安装后，运行<code>nvidia-smi</code>遇到<code>Failed to initialize NVML: Driver/library version mismatch</code>，重启即可。</p>
 ]]></content>
       
+        <categories>
+            
+            <category> DeepLearning </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ubuntu </tag>
+            <tag> gpu </tag>
             
         </tags>
         
@@ -803,7 +812,7 @@
         
         <tags>
             
-            <tag> architecture </tag>
+            <tag> bigdata </tag>
             
         </tags>
         
@@ -962,14 +971,14 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> paper </tag>
+            <tag> algorithm </tag>
             
         </tags>
         
     </entry>
     
     <entry>
-      <title><![CDATA[Chinese Whispers]]></title>
+      <title><![CDATA[Chinese Whispers人脸聚类算法]]></title>
       <url>http://xiaqunfeng.cc/2018/08/14/Chinese-Whispers/</url>
       <content type="html"><![CDATA[<p>学习一下适用于大规模人脸的无监督聚类方法。不需要指定聚类个数。<br><a id="more"></a></p>
 <h3 id="论文中CW描述"><a href="#论文中CW描述" class="headerlink" title="论文中CW描述"></a>论文中CW描述</h3><p>CW是一种非常基础的，但有效的算法，用来分割加权的无向图节点。它来源于同名的儿童游戏，孩子们在哪里低声互相耳语？游戏的目标是通过几个带干扰的通道传递后，将原来的信息衍生成一些更有趣的信息。CW算法的目标就是查找传播相同信息到相邻节点的节点组。它可以被看做一个基于代理的社交网络的模拟。</p>
@@ -1012,6 +1021,12 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
             
         </categories>
         
+        
+        <tags>
+            
+            <tag> algorithm </tag>
+            
+        </tags>
         
     </entry>
     
@@ -1087,6 +1102,12 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <p>3、当然，还有拆分提交的功能，可以自行搜之。不过强烈不推荐，特别是代码两次提交代码耦合比较紧密的情况，很难拆分。</p>
 ]]></content>
       
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
         
         <tags>
             
@@ -1181,6 +1202,12 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># pip install -U numpy==1.13.0</span><br></pre></td></tr></table></figure>
 ]]></content>
       
+        <categories>
+            
+            <category> DeepLearning </category>
+            
+        </categories>
+        
         
     </entry>
     
@@ -1353,10 +1380,16 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
       
         <categories>
             
-            <category> Mac </category>
+            <category> Tools </category>
             
         </categories>
         
+        
+        <tags>
+            
+            <tag> tool </tag>
+            
+        </tags>
         
     </entry>
     
@@ -1419,6 +1452,12 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         </categories>
         
         
+        <tags>
+            
+            <tag> algorithm </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -1469,10 +1508,16 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
       
         <categories>
             
-            <category> Mac </category>
+            <category> Tools </category>
             
         </categories>
         
+        
+        <tags>
+            
+            <tag> tool </tag>
+            
+        </tags>
         
     </entry>
     
@@ -1506,7 +1551,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
       
         <categories>
             
-            <category> Mac </category>
+            <category> Toolss </category>
             
         </categories>
         
@@ -1561,10 +1606,16 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
       
         <categories>
             
-            <category> Mac </category>
+            <category> Tools </category>
             
         </categories>
         
+        
+        <tags>
+            
+            <tag> tool </tag>
+            
+        </tags>
         
     </entry>
     
@@ -1647,7 +1698,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> cluster </tag>
+            <tag> algorithm </tag>
             
         </tags>
         
@@ -1731,7 +1782,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> cluster </tag>
+            <tag> algorithm </tag>
             
         </tags>
         
@@ -1766,7 +1817,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> paper </tag>
+            <tag> algorithm </tag>
             
         </tags>
         
@@ -1821,16 +1872,22 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
       
         <categories>
             
-            <category> Mac </category>
+            <category> Tools </category>
             
         </categories>
         
+        
+        <tags>
+            
+            <tag> tool </tag>
+            
+        </tags>
         
     </entry>
     
     <entry>
       <title><![CDATA[添加gitment评论系统]]></title>
-      <url>http://xiaqunfeng.cc/2018/03/26/%E6%B7%BB%E5%8A%A0gitment%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F/</url>
+      <url>http://xiaqunfeng.cc/2018/03/26/hexo-gitment/</url>
       <content type="html"><![CDATA[<p>给自己的博客配置了一个评论系统，该系统使用GitHub账号登陆，使用GitHub Issues来写评论，比较方便。<br><a id="more"></a></p>
 <h2 id="注册OAuth-Application"><a href="#注册OAuth-Application" class="headerlink" title="注册OAuth Application"></a>注册OAuth Application</h2><p>链接: <a href="https://github.com/settings/applications/new" target="_blank" rel="noopener">https://github.com/settings/applications/new</a></p>
 <p>因为Gitment使用了GitHub的服务，因此需要注册OAuth application。</p>
@@ -1966,7 +2023,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> paper </tag>
+            <tag> algorithm </tag>
             
         </tags>
         
@@ -2001,7 +2058,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> Keras </tag>
+            <tag> tensorflow </tag>
             
         </tags>
         
@@ -2009,7 +2066,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[mac上Matplotlib中文乱码问题]]></title>
-      <url>http://xiaqunfeng.cc/2018/03/13/mac%E4%B8%8AMatplotlib%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/</url>
+      <url>http://xiaqunfeng.cc/2018/03/13/mac-Matplotlib-chinese/</url>
       <content type="html"><![CDATA[<p>解决自己再mac上用matplotlib绘图时中文显示乱码的问题<br><a id="more"></a></p>
 <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/Users/xiaqunfeng/anaconda2/envs/python27/lib/python2.7/site-packages/matplotlib/font_manager.py:1297: UserWarning: findfont: Font family [u&apos;sans-serif&apos;] not found. Falling back to DejaVu Sans</span><br><span class="line">  (prop.get_family(), self.defaultFamily[fontext]))</span><br><span class="line">(python27)</span><br></pre></td></tr></table></figure>
 <p>找不到字体，在绘制的图片中中文显示乱码</p>
@@ -2043,16 +2100,22 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
       
         <categories>
             
-            <category> Mac </category>
+            <category> Tools </category>
             
         </categories>
         
+        
+        <tags>
+            
+            <tag> tool </tag>
+            
+        </tags>
         
     </entry>
     
     <entry>
       <title><![CDATA[inkscope安装配置]]></title>
-      <url>http://xiaqunfeng.cc/2018/03/11/inkscope%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/</url>
+      <url>http://xiaqunfeng.cc/2018/03/11/ceph-inkscope/</url>
       <content type="html"><![CDATA[<p>关于inkscope监控配置实践手册。<br><a id="more"></a></p>
 <h2 id="关于inkscope"><a href="#关于inkscope" class="headerlink" title="关于inkscope"></a>关于inkscope</h2><p><strong>Inkscope</strong> 是一个 Ceph 的管理和监控系统，依赖于 Ceph 提供的 API，使用 MongoDB  来存储实时的监控数据和历史信息。</p>
 <p>inkscope是一个基于apache2部署的flask应用， flask项目只负责ceph监控页面展示，实际获取ceph集群状态信息，是通过向ceph-rest-api发起请求实现的。</p>
@@ -2200,7 +2263,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> monitor </tag>
+            <tag> ceph </tag>
             
         </tags>
         
@@ -2208,7 +2271,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[客户端rbd环境检查]]></title>
-      <url>http://xiaqunfeng.cc/2018/03/08/%E5%AE%A2%E6%88%B7%E7%AB%AFrbd%E7%8E%AF%E5%A2%83%E6%A3%80%E6%9F%A5/</url>
+      <url>http://xiaqunfeng.cc/2018/03/08/ceph-rbd-env-check/</url>
       <content type="html"><![CDATA[<p>检查rbd客户端是否可以正常识别文件系统<br><a id="more"></a></p>
 <h2 id="应付的场景"><a href="#应付的场景" class="headerlink" title="应付的场景"></a>应付的场景</h2><p>  编译10.2.6和11.2.1版本的rbd，执行发现，在sysfs_write_rbd_add(buf)步中(该块设备已经被文件系统xfs格式化)，创建的/run/udev/data/b251\:0都为异常状态，ID_FS_TYPE字段为空。执行mount都可以正常挂载。<br>  实际上，通过apt-get install ceph-common的rbd存在异常，而apt-get install ceph的rbd表现正常(ceph-deploy部署的rbd是通过apt-get install ceph实现的)。<br>这个异常与rbd源代码没关系，而是与安装的方式有关，这可能是有组件的依赖有关系。</p>
 <h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>暂时无法从rbd代码层面定位问题，通过提供工具检测暂时绕过这个问题。<br>ceph-client-rbd-env-check.py可以协助检查rbd客户端是否可以正常识别文件系统。在rbd环境就绪后，可以运行脚本执行检查。</p>
@@ -2228,7 +2291,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> rbd </tag>
+            <tag> ceph </tag>
             
         </tags>
         
@@ -2236,7 +2299,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[ceph osd权重调整]]></title>
-      <url>http://xiaqunfeng.cc/2018/03/08/ceph-osd%E6%9D%83%E9%87%8D%E8%B0%83%E6%95%B4/</url>
+      <url>http://xiaqunfeng.cc/2018/03/08/ceph-osd-reweight/</url>
       <content type="html"><![CDATA[<p>介绍调整何时该调整权重，以及调整权重的方法。<br><a id="more"></a></p>
 <h2 id="为什么要调整权重？"><a href="#为什么要调整权重？" class="headerlink" title="为什么要调整权重？"></a>为什么要调整权重？</h2><p>ceph是一个去中心化的分布式存储系统，其数据的分布是按照<a href="[https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf](https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf">crush算法</a>)计算得到。</p>
 <p>然而遗憾的是crush算法并不能将pg均匀的分布于osd之间。以某三副本pool有1024个pg，共1024*3=3072个pg在30个osd中的分布为例：</p>
@@ -2385,7 +2448,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> osd </tag>
+            <tag> ceph </tag>
             
         </tags>
         
@@ -2393,7 +2456,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[ceph luminous最佳部署实践]]></title>
-      <url>http://xiaqunfeng.cc/2018/03/04/ceph-luminous%E6%9C%80%E4%BD%B3%E9%83%A8%E7%BD%B2%E5%AE%9E%E8%B7%B5/</url>
+      <url>http://xiaqunfeng.cc/2018/03/04/ceph-luminous-best-deploy-practise/</url>
       <content type="html"><![CDATA[<p>luminous版本ceph最佳部署实践，分别指定rocksdb、osd数据及元数据磁盘位置，最大化集群性能。<br><a id="more"></a></p>
 <h2 id="磁盘分区"><a href="#磁盘分区" class="headerlink" title="磁盘分区"></a>磁盘分区</h2><p>每个OSD对应需要4个磁盘分区（简单起见在一块磁盘上分的四个区）</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># lsblk</span><br><span class="line">NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sr0     11:0    1  436K  0 rom</span><br><span class="line">vda    253:0    0   20G  0 disk</span><br><span class="line">├─vda1 253:1    0    2M  0 part</span><br><span class="line">├─vda2 253:2    0  500M  0 part /boot</span><br><span class="line">└─vda3 253:3    0 19.5G  0 part /</span><br><span class="line">vdd    253:48   0   50G  0 disk</span><br><span class="line">├─vdd1 253:49   0 1023M  0 part </span><br><span class="line">├─vdd2 253:50   0   10G  0 part</span><br><span class="line">├─vdd3 253:51   0   10G  0 part</span><br><span class="line">└─vdd4 253:52   0   29G  0 part</span><br></pre></td></tr></table></figure>
@@ -2466,7 +2529,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> luminous </tag>
+            <tag> ceph </tag>
             
         </tags>
         
@@ -2474,7 +2537,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[ceph iscsi网关]]></title>
-      <url>http://xiaqunfeng.cc/2018/02/28/ceph-iscsi%E7%BD%91%E5%85%B3/</url>
+      <url>http://xiaqunfeng.cc/2018/02/28/ceph-iscsi/</url>
       <content type="html"><![CDATA[<p>介绍三种iscsi target的选型：TGT、LIO、SCST。</p>
 <a id="more"></a>
 <p> Ceph iSCSI Gateway基本框架：<img src="http://oow6unnib.bkt.clouddn.com/ceph_iscsi_gateway.png" alt="ceph iscsi gateway"></p>
@@ -2562,7 +2625,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> iscsi </tag>
+            <tag> ceph </tag>
             
         </tags>
         
@@ -2570,7 +2633,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[ceph ansible使用手册]]></title>
-      <url>http://xiaqunfeng.cc/2018/02/28/ceph-ansible%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/</url>
+      <url>http://xiaqunfeng.cc/2018/02/28/ceph-ansible-manual/</url>
       <content type="html"><![CDATA[<p>该文档介绍利用ansible来部署ceph集群<br>github：<a href="https://github.com/xiaqunfeng/ceph-ansible" target="_blank" rel="noopener">https://github.com/xiaqunfeng/ceph-ansible</a></p>
 <a id="more"></a>
 <p>新增role的使用方法详见github里的README.md</p>
@@ -2612,7 +2675,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> ansible </tag>
+            <tag> ceph </tag>
             
         </tags>
         
@@ -2681,7 +2744,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> paper </tag>
+            <tag> algorithm </tag>
             
         </tags>
         
@@ -2799,7 +2862,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> paper </tag>
+            <tag> algorithm </tag>
             
         </tags>
         
@@ -2904,7 +2967,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> paper </tag>
+            <tag> algorithm </tag>
             
         </tags>
         
@@ -2912,7 +2975,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[ceph写流程分析]]></title>
-      <url>http://xiaqunfeng.cc/2017/11/18/ceph%E5%86%99%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/</url>
+      <url>http://xiaqunfeng.cc/2017/11/18/ceph-write-flow/</url>
       <content type="html"><![CDATA[<p>之前总结的ceph写流程分析笔记，代码是基于jewel版本10.2.0，现分享出来，欢迎指点。<br><a id="more"></a></p>
 <h2 id="一、rbd到OSD映射关系"><a href="#一、rbd到OSD映射关系" class="headerlink" title="一、rbd到OSD映射关系"></a>一、rbd到OSD映射关系</h2><p>​    客户端使用RBD设备，使用librbd、librados库进行访问管理块设备。</p>
 <p>​    1、创建 一个pool，为这个pool指定pg的数量，同时在这个pool中指明保存数据的副本数（通常为3个副本）。</p>
@@ -2947,7 +3010,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> code </tag>
+            <tag> ceph </tag>
             
         </tags>
         
@@ -2955,7 +3018,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[mac上安装caffe并训练mnist]]></title>
-      <url>http://xiaqunfeng.cc/2017/11/05/mac%E4%B8%8A%E5%AE%89%E8%A3%85caffe%E5%B9%B6%E8%AE%AD%E7%BB%83mnist/</url>
+      <url>http://xiaqunfeng.cc/2017/11/05/mac-install-caffe-mnist/</url>
       <content type="html"><![CDATA[<p>在mac上安装caffe，然后训练一个mnist项目，熟悉流程。新增anaconda的使用介绍。<br><a id="more"></a></p>
 <h2 id="安装caffe"><a href="#安装caffe" class="headerlink" title="安装caffe"></a>安装caffe</h2><p>官方的资料：<a href="http://caffe.berkeleyvision.org/install_osx.html" target="_blank" rel="noopener">http://caffe.berkeleyvision.org/install_osx.html</a></p>
 <p>我这里并没有用 Anaconda Python，如果想要安装它的话，去<a href="https://www.anaconda.com/download/#macos" target="_blank" rel="noopener">官网下载</a>并安装。</p>
@@ -3187,8 +3250,106 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     </entry>
     
     <entry>
+      <title><![CDATA[dd磁盘命令小记]]></title>
+      <url>http://xiaqunfeng.cc/2017/10/06/dd-cmd/</url>
+      <content type="html"><![CDATA[<p>dd是经常使用的命令了，方便快捷，这里闲来小总结一下，以及怎样测出最真实的写入速度。<br><a id="more"></a></p>
+<h2 id="命令的使用"><a href="#命令的使用" class="headerlink" title="命令的使用"></a>命令的使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># dd --help</span><br><span class="line">Usage: dd [OPERAND]...</span><br><span class="line">  or:  dd OPTION</span><br><span class="line">Copy a file, converting and formatting according to the operands.</span><br><span class="line"></span><br><span class="line">  bs=BYTES        read and write up to BYTES bytes at a time</span><br><span class="line">  cbs=BYTES       convert BYTES bytes at a time</span><br><span class="line">  conv=CONVS      convert the file as per the comma separated symbol list</span><br><span class="line">  count=N         copy only N input blocks</span><br><span class="line">  ibs=BYTES       read up to BYTES bytes at a time (default: 512)</span><br><span class="line">  if=FILE         read from FILE instead of stdin</span><br><span class="line">  iflag=FLAGS     read as per the comma separated symbol list</span><br><span class="line">  obs=BYTES       write BYTES bytes at a time (default: 512)</span><br><span class="line">  of=FILE         write to FILE instead of stdout</span><br><span class="line">  oflag=FLAGS     write as per the comma separated symbol list</span><br><span class="line">  seek=N          skip N obs-sized blocks at start of output</span><br><span class="line">  skip=N          skip N ibs-sized blocks at start of input</span><br><span class="line">  status=WHICH    WHICH info to suppress outputting to stderr;</span><br><span class="line">                  &apos;noxfer&apos; suppresses transfer stats, &apos;none&apos; suppresses all</span><br></pre></td></tr></table></figure>
+<p><strong>翻译</strong></p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bs</td>
+<td>同时设置读写块的大小为 bytes ，可代替 ibs 和 obs</td>
+</tr>
+<tr>
+<td>cbs</td>
+<td>一次转换 bytes 个字节，即转换缓冲区大小</td>
+</tr>
+<tr>
+<td>conv</td>
+<td>转换参数</td>
+</tr>
+<tr>
+<td>count</td>
+<td>复制的块数</td>
+</tr>
+<tr>
+<td>ibs</td>
+<td>一次读入 bytes 个字节(即一个块大小为 bytes 个字节)</td>
+</tr>
+<tr>
+<td>if</td>
+<td>输入文件 或 设备名称</td>
+</tr>
+<tr>
+<td>iflag</td>
+<td>按照逗号来分隔读参数</td>
+</tr>
+<tr>
+<td>obs</td>
+<td>一次写 bytes 个字节(即一个块大小为 bytes 个字节)</td>
+</tr>
+<tr>
+<td>of</td>
+<td>输出文件 或 设备名称</td>
+</tr>
+<tr>
+<td>oflag</td>
+<td>按照逗号来分隔写参数</td>
+</tr>
+<tr>
+<td>seek</td>
+<td>从输出文件开头跳过 blocks 个块后再开始复制</td>
+</tr>
+<tr>
+<td>skip</td>
+<td>从输入文件开头跳过 blocks 个块后再开始复制</td>
+</tr>
+</tbody>
+</table>
+<p>查看版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dd --version</span><br></pre></td></tr></table></figure>
+<h2 id="磁盘读写"><a href="#磁盘读写" class="headerlink" title="磁盘读写"></a>磁盘读写</h2><p><strong>两个特殊的设备</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/dev/null：伪设备，相当于黑洞，of到该设备不会产生IO</span><br><span class="line">/dev/zero：伪设备，它只产生空字符流，对它不会产生IO</span><br></pre></td></tr></table></figure>
+<p><strong>1、测试磁盘写能力</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dd if=/dev/zero of=/test.a bs=8k count=10000</span><br></pre></td></tr></table></figure>
+<p>IO都集中在of文件中，of文件只用于写，相当于测试磁盘的写能力。</p>
+<p><strong>2、测试磁盘读能力</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dd if=/dev/sdb1 of=/dev/null bs=8k count=10000</span><br></pre></td></tr></table></figure>
+<p>IO只发生在/dev/sdb1上，相当于测试磁盘的读能力。</p>
+<p><strong>3、测试同时读写能力</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dd if=/dev/sdb1 of=/test.a bs=8k count=10000</span><br></pre></td></tr></table></figure>
+<p>一个是物理分区，一个是实际的文件，对它们的读写都会产生IO，如果它们都在一个磁盘中，该命令就相当于测试磁盘的同时读写能力。</p>
+<h2 id="几种测试写磁盘的区别"><a href="#几种测试写磁盘的区别" class="headerlink" title="几种测试写磁盘的区别"></a>几种测试写磁盘的区别</h2><p>先给出四种测试方式的结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># dd if=/dev/zero of=test bs=1M count=128</span><br><span class="line">128+0 records in</span><br><span class="line">128+0 records out</span><br><span class="line">134217728 bytes (134 MB) copied, 0.116559 s, 1.2 GB/s</span><br><span class="line"></span><br><span class="line"># dd if=/dev/zero of=test bs=1M count=128 ; sync</span><br><span class="line">128+0 records in</span><br><span class="line">128+0 records out</span><br><span class="line">134217728 bytes (134 MB) copied, 0.125106 s, 1.1 GB/s</span><br><span class="line"></span><br><span class="line"># dd if=/dev/zero of=test bs=1M count=128 conv=fdatasync</span><br><span class="line">128+0 records in</span><br><span class="line">128+0 records out</span><br><span class="line">134217728 bytes (134 MB) copied, 1.76802 s, 75.9 MB/s</span><br><span class="line"></span><br><span class="line"># dd if=/dev/zero of=test bs=1M count=128 oflag=dsync</span><br><span class="line">128+0 records in</span><br><span class="line">128+0 records out</span><br><span class="line">134217728 bytes (134 MB) copied, 4.91353 s, 27.3 MB/s</span><br></pre></td></tr></table></figure>
+<p>1、<code>dd if=/dev/zero of=test bs=1M count=128</code></p>
+<p>没有加任何参数，命令只是单纯地把这128MB的数据读到内存缓冲当中，dd命令完成前并没有让系统真正把文件写到磁盘上。所以得到的是一个超级快的速度。直到dd完成后系统才开始真正往磁盘上写数据,但这个速度你是看不到了。</p>
+<p>2、<code>dd if=/dev/zero of=test bs=1M count=128 ; sync</code></p>
+<p>这事先后两个独立的命令。当sync命令准备开始往磁盘上真正写入数据的时候，前面dd命令已经把错误的“写入速度”值显示在屏幕上了。所以得到的不是真正的写入速度。</p>
+<p><strong>3、<code>dd if=/dev/zero of=test bs=1M count=128 conv=fdatasync</code></strong></p>
+<p>加入参数 <code>conv=fdatasync</code> 后，dd命令执行到最后会真正执行一次“同步(sync)”操作，所以这时候得到的是读取这128M数据到内存并写入到磁盘上所需的时间，这样算出来的时间才是<strong>比较符合实际</strong>的。这种方式最接近计算机实际操作，所以测出来的数据最有参考价值。</p>
+<p>4、<code>dd if=/dev/zero of=test bs=1M count=128 oflag=dsync</code></p>
+<p>加入参数 <code>oflag=dsync</code> 后，dd在执行时每次都会进行同步写入操作。这条命令每次读取1M后就要先把这1M写入磁盘，然后再读取下面这1M，一共重复128次。这是最慢的一种方式，因为基本上没有用到写缓存(write cache)。</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> storage </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[ceph指定版本安装]]></title>
-      <url>http://xiaqunfeng.cc/2017/09/27/ceph%E6%8C%87%E5%AE%9A%E7%89%88%E6%9C%AC%E5%AE%89%E8%A3%85/</url>
+      <url>http://xiaqunfeng.cc/2017/09/27/ceph-assign-version-deploy/</url>
       <content type="html"><![CDATA[<p>通过yum安装指定版本的ceph，避免因小版本不一致导致的一些问题。<br><a id="more"></a></p>
 <h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>ceph集群现有的版本是 11.2.0，需要扩容一台机器，新机器上ceph版本保持一致。</p>
 <h2 id="安装方法"><a href="#安装方法" class="headerlink" title="安装方法"></a>安装方法</h2><p>添加ceph安装源</p>
@@ -3232,7 +3393,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> install </tag>
+            <tag> ceph </tag>
             
         </tags>
         
@@ -3369,23 +3530,17 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <h2 id="TO-BE-ADD"><a href="#TO-BE-ADD" class="headerlink" title="TO BE ADD"></a>TO BE ADD</h2><p>TODO</p>
 ]]></content>
       
-        <categories>
-            
-            <category> Linux </category>
-            
-        </categories>
-        
         
         <tags>
             
-            <tag> cmd </tag>
+            <tag> linux </tag>
             
         </tags>
         
     </entry>
     
     <entry>
-      <title><![CDATA[awk study notes]]></title>
+      <title><![CDATA[awk学习笔记]]></title>
       <url>http://xiaqunfeng.cc/2017/09/19/awk-study-notes/</url>
       <content type="html"><![CDATA[<p>The awk study notes from working.<br><a id="more"></a></p>
 <p>先从计算每个osd中分别有多少个pg的脚本入手，解析awk用法。见实例一。</p>
@@ -3487,7 +3642,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> pg </tag>
+            <tag> ceph </tag>
             
         </tags>
         
@@ -3577,48 +3732,15 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> osd </tag>
+            <tag> ceph </tag>
             
         </tags>
         
     </entry>
     
     <entry>
-      <title><![CDATA[mac上安装python3]]></title>
-      <url>http://xiaqunfeng.cc/2017/09/11/mac%E4%B8%8A%E5%AE%89%E8%A3%85python3/</url>
-      <content type="html"><![CDATA[<p>简单介绍一下mac上如何安装和使用 python3<br><a id="more"></a></p>
-<h2 id="安装homebrew"><a href="#安装homebrew" class="headerlink" title="安装homebrew"></a>安装homebrew</h2><p>官网地址：<a href="https://brew.sh/" target="_blank" rel="noopener">Homebrew</a></p>
-<p>执行如下命令安装</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">▶ /usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span><br></pre></td></tr></table></figure>
-<p>安装完后查看版本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">▶ brew --version</span><br><span class="line">Homebrew 1.3.0</span><br><span class="line">Homebrew/homebrew-core (git revision 2f02; last commit 2017-07-31)</span><br></pre></td></tr></table></figure>
-<p>表示安装成功。</p>
-<h2 id="安装python3"><a href="#安装python3" class="headerlink" title="安装python3"></a>安装python3</h2><p>使用homebrew工具直接安装python3，命令如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">▶ brew install python3</span><br></pre></td></tr></table></figure>
-<p>安装完后查看python3版本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">▶ python3 --version</span><br><span class="line">Python 3.6.0</span><br></pre></td></tr></table></figure>
-<p>安装成功。</p>
-<h2 id="使用python3"><a href="#使用python3" class="headerlink" title="使用python3"></a>使用python3</h2><p>1、交互式命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">▶ python3</span><br><span class="line">Python 3.6.0 (default, Mar  4 2017, 12:32:34)</span><br><span class="line">[GCC 4.2.1 Compatible Apple LLVM 8.0.0 (clang-800.0.42.1)] on darwin</span><br><span class="line">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
-<p>此时就可以输入python代码和运算了。</p>
-<p>退出交互式命令有两种方法：ctrl + D，或者输入 <code>quit()</code> 然后回车。</p>
-<p>2、执行python文件</p>
-<p>如编写python代码 test.py，通过命令 python3 来运行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">▶ python3 test.py</span><br></pre></td></tr></table></figure>
-]]></content>
-      
-        <categories>
-            
-            <category> Python </category>
-            
-        </categories>
-        
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[lsblk命令]]></title>
-      <url>http://xiaqunfeng.cc/2017/08/30/lsblk%E5%91%BD%E4%BB%A4/</url>
+      <title><![CDATA[Linux命令-lsblk]]></title>
+      <url>http://xiaqunfeng.cc/2017/08/30/linux-cmd-lsblk/</url>
       <content type="html"><![CDATA[<p>介绍lsblk命令的详细用法。<br><a id="more"></a></p>
 <h2 id="lsblk"><a href="#lsblk" class="headerlink" title="lsblk"></a>lsblk</h2><p>功能：列出块设备</p>
 <p>描述：</p>
@@ -3689,16 +3811,10 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># lsblk -n -o FSTYPE /dev/vdb2</span><br><span class="line">xfs</span><br></pre></td></tr></table></figure>
 ]]></content>
       
-        <categories>
-            
-            <category> Linux </category>
-            
-        </categories>
-        
         
         <tags>
             
-            <tag> cmd </tag>
+            <tag> linux </tag>
             
         </tags>
         
@@ -3737,7 +3853,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[ceph osd相关操作]]></title>
-      <url>http://xiaqunfeng.cc/2017/08/17/ceph-osd%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/</url>
+      <url>http://xiaqunfeng.cc/2017/08/17/ceph-osd-operate/</url>
       <content type="html"><![CDATA[<p>ceph osd的相关操作，包括osd的部署（自动和手动部署）、OSD操作、journal软链、uuid等。<br><a id="more"></a></p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这是之前笔记的一个整理，基于ceph jewel版本。</p>
 <ul>
@@ -3891,7 +4007,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> osd </tag>
+            <tag> ceph </tag>
             
         </tags>
         
@@ -3899,7 +4015,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[git常用命令和功能]]></title>
-      <url>http://xiaqunfeng.cc/2017/08/07/git%E5%B8%B8%E7%94%A8%E5%91%BD%E5%90%8D%E6%80%BB%E7%BB%93/</url>
+      <url>http://xiaqunfeng.cc/2017/08/07/git-usage/</url>
       <content type="html"><![CDATA[<p>总结记录自己最常用的git命令，然后将一些命令分类，便于翻阅。<br><a id="more"></a></p>
 <h2 id="最常用"><a href="#最常用" class="headerlink" title="最常用"></a>最常用</h2><p>1、下载一个项目和它的整个代码历史</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone [url]</span><br></pre></td></tr></table></figure>
@@ -4056,6 +4172,12 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <p>再不行就重新安装一下git试试：brew install git</p>
 ]]></content>
       
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
         
         <tags>
             
@@ -4140,18 +4262,18 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 </blockquote>
 ]]></content>
       
-        <categories>
-            
-            <category> Python3 </category>
-            
-        </categories>
         
+        <tags>
+            
+            <tag> python </tag>
+            
+        </tags>
         
     </entry>
     
     <entry>
       <title><![CDATA[为什么对于企业NAS来说NFS-ganesha是一个更好的NFS server]]></title>
-      <url>http://xiaqunfeng.cc/2017/08/03/%E4%B8%BA%E4%BB%80%E4%B9%88%E5%AF%B9%E4%BA%8E%E4%BC%81%E4%B8%9ANAS%E6%9D%A5%E8%AF%B4NFS-ganesha%E6%98%AF%E4%B8%80%E4%B8%AA%E6%9B%B4%E5%A5%BD%E7%9A%84NFS-server/</url>
+      <url>http://xiaqunfeng.cc/2017/08/03/nfs-ganesha/</url>
       <content type="html"><![CDATA[<p>如题，介绍了ganesha，同时对比了用户态下的nfs server(ganesha)和内核态下传统nfs server。<br><a id="more"></a></p>
 <h2 id="What-is-NFS-Ganesha"><a href="#What-is-NFS-Ganesha" class="headerlink" title="What is NFS-Ganesha?"></a>What is NFS-Ganesha?</h2><p>1、是NFS server用户态层面的实现</p>
 <p>支持 NFS V2, V3, V4, V4.1, V4.2</p>
@@ -4266,7 +4388,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> ganesha </tag>
+            <tag> storage </tag>
             
         </tags>
         
@@ -4274,7 +4396,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[ceph peering过程分析]]></title>
-      <url>http://xiaqunfeng.cc/2017/08/01/ceph-peering%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/</url>
+      <url>http://xiaqunfeng.cc/2017/08/01/ceph-peering-analysis/</url>
       <content type="html"><![CDATA[<p>总结分析peering过程中的一些笔记，介绍peering的各个阶段和状态转换。<br><a id="more"></a></p>
 <p>peering过程使得一个PG内的OSD达成一个一致状态。当主从副本达成一个一致状态后，PG处于active状态，peering过程的状态就结束了。但此时该PG的三个OSD的数据副本上的数据并非完全一致。</p>
 <p>互为副本的副本数个 PG 的元数据达到一致的过程。官方解释</p>
@@ -4368,6 +4490,12 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
             
         </categories>
         
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
         
     </entry>
     
@@ -4559,6 +4687,12 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         </categories>
         
         
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -4607,7 +4741,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> rbd </tag>
+            <tag> ceph </tag>
             
         </tags>
         
@@ -4615,7 +4749,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[centos下ceph部署]]></title>
-      <url>http://xiaqunfeng.cc/2017/07/17/centos%E4%B8%8Bceph%E9%83%A8%E7%BD%B2/</url>
+      <url>http://xiaqunfeng.cc/2017/07/17/centos-deploy-ceph/</url>
       <content type="html"><![CDATA[<p>前一篇文章讲了整个ceph的部署全过程，不过是基于ubuntu的，这里基于centos再分享一下部署过程。<br><a id="more"></a></p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>系统环境：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># cat /etc/redhat-release</span><br><span class="line">CentOS Linux release 7.3.1611 (Core)</span><br><span class="line"># uname -r</span><br><span class="line">3.10.0-514.16.1.el7.x86_64</span><br></pre></td></tr></table></figure>
@@ -4662,7 +4796,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> centos </tag>
+            <tag> ceph </tag>
             
         </tags>
         
@@ -4670,7 +4804,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[ceph部署完全手册]]></title>
-      <url>http://xiaqunfeng.cc/2017/07/17/ceph%E9%83%A8%E7%BD%B2%E5%AE%8C%E5%85%A8%E6%89%8B%E5%86%8C/</url>
+      <url>http://xiaqunfeng.cc/2017/07/17/ceph-deploy-manual/</url>
       <content type="html"><![CDATA[<p>从零开始，一步一步搭建一个ceph集群。<br><a id="more"></a></p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这是以前的一个笔记，整理并分享出来，给有需要的人。</p>
 <p><strong>环境：</strong></p>
@@ -4850,9 +4984,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> install </tag>
-            
-            <tag> ubuntu </tag>
+            <tag> ceph </tag>
             
         </tags>
         
@@ -4860,7 +4992,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[fio测试ceph]]></title>
-      <url>http://xiaqunfeng.cc/2017/07/12/fio%E6%B5%8B%E8%AF%95ceph/</url>
+      <url>http://xiaqunfeng.cc/2017/07/12/fio-test-ceph/</url>
       <content type="html"><![CDATA[<p>包含三块内容：fio测试RBD，fio测试ceph filestore，fio测试ceph bluestore。<br><a id="more"></a></p>
 <h2 id="fio测试RBD"><a href="#fio测试RBD" class="headerlink" title="fio测试RBD"></a>fio测试RBD</h2><p>fio测试工具扩展了一个对 <code>librbd</code> 的支持模块，并使用您选择的IO模式测试Ceph RBD集群。安装librbd开发包（例如librbd-dev或librbd-dev和依赖关系），或者将库及其头放在指定位置即可。</p>
 <h3 id="安装fio及依赖包"><a href="#安装fio及依赖包" class="headerlink" title="安装fio及依赖包"></a>安装fio及依赖包</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># git clone git://git.kernel.dk/fio.git</span><br><span class="line"># cd fio/</span><br><span class="line"># ./configure</span><br><span class="line">...</span><br><span class="line">Rados Block Device engine     no</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
@@ -4902,7 +5034,9 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> fio </tag>
+            <tag> tool </tag>
+            
+            <tag> ceph </tag>
             
         </tags>
         
@@ -4910,7 +5044,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[centos7上安装python3]]></title>
-      <url>http://xiaqunfeng.cc/2017/07/07/centos7%E4%B8%8A%E5%AE%89%E8%A3%85python3/</url>
+      <url>http://xiaqunfeng.cc/2017/07/07/centos7-install-python3/</url>
       <content type="html"><![CDATA[<p>之前一直使用python2，现在转python3，安装了一下，记录之。<br><a id="more"></a></p>
 <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>python所有版本的下载地址: <a href="https://www.python.org/ftp/python/" target="_blank" rel="noopener">https://www.python.org/ftp/python/</a></p>
 <p>最新的已经到3.6.2版本了，不过还是RC，这里安装3.6.1<br>有两个文件可以选择<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Python-3.6.1.tar.xz</span><br><span class="line">Python-3.6.1.tgz</span><br></pre></td></tr></table></figure></p>
@@ -4935,7 +5069,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> centos </tag>
+            <tag> python </tag>
             
         </tags>
         
@@ -5055,10 +5189,18 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <p>文件系统之间更多的参数和功能的对比：<a href="https://en.wikipedia.org/wiki/Comparison_of_file_systems" target="_blank" rel="noopener">Comparison of file systems</a></p>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> filesystem </tag>
+            <tag> storage </tag>
+            
+            <tag> ceph </tag>
             
         </tags>
         
@@ -5066,7 +5208,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[ceph luminous新命令探索]]></title>
-      <url>http://xiaqunfeng.cc/2017/07/06/ceph-luminous%E6%96%B0%E5%91%BD%E4%BB%A4%E6%8E%A2%E7%B4%A2/</url>
+      <url>http://xiaqunfeng.cc/2017/07/06/ceph-luminous-new-cmd/</url>
       <content type="html"><![CDATA[<p>在luminous版本中有好多新命令，来逐一探索一下。<br><a id="more"></a></p>
 <h2 id="ceph-s"><a href="#ceph-s" class="headerlink" title="ceph -s"></a>ceph -s</h2><p>这个命令之前就说过了，这个来个对比吧。</p>
 <p>luminous版本：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># ceph -s</span><br><span class="line">  cluster:</span><br><span class="line">    id:     4c7ec5af-cbd3-40fd-8c96-0615c77660d4</span><br><span class="line">    health: HEALTH_OK</span><br><span class="line"></span><br><span class="line">  services:</span><br><span class="line">    mon: 3 daemons, quorum luminous0,luminous1,luminous2</span><br><span class="line">    mgr: luminous0(active)</span><br><span class="line">    mds: 1/1/1 up &#123;0=luminous0=up:active&#125;</span><br><span class="line">    osd: 6 osds: 6 up, 6 in</span><br><span class="line"></span><br><span class="line">  data:</span><br><span class="line">    pools:   10 pools, 192 pgs</span><br><span class="line">    objects: 251 objects, 10685 bytes</span><br><span class="line">    usage:   9156 MB used, 41538 MB / 50694 MB avail</span><br><span class="line">    pgs:     192 active+clean</span><br></pre></td></tr></table></figure></p>
@@ -5173,7 +5315,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> luminous </tag>
+            <tag> ceph </tag>
             
         </tags>
         
@@ -5181,7 +5323,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[ceph Luminous新功能之crush class]]></title>
-      <url>http://xiaqunfeng.cc/2017/07/04/ceph-Luminous%E6%96%B0%E5%8A%9F%E8%83%BD%E4%B9%8Bcrush-class/</url>
+      <url>http://xiaqunfeng.cc/2017/07/04/ceph-Luminous-crush-class/</url>
       <content type="html"><![CDATA[<p>cursh class为新增的管理设备类的功能，可以将特定一组设备指定为类，创建rule的时候直接指定class即可，以前也可以实现该功能，只不过需要编辑crushmap，手动添加class。该功能只需要命令行就可以实现。<br><a id="more"></a></p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>集群情况和上一篇文章一样</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># ceph -s</span><br><span class="line">  cluster:</span><br><span class="line">    id:     4c7ec5af-cbd3-40fd-8c96-0615c77660d4</span><br><span class="line">    health: HEALTH_OK</span><br><span class="line"></span><br><span class="line">  services:</span><br><span class="line">    mon: 3 daemons, quorum luminous0,luminous1,luminous2</span><br><span class="line">    mgr: luminous0(active)</span><br><span class="line">    mds: 1/1/1 up &#123;0=luminous0=up:active&#125;</span><br><span class="line">    osd: 6 osds: 6 up, 6 in</span><br><span class="line"></span><br><span class="line">  data:</span><br><span class="line">    pools:   7 pools, 112 pgs</span><br><span class="line">    objects: 240 objects, 3359 bytes</span><br><span class="line">    usage:   9245 MB used, 51587 MB / 60833 MB avail</span><br><span class="line">    pgs:     112 active+clean</span><br></pre></td></tr></table></figure>
@@ -5250,7 +5392,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> luminous </tag>
+            <tag> ceph </tag>
             
         </tags>
         
@@ -5258,7 +5400,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[ceph Luminous dashboard初探]]></title>
-      <url>http://xiaqunfeng.cc/2017/06/29/ceph-Luminous%E5%88%9D%E6%8E%A2/</url>
+      <url>http://xiaqunfeng.cc/2017/06/29/ceph-Luminous/</url>
       <content type="html"><![CDATA[<p>体验ceph luminous，并初步探测ceph luminous的相关功能，这里先来看看官方标配的仪表盘长啥样。<br><a id="more"></a></p>
 <p>就冲这句话：Ceph now has a simple, built-in web-based dashboard for monitoring<br>cluster status，来一探究竟。</p>
 <h2 id="Luminous集群"><a href="#Luminous集群" class="headerlink" title="Luminous集群"></a>Luminous集群</h2><p><strong>物理环境</strong></p>
@@ -5303,7 +5445,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> luminous </tag>
+            <tag> ceph </tag>
             
         </tags>
         
@@ -5446,7 +5588,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> luminous </tag>
+            <tag> ceph </tag>
             
         </tags>
         
@@ -5454,7 +5596,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[wget批量下载http目录及文件]]></title>
-      <url>http://xiaqunfeng.cc/2017/06/23/wget%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BDhttp%E7%9B%AE%E5%BD%95%E5%8F%8A%E6%96%87%E4%BB%B6/</url>
+      <url>http://xiaqunfeng.cc/2017/06/23/wget-download-http-dir/</url>
       <content type="html"><![CDATA[<p>有时候看到好的镜像，想保存下来，不可能一个个通过url手动来下载，这时候就需要批量下载了。<br><a id="more"></a></p>
 <p>举个例子，我要下载的地址和内容如下：<br><img src="http://oow6unnib.bkt.clouddn.com/wget-http.jpg" alt="wget-http"></p>
 <h2 id="得到页面的index-html"><a href="#得到页面的index-html" class="headerlink" title="得到页面的index.html"></a>得到页面的index.html</h2><p>我就在 <code>/root</code> 目录下操作</p>
@@ -5521,16 +5663,22 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
       
         <categories>
             
-            <category> Linux </category>
+            <category> Tools </category>
             
         </categories>
         
+        
+        <tags>
+            
+            <tag> tool </tag>
+            
+        </tags>
         
     </entry>
     
     <entry>
       <title><![CDATA[公有云和私有云的区别]]></title>
-      <url>http://xiaqunfeng.cc/2017/06/16/%E5%85%AC%E6%9C%89%E4%BA%91%E5%92%8C%E7%A7%81%E6%9C%89%E4%BA%91%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+      <url>http://xiaqunfeng.cc/2017/06/16/cloud-public-private/</url>
       <content type="html"><![CDATA[<p>介绍了一下公有云和私有云的区别，以及该如何选择。<br><a id="more"></a></p>
 <p><img src="http://oow6unnib.bkt.clouddn.com/public-private-cloud.jpg" alt="public-private-cloud"></p>
 <h2 id="私有云"><a href="#私有云" class="headerlink" title="私有云"></a>私有云</h2><p>这是一个可以存在于公司的托管数据中心的云主机解决方案，所有信息都在专用防火墙后面。一般来说，公司已经选择为其数据中心付出了相当大的代价，并仍然希望使用其已建立的基础设施。这是一个主要的优势，也是私有云与公共云的辩论在这个特定主题上如此激烈的一个重要原因。</p>
@@ -5543,17 +5691,11 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 ]]></content>
       
         
-        <tags>
-            
-            <tag> cloud </tag>
-            
-        </tags>
-        
     </entry>
     
     <entry>
       <title><![CDATA[centos 7下操纵ceph进程]]></title>
-      <url>http://xiaqunfeng.cc/2017/06/16/centos-7%E4%B8%8B%E6%93%8D%E7%BA%B5ceph%E8%BF%9B%E7%A8%8B/</url>
+      <url>http://xiaqunfeng.cc/2017/06/16/centos-7-handle-ceph-process/</url>
       <content type="html"><![CDATA[<p>分享一个以前的笔记。官网给的通过<code>/etc/init.d/ceph</code>stop、start等命令在centos7下不行，service命令也是不行的。现在都使用原生的 systemd 来管理ceph进程。<br><a id="more"></a></p>
 <h2 id="操作集群"><a href="#操作集群" class="headerlink" title="操作集群"></a>操作集群</h2><p>在<a href="http://docs.ceph.org.cn/rados/operations/operating/" target="_blank" rel="noopener">官方文档</a>中给出了几种操作方法：</p>
 <p><strong>1、用 UPSTART 控制 CEPH</strong></p>
@@ -5594,7 +5736,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> centos </tag>
+            <tag> ceph </tag>
             
         </tags>
         
@@ -5602,7 +5744,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[vim移动光标]]></title>
-      <url>http://xiaqunfeng.cc/2017/06/15/vim%E7%A7%BB%E5%8A%A8%E5%85%89%E6%A0%87/</url>
+      <url>http://xiaqunfeng.cc/2017/06/15/vim-move-cursor/</url>
       <content type="html"><![CDATA[<p>平常的基本编辑环境都是vim，因此总结了一些光标移动的命令，可以提高效率，使vim用起来不显得那么笨重。<br><a id="more"></a></p>
 <h2 id="光标方向"><a href="#光标方向" class="headerlink" title="光标方向"></a>光标方向</h2><p>上下左右：<code>h</code>, <code>j</code>, <code>k</code>, <code>l</code></p>
 <p>支持数字前缀，比如<code>10j</code>可以向下移动10行</p>
@@ -5638,14 +5780,14 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
       
         <categories>
             
-            <category> Linux </category>
+            <category> Tools </category>
             
         </categories>
         
         
         <tags>
             
-            <tag> vim </tag>
+            <tag> tool </tag>
             
         </tags>
         
@@ -5716,7 +5858,9 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> rbd </tag>
+            <tag> storage </tag>
+            
+            <tag> ceph </tag>
             
         </tags>
         
@@ -5817,7 +5961,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> rbd </tag>
+            <tag> ceph </tag>
             
         </tags>
         
@@ -5825,7 +5969,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[ceph mon时钟偏移问题]]></title>
-      <url>http://xiaqunfeng.cc/2017/05/26/ceph-mon%E6%97%B6%E9%92%9F%E5%81%8F%E7%A7%BB%E9%97%AE%E9%A2%98/</url>
+      <url>http://xiaqunfeng.cc/2017/05/26/ceph-mon-clock-deviation/</url>
       <content type="html"><![CDATA[<p>之前记录的关于时钟漂移的解决过程和心得，这里分享一下。<br><a id="more"></a></p>
 <h2 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h2><p>查看集群状态</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># ceph -s</span><br><span class="line">    cluster f01fb68c-58c6-4707-8adb-b7ac88172340</span><br><span class="line">     health HEALTH_WARN</span><br><span class="line">            clock skew detected on mon.xs734</span><br><span class="line">            Monitor clock skew detected</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
@@ -5913,7 +6057,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> mon </tag>
+            <tag> ceph </tag>
             
         </tags>
         
@@ -5948,16 +6092,10 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <p>这个问题的原因是网站无法访问</p>
 ]]></content>
       
-        <categories>
-            
-            <category> Linux </category>
-            
-        </categories>
-        
         
         <tags>
             
-            <tag> centos </tag>
+            <tag> linuxs </tag>
             
         </tags>
         
@@ -5965,7 +6103,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[mac上实现vim的markdown预览]]></title>
-      <url>http://xiaqunfeng.cc/2017/05/25/mac%E4%B8%8A%E5%AE%9E%E7%8E%B0vim%E7%9A%84markdown%E9%A2%84%E8%A7%88/</url>
+      <url>http://xiaqunfeng.cc/2017/05/25/mac-vim-markdown-preview/</url>
       <content type="html"><![CDATA[<p>有时候在vim下创建了一个markdown文件，比如 <code>README.md</code> ，因为不能实时预览，所以要离开vim，用编辑器去编辑，比较麻烦。所以这里配置使能在vim编辑器上预览markdown文件。<br><a id="more"></a></p>
 <p>这里分享两个插件</p>
 <h2 id="vim-instant-markdown"><a href="#vim-instant-markdown" class="headerlink" title="vim-instant-markdown"></a><strong>vim-instant-markdown</strong></h2><h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>github：<a href="https://github.com/suan/vim-instant-markdown" target="_blank" rel="noopener">https://github.com/suan/vim-instant-markdown</a></p>
@@ -6003,14 +6141,14 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
       
         <categories>
             
-            <category> Mac </category>
+            <category> Tools </category>
             
         </categories>
         
         
         <tags>
             
-            <tag> vim </tag>
+            <tag> tool </tag>
             
         </tags>
         
@@ -6018,7 +6156,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[ceph日志迁移]]></title>
-      <url>http://xiaqunfeng.cc/2017/05/23/ceph%E6%97%A5%E5%BF%97%E8%BF%81%E7%A7%BB/</url>
+      <url>http://xiaqunfeng.cc/2017/05/23/ceph-log-migration/</url>
       <content type="html"><![CDATA[<p>将ceph日志从默认的位置移动到SSD的一个分区，比较常用。<br><a id="more"></a></p>
 <h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><p>1、停止osd</p>
 <p>2、将该osd的日志下盘</p>
@@ -6040,11 +6178,17 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         </categories>
         
         
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
       <title><![CDATA[cpu拓扑及ceph使用时的优化]]></title>
-      <url>http://xiaqunfeng.cc/2017/05/11/cpu%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84/</url>
+      <url>http://xiaqunfeng.cc/2017/05/11/cpu-top/</url>
       <content type="html"><![CDATA[<p>先将在ceph层面的调优，再介绍cpu的拓扑结构。<br><a id="more"></a></p>
 <h2 id="ceph优化之CPU"><a href="#ceph优化之CPU" class="headerlink" title="ceph优化之CPU"></a>ceph优化之CPU</h2><p>NUMA的思路就是讲内存和CPU分割成多个区域，每个区域叫node，然后将node高速互联。node内CPU与内存的访问速度快于访问其他node的内存，NUMA可能会在某些情况下影响ceph-osd。</p>
 <p>ceph目前未对NUMA架构的内存做过多优化，在日常使用过程中，通常为 2~4 颗CPU，这时候选择SMP架构的内存在效率上会高一些，如果条件允许，可以通过进程绑定的方法，在保证CPU能尽可能访问自身内存的前提下，使用NUMA架构。</p>
@@ -6132,7 +6276,9 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> cpu </tag>
+            <tag> ceph </tag>
+            
+            <tag> os </tag>
             
         </tags>
         
@@ -6165,7 +6311,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> centos </tag>
+            <tag> ceph </tag>
             
         </tags>
         
@@ -6173,7 +6319,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[S.M.A.R.T--磁盘健康状态监测工具]]></title>
-      <url>http://xiaqunfeng.cc/2017/05/07/S-M-A-R-T-%E7%A3%81%E7%9B%98%E5%81%A5%E5%BA%B7%E7%8A%B6%E6%80%81%E7%9B%91%E6%B5%8B%E5%B7%A5%E5%85%B7/</url>
+      <url>http://xiaqunfeng.cc/2017/05/07/S-M-A-R-T-device-healthy-monitor/</url>
       <content type="html"><![CDATA[<p>介绍磁盘状态监测工具：S.M.A.R.T。<br><a id="more"></a></p>
 <h2 id="S-M-A-R-T"><a href="#S-M-A-R-T" class="headerlink" title="S.M.A.R.T."></a>S.M.A.R.T.</h2><p><strong>S.M.A.R.T.</strong>，全称为“Self-Monitoring Analysis and Reporting Technology”，即“自我监测、分析及报告技术”，是一种自动的硬盘状态检测与预警系统和规范。通过在硬盘硬件内的检测指令对硬盘的硬件如磁头、盘片、马达、电路的运行情况进行监控、记录并与厂商所设定的预设安全值进行比较，若监控情况将或已超出预设安全值的安全范围，就可以通过主机的监控硬件或软件自动向用户作出警告并进行轻微的自动修复，以提前保障硬盘数据的安全。</p>
 <p>软件包 <strong>smartmontools</strong> 它通过使用自我监控(Self-Monitoring)、分析(Analysis)和报告(Reporting)三种技术（缩写为S.M.A.R.T或SMART）来管理和监控存储硬件。如今大部分的ATA/SATA、SCSI/SAS和固态硬盘都搭载内置的SMART系统。SMART的目的是监控硬盘的可靠性、预测磁盘故障和执行各种类型的磁盘自检。smartmontools由smartctl和smartd两部分工具程序组成，它们一起为Linux平台提供对磁盘退化和故障的高级警告。</p>
@@ -6253,7 +6399,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[iterm2配色--zsh & oh-my-zsh]]></title>
-      <url>http://xiaqunfeng.cc/2017/05/04/iterm2%E9%85%8D%E8%89%B2/</url>
+      <url>http://xiaqunfeng.cc/2017/05/04/iterm2-color/</url>
       <content type="html"><![CDATA[<p>给iterm2进行配色，炫酷一点。<br><a id="more"></a></p>
 <h3 id="Solarized"><a href="#Solarized" class="headerlink" title="Solarized"></a>Solarized</h3><p>目前网络上最流行的配色解决方案：<a href="http://ethanschoonover.com/solarized" target="_blank" rel="noopener">Solarized</a></p>
 <p>Solarized Dark 官方网站: <a href="http://ethanschoonover.com/solarized" target="_blank" rel="noopener">http://ethanschoonover.com/solarized</a></p>
@@ -6299,14 +6445,14 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
       
         <categories>
             
-            <category> Mac </category>
+            <category> Tools </category>
             
         </categories>
         
         
         <tags>
             
-            <tag> iterm </tag>
+            <tag> tool </tag>
             
         </tags>
         
@@ -6314,7 +6460,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[nginx使用和配置]]></title>
-      <url>http://xiaqunfeng.cc/2017/05/03/nginx%E4%BD%BF%E7%94%A8%E5%92%8C%E9%85%8D%E7%BD%AE/</url>
+      <url>http://xiaqunfeng.cc/2017/05/03/nginx-usage/</url>
       <content type="html"><![CDATA[<p>简单介绍nginx，特别是反向代理和负载均衡部分，并用通过实战加深理解。<br><a id="more"></a></p>
 <h2 id="Nginx简介"><a href="#Nginx简介" class="headerlink" title="Nginx简介"></a>Nginx简介</h2><p>Nginx（发音同engine x）是一个网页服务器，它能反向代理HTTP, HTTPS, SMTP, POP3, IMAP的协议链接，以及一个负载均衡器和一个HTTP缓存。</p>
 <p>架设服务器均衡负载方式有多种，Nginx、LVS、HAProxy+Keepalived是目前使用最广泛的三种方案。其中Keepalived+HAProxy是一个高可用性方案。</p>
@@ -6425,16 +6571,10 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <p>有空学习，mark之。</p>
 ]]></content>
       
-        <categories>
-            
-            <category> Linux </category>
-            
-        </categories>
-        
         
         <tags>
             
-            <tag> nginx </tag>
+            <tag> linux </tag>
             
         </tags>
         
@@ -6442,7 +6582,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[iterm2快捷键的使用]]></title>
-      <url>http://xiaqunfeng.cc/2017/05/02/iterm2%E5%BF%AB%E6%8D%B7%E9%94%AE%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
+      <url>http://xiaqunfeng.cc/2017/05/02/iterm2-shortcut-key-usage/</url>
       <content type="html"><![CDATA[<p>mac下终端神器iterm2，非常的好用，极大提高了效率，这里将自己使用过的快捷键总结如下。<br><a id="more"></a></p>
 <h2 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h2><p>新建tab：⌘ + t</p>
 <p>切换 tab：    ⌘+←, ⌘+→</p>
@@ -6487,14 +6627,14 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
       
         <categories>
             
-            <category> Mac </category>
+            <category> Tools </category>
             
         </categories>
         
         
         <tags>
             
-            <tag> iterm </tag>
+            <tag> tool </tag>
             
         </tags>
         
@@ -6502,7 +6642,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[VSM部署]]></title>
-      <url>http://xiaqunfeng.cc/2017/05/02/VSM%E9%83%A8%E7%BD%B2/</url>
+      <url>http://xiaqunfeng.cc/2017/05/02/ceph-VSM/</url>
       <content type="html"><![CDATA[<p>本文介在已有ceph集群机器上部署VSM的过程，涵盖centos和ubuntu两种系统。<br><a id="more"></a></p>
 <h2 id="VSM-Virtual-Storage-Manager"><a href="#VSM-Virtual-Storage-Manager" class="headerlink" title="VSM - Virtual Storage Manager"></a>VSM - Virtual Storage Manager</h2><p>最新发布的release版本为2.1，pre-release版本为2.2，已不再更新和维护（因为负责人<a href="mailto:yaguang.wang@intel.com" target="_blank" rel="noopener">yaguang.wang@intel.com</a> or <a href="mailto:ferber.dan@intel.com" target="_blank" rel="noopener">ferber.dan@intel.com</a>已经从intel离职了）。</p>
 <p>从2.1版本开始，VSM支持在已有ceph集群上部署，正是因为这个原因，才开始尝试部署VSM。</p>
@@ -6577,7 +6717,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> monitor </tag>
+            <tag> ceph </tag>
             
         </tags>
         
@@ -6585,7 +6725,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[常用git命令清单]]></title>
-      <url>http://xiaqunfeng.cc/2017/03/24/%E5%B8%B8%E7%94%A8git%E5%91%BD%E4%BB%A4%E6%B8%85%E5%8D%95/</url>
+      <url>http://xiaqunfeng.cc/2017/03/24/git-common-list/</url>
       <content type="html"><![CDATA[<p>转载的文章，里面git命令应有尽有，包含所有常用命令，mark之。<br><a id="more"></a></p>
 <p>一般来说，日常使用只要记住下图6个命令，就可以了。但是熟练使用，恐怕要记住60～100个命令。</p>
 <p><img src="http://www.ruanyifeng.com/blogimg/asset/2015/bg2015120901.png" alt="img"></p>
@@ -6634,6 +6774,12 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <p>原文链接：<a href="http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html" target="_blank" rel="noopener">常用 Git 命令清单</a></p>
 ]]></content>
       
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
         
         <tags>
             
@@ -6645,7 +6791,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[理解socket编程]]></title>
-      <url>http://xiaqunfeng.cc/2017/03/24/%E7%90%86%E8%A7%A3socket%E7%BC%96%E7%A8%8B/</url>
+      <url>http://xiaqunfeng.cc/2017/03/24/socket/</url>
       <content type="html"><![CDATA[<p>理解socket编程的思想，介绍各个函数及其作用，文末有一个server和client的代码，可直接运行。<br><a id="more"></a></p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>本地进程通信</strong></p>
 <p>本地的进程间通信（IPC）有很多种方式，但可以总结为下面4类：</p>
@@ -6737,9 +6883,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> Linux </tag>
-            
-            <tag> network </tag>
+            <tag> linux </tag>
             
         </tags>
         
@@ -6747,7 +6891,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[cow和row快照机制的区别]]></title>
-      <url>http://xiaqunfeng.cc/2017/03/09/cow%E5%92%8Crow%E5%BF%AB%E7%85%A7%E6%9C%BA%E5%88%B6%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+      <url>http://xiaqunfeng.cc/2017/03/09/snapshoot-cow-row/</url>
       <content type="html"><![CDATA[<p>很清晰的讲解快照两种模式cow和row的区别。<br><a id="more"></a></p>
 <p>所谓快照，是指某数据集在某一时刻一个完全可用的拷贝。也叫即时拷贝。注意是一个完全可用的。如果是在window环境下，则要结合VSS 机制，把应用程序的buffer,文件系统的buffer,操作系统的buffer全部刷向磁盘后，再做快照。﻿</p>
 <p>当前快照有两种实现，分别是COW（Copy on first write） 和ROW(Redirect on first write).﻿﻿﻿</p>
@@ -6937,7 +7081,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[异步IO]]></title>
-      <url>http://xiaqunfeng.cc/2017/03/01/%E5%BC%82%E6%AD%A5IO/</url>
+      <url>http://xiaqunfeng.cc/2017/03/01/asyc-io/</url>
       <content type="html"><![CDATA[<p>介绍了AIO，以及四种IO模型。<br><a id="more"></a></p>
 <p>Linux® 中最常用的输入/输出（I/O）模型是同步 I/O。在这个模型中，当请求发出之后，应用程序就会阻塞，直到请求满足为止。这是很好的一种解决方案，因为调用应用程序在等待 I/O 请求完成时不需要使用任何中央处理单元（CPU）。但是在某些情况中，I/O 请求可能需要与其他进程产生交叠。可移植操作系统接口（POSIX）异步 I/O（AIO）应用程序接口（API）就提供了这种功能。在本文中，我们将对这个 API 概要进行介绍，并来了解一下如何使用它。</p>
 <h2 id="AIO-简介"><a href="#AIO-简介" class="headerlink" title="AIO 简介"></a>AIO 简介</h2><p>Linux 异步 I/O 是 Linux 内核中提供的一个相当新的增强。它是 2.6 版本内核的一个标准特性，但是我们在 2.4 版本内核的补丁中也可以找到它。AIO 背后的基本思想是允许进程发起很多 I/O 操作，而不用阻塞或等待任何操作完成。稍后或在接收到 I/O 操作完成的通知时，进程就可以检索 I/O 操作的结果。</p>
@@ -6980,7 +7124,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> Linux </tag>
+            <tag> linux </tag>
             
         </tags>
         
@@ -6988,7 +7132,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[Bluestore调研]]></title>
-      <url>http://xiaqunfeng.cc/2017/02/23/Bluestore%E8%B0%83%E7%A0%94/</url>
+      <url>http://xiaqunfeng.cc/2017/02/23/ceph-Bluestore/</url>
       <content type="html"><![CDATA[<p>这是之前关注bluestore时写的调研文章，主要介绍了bluestore的架构、存储模型、IO、元数据等，以及优势。现在ceph已经出到K版本了，虽然未在生产中实践，但已经可用。<br><a id="more"></a></p>
 <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>​    Ceph是一种软件定义存储解决方案，因此Ceph的主要目标是保障存储数据的安全。为了达到数据安全的目的，我们需要原子特性。目前没有一种文件存储系统能够提供写和更新操作的原子特性（Btrfs拥有原子特性的事务, 这是人们为了解决上述问题作出的尝试，但事实上并不成功）。</p>
 <p>​    Ceph开发者不得不探索其他的解决方案。这个解决方案就是大家非常熟悉的Ceph日志。ceph后端的存储引擎目前使用的是filestore，写采用的是WAL的方式，但是写前记录日志这种技术有一个主要缺陷就是它把你的硬盘性能降低到原来的二分之一（仅当日志和OSD数据共享同一个硬盘时），因为filestore在写数据前需要先写journal，所以有一倍的写放大。</p>
@@ -7067,7 +7211,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> bluestore </tag>
+            <tag> ceph </tag>
             
         </tags>
         
@@ -7075,7 +7219,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[RocksDB相比LevelDB的新特性]]></title>
-      <url>http://xiaqunfeng.cc/2017/02/23/RocksDB%E7%9B%B8%E6%AF%94LevelDB%E7%9A%84%E6%96%B0%E7%89%B9%E6%80%A7/</url>
+      <url>http://xiaqunfeng.cc/2017/02/23/RocksDB-LevelDB/</url>
       <content type="html"><![CDATA[<p>如题，具体列举了RocksDB中相比LevelDB的一些新特性。<br><a id="more"></a></p>
 <h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><ul>
 <li>多线程压缩</li>
@@ -7148,7 +7292,9 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> rocksdb </tag>
+            <tag> storage </tag>
+            
+            <tag> ceph </tag>
             
         </tags>
         
@@ -7156,7 +7302,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[Kernel modules (简体中文)]]></title>
-      <url>http://xiaqunfeng.cc/2017/02/20/Kernel%20modules%20(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)/</url>
+      <url>http://xiaqunfeng.cc/2017/02/20/kenel-modules/</url>
       <content type="html"><![CDATA[<p>介绍了内核模块的相关操作。加载、查看info、卸载、配置等……<br><a id="more"></a></p>
 <p>相关文章</p>
 <ul>
@@ -7237,7 +7383,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> Linux </tag>
+            <tag> linux </tag>
             
         </tags>
         
@@ -7245,7 +7391,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[Linux命令——pgrep和pkill]]></title>
-      <url>http://xiaqunfeng.cc/2017/02/17/Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94pgrep%E5%92%8Cpkill/</url>
+      <url>http://xiaqunfeng.cc/2017/02/17/linux-cmd-pgrep-pkill/</url>
       <content type="html"><![CDATA[<p>通过程序名来查询进程PID的命令pgrep，以及对应的杀进程命令pkill。<br><a id="more"></a></p>
 <h2 id="pgrep"><a href="#pgrep" class="headerlink" title="pgrep"></a>pgrep</h2><p>在linux中查看进程信息，经常要用到<code>pa auxf</code>，具体到某个进程的时候，又需进行grep管道。如：<code>ps auxf|grep java|grep -v grep</code> ，即然这么长，可以不可以简化呢？当然可以，如果还是使用ps命令的话，可以改为<code>ps auxf|grep jav[a]</code>，这样就不用排除自身了。不过感觉命令还是长了点，能不能再简点，可以，使用<code>pgrep java</code>，不过此时得出的只是pid 。</p>
 <p>pgrep是linux中常用的通过 <strong>程序名</strong> 来查询进程PID信息的命令。</p>
@@ -7374,7 +7520,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> Linux </tag>
+            <tag> linux </tag>
             
         </tags>
         
@@ -7382,7 +7528,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[Linux命令——strace]]></title>
-      <url>http://xiaqunfeng.cc/2017/02/16/Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94strace/</url>
+      <url>http://xiaqunfeng.cc/2017/02/16/linux-cmd-strace/</url>
       <content type="html"><![CDATA[<p>strace命令，用来查看运行程序的系统调用，统计每个系统调用的时间。<br><a id="more"></a></p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>strace常用来跟踪进程执行时的系统调用和所接收的信号。 在Linux世界，进程不能直接访问硬件设备，当进程需要访问硬件设备(比如读取磁盘文件，接收网络数据等等)时，必须由用户态模式切换至内核态模式，通过系统调用访问硬件设备。strace可以跟踪到一个进程产生的系统调用,包括参数，返回值，执行消耗的时间。</p>
 <p>我们可以使用strace对应用的系统调用和信号传递的跟踪结果来对应用进行分析，以达到解决问题或者是了解应用工作过程的目的。当然strace与专业的调试工具比如说gdb之类的是没法相比的，因为它不是一个专业的调试器。 </p>
@@ -7431,7 +7577,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> Linux </tag>
+            <tag> linux </tag>
             
         </tags>
         
@@ -7439,7 +7585,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[获取每个osd的PG数]]></title>
-      <url>http://xiaqunfeng.cc/2017/02/10/%E8%8E%B7%E5%8F%96%E6%AF%8F%E4%B8%AAosd%E7%9A%84PG%E6%95%B0/</url>
+      <url>http://xiaqunfeng.cc/2017/02/10/ceph-osd-pg-num/</url>
       <content type="html"><![CDATA[<p>一个shell脚本，用于获取ceph集群中每个osd的PG数，同时分别统计每个pool上的PG数信息。<br><a id="more"></a></p>
 <h2 id="Ceph集群信息"><a href="#Ceph集群信息" class="headerlink" title="Ceph集群信息"></a>Ceph集群信息</h2><p><strong>pool信息</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ceph osd lspools</span><br><span class="line">0 rbd,1 testpool,</span><br></pre></td></tr></table></figure>
@@ -7462,9 +7608,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> shell </tag>
-            
-            <tag> osd </tag>
+            <tag> ceph </tag>
             
         </tags>
         
@@ -7472,7 +7616,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[RBD 相关操作]]></title>
-      <url>http://xiaqunfeng.cc/2017/02/10/RBD-%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C/</url>
+      <url>http://xiaqunfeng.cc/2017/02/10/ceph-RBD-operator/</url>
       <content type="html"><![CDATA[<p>本文主要有两点：一、创建RBD设备用于测试；二、RBD相关其他操作。<br><a id="more"></a></p>
 <p>查看系统和内核版本</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># lsb_release -a</span><br><span class="line">No LSB modules are available.</span><br><span class="line">Distributor ID:	Ubuntu</span><br><span class="line">Description:	Ubuntu 14.04.4 LTS</span><br><span class="line">Release:	14.04</span><br><span class="line">Codename:	trusty</span><br></pre></td></tr></table></figure>
@@ -7541,7 +7685,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> rbd </tag>
+            <tag> ceph </tag>
             
         </tags>
         
@@ -7549,7 +7693,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[在Kraken release版本上测试Ceph BlueStore]]></title>
-      <url>http://xiaqunfeng.cc/2017/02/07/%E5%9C%A8Kraken-release%E7%89%88%E6%9C%AC%E4%B8%8A%E6%B5%8B%E8%AF%95Ceph-BlueStore/</url>
+      <url>http://xiaqunfeng.cc/2017/02/07/ceph-Kraken-test-BlueStore/</url>
       <content type="html"><![CDATA[<p>前面写了一篇文章《ceph升级到kraken版本》，在升级后的集群上重新部署OSD遇到一些问题。这里在干净的kraken环境下部署bluestore，用来测试一下性能。本文记录部署过程及遇到的问题和解决方法。<br><a id="more"></a></p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Ceph版本Kraken（11.2.0）已经发布，发行说明告诉我们，用于OSD的新的BlueStore后端现在可用。</p>
 <h2 id="bluestore"><a href="#bluestore" class="headerlink" title="bluestore"></a>bluestore</h2><p>OSD的当前后端是FileStore，它主要使用XFS文件系统来存储它的数据。 为了克服XFS和POSIX的一些限制，所以开发了BlueStore后端。</p>
@@ -7599,37 +7743,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> bluestore </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[用户态和内核态]]></title>
-      <url>http://xiaqunfeng.cc/2017/02/04/%E7%94%A8%E6%88%B7%E6%80%81%E5%92%8C%E5%86%85%E6%A0%B8%E6%80%81/</url>
-      <content type="html"><![CDATA[<p>以前整理的小知识点，关于用户态和内核态的解释。<br><a id="more"></a></p>
-<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>内核态与用户态是操作系统的两种运行级别，intel cpu提供Ring0-Ring3三种级别的运行模式。Ring0级别最高，Ring3最低。</p>
-<p>所以当CPU处于内核态，可以随意进入用户态。当CPU处于用户态，只能通过中断的方式进入内核态。一般程序一开始都是运行于用户态，当程序需要使用系统资源时，就必须通过调用软中断进入内核态。</p>
-<h2 id="cpu的四种状态"><a href="#cpu的四种状态" class="headerlink" title="cpu的四种状态"></a>cpu的四种状态</h2><p>在一台运行 Linux 的计算机中，CPU 在任何时候只会有如下四种状态：</p>
-<ol>
-<li>在处理一个硬中断。</li>
-<li>在处理一个软中断，如 softirq、tasklet 和 bh。</li>
-<li>运行于内核态，但有进程上下文，即与一个进程相关。</li>
-<li>运行一个用户态进程。</li>
-</ol>
-<p>其中，【1】、【2】和【3】是运行于内核空间的，而【4】是在用户空间。其中除了【4】，其他状态只可以被在其之上的状态抢占。比如，软中断只可以被硬中断抢占。</p>
-<h2 id="linux下详解"><a href="#linux下详解" class="headerlink" title="linux下详解"></a>linux下详解</h2><p>Linux使用了Ring3级别运行用户态，Ring0作为内核态，没有使用Ring1和Ring2。Ring3状态不能访问Ring0的地址空间，包括代码和数据。</p>
-<p>Linux进程的4GB地址空间，3G-4G部分大家是共享的，是内核态的地址空间，这里存放在整个内核的代码和所有的内核模块，以及内核所维护的数据。</p>
-<p>用户运行一个程序，该程序所创建的进程开始是运行在用户态的，如果要执行文件操作，网络数据发送等操作，必须通过write，send等系统调用，这些系统调用会调用内核中的代码来完成操作，这时，必须切换到Ring0，然后进入3GB-4GB中的内核地址空间去执行这些代码完成操作，完成后，切换回Ring3，回到用户态。</p>
-<p>这样，用户态的程序就不能随意操作内核地址空间，具有一定的安全保护作用。</p>
-<h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
-]]></content>
-      
-        
-        <tags>
-            
-            <tag> Linux </tag>
+            <tag> ceph </tag>
             
         </tags>
         
@@ -7637,7 +7751,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[ceph升级到kraken版本]]></title>
-      <url>http://xiaqunfeng.cc/2017/02/04/ceph%E5%8D%87%E7%BA%A7%E5%88%B0kraken%E7%89%88%E6%9C%AC/</url>
+      <url>http://xiaqunfeng.cc/2017/02/04/ceph-upgrage-kraken/</url>
       <content type="html"><![CDATA[<p>记录从jewel版本升级到kraken版本的过程，其中重启mon和osd部分官网上的命令并不凑效，这里纠正并记录之。<br><a id="more"></a></p>
 <h2 id="1、在Jewel集群上设置sortbitwise标志"><a href="#1、在Jewel集群上设置sortbitwise标志" class="headerlink" title="1、在Jewel集群上设置sortbitwise标志"></a>1、在Jewel集群上设置sortbitwise标志</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ceph osd set sortbitwise</span><br></pre></td></tr></table></figure>
 <h2 id="2、添加安装源"><a href="#2、添加安装源" class="headerlink" title="2、添加安装源"></a>2、添加安装源</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo deb https://download.ceph.com/debian-kraken/ $(lsb_release -sc) main | sudo tee /etc/apt/sources.list.d/ceph.list</span><br></pre></td></tr></table></figure>
@@ -7675,7 +7789,36 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> kraken </tag>
+            <tag> ceph </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[用户态和内核态]]></title>
+      <url>http://xiaqunfeng.cc/2017/02/04/user-kernel-mode/</url>
+      <content type="html"><![CDATA[<p>以前整理的小知识点，关于用户态和内核态的解释。<br><a id="more"></a></p>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>内核态与用户态是操作系统的两种运行级别，intel cpu提供Ring0-Ring3三种级别的运行模式。Ring0级别最高，Ring3最低。</p>
+<p>所以当CPU处于内核态，可以随意进入用户态。当CPU处于用户态，只能通过中断的方式进入内核态。一般程序一开始都是运行于用户态，当程序需要使用系统资源时，就必须通过调用软中断进入内核态。</p>
+<h2 id="cpu的四种状态"><a href="#cpu的四种状态" class="headerlink" title="cpu的四种状态"></a>cpu的四种状态</h2><p>在一台运行 Linux 的计算机中，CPU 在任何时候只会有如下四种状态：</p>
+<ol>
+<li>在处理一个硬中断。</li>
+<li>在处理一个软中断，如 softirq、tasklet 和 bh。</li>
+<li>运行于内核态，但有进程上下文，即与一个进程相关。</li>
+<li>运行一个用户态进程。</li>
+</ol>
+<p>其中，【1】、【2】和【3】是运行于内核空间的，而【4】是在用户空间。其中除了【4】，其他状态只可以被在其之上的状态抢占。比如，软中断只可以被硬中断抢占。</p>
+<h2 id="linux下详解"><a href="#linux下详解" class="headerlink" title="linux下详解"></a>linux下详解</h2><p>Linux使用了Ring3级别运行用户态，Ring0作为内核态，没有使用Ring1和Ring2。Ring3状态不能访问Ring0的地址空间，包括代码和数据。</p>
+<p>Linux进程的4GB地址空间，3G-4G部分大家是共享的，是内核态的地址空间，这里存放在整个内核的代码和所有的内核模块，以及内核所维护的数据。</p>
+<p>用户运行一个程序，该程序所创建的进程开始是运行在用户态的，如果要执行文件操作，网络数据发送等操作，必须通过write，send等系统调用，这些系统调用会调用内核中的代码来完成操作，这时，必须切换到Ring0，然后进入3GB-4GB中的内核地址空间去执行这些代码完成操作，完成后，切换回Ring3，回到用户态。</p>
+<p>这样，用户态的程序就不能随意操作内核地址空间，具有一定的安全保护作用。</p>
+<h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> ]]></content>
+      
+        
+        <tags>
+            
+            <tag> os </tag>
             
         </tags>
         
@@ -7822,7 +7965,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[Linux命令——parted]]></title>
-      <url>http://xiaqunfeng.cc/2017/01/25/Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94parted/</url>
+      <url>http://xiaqunfeng.cc/2017/01/25/linux-cmd-parted/</url>
       <content type="html"><![CDATA[<p>一直用parted命令来进行磁盘分区，这里学习一下总结一下。顺带对比一下MBR和GPT两种分区表，以及parted命令和fdisk命令的区别。<br><a id="more"></a></p>
 <h2 id="MBR和GPT"><a href="#MBR和GPT" class="headerlink" title="MBR和GPT"></a>MBR和GPT</h2><p>MBR：MBR分区表(即主引导记录)大家都很熟悉。所支持的最大卷：2T，而且对分区有限制：最多4个主分区或3个主分区加一个扩展分区（包含随意数目的逻辑分区）。</p>
 <p>GPT：GPT（即GUID分区表）。是源自EFI标准的一种较新的磁盘分区表结构的标准，是未来磁盘分区的主要形式。GPT的分区信息是在分区中，而MBR在主引导扇区。</p>
@@ -7870,7 +8013,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> Linux </tag>
+            <tag> linux </tag>
             
         </tags>
         
@@ -7878,23 +8021,17 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[认识SSD]]></title>
-      <url>http://xiaqunfeng.cc/2017/01/25/%E8%AE%A4%E8%AF%86SSD/</url>
+      <url>http://xiaqunfeng.cc/2017/01/25/ssd/</url>
       <content type="html"><![CDATA[<p>SSD越来越火，性能提升比较快，成本也有所下降，是未来的方向和主流，这里认识和学习一下SSD相关知识，以便更好的理解和应用SSD的特性。<br><a id="more"></a></p>
 <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>固态硬盘（Solid State Disk）用固态电子存储芯片阵列而制成的硬盘，由控制单元和存储单元（FLASH芯片、DRAM芯片）组成。<br>一块SSD，<strong>核心部件</strong>是一颗控制器和多颗Flash颗粒，一般还会有一些内存和超级电容。</p>
-<pre><code>--&gt;控制器主要作用是提供高效的手段来访问这些Flash颗粒。
---&gt;内存的作用主要是表项管理和读写CACHE。
---&gt;超级电容的作用是在异常下电时保证关键数据不丢失。
-</code></pre><p>而<strong>Flash颗粒</strong>是SSD最重要的器件，其相关特性决定了SSD的实现方式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">--&gt;控制器主要作用是提供高效的手段来访问这些Flash颗粒。</span><br><span class="line">--&gt;内存的作用主要是表项管理和读写CACHE。</span><br><span class="line">--&gt;超级电容的作用是在异常下电时保证关键数据不丢失。</span><br></pre></td></tr></table></figure>
+<p>而<strong>Flash颗粒</strong>是SSD最重要的器件，其相关特性决定了SSD的实现方式。</p>
 <h2 id="FLASH颗粒"><a href="#FLASH颗粒" class="headerlink" title="FLASH颗粒"></a>FLASH颗粒</h2><h3 id="定义和分类"><a href="#定义和分类" class="headerlink" title="定义和分类"></a>定义和分类</h3><blockquote>
 <p>闪存是一种不挥发性（ Non-Volatile ）内存，在没有电流供应的条件下也能够长久地保持数据，其存储特性相当于硬盘，这项特性正是闪存得以成为各类便携型数字设备的存储介质的基础。</p>
 </blockquote>
 <p>Flash颗粒是SSD最重要的器件，其相关特性决定了SSD的实现方式。目前业界主要有两种类型的Flash技术：NOR（Intel开发）和NAND（东芝开发）。由于这两种技术在如下方面的一些差异：</p>
-<pre><code>--&gt;NOR的读取速度略快于NAND；
---&gt;NOR的写入速度远低于NAND；
---&gt;NOR的擦除速度远低于NAND；
---&gt;的擦写次数约为NAND的1/10；
---&gt;的单元尺寸约为NAND的2倍；
-</code></pre><p>导致1~16M的闪存市场主要采用NOR颗粒（主要用于保存嵌入式设备的程序），而<strong>更大容量的数据存储（例如SSD）则主要选择NAND颗粒</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">--&gt;NOR的读取速度略快于NAND；</span><br><span class="line">--&gt;NOR的写入速度远低于NAND；</span><br><span class="line">--&gt;NOR的擦除速度远低于NAND；</span><br><span class="line">--&gt;的擦写次数约为NAND的1/10；</span><br><span class="line">--&gt;的单元尺寸约为NAND的2倍；</span><br></pre></td></tr></table></figure>
+<p>导致1~16M的闪存市场主要采用NOR颗粒（主要用于保存嵌入式设备的程序），而<strong>更大容量的数据存储（例如SSD）则主要选择NAND颗粒</strong>。</p>
 <h3 id="SLC和MLC"><a href="#SLC和MLC" class="headerlink" title="SLC和MLC"></a>SLC和MLC</h3><p>NAND FLASH芯片，flash颗粒有两种类型：SLC和MLC</p>
 <p>SLC：Single Level Cell，每个存储单元均只能存储1个bit的数据。只包含0和1两个电压符。<br>MLC：Multi Level Cell，每个存储单元能够存储2个bit或者更多bit的数据。包含四个电压符（00,01,10,11）。</p>
 <p><strong>SLC和MLC的比较：</strong><br>MLC容量比SLC大，且价格便宜。<br>但在性能、使用寿命和稳定性上：<br>1、SLC更简单可靠；<br>2、SLC读取和写入的速度都比MLC更快；<br>3、SLC比MLC更耐用，MLC每单元可擦除1w次，而SLC可擦除10w次。</p>
@@ -7932,26 +8069,23 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 </table>
 <h2 id="SSD的内部逻辑划分"><a href="#SSD的内部逻辑划分" class="headerlink" title="SSD的内部逻辑划分"></a>SSD的内部逻辑划分</h2><p>一颗NAND Flash颗粒，其内部被划分为若干block，每个block又包含若干page。page的大小一般为2k/4k/8k（同一颗Flash颗粒内的page大小是固定且相同的）。</p>
 <p>Flash的一个特点是：不能对任意bit位进行0/1互转，只能按照一定的颗粒度进行擦除和编程操作；</p>
-<pre><code>--&gt;擦除 —— 颗粒度为block，是将指定block中所有的bit位全部设置为1；
---&gt;编程 —— 颗粒度为page，是将指定page中指定的bit位设置为0；
-</code></pre><p>因此，对SSD进行写的操作实际上对需要写的Page所在的Block全部完成“擦除”(全部bit位置1)后，才能对指定的Page进行“编程”(部分bit位置0)。PS：实际上SSD硬盘在出厂时，厂商都会把所有Block完成擦除操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--&gt;擦除 —— 颗粒度为block，是将指定block中所有的bit位全部设置为1；</span><br><span class="line">--&gt;编程 —— 颗粒度为page，是将指定page中指定的bit位设置为0；</span><br></pre></td></tr></table></figure>
+<p>因此，对SSD进行写的操作实际上对需要写的Page所在的Block全部完成“擦除”(全部bit位置1)后，才能对指定的Page进行“编程”(部分bit位置0)。PS：实际上SSD硬盘在出厂时，厂商都会把所有Block完成擦除操作。</p>
 <h2 id="SSD的表项管理"><a href="#SSD的表项管理" class="headerlink" title="SSD的表项管理"></a>SSD的表项管理</h2><p>  每一个IO读写都是下发给一个地址，这个地址称为LBA(Logic Block Address)，其真正对应在磁盘上的地址称为PBA(Physical Block Address)，和传统机械硬盘中LBA到PBA的映射通过磁轨、磁道、扇区来进行唯一对应不同的是，<strong>SSD的LBA到PBA</strong>的映射通过一张<strong>映射表</strong>来记录。<br>&emsp;&emsp;LBA的粒度是扇区，而Flash颗粒的擦粒度是block，写粒度是page，均为扇区的若干倍，在这种条件下，如果仍以扇区为粒度进行映射，虽然理论上可行，但是显然是增加实现难度和性能的.<br>&emsp;&emsp;同时，如果强制以扇区为粒度进行映射，会导致所需要的映射表空间超过物理内存的限制，这就直接决定了不可能以扇区为粒度进行映射。<br>&emsp;&emsp;即使以page为粒度进行映射，也可能存在物理内存不够用的情况（现在正在使用的SSD盘即属于这种情况），所以需要以更大一些的粒度进行管理。<br>&emsp;&emsp;这个粒度成为”<strong>小块(Sub Block)</strong>“,是SSD进行擦除和编程的最小单位。每个block中，均包含多个sub block；每个sub block，由多个page组成；每个sub block，可能的状态包括：有效、垃圾、空白：</p>
-<pre><code>--&gt;有效：该小块中的数据正在被引用；
---&gt;垃圾：该小块中的数据没有被引用；
---&gt;空白：该小块可用于写入新的数据；
-</code></pre><h2 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h2><p>&emsp;&emsp;SSD的写要先进行整个Block的擦除，然后才能对指定的Sub Block进行编程。实际上，如果某一个写操作需要修改一个Sub Block的内容，是无法直接进行修改的，而是写到一个新的Sub Block中，把该LBA的映射指向新的这个Sub Block，同时把原来数据所在的Sub Block标记为“垃圾”。<br>  这样，随着SSD使用时间的越来越长，新的未被编程过的Sub Block越来越少，后面新的写请求则只能重新擦除所有Sub Block均为垃圾的Block才能再次写入，这样必然会造成写操作的性能降低，因此，在SSD内部引入了一个重要的机制——垃圾回收（Garbage Collection），用以提升SSD长期写入操作的性能。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">--&gt;有效：该小块中的数据正在被引用；</span><br><span class="line">--&gt;垃圾：该小块中的数据没有被引用；</span><br><span class="line">--&gt;空白：该小块可用于写入新的数据；</span><br></pre></td></tr></table></figure>
+<h2 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h2><p>&emsp;&emsp;SSD的写要先进行整个Block的擦除，然后才能对指定的Sub Block进行编程。实际上，如果某一个写操作需要修改一个Sub Block的内容，是无法直接进行修改的，而是写到一个新的Sub Block中，把该LBA的映射指向新的这个Sub Block，同时把原来数据所在的Sub Block标记为“垃圾”。<br>  这样，随着SSD使用时间的越来越长，新的未被编程过的Sub Block越来越少，后面新的写请求则只能重新擦除所有Sub Block均为垃圾的Block才能再次写入，这样必然会造成写操作的性能降低，因此，在SSD内部引入了一个重要的机制——垃圾回收（Garbage Collection），用以提升SSD长期写入操作的性能。</p>
 <p><strong>垃圾回收的工作：</strong></p>
-<pre><code>--&gt;找出合适的block
---&gt;将该block中的有效小块迁移到别的地方，同时更改映射表
---&gt;将该block擦除，并放入空白块表
-</code></pre><p>&emsp;&emsp;所谓“最合适进行回收的block”，是指这个block的垃圾小块足够多、有效/空白小块足够少。<br>&emsp;&emsp;垃圾回收算法是否高效，与该SSD的性能有很强的联系。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">--&gt;找出合适的block</span><br><span class="line">--&gt;将该block中的有效小块迁移到别的地方，同时更改映射表</span><br><span class="line">--&gt;将该block擦除，并放入空白块表</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;所谓“最合适进行回收的block”，是指这个block的垃圾小块足够多、有效/空白小块足够少。<br>&emsp;&emsp;垃圾回收算法是否高效，与该SSD的性能有很强的联系。</p>
 <h2 id="SSD的磨损均衡"><a href="#SSD的磨损均衡" class="headerlink" title="SSD的磨损均衡"></a>SSD的磨损均衡</h2><p>  上面说过，每个Flash颗粒中Block的可擦除次数是有限制的，如果颗粒中的某些Block很快达到了擦除次数上限，而其他大部分都几乎没有被擦除过，则会很快的造成整个SSD失效。而磨损均衡（Wear Leveling）则是通过各种手段，保证整个SSD所有的block的擦除次数是相近的从而延长SSD的使用寿命。</p>
 <p>磨损均衡分为  <strong>动态磨损均衡</strong>  和  <strong>静态磨损均衡</strong>：</p>
 <blockquote>
 <p>动态磨损均衡，是指在外部力量的驱动下，自然完成磨损均衡。这里外部力量，包括写IO和垃圾回收。<br>静态磨损均衡，是指磨损均衡功能模块主动地查找那些长时间没有变化的数据，将这些数据搬移到其他位置，以便释放出擦除次数较少的block，使其投入到擦除/编程的循环之中。</p>
 </blockquote>
-<h2 id="SSD使用寿命计算举例"><a href="#SSD使用寿命计算举例" class="headerlink" title="SSD使用寿命计算举例"></a>SSD使用寿命计算举例</h2><p>&emsp;&emsp;虽然一个block擦写次数只有100k（SLC），但是因为动态映射、磨损均衡等机制的存在，使得SSD的寿命远不止写入100k个IO。<br>计算SSD寿命的方式，一般是先确认一个block在其生命周期内能够写入多少数据量，再乘以该SSD具有的block数量，再除以一个估计的写入带宽，最后得到寿命值。<br>&emsp;&emsp;以我司（<strong>你们猜o(^▽^)o</strong>）自研的100G SLC SSD为例，16片Flash颗粒，每片颗粒拥有32k个block，每个block拥有64个4k的page，每个block可以被擦除100k次：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">16 x (32 x 1024) x 64 x (4 x 1024) x 100000 = 12500 TB</span><br></pre></td></tr></table></figure></p>
-<p>&emsp;&emsp;12500 TB，这是当所有block同时达到擦除次数上限时，可以写入的数据总量。<br>按照用户平均每秒钟写入10MB的数据进行计算：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(12500 x 1024 x 1024) / (10 x 60 x 60 x 24 x 365.25) = 41.5 年</span><br></pre></td></tr></table></figure></p>
+<h2 id="SSD使用寿命计算举例"><a href="#SSD使用寿命计算举例" class="headerlink" title="SSD使用寿命计算举例"></a>SSD使用寿命计算举例</h2><p>&emsp;&emsp;虽然一个block擦写次数只有100k（SLC），但是因为动态映射、磨损均衡等机制的存在，使得SSD的寿命远不止写入100k个IO。<br>计算SSD寿命的方式，一般是先确认一个block在其生命周期内能够写入多少数据量，再乘以该SSD具有的block数量，再除以一个估计的写入带宽，最后得到寿命值。<br>&emsp;&emsp;以我司（<strong>你们猜o(^▽^)o</strong>）自研的100G SLC SSD为例，16片Flash颗粒，每片颗粒拥有32k个block，每个block拥有64个4k的page，每个block可以被擦除100k次： </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">16 x (32 x 1024) x 64 x (4 x 1024) x 100000 = 12500 TB</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;12500 TB，这是当所有block同时达到擦除次数上限时，可以写入的数据总量。<br>按照用户平均每秒钟写入10MB的数据进行计算：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(12500 x 1024 x 1024) / (10 x 60 x 60 x 24 x 365.25) = 41.5 年</span><br></pre></td></tr></table></figure>
 <p>&emsp;&emsp;41.5年，这是在10MB/s的压力下、持续不断地向SSD写入数据的使用寿命。<br>&emsp;&emsp;考虑到其他一些因素的影响，一块SLC SSD的使用寿命，10年是可以保证的。</p>
 <h2 id="SSD和传统磁盘的对比"><a href="#SSD和传统磁盘的对比" class="headerlink" title="SSD和传统磁盘的对比"></a>SSD和传统磁盘的对比</h2><p>&emsp;&emsp;SSD与传统磁盘相比:<br>&emsp;&emsp;第一是没有机械装置;<br>&emsp;&emsp;第二是由磁介质改为了电介质。<br>&emsp;&emsp;在SSD内部有一个FTL(Flash Transalation Layer)，它相当于磁盘中的控制器，主要功能就是作地址映射，将flash memory的物理地址映射为磁盘的LBA逻辑地址，并提供给OS作透明访问。</p>
 <h3 id="读方面"><a href="#读方面" class="headerlink" title="读方面"></a>读方面</h3><p><strong>随机读</strong><br>  SSD没有传统磁盘的寻道时间和延迟时间，所以SSD可以提供非常高的随机读取能力。</p>
@@ -7994,11 +8128,10 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 </table>
 <h3 id="写方面"><a href="#写方面" class="headerlink" title="写方面"></a>写方面</h3><p>  Page为最小的读写单位，Block为最小的擦除/编程单位，其中1个Page为4KB，1个Block由256个Page组成，1个Plane由2048个Block组成，2个Plane组成1个Die，也就是最小的芯片(4GB)</p>
 <p>&emsp;&emsp;向一个空白的page写入信息时，可以直接写入而无需擦除，但是如果需要改写某个存储单元（page）的数据，必须首先将整个block读入缓存，然后修改数据，并擦除整个block的数据，最后将整个block写入。SSD改写数据的代价很高，SSD的这个特性，我们称之为erase-before-write。因为这个特性，引入<strong>“写放大”</strong>的概念。</p>
-<p>&emsp;&emsp;比如你想改写4K的数据，必须首先将整个擦除块（1024KB）中的数据读出到缓存中，改写后，将整个块一起写入，这时你实际写入了1024KB的数据，写入放大系数是256。写入放大最好的情况是1，就是不存在放大的情况。</p>
+<p>&emsp;&emsp;比如你想改写4K的数据，必须首先将整个擦除块（1024KB）中的数据读出到缓存中，改写后，将整个块一起写入，这时你实际写入了1024KB的数据，写入放大系数是256。写入放大最好的情况是1，就是不存在放大的情况。s</p>
 <p>&emsp;&emsp;在<strong>长时间写入</strong>后，MLC随机写IO下降得非常厉害，而<strong>SLC表现则比较稳定</strong>，可以稳定在3000 IOPS，而MLC随机写IOPS甚至降低到300。</p>
 <p>&emsp;&emsp;当某个单元长时间被反复擦写时（比如Oracle redo），不仅会造成写入的性能问题，而且会大大缩短SSD的使用寿命。所以，引入磨损均衡算法（wear leveling）。</p>
-<h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力<br>！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
-]]></content>
+<h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力<br>！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> ]]></content>
       
         
         <tags>
@@ -8010,76 +8143,8 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     </entry>
     
     <entry>
-      <title><![CDATA[Ceph — V11.2.0 KRAKEN(译)]]></title>
-      <url>http://xiaqunfeng.cc/2017/01/24/Ceph-KRAKEN(V11.2.0)/</url>
-      <content type="html"><![CDATA[<p>ceph的版本出到K了，针对bluestore又有了新的优化，并进行了一定的压力和故障测试，当然还有其他的特性，针对Jewel版本有较多改动。当前还没有什么中文资料，<a href="http://docs.ceph.org.cn/" target="_blank" rel="noopener">ceph中文社区</a>中关于V11.2.0还没有更新进去，所以闲暇之余翻译了一下，也给大家节省时间。<br><a id="more"></a></p>
-<p>英文原文链接：<a href="http://docs.ceph.com/docs/master/release-notes/#v11.2.0-kraken" target="_blank" rel="noopener">http://docs.ceph.com/docs/master/release-notes/#v11.2.0-kraken</a></p>
-<h2 id="V11-2-0-KRAKEN"><a href="#V11-2-0-KRAKEN" class="headerlink" title="V11.2.0 KRAKEN"></a>V11.2.0 KRAKEN</h2><p>这是Kraken系列的第一个release版本。它适用于生产部署，并将维护到下一个稳定的版本Luminous，将在2017年春季完成。</p>
-<h2 id="对比JEWEL版本的主要变化"><a href="#对比JEWEL版本的主要变化" class="headerlink" title="对比JEWEL版本的主要变化"></a>对比JEWEL版本的主要变化</h2><h3 id="RADOS"><a href="#RADOS" class="headerlink" title="RADOS"></a>RADOS</h3><ul>
-<li>新的BlueStore 后端现在有一个稳定的磁盘格式，并通过了我们的故障和压力测试。尽管该后端仍被标记为实验性的，但我们鼓励用户使用非生产集群和非关键数据集进行尝试。</li>
-<li>RADOS现在已经对EC-pool上的覆盖写（overwrites）进行了实验性支持。因为磁盘格式和实现尚未完成，所以必须启用特殊pool选项才能测试新功能。在群集上启用此选项将永久禁止该群集升级到将来的版本。</li>
-<li>我们现在默认使用AsyncMessenger（ms type = async）而不是传统的SimpleMessenger。最明显的区别是，我们现在使用固定大小的线程池用于网络连接（而不是使用SimpleMessenger的每个套接字两个线程）。</li>
-<li>现在一些OSD的故障几乎可以立即检测到，而先前心跳超时（默认为20秒）必须到期。这可以防止IO在主机保持启动但ceph-osd进程不再运行的故障情况下长时间阻塞。</li>
-<li>有一个新的ceph-mgr守护进程。它目前与默认监视器并置，并且尚未使用太多，但基本的基础设施现在已到位。</li>
-<li>减少了编码OSDMaps的大小。</li>
-<li>当恢复（recovery）或重新平衡（rebalanceing）正在进行时，OSD现在停止擦除（scrubbing）。</li>
-</ul>
-<h3 id="RGW"><a href="#RGW" class="headerlink" title="RGW"></a>RGW</h3><ul>
-<li>RGW现在支持一种新的区域类型，可用于通过ElasticSearch进行元数据索引。</li>
-<li>RGW现在支持S3复合对象复制部分API。</li>
-<li>现在可以重新分割现有的桶。注意，桶重新分片目前需要停止对特定桶的所有IO（特别是写）。</li>
-<li>RGW现在支持对象的数据压缩。</li>
-<li>Civetweb版本已经升级到1.8。</li>
-<li>现在支持Swift静态网站API（以前已经添加了S3支持）。</li>
-<li>S3桶生命周期API已添加。注意，目前它只支持对象到期。</li>
-<li>支持自定义搜索过滤器已添加到LDAP身份验证实现中。</li>
-<li>支持NFS版本3已添加到RGW NFS网关。</li>
-<li>为librgw创建了一个Python绑定。</li>
-</ul>
-<h3 id="RBD"><a href="#RBD" class="headerlink" title="RBD"></a>RBD</h3><ul>
-<li>RBD现在支持使用新的(实验)覆盖写(overwrite)支持在 EC RADOS pool 中存储images。必须使用新的rbd CLI <code>“-data-pool &lt;ec pool&gt;”</code> 选项来创建images，用以指定EC池存储后端数据对象。尝试在EC池上直接创建image不会成功，因为image的后端元数据仅在副本池上被支持。</li>
-<li>rbd-mirror守护进程现在支持从主image复制动态image特征更新和image元数据key/value对到非主image。</li>
-<li>image快照的数量可以选择性地限制为可配置的最大值。</li>
-<li>rbd Python API现在支持异步IO操作。</li>
-</ul>
-<h3 id="CephFS"><a href="#CephFS" class="headerlink" title="CephFS"></a>CephFS</h3><ul>
-<li>libcephfs函数的定义已更改为启用适当的uid / gid控制。库版本已增加以反映接口更改。</li>
-<li>备用的回放(replay)MDS守护程序现在在执行删除操作的工作负载上消耗更少的内存。</li>
-<li>Scrub现在修复backtrace，并用已发现的错误填充损坏ls。</li>
-<li>cephfs-data-scan的新的pg_files子命令可以识别受损坏或丢失的RADOS PG影响的文件。</li>
-<li>假阳性“未能响应缓存压力”警告已修复。</li>
-</ul>
-<h2 id="UPGRADING-FROM-JEWEL"><a href="#UPGRADING-FROM-JEWEL" class="headerlink" title="UPGRADING FROM JEWEL"></a>UPGRADING FROM JEWEL</h2><ul>
-<li>所有集群必须首先升级到 Jewel 10.2.z，然后升级到 Kraken 11.2.z（或者，最终，Luminous 12.2.z）。</li>
-<li>升级到Kraken之前，必须在Jewel集群上设置sortbitwise标志。如果未设置标志，则最新的Jewel（10.2.4+）版本会发出健康警告，因此可能已设置。如果不是，Kraken OSDs将拒绝启动，并将在其日志中打印和错误消息。</li>
-<li>您可以按任意顺序升级OSD，监视器和MDS。 RGW守护进程应该最后升级。</li>
-<li>升级时，新的ceph-mgr守护进程实例将自动被创建，与任何监视器一起。在Jewel到Kraken和Jewel到Luminous的升级中这将是事实，但在未来高于Luminous版本的升级中可能不是这样。如果你不与他们共置ceph-mon守护进程的话，你当然可以自由创建新的ceph-mgr守护进程实例，并销毁自动创建的实例。</li>
-</ul>
-<h2 id="BLUESTORE"><a href="#BLUESTORE" class="headerlink" title="BLUESTORE"></a>BLUESTORE</h2><p>BlueStore是一个新的后端，用于管理直接硬盘或SSD上每个OSD存储的数据。与现有的FileStore实现（它利用XFS文件系统将对象存储为文件）不同，BlueStore直接管理底层块设备。实现它自己的文件系统类磁盘结构，专为Ceph OSD工作负载而设计。 BlueStore的主要特点包括：</p>
-<ul>
-<li>默认情况下启用写入磁盘的所有数据的校验和，所有读取的校验和验证。</li>
-<li>内联压缩支持，可以分别通过池属性或客户端提示在每个池或每个对象的基础上启用。</li>
-<li>高效日记。与将所有数据写入其日志设备的FileStore不同，BlueStore仅记录元数据和（在某些情况下）小型写入，从而减少其日志的大小和吞吐量要求。与文件存储一样，日志可以与其他数据共存在同一设备上，或者分配在较小的高性能设备（例如，SSD或NVMe设备）上。 BlueStore日志默认只有512 MB。</li>
-</ul>
-<p>BlueStore磁盘格式预计将继续发展。但是，我们将在OSD中提供支持，以便在升级时迁移到新格式。</p>
-<p>为了启用BlueStore，将以下内容添加到ceph.conf：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">enable experimental unrecoverable data corrupting features = bluestore</span><br></pre></td></tr></table></figure>
-<p>要创建一个BlueStore OSD，在OSD创建期间将-bluestore选项传递给ceph-disk或ceph-deploy。</p>
-<h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
-]]></content>
-      
-        
-        <tags>
-            
-            <tag> ceph </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[Crushmap学习]]></title>
-      <url>http://xiaqunfeng.cc/2017/01/24/Crushmap%E5%AD%A6%E4%B9%A0/</url>
+      <url>http://xiaqunfeng.cc/2017/01/24/ceph-crushmap/</url>
       <content type="html"><![CDATA[<p>介绍了ceph中crush的优点、原理及作用，同时dump出自己的crushmap内容，进行详细的分解学习。<br><a id="more"></a></p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>随着大规模分布式存储系统的出现。这些系统必须平衡的分布数据和负载，最大化系统的性能，并要处理系统的扩展和硬件失效。但是简单HASH分布不能有效处理设备数量的变化，导致大量数据迁移。ceph设计了CRUSH，用在分布式对象存储系统上，可以有效映射数据对象到存储设备上(不需要中心设备)。因为大型系统的结构式动态变化的，CRUSH能够处理存储设备的添加和移除，并最小化由于存储设备的的添加和移动而导致的数据迁移。</p>
 <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>CRUSH算法，全称 Controlled Replication Under Scalable Hashing。它是一种伪随机的算法，在相同的环境下，它能够在层级结构的存储集群中有效的分布对象的副本。</p>
@@ -8148,9 +8213,14 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 </ul>
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 
-
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
@@ -8161,8 +8231,81 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     </entry>
     
     <entry>
-      <title><![CDATA[Ceph中严重数据不一致性BUG]]></title>
-      <url>http://xiaqunfeng.cc/2017/01/20/Ceph%E4%B8%AD%E4%B8%A5%E9%87%8D%E6%95%B0%E6%8D%AE%E4%B8%8D%E4%B8%80%E8%87%B4%E6%80%A7BUG/</url>
+      <title><![CDATA[Ceph — V11.2.0 KRAKEN(译)]]></title>
+      <url>http://xiaqunfeng.cc/2017/01/24/ceph-kraken/</url>
+      <content type="html"><![CDATA[<p>ceph的版本出到K了，针对bluestore又有了新的优化，并进行了一定的压力和故障测试，当然还有其他的特性，针对Jewel版本有较多改动。当前还没有什么中文资料，<a href="http://docs.ceph.org.cn/" target="_blank" rel="noopener">ceph中文社区</a>中关于V11.2.0还没有更新进去，所以闲暇之余翻译了一下，也给大家节省时间。<br><a id="more"></a></p>
+<p>英文原文链接：<a href="http://docs.ceph.com/docs/master/release-notes/#v11.2.0-kraken" target="_blank" rel="noopener">http://docs.ceph.com/docs/master/release-notes/#v11.2.0-kraken</a></p>
+<h2 id="V11-2-0-KRAKEN"><a href="#V11-2-0-KRAKEN" class="headerlink" title="V11.2.0 KRAKEN"></a>V11.2.0 KRAKEN</h2><p>这是Kraken系列的第一个release版本。它适用于生产部署，并将维护到下一个稳定的版本Luminous，将在2017年春季完成。</p>
+<h2 id="对比JEWEL版本的主要变化"><a href="#对比JEWEL版本的主要变化" class="headerlink" title="对比JEWEL版本的主要变化"></a>对比JEWEL版本的主要变化</h2><h3 id="RADOS"><a href="#RADOS" class="headerlink" title="RADOS"></a>RADOS</h3><ul>
+<li>新的BlueStore 后端现在有一个稳定的磁盘格式，并通过了我们的故障和压力测试。尽管该后端仍被标记为实验性的，但我们鼓励用户使用非生产集群和非关键数据集进行尝试。</li>
+<li>RADOS现在已经对EC-pool上的覆盖写（overwrites）进行了实验性支持。因为磁盘格式和实现尚未完成，所以必须启用特殊pool选项才能测试新功能。在群集上启用此选项将永久禁止该群集升级到将来的版本。</li>
+<li>我们现在默认使用AsyncMessenger（ms type = async）而不是传统的SimpleMessenger。最明显的区别是，我们现在使用固定大小的线程池用于网络连接（而不是使用SimpleMessenger的每个套接字两个线程）。</li>
+<li>现在一些OSD的故障几乎可以立即检测到，而先前心跳超时（默认为20秒）必须到期。这可以防止IO在主机保持启动但ceph-osd进程不再运行的故障情况下长时间阻塞。</li>
+<li>有一个新的ceph-mgr守护进程。它目前与默认监视器并置，并且尚未使用太多，但基本的基础设施现在已到位。</li>
+<li>减少了编码OSDMaps的大小。</li>
+<li>当恢复（recovery）或重新平衡（rebalanceing）正在进行时，OSD现在停止擦除（scrubbing）。</li>
+</ul>
+<h3 id="RGW"><a href="#RGW" class="headerlink" title="RGW"></a>RGW</h3><ul>
+<li>RGW现在支持一种新的区域类型，可用于通过ElasticSearch进行元数据索引。</li>
+<li>RGW现在支持S3复合对象复制部分API。</li>
+<li>现在可以重新分割现有的桶。注意，桶重新分片目前需要停止对特定桶的所有IO（特别是写）。</li>
+<li>RGW现在支持对象的数据压缩。</li>
+<li>Civetweb版本已经升级到1.8。</li>
+<li>现在支持Swift静态网站API（以前已经添加了S3支持）。</li>
+<li>S3桶生命周期API已添加。注意，目前它只支持对象到期。</li>
+<li>支持自定义搜索过滤器已添加到LDAP身份验证实现中。</li>
+<li>支持NFS版本3已添加到RGW NFS网关。</li>
+<li>为librgw创建了一个Python绑定。</li>
+</ul>
+<h3 id="RBD"><a href="#RBD" class="headerlink" title="RBD"></a>RBD</h3><ul>
+<li>RBD现在支持使用新的(实验)覆盖写(overwrite)支持在 EC RADOS pool 中存储images。必须使用新的rbd CLI <code>“-data-pool &lt;ec pool&gt;”</code> 选项来创建images，用以指定EC池存储后端数据对象。尝试在EC池上直接创建image不会成功，因为image的后端元数据仅在副本池上被支持。</li>
+<li>rbd-mirror守护进程现在支持从主image复制动态image特征更新和image元数据key/value对到非主image。</li>
+<li>image快照的数量可以选择性地限制为可配置的最大值。</li>
+<li>rbd Python API现在支持异步IO操作。</li>
+</ul>
+<h3 id="CephFS"><a href="#CephFS" class="headerlink" title="CephFS"></a>CephFS</h3><ul>
+<li>libcephfs函数的定义已更改为启用适当的uid / gid控制。库版本已增加以反映接口更改。</li>
+<li>备用的回放(replay)MDS守护程序现在在执行删除操作的工作负载上消耗更少的内存。</li>
+<li>Scrub现在修复backtrace，并用已发现的错误填充损坏ls。</li>
+<li>cephfs-data-scan的新的pg_files子命令可以识别受损坏或丢失的RADOS PG影响的文件。</li>
+<li>假阳性“未能响应缓存压力”警告已修复。</li>
+</ul>
+<h2 id="UPGRADING-FROM-JEWEL"><a href="#UPGRADING-FROM-JEWEL" class="headerlink" title="UPGRADING FROM JEWEL"></a>UPGRADING FROM JEWEL</h2><ul>
+<li>所有集群必须首先升级到 Jewel 10.2.z，然后升级到 Kraken 11.2.z（或者，最终，Luminous 12.2.z）。</li>
+<li>升级到Kraken之前，必须在Jewel集群上设置sortbitwise标志。如果未设置标志，则最新的Jewel（10.2.4+）版本会发出健康警告，因此可能已设置。如果不是，Kraken OSDs将拒绝启动，并将在其日志中打印和错误消息。</li>
+<li>您可以按任意顺序升级OSD，监视器和MDS。 RGW守护进程应该最后升级。</li>
+<li>升级时，新的ceph-mgr守护进程实例将自动被创建，与任何监视器一起。在Jewel到Kraken和Jewel到Luminous的升级中这将是事实，但在未来高于Luminous版本的升级中可能不是这样。如果你不与他们共置ceph-mon守护进程的话，你当然可以自由创建新的ceph-mgr守护进程实例，并销毁自动创建的实例。</li>
+</ul>
+<h2 id="BLUESTORE"><a href="#BLUESTORE" class="headerlink" title="BLUESTORE"></a>BLUESTORE</h2><p>BlueStore是一个新的后端，用于管理直接硬盘或SSD上每个OSD存储的数据。与现有的FileStore实现（它利用XFS文件系统将对象存储为文件）不同，BlueStore直接管理底层块设备。实现它自己的文件系统类磁盘结构，专为Ceph OSD工作负载而设计。 BlueStore的主要特点包括：</p>
+<ul>
+<li>默认情况下启用写入磁盘的所有数据的校验和，所有读取的校验和验证。</li>
+<li>内联压缩支持，可以分别通过池属性或客户端提示在每个池或每个对象的基础上启用。</li>
+<li>高效日记。与将所有数据写入其日志设备的FileStore不同，BlueStore仅记录元数据和（在某些情况下）小型写入，从而减少其日志的大小和吞吐量要求。与文件存储一样，日志可以与其他数据共存在同一设备上，或者分配在较小的高性能设备（例如，SSD或NVMe设备）上。 BlueStore日志默认只有512 MB。</li>
+</ul>
+<p>BlueStore磁盘格式预计将继续发展。但是，我们将在OSD中提供支持，以便在升级时迁移到新格式。</p>
+<p>为了启用BlueStore，将以下内容添加到ceph.conf：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">enable experimental unrecoverable data corrupting features = bluestore</span><br></pre></td></tr></table></figure>
+<p>要创建一个BlueStore OSD，在OSD创建期间将-bluestore选项传递给ceph-disk或ceph-deploy。</p>
+<h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> ]]></content>
+      
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ceph </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[ceph-data-inconsistency-bug]]></title>
+      <url>http://xiaqunfeng.cc/2017/01/20/ceph-data-inconsistency-bug/</url>
       <content type="html"><![CDATA[<p>目前，块存储服务是Ceph存储中被使用的最普遍的服务之一，通过块存储服务，可以向客户端以使用块设备一样访问Ceph集群。然而，目前在使用块存储服务时，尤其是OpenStack与Ceph对接时，如果没有严格的控制Ceph端的对象大小（使用 &gt;= 8MB对象时），将有可能导致严重的数据不一致情况，该异常由于XFS文件系统本身对Fiemap的支持特性导致的。<br><a id="more"></a></p>
 <h2 id="触发场景"><a href="#触发场景" class="headerlink" title="触发场景"></a>触发场景</h2><p>XFS使用fiemap时，当extents数量大于1364时，通过ioctl的FS_IOC_FIEMAP接口，获取的extents数量上限为1364，导致超出部分extents数据获取不到。这将导致，在开启fiemap时，Ceph集群进行recovery与backfill之后，产生大量数据不一致的情况，也是迄今为止Ceph中影响最大的，最严重的数据不一致BUG。</p>
 <p>由于fiemap BUG，碎片化对象在recovery与backfill之后（fiemap 获取不正确的数据），从而使的恢复的对象数据与原对象数据不一致。而恢复后的副本若成为主副本，则可能发生静默读错误，并且如果使用Ceph策略自动修复对象（repair object之后），可能将错误数据覆盖至正确数据，数据将永远损毁。在某些情况下，还会触发对象永远处于inconsistent状态。</p>
@@ -8175,9 +8318,15 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <p>这组系统调用，可以让使用者通过while循环，反复的发现文件中的data 与 hole，从而组织出一个文件中真正存在的数据，能够避免产生与fiemap系统调用类似的BUG，又保证了recovery或者clone时候只复制有用数据，而反复的系统调，应该会带来一定性能上的影响，请读者们自行测试。</p>
 <p>目前，在I版本以后的ceph中，提供参数filestore_seek_data_hole，来启用该功能。当filestore_seek_data_hole 与 filestore_fiemap同时设置时，只用文件系统支持seek_data_hole，那么就会先通过seek_data_hole方式来获取文件的extents，所以在I版本以后的ceph中，应启用filestore_seek_data_hole功能来替代filestore_fiemap 功能。</p>
 <p>3）对于已经使用8MB，16MB 甚至更大对象大小的RBD镜像，请暂时设置禁用Fiemap功能，并等待后续版本修复。</p>
-<p>原文链接：<a href="https://www.ustack.com/blog/%E9%98%B2%E7%81%AB%E9%98%B2%E7%9B%97%E9%98%B2bug-%E6%9C%89%E4%BA%91%E5%AD%98%E5%82%A8%E5%9B%A2%E9%98%9F%E5%85%AC%E5%B8%83ceph%E4%B8%AD%E6%9C%80%E4%B8%A5%E9%87%8D%E6%95%B0%E6%8D%AE%E4%B8%8D%E4%B8%80/" target="_blank" rel="noopener">有云存储团队公布Ceph中最严重数据不一致BUG!</a></p>
+<p>原文链接：[有云存储团队公布Ceph中最严重数据不一致BUG!](</p>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
@@ -8189,7 +8338,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[块存储的世界]]></title>
-      <url>http://xiaqunfeng.cc/2017/01/20/%E5%9D%97%E5%AD%98%E5%82%A8%E7%9A%84%E4%B8%96%E7%95%8C/</url>
+      <url>http://xiaqunfeng.cc/2017/01/20/block-storage-world/</url>
       <content type="html"><![CDATA[<p>在OpenStack中，存储是非常重要的一块，但是因为其提供方式的不同，即使是专业的工程师也会感到十分困惑。OpenStack的存储主要分为三大类，一是对象    存储服务，Swift解决的问题，二是块设备存储服务，在OpenStack里主要是提供给虚拟机的作为“硬盘”的存储，这里又分为本地块存储和分布式块存储，Cinder项目正    在解决相关的问题；第三类，数据库存储服务，Databases as a Service(DBaaS), 对应AWS里面的RDC，目前是一个正在孵化的项目，Trove，前身是Rackspace开源出&gt;    来的RedDwarf。本文重点介绍块存储服务。<br><a id="more"></a></p>
 <blockquote>
 <p>转载的文章，原文排版看的心累，链接见文末。</p>
@@ -8283,10 +8432,16 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 </ul>
 ]]></content>
       
+        <categories>
+            
+            <category> Distribute </category>
+            
+        </categories>
+        
         
         <tags>
             
-            <tag> ceph </tag>
+            <tag> storage </tag>
             
         </tags>
         
@@ -8294,7 +8449,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[Linux命令——uptime]]></title>
-      <url>http://xiaqunfeng.cc/2017/01/17/Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94uptime/</url>
+      <url>http://xiaqunfeng.cc/2017/01/17/Linux-cmd-uptime/</url>
       <content type="html"><![CDATA[<p>打印系统总共运行了多长时间和系统的平均负载。<br><a id="more"></a></p>
 <h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Usage:</span><br><span class="line"> uptime [options]</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line"> -p, --pretty   show uptime in pretty format</span><br><span class="line"> -h, --help     display this help and exit</span><br><span class="line"> -s, --since    system up since</span><br><span class="line"> -V, --version  output version information and exit</span><br><span class="line"></span><br><span class="line">For more details see uptime(1).</span><br></pre></td></tr></table></figure>
 <h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><h3 id="uptime"><a href="#uptime" class="headerlink" title="uptime"></a>uptime</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># uptime</span><br><span class="line"> 17:40:45 up 1 day,  6:37,  3 users,  load average: 0.27, 0.21, 0.31</span><br></pre></td></tr></table></figure>
@@ -8336,105 +8491,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> Linux </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[dd磁盘命令小记]]></title>
-      <url>http://xiaqunfeng.cc/2017/01/12/dd%E7%A3%81%E7%9B%98%E5%91%BD%E4%BB%A4%E5%B0%8F%E8%AE%B0/</url>
-      <content type="html"><![CDATA[<p>dd是经常使用的命令了，方便快捷，这里闲来小总结一下，以及怎样测出最真实的写入速度。<br><a id="more"></a></p>
-<h2 id="命令的使用"><a href="#命令的使用" class="headerlink" title="命令的使用"></a>命令的使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># dd --help</span><br><span class="line">Usage: dd [OPERAND]...</span><br><span class="line">  or:  dd OPTION</span><br><span class="line">Copy a file, converting and formatting according to the operands.</span><br><span class="line"></span><br><span class="line">  bs=BYTES        read and write up to BYTES bytes at a time</span><br><span class="line">  cbs=BYTES       convert BYTES bytes at a time</span><br><span class="line">  conv=CONVS      convert the file as per the comma separated symbol list</span><br><span class="line">  count=N         copy only N input blocks</span><br><span class="line">  ibs=BYTES       read up to BYTES bytes at a time (default: 512)</span><br><span class="line">  if=FILE         read from FILE instead of stdin</span><br><span class="line">  iflag=FLAGS     read as per the comma separated symbol list</span><br><span class="line">  obs=BYTES       write BYTES bytes at a time (default: 512)</span><br><span class="line">  of=FILE         write to FILE instead of stdout</span><br><span class="line">  oflag=FLAGS     write as per the comma separated symbol list</span><br><span class="line">  seek=N          skip N obs-sized blocks at start of output</span><br><span class="line">  skip=N          skip N ibs-sized blocks at start of input</span><br><span class="line">  status=WHICH    WHICH info to suppress outputting to stderr;</span><br><span class="line">                  &apos;noxfer&apos; suppresses transfer stats, &apos;none&apos; suppresses all</span><br></pre></td></tr></table></figure>
-<p><strong>翻译</strong></p>
-<table>
-<thead>
-<tr>
-<th>选项</th>
-<th>意义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>bs</td>
-<td>同时设置读写块的大小为 bytes ，可代替 ibs 和 obs</td>
-</tr>
-<tr>
-<td>cbs</td>
-<td>一次转换 bytes 个字节，即转换缓冲区大小</td>
-</tr>
-<tr>
-<td>conv</td>
-<td>转换参数</td>
-</tr>
-<tr>
-<td>count</td>
-<td>复制的块数</td>
-</tr>
-<tr>
-<td>ibs</td>
-<td>一次读入 bytes 个字节(即一个块大小为 bytes 个字节)</td>
-</tr>
-<tr>
-<td>if</td>
-<td>输入文件 或 设备名称</td>
-</tr>
-<tr>
-<td>iflag</td>
-<td>按照逗号来分隔读参数</td>
-</tr>
-<tr>
-<td>obs</td>
-<td>一次写 bytes 个字节(即一个块大小为 bytes 个字节)</td>
-</tr>
-<tr>
-<td>of</td>
-<td>输出文件 或 设备名称</td>
-</tr>
-<tr>
-<td>oflag</td>
-<td>按照逗号来分隔写参数</td>
-</tr>
-<tr>
-<td>seek</td>
-<td>从输出文件开头跳过 blocks 个块后再开始复制</td>
-</tr>
-<tr>
-<td>skip</td>
-<td>从输入文件开头跳过 blocks 个块后再开始复制</td>
-</tr>
-</tbody>
-</table>
-<p>查看版本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dd --version</span><br></pre></td></tr></table></figure>
-<h2 id="磁盘读写"><a href="#磁盘读写" class="headerlink" title="磁盘读写"></a>磁盘读写</h2><p><strong>两个特殊的设备</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/dev/null：伪设备，相当于黑洞，of到该设备不会产生IO</span><br><span class="line">/dev/zero：伪设备，它只产生空字符流，对它不会产生IO</span><br></pre></td></tr></table></figure>
-<p><strong>1、测试磁盘写能力</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dd if=/dev/zero of=/test.a bs=8k count=10000</span><br></pre></td></tr></table></figure>
-<p>IO都集中在of文件中，of文件只用于写，相当于测试磁盘的写能力。</p>
-<p><strong>2、测试磁盘读能力</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dd if=/dev/sdb1 of=/dev/null bs=8k count=10000</span><br></pre></td></tr></table></figure>
-<p>IO只发生在/dev/sdb1上，相当于测试磁盘的读能力。</p>
-<p><strong>3、测试同时读写能力</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dd if=/dev/sdb1 of=/test.a bs=8k count=10000</span><br></pre></td></tr></table></figure>
-<p>一个是物理分区，一个是实际的文件，对它们的读写都会产生IO，如果它们都在一个磁盘中，该命令就相当于测试磁盘的同时读写能力。</p>
-<h2 id="几种测试写磁盘的区别"><a href="#几种测试写磁盘的区别" class="headerlink" title="几种测试写磁盘的区别"></a>几种测试写磁盘的区别</h2><p>先给出四种测试方式的结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># dd if=/dev/zero of=test bs=1M count=128</span><br><span class="line">128+0 records in</span><br><span class="line">128+0 records out</span><br><span class="line">134217728 bytes (134 MB) copied, 0.116559 s, 1.2 GB/s</span><br><span class="line"></span><br><span class="line"># dd if=/dev/zero of=test bs=1M count=128 ; sync</span><br><span class="line">128+0 records in</span><br><span class="line">128+0 records out</span><br><span class="line">134217728 bytes (134 MB) copied, 0.125106 s, 1.1 GB/s</span><br><span class="line"></span><br><span class="line"># dd if=/dev/zero of=test bs=1M count=128 conv=fdatasync</span><br><span class="line">128+0 records in</span><br><span class="line">128+0 records out</span><br><span class="line">134217728 bytes (134 MB) copied, 1.76802 s, 75.9 MB/s</span><br><span class="line"></span><br><span class="line"># dd if=/dev/zero of=test bs=1M count=128 oflag=dsync</span><br><span class="line">128+0 records in</span><br><span class="line">128+0 records out</span><br><span class="line">134217728 bytes (134 MB) copied, 4.91353 s, 27.3 MB/s</span><br></pre></td></tr></table></figure>
-<p>1、<code>dd if=/dev/zero of=test bs=1M count=128</code></p>
-<p>没有加任何参数，命令只是单纯地把这128MB的数据读到内存缓冲当中，dd命令完成前并没有让系统真正把文件写到磁盘上。所以得到的是一个超级快的速度。直到dd完成后系统才开始真正往磁盘上写数据,但这个速度你是看不到了。</p>
-<p>2、<code>dd if=/dev/zero of=test bs=1M count=128 ; sync</code></p>
-<p>这事先后两个独立的命令。当sync命令准备开始往磁盘上真正写入数据的时候，前面dd命令已经把错误的“写入速度”值显示在屏幕上了。所以得到的不是真正的写入速度。</p>
-<p><strong>3、<code>dd if=/dev/zero of=test bs=1M count=128 conv=fdatasync</code></strong></p>
-<p>加入参数 <code>conv=fdatasync</code> 后，dd命令执行到最后会真正执行一次“同步(sync)”操作，所以这时候得到的是读取这128M数据到内存并写入到磁盘上所需的时间，这样算出来的时间才是<strong>比较符合实际</strong>的。这种方式最接近计算机实际操作，所以测出来的数据最有参考价值。</p>
-<p>4、<code>dd if=/dev/zero of=test bs=1M count=128 oflag=dsync</code></p>
-<p>加入参数 <code>oflag=dsync</code> 后，dd在执行时每次都会进行同步写入操作。这条命令每次读取1M后就要先把这1M写入磁盘，然后再读取下面这1M，一共重复128次。这是最慢的一种方式，因为基本上没有用到写缓存(write cache)。</p>
-]]></content>
-      
-        
-        <tags>
-            
-            <tag> Linux </tag>
+            <tag> linux </tag>
             
         </tags>
         
@@ -8442,7 +8499,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[解决calamari无法获取集群hosts信息的BUG]]></title>
-      <url>http://xiaqunfeng.cc/2017/01/12/%E8%A7%A3%E5%86%B3calamari%E6%97%A0%E6%B3%95%E8%8E%B7%E5%8F%96%E9%9B%86%E7%BE%A4hosts%E4%BF%A1%E6%81%AF%E7%9A%84BUG/</url>
+      <url>http://xiaqunfeng.cc/2017/01/12/ceph-calamari/</url>
       <content type="html"><![CDATA[<p>如题，环境是ubuntu 14.04，解决过程和方法详见正文。<br><a id="more"></a></p>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前在磨磨的文章中看到这个问题，他是在CentOS上，通过修改 <code>/usr/lib/python2.7/site-packages/salt/master.py</code> 文件，然后重启salt-master和salt-minion服务来解决的，链接在文末。原理类似，可ubuntu上并不能完全照搬。</p>
 <h2 id="折腾过程"><a href="#折腾过程" class="headerlink" title="折腾过程"></a>折腾过程</h2><blockquote>
@@ -8469,6 +8526,12 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <p>磨磨的方法：<a href="http://www.zphj1987.com/2017/01/09/calamari-node-info/" target="_blank" rel="noopener">centos下该问题的解决方法</a></p>
 ]]></content>
       
+        <categories>
+            
+            <category> Ceph </category>
+            
+        </categories>
+        
         
         <tags>
             
@@ -8479,108 +8542,8 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     </entry>
     
     <entry>
-      <title><![CDATA[ubuntu下配置邮件发送]]></title>
-      <url>http://xiaqunfeng.cc/2017/01/11/ubuntu%E4%B8%8B%E9%85%8D%E7%BD%AE%E9%82%AE%E4%BB%B6%E5%8F%91%E9%80%81/</url>
-      <content type="html"><![CDATA[<p>Linux下发送email有很多种方式，包括sendmail、mailx、mutt、uuencode等等。这里介绍ubuntu下使用mutt和msmtp发送邮件的配置方法。<br><a id="more"></a></p>
-<h2 id="软件包的安装"><a href="#软件包的安装" class="headerlink" title="软件包的安装"></a>软件包的安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install mutt</span><br><span class="line">sudo apt-get install msmtp</span><br></pre></td></tr></table></figure>
-<h2 id="文件的配置"><a href="#文件的配置" class="headerlink" title="文件的配置"></a>文件的配置</h2><h3 id="配置-mutt"><a href="#配置-mutt" class="headerlink" title="配置 mutt"></a>配置 mutt</h3><p>,系统全局设置配置文件在 /etc/Muttrc,如果使用某个系统用户，可以在~/.muttc中设置，没有该文件，就自己创建。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vi .muttrc</span><br><span class="line"></span><br><span class="line">set sendmail=&quot;/usr/bin/msmtp&quot;</span><br><span class="line">set use_from=yes</span><br><span class="line">set realname=&quot;xia&quot;</span><br><span class="line">set from=abcdefg@126.com</span><br><span class="line">set envelope_from=yes</span><br></pre></td></tr></table></figure>
-<h3 id="配置msmtp"><a href="#配置msmtp" class="headerlink" title="配置msmtp"></a>配置msmtp</h3><p>创建 ~/.msmtprc 和 ~/.msmtp.log，分别为配置文件和日志文件。</p>
-<p><strong>1、创建配置文件</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi .msmtprc</span><br></pre></td></tr></table></figure>
-<p>添加以下内容</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">account default</span><br><span class="line">host smtp.126.com</span><br><span class="line">from youremailname@126.com</span><br><span class="line">auth plain</span><br><span class="line">user youremailname@126.com</span><br><span class="line">password xxxxxxx</span><br><span class="line">logfile ~/.msmtp.log</span><br></pre></td></tr></table></figure>
-<p>由于password是明文，所以需要修改此文件的访问权限</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 600 .msmtprc</span><br></pre></td></tr></table></figure>
-<p><strong>特别注意</strong>：</p>
-<blockquote>
-<p>这里的密码填的是你的授权密码，不是登录密码!</p>
-</blockquote>
-<p><strong>2、创建日志文件 </strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch ~/.msmtp.log</span><br></pre></td></tr></table></figure>
-<h2 id="邮件发送测试"><a href="#邮件发送测试" class="headerlink" title="邮件发送测试"></a>邮件发送测试</h2><p>查看SMTP服务器是否支持认证的TLS加密</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># msmtp --host=smtp.126.com --serverinfo</span><br><span class="line">SMTP server at smtp.126.com (m15-111.126.com [220.181.15.111]), port 25:</span><br><span class="line">    126.com Anti-spam GT for Coremail System (126com[20140526])</span><br><span class="line">Capabilities:</span><br><span class="line">    PIPELINING:</span><br><span class="line">        Support for command grouping for faster transmission</span><br><span class="line">    STARTTLS:</span><br><span class="line">        Support for TLS encryption via the STARTTLS command</span><br><span class="line">    AUTH:</span><br><span class="line">        Supported authentication methods:</span><br><span class="line">        PLAIN LOGIN </span><br><span class="line">This server might advertise more or other capabilities when TLS is active.</span><br></pre></td></tr></table></figure>
-<p>发送一个简单的邮件测试</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;hello world&quot; | mutt -s &quot;title&quot; 12456789@qq.com</span><br></pre></td></tr></table></figure>
-<p>登录QQ邮箱，可以正常收到邮件，成功！</p>
-<h2 id="四种发送方式"><a href="#四种发送方式" class="headerlink" title="四种发送方式"></a>四种发送方式</h2><p>1、<strong>带有主题，从文件中读取邮件的正文，并发送</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mutt -s &quot;hello mutt&quot; user@example.com &lt; message.txt</span><br></pre></td></tr></table></figure>
-<p>2、<strong>通过管道获取 <code>echo</code>命令输出作为邮件内容发送</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ echo &quot;hello mutt&quot; | mutt -s &quot;Testing mutt&quot; user@example.com</span><br></pre></td></tr></table></figure>
-<p>3、<strong>发送带附件的邮件</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ echo &quot;hello mutt&quot; | mutt -s &quot;Testing mutt&quot; user@example.com -a test.tar.gz</span><br></pre></td></tr></table></figure>
-<p>多个附件的话在每个附件前加上 <code>-a</code> 即可。</p>
-<p>4、<strong>发送给多个收件人</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;hello mutt&quot; | mutt -s &quot;Testing muttt&quot; 111111@qq.com,222222@163.com -c 3333333@qq.com -b 44444444@126.com</span><br></pre></td></tr></table></figure>
-<p>多个收件人之间用逗号隔开</p>
-<p><strong>抄送</strong>，前面加参数 <code>-c</code> </p>
-<p><strong>密送</strong>，前面加参数 <code>-b</code></p>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>1、出现如下错误</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">msmtp: authentication failed (method PLAIN)</span><br><span class="line">msmtp: server message: 530 Error: A secure connection is requiered(such as ssl). More information at http://service.mail.qq.com/cgi-bin/help?id=28</span><br><span class="line">msmtp: could not send mail (account default from /root/.msmtprc)</span><br><span class="line">Error sending message, child exited 77 (Insufficient permission.).</span><br><span class="line">Could not send the message.</span><br></pre></td></tr></table></figure>
-<p>原因，没有权限进行操作</p>
-<p>解决方法：</p>
-<blockquote>
-<p>登录网页邮箱，设置开启POP3/SMTP服务、IMAP/SMTP服务</p>
-</blockquote>
-<p><strong>参考资料</strong></p>
-<p><a href="http://www.cnblogs.com/xiazh/archive/2011/04/15/2016966.html" target="_blank" rel="noopener">ubuntu下使用mutt和msmtp发送邮件的简单配置</a></p>
-<p><a href="https://linux.cn/article-5502-1.html" target="_blank" rel="noopener">4个可以发送电子邮件的命令行工具</a></p>
-]]></content>
-      
-        
-        <tags>
-            
-            <tag> Linux </tag>
-            
-            <tag> ubuntu </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[ubuntu下系统打包]]></title>
-      <url>http://xiaqunfeng.cc/2017/01/11/ubuntu%E4%B8%8B%E7%B3%BB%E7%BB%9F%E6%89%93%E5%8C%85/</url>
-      <content type="html"><![CDATA[<p>介绍在ubuntu下利用remastersys工具给系统打包成 iso 镜像的方法，在其他系统（centos、windows等）下方法类似，不在赘述。<br><a id="more"></a></p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>​    在初始环境下，经过多次反复安装和配置才组建完成的自己需要的环境，其中各种版本问题和依赖较多，安装过程繁杂，为了避免痛苦的安装过程轮回发生，需要给系统打个包，后续使用直接安装即可。</p>
-<p>使用工具：Remastersys</p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="1、依赖项的安装"><a href="#1、依赖项的安装" class="headerlink" title="1、依赖项的安装"></a>1、依赖项的安装</h3><p>依赖：<a href="ftp://ftp.gwdg.de/pub/linux/easyvdr/mirror/remastersys/ubuntu/remastersys/remastersys_3.0.4-2_all.deb" target="_blank" rel="noopener">remastersys_3.0.4-2_all.deb</a>，点击即可下载，也可以自己去去<a href="http://www.filewatcher.com/" target="_blank" rel="noopener">filewatcher</a>搜索下载。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install plymouth-x11 </span><br><span class="line">sudo dpkg -i remastersys_3.0.4-2_all.deb</span><br></pre></td></tr></table></figure>
-<h3 id="2、Remastersys安装"><a href="#2、Remastersys安装" class="headerlink" title="2、Remastersys安装"></a>2、Remastersys安装</h3><p>2.1、添加安装源</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;deb http://www.remastersys.com/ubuntu oneiric main&quot; &gt;&gt; /etc/apt/sources.list</span><br></pre></td></tr></table></figure>
-<p>2.2、更新安装</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo install remastersys</span><br><span class="line">sudo remastersys</span><br></pre></td></tr></table></figure>
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="语法格式"><a href="#语法格式" class="headerlink" title="语法格式"></a>语法格式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo remastersys  backup|clean|dist  [cdfs|iso]  [filename.iso]</span><br></pre></td></tr></table></figure>
-<p>两种打包方式：backup和dist</p>
-<p>backup 是对整个系统完全打包，包含个人文件</p>
-<p>dist 方式用做发行，不包含个人文件</p>
-<blockquote>
-<p>更多使用方法可以参考<a href="http://forum.ubuntu.org.cn/viewtopic.php?t=174719" target="_blank" rel="noopener">ubuntu论坛</a></p>
-</blockquote>
-<h3 id="系统打包"><a href="#系统打包" class="headerlink" title="系统打包"></a>系统打包</h3><p>3.1、产生一个只有档案系统的可发布的 livecd/dvd </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo remastersys dist cdfs</span><br></pre></td></tr></table></figure>
-<p>3.2、产生一个可发布其名叫 filename.iso的ISO文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo remastersys dist iso filename.iso</span><br></pre></td></tr></table></figure>
-<p>3.3、将产生的iso文件移动到安全的位置(如果不移动会被清除掉)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv /home/remastersys/remastersys/filename.iso /root/</span><br></pre></td></tr></table></figure>
-<p>3.4、清除由 remastersys产生的临时文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo remastersys clean</span><br></pre></td></tr></table></figure>
-]]></content>
-      
-        
-        <tags>
-            
-            <tag> Linux </tag>
-            
-            <tag> ubuntu </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[Linux命令——history及其优化]]></title>
-      <url>http://xiaqunfeng.cc/2017/01/11/Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94history%E5%8F%8A%E5%85%B6%E4%BC%98%E5%8C%96/</url>
+      <url>http://xiaqunfeng.cc/2017/01/11/linux-cmd-history/</url>
       <content type="html"><![CDATA[<p>没啥好说的，就是查看历史输入的命令。这里引入两个优化点，一是历史记录带时间，二是可以统计汇总不同终端下的命令。<br><a id="more"></a></p>
 <h2 id="命令格式"><a href="#命令格式" class="headerlink" title="命令格式"></a>命令格式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">history [n]</span><br><span class="line">history [-c]</span><br><span class="line">history [-raw] histfiles</span><br></pre></td></tr></table></figure>
 <p>参数解释：</p>
@@ -8655,40 +8618,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> Linux </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Linux下利用screen进行屏幕协作]]></title>
-      <url>http://xiaqunfeng.cc/2017/01/11/Linux%E4%B8%8B%E5%88%A9%E7%94%A8screen%E8%BF%9B%E8%A1%8C%E5%B1%8F%E5%B9%95%E5%8D%8F%E4%BD%9C/</url>
-      <content type="html"><![CDATA[<p>Linux本身是支持多终端并行处理的，但是某些时候我们可能需要两个人同时处理同一个终端，比如远程协助定位问题等。screen正好能满足这个需求。<br><a id="more"></a></p>
-<h2 id="screen的安装"><a href="#screen的安装" class="headerlink" title="screen的安装"></a>screen的安装</h2><p>debian和ubuntu下安装方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install screen</span><br></pre></td></tr></table></figure>
-<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><p>假设现在有a和b需要进行屏幕协作。</p>
-<blockquote>
-<p>他们需要登录同一台服务器/机器</p>
-<p>必须使用相同的账户，不同账户之前不能屏幕协作</p>
-</blockquote>
-<p>第一步：a 在终端上运行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">screen -S zp</span><br></pre></td></tr></table></figure>
-<p><strong>注意</strong>：<code>S</code> 是大写</p>
-<p>第二步：b 在终端上运行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">screen -x zp</span><br></pre></td></tr></table></figure>
-<p>这时两边的操作是实时而且同步的。</p>
-<h2 id="退出协作"><a href="#退出协作" class="headerlink" title="退出协作"></a>退出协作</h2><p>在任意一个终端上输入命令：<code>exit</code> ，输出如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[screen is terminating]</span><br></pre></td></tr></table></figure>
-<p>表示退出成功。</p>
-]]></content>
-      
-        
-        <tags>
-            
-            <tag> Linux </tag>
-            
-            <tag> shell </tag>
+            <tag> linux </tag>
             
         </tags>
         
@@ -8696,7 +8626,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[Linux命令——crontab]]></title>
-      <url>http://xiaqunfeng.cc/2017/01/11/Linux%E5%91%BD%E4%BB%A4%E2%80%94%E2%80%94crontab/</url>
+      <url>http://xiaqunfeng.cc/2017/01/11/linux-cmd-crontab/</url>
       <content type="html"><![CDATA[<p>crond是linux下用来周期性的执行某种任务或等待处理某些事件的一个守护进程。通过crontab 命令，我们可以在固定的间隔时间执行指定的系统指令或 shell script脚本。时间间隔的单位可以是分钟、小时、日、月、周及以上的任意组合。<br><a id="more"></a></p>
 <h2 id="命令格式"><a href="#命令格式" class="headerlink" title="命令格式"></a>命令格式</h2><p>crontab使用格式说明</p>
 <p><img src="http://ojet8bprn.bkt.clouddn.com/crontab%E6%A0%BC%E5%BC%8F%E8%AF%B4%E6%98%8E.png" alt="crontab格式说明"></p>
@@ -8797,7 +8727,135 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> Linux </tag>
+            <tag> linux </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Linux下利用screen进行屏幕协作]]></title>
+      <url>http://xiaqunfeng.cc/2017/01/11/linux-screen/</url>
+      <content type="html"><![CDATA[<p>Linux本身是支持多终端并行处理的，但是某些时候我们可能需要两个人同时处理同一个终端，比如远程协助定位问题等。screen正好能满足这个需求。<br><a id="more"></a></p>
+<h2 id="screen的安装"><a href="#screen的安装" class="headerlink" title="screen的安装"></a>screen的安装</h2><p>debian和ubuntu下安装方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install screen</span><br></pre></td></tr></table></figure>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><p>假设现在有a和b需要进行屏幕协作。</p>
+<blockquote>
+<p>他们需要登录同一台服务器/机器</p>
+<p>必须使用相同的账户，不同账户之前不能屏幕协作</p>
+</blockquote>
+<p>第一步：a 在终端上运行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">screen -S zp</span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong>：<code>S</code> 是大写</p>
+<p>第二步：b 在终端上运行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">screen -x zp</span><br></pre></td></tr></table></figure>
+<p>这时两边的操作是实时而且同步的。</p>
+<h2 id="退出协作"><a href="#退出协作" class="headerlink" title="退出协作"></a>退出协作</h2><p>在任意一个终端上输入命令：<code>exit</code> ，输出如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[screen is terminating]</span><br></pre></td></tr></table></figure>
+<p>表示退出成功。</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> linux </tag>
+            
+            <tag> shell </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[ubuntu下配置邮件发送]]></title>
+      <url>http://xiaqunfeng.cc/2017/01/11/ubuntu-email-send/</url>
+      <content type="html"><![CDATA[<p>Linux下发送email有很多种方式，包括sendmail、mailx、mutt、uuencode等等。这里介绍ubuntu下使用mutt和msmtp发送邮件的配置方法。<br><a id="more"></a></p>
+<h2 id="软件包的安装"><a href="#软件包的安装" class="headerlink" title="软件包的安装"></a>软件包的安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install mutt</span><br><span class="line">sudo apt-get install msmtp</span><br></pre></td></tr></table></figure>
+<h2 id="文件的配置"><a href="#文件的配置" class="headerlink" title="文件的配置"></a>文件的配置</h2><h3 id="配置-mutt"><a href="#配置-mutt" class="headerlink" title="配置 mutt"></a>配置 mutt</h3><p>,系统全局设置配置文件在 /etc/Muttrc,如果使用某个系统用户，可以在~/.muttc中设置，没有该文件，就自己创建。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vi .muttrc</span><br><span class="line"></span><br><span class="line">set sendmail=&quot;/usr/bin/msmtp&quot;</span><br><span class="line">set use_from=yes</span><br><span class="line">set realname=&quot;xia&quot;</span><br><span class="line">set from=abcdefg@126.com</span><br><span class="line">set envelope_from=yes</span><br></pre></td></tr></table></figure>
+<h3 id="配置msmtp"><a href="#配置msmtp" class="headerlink" title="配置msmtp"></a>配置msmtp</h3><p>创建 ~/.msmtprc 和 ~/.msmtp.log，分别为配置文件和日志文件。</p>
+<p><strong>1、创建配置文件</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi .msmtprc</span><br></pre></td></tr></table></figure>
+<p>添加以下内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">account default</span><br><span class="line">host smtp.126.com</span><br><span class="line">from youremailname@126.com</span><br><span class="line">auth plain</span><br><span class="line">user youremailname@126.com</span><br><span class="line">password xxxxxxx</span><br><span class="line">logfile ~/.msmtp.log</span><br></pre></td></tr></table></figure>
+<p>由于password是明文，所以需要修改此文件的访问权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 600 .msmtprc</span><br></pre></td></tr></table></figure>
+<p><strong>特别注意</strong>：</p>
+<blockquote>
+<p>这里的密码填的是你的授权密码，不是登录密码!</p>
+</blockquote>
+<p><strong>2、创建日志文件 </strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch ~/.msmtp.log</span><br></pre></td></tr></table></figure>
+<h2 id="邮件发送测试"><a href="#邮件发送测试" class="headerlink" title="邮件发送测试"></a>邮件发送测试</h2><p>查看SMTP服务器是否支持认证的TLS加密</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># msmtp --host=smtp.126.com --serverinfo</span><br><span class="line">SMTP server at smtp.126.com (m15-111.126.com [220.181.15.111]), port 25:</span><br><span class="line">    126.com Anti-spam GT for Coremail System (126com[20140526])</span><br><span class="line">Capabilities:</span><br><span class="line">    PIPELINING:</span><br><span class="line">        Support for command grouping for faster transmission</span><br><span class="line">    STARTTLS:</span><br><span class="line">        Support for TLS encryption via the STARTTLS command</span><br><span class="line">    AUTH:</span><br><span class="line">        Supported authentication methods:</span><br><span class="line">        PLAIN LOGIN </span><br><span class="line">This server might advertise more or other capabilities when TLS is active.</span><br></pre></td></tr></table></figure>
+<p>发送一个简单的邮件测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;hello world&quot; | mutt -s &quot;title&quot; 12456789@qq.com</span><br></pre></td></tr></table></figure>
+<p>登录QQ邮箱，可以正常收到邮件，成功！</p>
+<h2 id="四种发送方式"><a href="#四种发送方式" class="headerlink" title="四种发送方式"></a>四种发送方式</h2><p>1、<strong>带有主题，从文件中读取邮件的正文，并发送</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mutt -s &quot;hello mutt&quot; user@example.com &lt; message.txt</span><br></pre></td></tr></table></figure>
+<p>2、<strong>通过管道获取 <code>echo</code>命令输出作为邮件内容发送</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ echo &quot;hello mutt&quot; | mutt -s &quot;Testing mutt&quot; user@example.com</span><br></pre></td></tr></table></figure>
+<p>3、<strong>发送带附件的邮件</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ echo &quot;hello mutt&quot; | mutt -s &quot;Testing mutt&quot; user@example.com -a test.tar.gz</span><br></pre></td></tr></table></figure>
+<p>多个附件的话在每个附件前加上 <code>-a</code> 即可。</p>
+<p>4、<strong>发送给多个收件人</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;hello mutt&quot; | mutt -s &quot;Testing muttt&quot; 111111@qq.com,222222@163.com -c 3333333@qq.com -b 44444444@126.com</span><br></pre></td></tr></table></figure>
+<p>多个收件人之间用逗号隔开</p>
+<p><strong>抄送</strong>，前面加参数 <code>-c</code> </p>
+<p><strong>密送</strong>，前面加参数 <code>-b</code></p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>1、出现如下错误</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">msmtp: authentication failed (method PLAIN)</span><br><span class="line">msmtp: server message: 530 Error: A secure connection is requiered(such as ssl). More information at http://service.mail.qq.com/cgi-bin/help?id=28</span><br><span class="line">msmtp: could not send mail (account default from /root/.msmtprc)</span><br><span class="line">Error sending message, child exited 77 (Insufficient permission.).</span><br><span class="line">Could not send the message.</span><br></pre></td></tr></table></figure>
+<p>原因，没有权限进行操作</p>
+<p>解决方法：</p>
+<blockquote>
+<p>登录网页邮箱，设置开启POP3/SMTP服务、IMAP/SMTP服务</p>
+</blockquote>
+<p><strong>参考资料</strong></p>
+<p><a href="http://www.cnblogs.com/xiazh/archive/2011/04/15/2016966.html" target="_blank" rel="noopener">ubuntu下使用mutt和msmtp发送邮件的简单配置</a></p>
+<p><a href="https://linux.cn/article-5502-1.html" target="_blank" rel="noopener">4个可以发送电子邮件的命令行工具</a></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> linux </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[ubuntu下系统打包]]></title>
+      <url>http://xiaqunfeng.cc/2017/01/11/ubuntu-package-system/</url>
+      <content type="html"><![CDATA[<p>介绍在ubuntu下利用remastersys工具给系统打包成 iso 镜像的方法，在其他系统（centos、windows等）下方法类似，不在赘述。<br><a id="more"></a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>​    在初始环境下，经过多次反复安装和配置才组建完成的自己需要的环境，其中各种版本问题和依赖较多，安装过程繁杂，为了避免痛苦的安装过程轮回发生，需要给系统打个包，后续使用直接安装即可。</p>
+<p>使用工具：Remastersys</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="1、依赖项的安装"><a href="#1、依赖项的安装" class="headerlink" title="1、依赖项的安装"></a>1、依赖项的安装</h3><p>依赖：<a href="ftp://ftp.gwdg.de/pub/linux/easyvdr/mirror/remastersys/ubuntu/remastersys/remastersys_3.0.4-2_all.deb" target="_blank" rel="noopener">remastersys_3.0.4-2_all.deb</a>，点击即可下载，也可以自己去去<a href="http://www.filewatcher.com/" target="_blank" rel="noopener">filewatcher</a>搜索下载。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install plymouth-x11 </span><br><span class="line">sudo dpkg -i remastersys_3.0.4-2_all.deb</span><br></pre></td></tr></table></figure>
+<h3 id="2、Remastersys安装"><a href="#2、Remastersys安装" class="headerlink" title="2、Remastersys安装"></a>2、Remastersys安装</h3><p>2.1、添加安装源</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;deb http://www.remastersys.com/ubuntu oneiric main&quot; &gt;&gt; /etc/apt/sources.list</span><br></pre></td></tr></table></figure>
+<p>2.2、更新安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo install remastersys</span><br><span class="line">sudo remastersys</span><br></pre></td></tr></table></figure>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="语法格式"><a href="#语法格式" class="headerlink" title="语法格式"></a>语法格式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo remastersys  backup|clean|dist  [cdfs|iso]  [filename.iso]</span><br></pre></td></tr></table></figure>
+<p>两种打包方式：backup和dist</p>
+<p>backup 是对整个系统完全打包，包含个人文件</p>
+<p>dist 方式用做发行，不包含个人文件</p>
+<blockquote>
+<p>更多使用方法可以参考<a href="http://forum.ubuntu.org.cn/viewtopic.php?t=174719" target="_blank" rel="noopener">ubuntu论坛</a></p>
+</blockquote>
+<h3 id="系统打包"><a href="#系统打包" class="headerlink" title="系统打包"></a>系统打包</h3><p>3.1、产生一个只有档案系统的可发布的 livecd/dvd </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo remastersys dist cdfs</span><br></pre></td></tr></table></figure>
+<p>3.2、产生一个可发布其名叫 filename.iso的ISO文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo remastersys dist iso filename.iso</span><br></pre></td></tr></table></figure>
+<p>3.3、将产生的iso文件移动到安全的位置(如果不移动会被清除掉)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv /home/remastersys/remastersys/filename.iso /root/</span><br></pre></td></tr></table></figure>
+<p>3.4、清除由 remastersys产生的临时文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo remastersys clean</span><br></pre></td></tr></table></figure>]]></content>
+      
+        
+        <tags>
+            
+            <tag> linux </tag>
             
         </tags>
         
@@ -8805,7 +8863,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     <entry>
       <title><![CDATA[Mac上hexo博客的搭建]]></title>
-      <url>http://xiaqunfeng.cc/2017/01/06/hexo%E7%9A%84%E6%90%AD%E5%BB%BA/</url>
+      <url>http://xiaqunfeng.cc/2017/01/06/hexo-deploy/</url>
       <content type="html"><![CDATA[<p>​    第一篇hexo博客，介绍了在mac上搭建hexo博客的全过程。包括：准备工作、本地站点的建立、启动和部署站点、创建新文章、发布到github、更换主题 和 绑定域名。<br><a id="more"></a></p>
 <h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><ol>
 <li><strong>github</strong></li>
@@ -8904,12 +8962,6 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <p>最终显示结果，请见本人<a href="http://xiaqunfeng.cc">主页</a>最下面。</p>
 ]]></content>
       
-        <categories>
-            
-            <category> Mac </category>
-            
-        </categories>
-        
         
         <tags>
             
