@@ -4,8 +4,72 @@
 
     
   <url>
+    <loc>http://xiaqunfeng.cc/2019/04/10/my-2018/</loc>
+    <lastmod>2019-10-06T06:11:20.572Z</lastmod>
+    <data>
+        <display>
+        <title>我的2018</title>
+        <pubTime>2019-04-10T06:03:07.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2019/10/01/hexo-update/</loc>
+    <lastmod>2019-10-06T06:07:40.968Z</lastmod>
+    <data>
+        <display>
+        <title>hexo博客更新</title>
+        <pubTime>2019-10-01T05:11:44.000Z</pubTime>
+        
+        <tag>hexo</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2019/01/15/python-skill-of-if-else/</loc>
+    <lastmod>2019-10-06T06:06:47.509Z</lastmod>
+    <data>
+        <display>
+        <title>Python编写条件分支代码的技巧</title>
+        <pubTime>2019-01-15T07:41:04.000Z</pubTime>
+        
+        <tag>python</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2019/10/01/navigation/</loc>
+    <lastmod>2019-10-06T06:01:22.190Z</lastmod>
+    <data>
+        <display>
+        <title>文章导航</title>
+        <pubTime>2019-10-01T04:59:24.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://xiaqunfeng.cc/2017/08/07/git%E5%B8%B8%E7%94%A8%E5%91%BD%E5%90%8D%E6%80%BB%E7%BB%93/</loc>
-    <lastmod>2019-04-15T09:35:03.325Z</lastmod>
+    <lastmod>2019-04-15T09:35:03.326Z</lastmod>
     <data>
         <display>
         <title>git常用命令和功能</title>
@@ -40,7 +104,7 @@
     
   <url>
     <loc>http://xiaqunfeng.cc/2018/10/30/nvidia-driver-install/</loc>
-    <lastmod>2019-03-27T03:22:36.300Z</lastmod>
+    <lastmod>2019-03-27T03:22:36.301Z</lastmod>
     <data>
         <display>
         <title>安装nvidia显卡驱动</title>
@@ -57,7 +121,7 @@
     
   <url>
     <loc>http://xiaqunfeng.cc/2018/05/29/tensorrt/</loc>
-    <lastmod>2019-03-25T07:25:55.043Z</lastmod>
+    <lastmod>2019-03-25T07:25:55.044Z</lastmod>
     <data>
         <display>
         <title>TensorRT</title>
@@ -73,7 +137,7 @@
     
   <url>
     <loc>http://xiaqunfeng.cc/2018/10/18/Hive/</loc>
-    <lastmod>2019-01-21T03:54:14.319Z</lastmod>
+    <lastmod>2019-01-21T03:54:14.320Z</lastmod>
     <data>
         <display>
         <title>Hive架构及应用介绍</title>
@@ -89,25 +153,8 @@
 
     
   <url>
-    <loc>http://xiaqunfeng.cc/2019/01/15/python-skill-of-if-else/</loc>
-    <lastmod>2019-01-21T03:52:14.290Z</lastmod>
-    <data>
-        <display>
-        <title>Python编写条件分支代码的技巧</title>
-        <pubTime>2019-01-15T07:41:04.000Z</pubTime>
-        
-        <tag>python</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://xiaqunfeng.cc/2017/01/06/hexo%E7%9A%84%E6%90%AD%E5%BB%BA/</loc>
-    <lastmod>2019-01-04T04:02:44.802Z</lastmod>
+    <lastmod>2019-01-04T04:02:44.803Z</lastmod>
     <data>
         <display>
         <title>Mac上hexo博客的搭建</title>
@@ -167,7 +214,7 @@
     
   <url>
     <loc>http://xiaqunfeng.cc/2018/12/22/caffe-code-of-SyncedMemory/</loc>
-    <lastmod>2018-12-22T02:52:30.520Z</lastmod>
+    <lastmod>2018-12-22T02:52:30.521Z</lastmod>
     <data>
         <display>
         <title>【源码分析】caffe code of SyncedMemory</title>

@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>ceph iscsi网关 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="介绍三种iscsi target的选型：TGT、LIO、SCST。">
+<meta name="keywords" content="iscsi">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ceph iscsi网关">
 <meta property="og:url" content="http://xiaqunfeng.cc/2018/02/28/ceph-iscsi网关/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="介绍三种iscsi target的选型：TGT、LIO、SCST。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/ceph_iscsi_gateway.png">
 <meta property="og:updated_time" content="2018-03-27T01:05:42.000Z">
 <meta name="twitter:card" content="summary">
@@ -51,7 +53,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -79,9 +81,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -161,7 +160,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-ceph-iscsi网关" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-ceph-iscsi网关" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -254,12 +254,15 @@ var _hmt = _hmt || [];
 </table>
 <p>如果需求只是构建一个iSCSI target，并且规模不是很大，tgt是一个不错的选择。<br>如果要构建一个企业级的存储方案，即高性能、高稳定性的，并且围绕这个有长远计划的，SCST是正确的选择。<br>如果对性能、稳定性要求不是那么高，但又想支持FC、SRP等协议，可以选择LIO。</p>
 <p><strong>参考资料</strong></p>
-<p><a href="http://infinicloud.cn/blog/1/" target="_blank" rel="external">基于ceph RBD的iscsi target实现分析</a></p>
-<p><a href="http://www.cnblogs.com/bodhitree/p/6016331.html" target="_blank" rel="external">iscsi与ceph</a></p>
-<p><a href="http://chuansong.me/n/2297546" target="_blank" rel="external">ceph iscsi gateway demo 安装配置</a></p>
+<p><a href="http://infinicloud.cn/blog/1/" target="_blank" rel="noopener">基于ceph RBD的iscsi target实现分析</a></p>
+<p><a href="http://www.cnblogs.com/bodhitree/p/6016331.html" target="_blank" rel="noopener">iscsi与ceph</a></p>
+<p><a href="http://chuansong.me/n/2297546" target="_blank" rel="noopener">ceph iscsi gateway demo 安装配置</a></p>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -368,11 +371,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2018/02/28/ceph-iscsi网关/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2018/02/28/ceph-iscsi网关/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -477,6 +481,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -578,10 +584,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -594,15 +596,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -622,19 +624,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -646,6 +644,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -654,19 +656,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -678,6 +672,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -686,15 +684,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -706,15 +708,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>awk study notes | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="The awk study notes from working.">
+<meta name="keywords" content="shell">
 <meta property="og:type" content="article">
 <meta property="og:title" content="awk study notes">
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/09/19/awk-study-notes/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="The awk study notes from working.">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2018-03-27T01:03:24.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="awk study notes">
@@ -49,7 +51,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -77,9 +79,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -159,7 +158,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-awk-study-notes" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-awk-study-notes" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -182,32 +182,35 @@ var _hmt = _hmt || [];
         <p>The awk study notes from working.<br><a id="more"></a></p>
 <p>先从计算每个osd中分别有多少个pg的脚本入手，解析awk用法。见实例一。</p>
 <h2 id="实例一"><a href="#实例一" class="headerlink" title="实例一"></a>实例一</h2><h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><p>用于以下测试的待处理的文件 <code>test.txt</code> :</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">PG_STAT OBJECTS MISSING_ON_PRIMARY DEGRADED MISPLACED UNFOUND BYTES LOG  DISK_LOG STATE        STATE_STAMP                VERSION   REPORTED   UP      UP_PRIMARY ACTING  ACTING_PRIMARY LAST_SCRUB SCRUB_STAMP                LAST_DEEP_SCRUB DEEP_SCRUB_STAMP</div><div class="line">14.2          23                  0        0         0       0     0 3011     3011 active+clean 2017-09-18 17:03:38.392203 57&apos;639918  57:989384 [4,3,0]          4 [4,3,0]              4  56&apos;635514 2017-09-18 17:03:38.392149       56&apos;616858 2017-09-14 19:36:02.937121</div><div class="line">#1.7           2                  0        0         0       0    92    6        6 active+clean 2017-09-18 19:30:20.206806      29&apos;6  57:232942 [3,4,1]          3 [3,4,1]              3       29&apos;6 2017-09-18 19:30:20.206744            29&apos;6 2017-09-14 20:35:14.294297</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PG_STAT OBJECTS MISSING_ON_PRIMARY DEGRADED MISPLACED UNFOUND BYTES LOG  DISK_LOG STATE        STATE_STAMP                VERSION   REPORTED   UP      UP_PRIMARY ACTING  ACTING_PRIMARY LAST_SCRUB SCRUB_STAMP                LAST_DEEP_SCRUB DEEP_SCRUB_STAMP</span><br><span class="line">14.2          23                  0        0         0       0     0 3011     3011 active+clean 2017-09-18 17:03:38.392203 57&apos;639918  57:989384 [4,3,0]          4 [4,3,0]              4  56&apos;635514 2017-09-18 17:03:38.392149       56&apos;616858 2017-09-14 19:36:02.937121</span><br><span class="line">#1.7           2                  0        0         0       0    92    6        6 active+clean 2017-09-18 19:30:20.206806      29&apos;6  57:232942 [3,4,1]          3 [3,4,1]              3       29&apos;6 2017-09-18 19:30:20.206744            29&apos;6 2017-09-14 20:35:14.294297</span><br></pre></td></tr></table></figure>
 <p>想要学习的awk代码段：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">awk &apos;</div><div class="line"> /^PG_STAT/ &#123; col=1; while($col!=&quot;UP&quot;) &#123;col++&#125;; col++ &#125;</div><div class="line"> /^[0-9a-f]+\.[0-9a-f]+/ &#123; match($0,/^[0-9a-f]+/); pool=substr($0, RSTART, RLENGTH); poollist[pool]=0;</div><div class="line"> up=$col; i=0; RSTART=0; RLENGTH=0; delete osds; while(match(up,/[0-9]+/)&gt;0) &#123; osds[++i]=substr(up,RSTART,RLENGTH); up = substr(up, RSTART+RLENGTH) &#125;</div><div class="line"> for(i in osds) &#123;array[osds[i],pool]++; osdlist[osds[i]];&#125;</div><div class="line">&#125;&apos;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">awk &apos;</span><br><span class="line"> /^PG_STAT/ &#123; col=1; while($col!=&quot;UP&quot;) &#123;col++&#125;; col++ &#125;</span><br><span class="line"> /^[0-9a-f]+\.[0-9a-f]+/ &#123; match($0,/^[0-9a-f]+/); pool=substr($0, RSTART, RLENGTH); poollist[pool]=0;</span><br><span class="line"> up=$col; i=0; RSTART=0; RLENGTH=0; delete osds; while(match(up,/[0-9]+/)&gt;0) &#123; osds[++i]=substr(up,RSTART,RLENGTH); up = substr(up, RSTART+RLENGTH) &#125;</span><br><span class="line"> for(i in osds) &#123;array[osds[i],pool]++; osdlist[osds[i]];&#125;</span><br><span class="line">&#125;&apos;</span><br></pre></td></tr></table></figure>
 <h3 id="剖析"><a href="#剖析" class="headerlink" title="剖析"></a>剖析</h3><p>1、运行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># awk &apos;/^PG_STAT/ &#123; col=1; while($col!=&quot;UP&quot;) &#123;col++&#125;; col++ &#125; END &#123; printf(&quot;col=%d\n&quot;, col) &#125;&apos; test.txt</div><div class="line">col=15</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># awk &apos;/^PG_STAT/ &#123; col=1; while($col!=&quot;UP&quot;) &#123;col++&#125;; col++ &#125; END &#123; printf(&quot;col=%d\n&quot;, col) &#125;&apos; test.txt</span><br><span class="line">col=15</span><br></pre></td></tr></table></figure>
 <p>从 <code>PG_STAT</code> 开始，直到遇到 <code>UP</code> 时结束，计算得到 <code>UP</code> 后的列号。</p>
 <p>2、运行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># awk &apos;/^[0-9a-f]+\.[0-9a-f]+/ &#123; match($0,/^[0-9a-f]+/); pool=substr($0, RSTART, RLENGTH); poollist[pool]=0 &#125; END &#123; printf(&quot;pool=%s, RSTART=%s, RLENGTH=%s\n&quot;, pool, RSTART, RLENGTH) &#125;&apos; test.txt</div><div class="line">pool=14, RSTART=1, RLENGTH=2</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># awk &apos;/^[0-9a-f]+\.[0-9a-f]+/ &#123; match($0,/^[0-9a-f]+/); pool=substr($0, RSTART, RLENGTH); poollist[pool]=0 &#125; END &#123; printf(&quot;pool=%s, RSTART=%s, RLENGTH=%s\n&quot;, pool, RSTART, RLENGTH) &#125;&apos; test.txt</span><br><span class="line">pool=14, RSTART=1, RLENGTH=2</span><br></pre></td></tr></table></figure>
 <p>解释一下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/^[0-9a-f]+\.[0-9a-f]+/  ——  这个表示匹配开头格式是 X.X 的字符串，X表示一个或多个[0-9a-f]的数字字符</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/^[0-9a-f]+\.[0-9a-f]+/  ——  这个表示匹配开头格式是 X.X 的字符串，X表示一个或多个[0-9a-f]的数字字符</span><br></pre></td></tr></table></figure>
 <p>关于match</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">match($0,/^[0-9a-f]+/)  ——  从第一列中匹配开头为 [0-9a-f] 的一个或多个数字字符</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">match($0,/^[0-9a-f]+/)  ——  从第一列中匹配开头为 [0-9a-f] 的一个或多个数字字符</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>RSTART，RLENGTH在match成功之后会自动被设置成第一个匹配部分的起始位置和长度，没匹配上就是0，-1</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pool=substr($0, RSTART, RLENGTH)  ——  得到pool的值</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pool=substr($0, RSTART, RLENGTH)  ——  得到pool的值</span><br></pre></td></tr></table></figure>
 <p>3、运行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># awk &apos;/^PG_STAT/ &#123; col=1; while($col!=&quot;UP&quot;) &#123;col++&#125;; col++ &#125;</div><div class="line"> /^[0-9a-f]+\.[0-9a-f]+/ &#123; match($0,/^[0-9a-f]+/); pool=substr($0, RSTART, RLENGTH); poollist[pool]=0;</div><div class="line"> up=$col; i=0; RSTART=0; RLENGTH=0; delete osds; while(match(up,/[0-9]+/)&gt;0) &#123; printf(&quot;up=%s, RSTART=%s, RLENGTH=%s\n&quot;, up, RSTART,RLENGTH); t=substr(up,RSTART,RLENGTH); up = substr(up, RSTART+RLENGTH); printf(&quot;osd=%s\n&quot;,t) &#125; &#125;&apos; test.txt</div><div class="line">up=[4,3,0], RSTART=2, RLENGTH=1</div><div class="line">osd=4</div><div class="line">up=,3,0], RSTART=2, RLENGTH=1</div><div class="line">osd=3</div><div class="line">up=,0], RSTART=2, RLENGTH=1</div><div class="line">osd=0</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># awk &apos;/^PG_STAT/ &#123; col=1; while($col!=&quot;UP&quot;) &#123;col++&#125;; col++ &#125;</span><br><span class="line"> /^[0-9a-f]+\.[0-9a-f]+/ &#123; match($0,/^[0-9a-f]+/); pool=substr($0, RSTART, RLENGTH); poollist[pool]=0;</span><br><span class="line"> up=$col; i=0; RSTART=0; RLENGTH=0; delete osds; while(match(up,/[0-9]+/)&gt;0) &#123; printf(&quot;up=%s, RSTART=%s, RLENGTH=%s\n&quot;, up, RSTART,RLENGTH); t=substr(up,RSTART,RLENGTH); up = substr(up, RSTART+RLENGTH); printf(&quot;osd=%s\n&quot;,t) &#125; &#125;&apos; test.txt</span><br><span class="line">up=[4,3,0], RSTART=2, RLENGTH=1</span><br><span class="line">osd=4</span><br><span class="line">up=,3,0], RSTART=2, RLENGTH=1</span><br><span class="line">osd=3</span><br><span class="line">up=,0], RSTART=2, RLENGTH=1</span><br><span class="line">osd=0</span><br></pre></td></tr></table></figure>
 <p>得到 <code>ACTING</code> 列的OSD列表，用于统计每个pool在每个osd上的pg数。</p>
-<h2 id="AWK模块"><a href="#AWK模块" class="headerlink" title="AWK模块"></a>AWK模块</h2><h3 id="substr"><a href="#substr" class="headerlink" title="substr"></a>substr</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">substr( String, M, [ N ] )</div></pre></td></tr></table></figure>
+<h2 id="AWK模块"><a href="#AWK模块" class="headerlink" title="AWK模块"></a>AWK模块</h2><h3 id="substr"><a href="#substr" class="headerlink" title="substr"></a>substr</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">substr( String, M, [ N ] )</span><br></pre></td></tr></table></figure>
 <p>返回具有 N 参数指定的字符数量子串。子串从 String 参数指定的字符串取得，其字符以 M 参数指定的位置开始。M 参数指定为将 String 参数中的第一个字符作为编号 1。如果未指定 N 参数，则子串的长度将是 M 参数指定的位置到 String 参数的末尾 的长度。</p>
-<h3 id="match"><a href="#match" class="headerlink" title="match"></a>match</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">match( String, Ere )</div></pre></td></tr></table></figure>
+<h3 id="match"><a href="#match" class="headerlink" title="match"></a>match</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">match( String, Ere )</span><br></pre></td></tr></table></figure>
 <p>在 String 参数指定的字符串（Ere 参数指定的扩展正则表达式出现在其中）中返回位置（字符形式），从 1 开始编号，或如果 Ere 参数不出现，则返回 0（零）。RSTART 特殊变量设置为返回值。RLENGTH 特殊变量设置为匹配的字符串的长度，或如果未找到任何匹配，则设置为 -1（负一）。</p>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -305,11 +308,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/09/19/awk-study-notes/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2017/09/19/awk-study-notes/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -414,6 +418,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -515,10 +521,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -531,15 +533,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -559,19 +561,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -583,6 +581,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -591,19 +593,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -615,6 +609,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -623,15 +621,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -643,15 +645,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

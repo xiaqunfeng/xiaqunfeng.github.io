@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>AP(affinity propagation)聚类算法 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="一种半监督聚类算法，近邻传播聚类算法">
+<meta name="keywords" content="cluster">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AP(affinity propagation)聚类算法">
 <meta property="og:url" content="http://xiaqunfeng.cc/2018/04/08/affinity-propagation/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="一种半监督聚类算法，近邻传播聚类算法">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://kylen314.com/wp-content/uploads/2013/11/APgengxingongshi.jpg">
 <meta property="og:updated_time" content="2018-04-08T12:33:46.000Z">
 <meta name="twitter:card" content="summary">
@@ -51,7 +53,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -79,9 +81,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -161,7 +160,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-affinity-propagation" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-affinity-propagation" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -183,7 +183,7 @@ var _hmt = _hmt || [];
       
         <p>一种半监督聚类算法，近邻传播聚类算法<br><a id="more"></a></p>
 <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Affinity Propagation聚类算法简称AP， 是基于数据点间的”信息传递”的一种聚类算法。算法的基本思想是将全部样本看作网络的节点，然后通过网络中各条边的消息传递计算出各样本的聚类中心。聚类过程中，共有两种消息在各节点间传递，分别是吸引度( responsibility)和归属度(availability) 。AP算法通过迭代过程不断更新每一个点的吸引度和归属度值，直到产生m个高质量的Exemplar（类似于质心），同时将其余的数据点分配到相应的聚类中。</p>
-<p>AP论文：<a href="http://www.psi.toronto.edu/affinitypropagation/FreyDueckScience07.pdf" target="_blank" rel="external">Clustering by Passing Messages Between Data Points</a></p>
+<p>AP论文：<a href="http://www.psi.toronto.edu/affinitypropagation/FreyDueckScience07.pdf" target="_blank" rel="noopener">Clustering by Passing Messages Between Data Points</a></p>
 <h3 id="名词介绍"><a href="#名词介绍" class="headerlink" title="名词介绍"></a>名词介绍</h3><ul>
 <li>Exemplar：指的是聚类中心，K-Means中的质心。</li>
 <li>Similarity：数据点i和点j的相似度记为s(i, j)，是指点j作为点i的聚类中心的相似度。一般使用欧氏距离来计算，一般点与点的相似度值全部取为负值；因此，相似度值越大说明点与点的距离越近，便于后面的比较计算。</li>
@@ -198,7 +198,7 @@ var _hmt = _hmt || [];
 <li>Damping factor - 控制算法收敛效果</li>
 </ul>
 <p>阻尼系数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">r(i,k)new = λ*r(i,k)old + (1-λ)*r(i,k)</div><div class="line">a(i,k)new = λ*a(i,k)old + (1-λ)*a(i,k)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">r(i,k)new = λ*r(i,k)old + (1-λ)*r(i,k)</span><br><span class="line">a(i,k)new = λ*a(i,k)old + (1-λ)*a(i,k)</span><br></pre></td></tr></table></figure>
 <h3 id="聚类过程"><a href="#聚类过程" class="headerlink" title="聚类过程"></a>聚类过程</h3><p>有一些详细的原理上的东西就不说了，直接说计算过程吧。聚类就是个不断迭代的过程，迭代的过程主要更新两个矩阵：</p>
 <ul>
 <li>代表(Responsibility)矩阵<em>R =</em>[r(i,k)]N×N</li>
@@ -242,12 +242,15 @@ var _hmt = _hmt || [];
 </li>
 </ul>
 <p>参考资料：</p>
-<p>1、<a href="https://www.dataivy.cn/blog/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95affinity-propagation_ap/" target="_blank" rel="external">https://www.dataivy.cn/blog/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95affinity-propagation_ap/</a></p>
-<p>2、<a href="https://www.zhihu.com/question/25384514" target="_blank" rel="external">https://www.zhihu.com/question/25384514</a></p>
-<p>3、<a href="http://www.cnblogs.com/huadongw/p/4202492.html（相关公式）" target="_blank" rel="external">http://www.cnblogs.com/huadongw/p/4202492.html（相关公式）</a></p>
+<p>1、<a href="https://www.dataivy.cn/blog/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95affinity-propagation_ap/" target="_blank" rel="noopener">https://www.dataivy.cn/blog/%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95affinity-propagation_ap/</a></p>
+<p>2、<a href="https://www.zhihu.com/question/25384514" target="_blank" rel="noopener">https://www.zhihu.com/question/25384514</a></p>
+<p>3、<a href="http://www.cnblogs.com/huadongw/p/4202492.html（相关公式）" target="_blank" rel="noopener">http://www.cnblogs.com/huadongw/p/4202492.html（相关公式）</a></p>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -356,11 +359,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2018/04/08/affinity-propagation/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2018/04/08/affinity-propagation/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -465,6 +469,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -566,10 +572,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -582,15 +584,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -610,19 +612,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -634,6 +632,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -642,19 +644,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -666,6 +660,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -674,15 +672,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -694,15 +696,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

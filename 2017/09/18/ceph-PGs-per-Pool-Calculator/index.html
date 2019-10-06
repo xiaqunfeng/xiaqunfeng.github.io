@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>ceph PGs per Pool Calculator | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="根据集群相关信息计算每个pool的pg数量。">
+<meta name="keywords" content="pg">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ceph PGs per Pool Calculator">
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/09/18/ceph-PGs-per-Pool-Calculator/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="根据集群相关信息计算每个pool的pg数量。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2018-03-27T01:05:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ceph PGs per Pool Calculator">
@@ -49,7 +51,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -77,9 +79,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -159,7 +158,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-ceph-PGs-per-Pool-Calculator" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-ceph-PGs-per-Pool-Calculator" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -181,7 +181,7 @@ var _hmt = _hmt || [];
       
         <p>根据集群相关信息计算每个pool的pg数量。<br><a id="more"></a></p>
 <p>在前一篇文章<a href="http://xiaqunfeng.cc/2017/09/15/too-many-PGs-per-OSD/">too-many-PGs-per-OSD</a>中，简单讲了pg数目的设定，这里再深入介绍一下计算方法。</p>
-<h2 id="计算PG-Count的公式"><a href="#计算PG-Count的公式" class="headerlink" title="计算PG Count的公式"></a>计算PG Count的公式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">PoolPGCount=(TargetPGsPerOSD ∗ OSDNumber ∗ DataPercent) / PoolReplicateSize</div></pre></td></tr></table></figure>
+<h2 id="计算PG-Count的公式"><a href="#计算PG-Count的公式" class="headerlink" title="计算PG Count的公式"></a>计算PG Count的公式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PoolPGCount=(TargetPGsPerOSD ∗ OSDNumber ∗ DataPercent) / PoolReplicateSize</span><br></pre></td></tr></table></figure>
 <p><strong>参数</strong></p>
 <table>
 <thead>
@@ -227,10 +227,13 @@ var _hmt = _hmt || [];
 <p>3、如果结果超过较小2次幂数值的25%则选择较大的2次幂作为最终结果，反之则选择较小的那个2次幂数值。</p>
 <h2 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h2><p>1、计算公式的目的是为了确保整个集群拥有足够多的PG从而实现数据均匀分布在各个OSD上，同时能够有效避免在Recovery 和Backfill 的时候因为PG/OSD比值过高所造成的问题。 </p>
 <p>2、如果集群中存在空pool或者其他non-active的pool，这些pool并不影响现有集群的数据分布，但是这些pool仍然会消耗集群的内存和CPU资源。</p>
-<p>官网参考信息：<a href="http://ceph.com/pgcalc/" target="_blank" rel="external">http://ceph.com/pgcalc/</a></p>
+<p>官网参考信息：<a href="http://ceph.com/pgcalc/" target="_blank" rel="noopener">http://ceph.com/pgcalc/</a></p>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -339,11 +342,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/09/18/ceph-PGs-per-Pool-Calculator/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2017/09/18/ceph-PGs-per-Pool-Calculator/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -448,6 +452,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -549,10 +555,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -565,15 +567,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -593,19 +595,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -617,6 +615,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -625,19 +627,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -649,6 +643,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -657,15 +655,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -677,15 +679,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

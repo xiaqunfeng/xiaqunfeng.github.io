@@ -2,9 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://xiaqunfeng.cc/2019/04/10/my-2018/</loc>
+    
+    <lastmod>2019-10-06T06:11:20.572Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2019/10/01/hexo-update/</loc>
+    
+    <lastmod>2019-10-06T06:07:40.968Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2019/01/15/python-skill-of-if-else/</loc>
+    
+    <lastmod>2019-10-06T06:06:47.509Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2019/10/01/navigation/</loc>
+    
+    <lastmod>2019-10-06T06:01:22.190Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://xiaqunfeng.cc/2017/08/07/git%E5%B8%B8%E7%94%A8%E5%91%BD%E5%90%8D%E6%80%BB%E7%BB%93/</loc>
     
-    <lastmod>2019-04-15T09:35:03.325Z</lastmod>
+    <lastmod>2019-04-15T09:35:03.326Z</lastmod>
     
   </url>
   
@@ -18,42 +46,35 @@
   <url>
     <loc>http://xiaqunfeng.cc/2018/10/30/nvidia-driver-install/</loc>
     
-    <lastmod>2019-03-27T03:22:36.300Z</lastmod>
+    <lastmod>2019-03-27T03:22:36.301Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://xiaqunfeng.cc/2018/05/29/tensorrt/</loc>
     
-    <lastmod>2019-03-25T07:25:55.043Z</lastmod>
+    <lastmod>2019-03-25T07:25:55.044Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://xiaqunfeng.cc/about/index.html</loc>
     
-    <lastmod>2019-02-17T14:42:18.748Z</lastmod>
+    <lastmod>2019-02-17T14:42:18.749Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://xiaqunfeng.cc/2018/10/18/Hive/</loc>
     
-    <lastmod>2019-01-21T03:54:14.319Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2019/01/15/python-skill-of-if-else/</loc>
-    
-    <lastmod>2019-01-21T03:52:14.290Z</lastmod>
+    <lastmod>2019-01-21T03:54:14.320Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://xiaqunfeng.cc/2017/01/06/hexo%E7%9A%84%E6%90%AD%E5%BB%BA/</loc>
     
-    <lastmod>2019-01-04T04:02:44.802Z</lastmod>
+    <lastmod>2019-01-04T04:02:44.803Z</lastmod>
     
   </url>
   
@@ -74,7 +95,7 @@
   <url>
     <loc>http://xiaqunfeng.cc/2018/12/22/caffe-code-of-SyncedMemory/</loc>
     
-    <lastmod>2018-12-22T02:52:30.520Z</lastmod>
+    <lastmod>2018-12-22T02:52:30.521Z</lastmod>
     
   </url>
   

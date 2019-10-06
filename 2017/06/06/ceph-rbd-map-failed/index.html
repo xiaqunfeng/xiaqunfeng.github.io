@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>ceph rbd map failed | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="探索 kernel RBD map 失败的问题。">
+<meta name="keywords" content="rbd">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ceph rbd map failed">
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/06/06/ceph-rbd-map-failed/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="探索 kernel RBD map 失败的问题。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2018-03-27T01:07:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ceph rbd map failed">
@@ -49,7 +51,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -77,9 +79,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -159,7 +158,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-ceph-rbd-map-failed" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-ceph-rbd-map-failed" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -184,22 +184,22 @@ var _hmt = _hmt || [];
 <blockquote>
 <p>rbd mirror的image 需要两个属性：exclusive-lock, journaling</p>
 </blockquote>
-<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><h3 id="查看rbd-image-info"><a href="#查看rbd-image-info" class="headerlink" title="查看rbd image info"></a>查看rbd image info</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># rbd info rbd/image-1</div><div class="line">rbd image &apos;image-1&apos;:</div><div class="line">	size 1024 MB in 256 objects</div><div class="line">	order 22 (4096 kB objects)</div><div class="line">	block_name_prefix: rbd_data.108b238e1f29</div><div class="line">	format: 2</div><div class="line">	features: exclusive-lock, journaling</div><div class="line">	flags:</div><div class="line">	journal: 108b238e1f29</div><div class="line">	mirroring state: enabled</div><div class="line">	mirroring global id: c603d9dc-6f8d-49e0-ab68-5944d348e527</div><div class="line">	mirroring primary: true</div></pre></td></tr></table></figure>
-<h3 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># rbd map rbd/image-1</div><div class="line">rbd: sysfs write failed</div><div class="line">RBD image feature set mismatch. You can disable features unsupported by the kernel with &quot;rbd feature disable&quot;.</div><div class="line">In some cases useful info is found in syslog - try &quot;dmesg | tail&quot; or so.</div><div class="line">rbd: map failed: (6) No such device or address</div></pre></td></tr></table></figure>
+<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><h3 id="查看rbd-image-info"><a href="#查看rbd-image-info" class="headerlink" title="查看rbd image info"></a>查看rbd image info</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># rbd info rbd/image-1</span><br><span class="line">rbd image &apos;image-1&apos;:</span><br><span class="line">	size 1024 MB in 256 objects</span><br><span class="line">	order 22 (4096 kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.108b238e1f29</span><br><span class="line">	format: 2</span><br><span class="line">	features: exclusive-lock, journaling</span><br><span class="line">	flags:</span><br><span class="line">	journal: 108b238e1f29</span><br><span class="line">	mirroring state: enabled</span><br><span class="line">	mirroring global id: c603d9dc-6f8d-49e0-ab68-5944d348e527</span><br><span class="line">	mirroring primary: true</span><br></pre></td></tr></table></figure>
+<h3 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># rbd map rbd/image-1</span><br><span class="line">rbd: sysfs write failed</span><br><span class="line">RBD image feature set mismatch. You can disable features unsupported by the kernel with &quot;rbd feature disable&quot;.</span><br><span class="line">In some cases useful info is found in syslog - try &quot;dmesg | tail&quot; or so.</span><br><span class="line">rbd: map failed: (6) No such device or address</span><br></pre></td></tr></table></figure>
 <p>然后dmesg看一下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># dmesg | tail</div><div class="line">[   64.808315] rbd: loaded (major 251)</div><div class="line">[   64.818369] libceph: mon2 172.20.2.160:6789 session established</div><div class="line">[   64.819187] libceph: client14167 fsid 4c7ec5af-cbd3-40fd-8c96-0615c77660d4</div><div class="line">[   64.836328] rbd: image image-1: image uses unsupported features: 0x40</div><div class="line">[  443.658569] libceph: mon1 172.20.2.161:6789 session established</div><div class="line">[  443.659143] libceph: client4313 fsid 4c7ec5af-cbd3-40fd-8c96-0615c77660d4</div><div class="line">[  443.683178] rbd: rbd0: capacity 10737418240 features 0x1</div><div class="line">[  978.502132] rbd: image image-1: image uses unsupported features: 0x40</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># dmesg | tail</span><br><span class="line">[   64.808315] rbd: loaded (major 251)</span><br><span class="line">[   64.818369] libceph: mon2 172.20.2.160:6789 session established</span><br><span class="line">[   64.819187] libceph: client14167 fsid 4c7ec5af-cbd3-40fd-8c96-0615c77660d4</span><br><span class="line">[   64.836328] rbd: image image-1: image uses unsupported features: 0x40</span><br><span class="line">[  443.658569] libceph: mon1 172.20.2.161:6789 session established</span><br><span class="line">[  443.659143] libceph: client4313 fsid 4c7ec5af-cbd3-40fd-8c96-0615c77660d4</span><br><span class="line">[  443.683178] rbd: rbd0: capacity 10737418240 features 0x1</span><br><span class="line">[  978.502132] rbd: image image-1: image uses unsupported features: 0x40</span><br></pre></td></tr></table></figure>
 <h3 id="错误原因"><a href="#错误原因" class="headerlink" title="错误原因"></a>错误原因</h3><p><strong>image uses unsupported features: 0x40</strong></p>
 <p>不支持特性 0x40 = 64，也就是不支持特性 <strong>journaling</strong></p>
 <h2 id="关于内核支持的特性分析"><a href="#关于内核支持的特性分析" class="headerlink" title="关于内核支持的特性分析"></a>关于内核支持的特性分析</h2><p>查看内核版本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># uname -r</div><div class="line">3.10.0-327.el7.x86_64</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># uname -r</span><br><span class="line">3.10.0-327.el7.x86_64</span><br></pre></td></tr></table></figure>
 <p>根据查阅资料和实践，发现：</p>
 <ul>
 <li>CentOS的3.10内核仅支持其中的layering 和 exclusive-lock，其他feature概不支持</li>
 <li>内核4.6仍然只支持：layering、exclusive-lock和 striping 属性</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># rbd info rbd/test-map</div><div class="line">rbd image &apos;test-map&apos;:</div><div class="line">	size 512 MB in 128 objects</div><div class="line">	order 22 (4096 kB objects)</div><div class="line">	block_name_prefix: rbd_data.10ca238e1f29</div><div class="line">	format: 2</div><div class="line">	features: layering, exclusive-lock</div><div class="line">	flags:</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># rbd info rbd/test-map</span><br><span class="line">rbd image &apos;test-map&apos;:</span><br><span class="line">	size 512 MB in 128 objects</span><br><span class="line">	order 22 (4096 kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.10ca238e1f29</span><br><span class="line">	format: 2</span><br><span class="line">	features: layering, exclusive-lock</span><br><span class="line">	flags:</span><br></pre></td></tr></table></figure>
 <p>map</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># rbd map rbd/test-map</div><div class="line">/dev/rbd1</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># rbd map rbd/test-map</span><br><span class="line">/dev/rbd1</span><br></pre></td></tr></table></figure>
 <p>此时可以map成功。</p>
 <h2 id="RBD特性解析"><a href="#RBD特性解析" class="headerlink" title="RBD特性解析"></a>RBD特性解析</h2><h3 id="特性一览表"><a href="#特性一览表" class="headerlink" title="特性一览表"></a>特性一览表</h3><p>RBD支持的特性，及具体BIT值的计算如下</p>
 <table>
@@ -248,21 +248,24 @@ var _hmt = _hmt || [];
 </tr>
 </tbody>
 </table>
-<h3 id="ceph-kraken版本默认属性值"><a href="#ceph-kraken版本默认属性值" class="headerlink" title="ceph kraken版本默认属性值"></a>ceph kraken版本默认属性值</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph --show-config|grep rbd|grep features</div><div class="line">rbd_default_features = 61</div></pre></td></tr></table></figure>
+<h3 id="ceph-kraken版本默认属性值"><a href="#ceph-kraken版本默认属性值" class="headerlink" title="ceph kraken版本默认属性值"></a>ceph kraken版本默认属性值</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ceph --show-config|grep rbd|grep features</span><br><span class="line">rbd_default_features = 61</span><br></pre></td></tr></table></figure>
 <p>为啥是61？我们创建一个默认配置的rbd看看</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># rbd create test-feature --size 64</div><div class="line"># rbd info rbd/test-feature</div><div class="line">rbd image &apos;test-feature&apos;:</div><div class="line">	size 65536 kB in 16 objects</div><div class="line">	order 22 (4096 kB objects)</div><div class="line">	block_name_prefix: rbd_data.107d238e1f29</div><div class="line">	format: 2</div><div class="line">	features: layering, exclusive-lock, object-map, fast-diff, deep-flatten</div><div class="line">	flags:</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># rbd create test-feature --size 64</span><br><span class="line"># rbd info rbd/test-feature</span><br><span class="line">rbd image &apos;test-feature&apos;:</span><br><span class="line">	size 65536 kB in 16 objects</span><br><span class="line">	order 22 (4096 kB objects)</span><br><span class="line">	block_name_prefix: rbd_data.107d238e1f29</span><br><span class="line">	format: 2</span><br><span class="line">	features: layering, exclusive-lock, object-map, fast-diff, deep-flatten</span><br><span class="line">	flags:</span><br></pre></td></tr></table></figure>
 <p><strong>1+4+8+16+32 = 61</strong></p>
 <p>就是说除了特性：striping 和 journaling 外都开启了。</p>
 <h3 id="控制属性"><a href="#控制属性" class="headerlink" title="控制属性"></a>控制属性</h3><p>有三种方法来开启需要的特性</p>
 <p>1、在创建image时，通过 <code>--image-feature</code> 来指定需要开启的特性</p>
 <p>2、对已存在的image可以通过如下命令开启和关闭</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">rbd feature enable &lt;pool-name&gt;/&lt;image-name&gt; &lt;feature-name&gt;</div><div class="line">rbd feature disable &lt;pool-name&gt;/&lt;image-name&gt; &lt;feature-name&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rbd feature enable &lt;pool-name&gt;/&lt;image-name&gt; &lt;feature-name&gt;</span><br><span class="line">rbd feature disable &lt;pool-name&gt;/&lt;image-name&gt; &lt;feature-name&gt;</span><br></pre></td></tr></table></figure>
 <p>3、当然，每次通过enable和disable来不是很便捷，可以通过修改配置文件来解决</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">vim /etc/ceph/ceph.conf</div><div class="line">...</div><div class="line">rbd_default_features = 1</div><div class="line">...</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/ceph/ceph.conf</span><br><span class="line">...</span><br><span class="line">rbd_default_features = 1</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <p>具体该设为多少可以通过上面BIT值查表计算得出。</p>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -371,11 +374,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/06/06/ceph-rbd-map-failed/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2017/06/06/ceph-rbd-map-failed/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -480,6 +484,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -581,10 +587,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -597,15 +599,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -625,19 +627,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -649,6 +647,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -657,19 +659,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -681,6 +675,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -689,15 +687,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -709,15 +711,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

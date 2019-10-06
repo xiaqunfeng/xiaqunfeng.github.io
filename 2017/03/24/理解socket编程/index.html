@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>理解socket编程 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="理解socket编程的思想，介绍各个函数及其作用，文末有一个server和client的代码，可直接运行。">
+<meta name="keywords" content="Linux,network">
 <meta property="og:type" content="article">
 <meta property="og:title" content="理解socket编程">
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/03/24/理解socket编程/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="理解socket编程的思想，介绍各个函数及其作用，文末有一个server和client的代码，可直接运行。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2017-03-24T02:34:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解socket编程">
@@ -49,7 +51,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -77,9 +79,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -159,7 +158,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-理解socket编程" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-理解socket编程" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -198,7 +198,7 @@ var _hmt = _hmt || [];
 </ul>
 <p>这样利用三元组<strong>（ip地址，协议，端口）</strong>就可以标识网络的进程了，网络中的进程通信就可以利用这个标志与其它进程进行交互。</p>
 <p>socket起源于Unix，而Unix/Linux基本哲学之一就是“一切皆文件”，都可以用“打开open –&gt; 读写write/read –&gt; 关闭close”模式来操作。Socket就是该模式的一个实现，socket即是一种特殊的文件，一些socket函数就是对其进行的操作（读/写IO、打开、关闭）。</p>
-<h2 id="socket基本操作"><a href="#socket基本操作" class="headerlink" title="socket基本操作"></a>socket基本操作</h2><h3 id="1、socket-函数"><a href="#1、socket-函数" class="headerlink" title="1、socket()函数"></a>1、socket()函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">int socket(int domain, int type, int protocol);</div></pre></td></tr></table></figure>
+<h2 id="socket基本操作"><a href="#socket基本操作" class="headerlink" title="socket基本操作"></a>socket基本操作</h2><h3 id="1、socket-函数"><a href="#1、socket-函数" class="headerlink" title="1、socket()函数"></a>1、socket()函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int socket(int domain, int type, int protocol);</span><br></pre></td></tr></table></figure>
 <p>socket函数对应于普通文件的<strong>打开</strong>操作。普通文件的打开操作返回一个文件描述字，而<strong>socket()</strong>用于创建一个<strong>socket描述符</strong>（socket descriptor），它唯一标识一个socket。这个socket描述字跟文件描述字一样，后续的操作都有用到它，把它作为参数，通过它来进行一些读写操作。</p>
 <p>socket函数的三个参数分别为：</p>
 <ul>
@@ -207,13 +207,13 @@ var _hmt = _hmt || [];
 <li>protocol：故名思意，就是指定协议。常用的协议有，<strong>IPPROTO_TCP</strong>、IPPTOTO_UDP、IPPROTO_SCTP、IPPROTO_TIPC等，它们分别对应TCP传输协议、UDP传输协议、STCP传输协议、TIPC传输协议</li>
 </ul>
 <p>当我们调用<strong>socket()</strong>创建一个socket时，返回的socket描述字它存在于协议族（address family，AF_XXX）空间中，但没有一个具体的地址。如果想要给它赋值一个地址，就必须调用bind()函数，否则就当调用connect()、listen()时系统会自动随机分配一个端口。</p>
-<h3 id="2、bind-函数"><a href="#2、bind-函数" class="headerlink" title="2、bind()函数"></a>2、bind()函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);</div></pre></td></tr></table></figure>
+<h3 id="2、bind-函数"><a href="#2、bind-函数" class="headerlink" title="2、bind()函数"></a>2、bind()函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);</span><br></pre></td></tr></table></figure>
 <p>三个参数分别为：</p>
 <ul>
 <li>sockfd：即socket描述字，它是通过socket()函数创建了，唯一标识一个socket。bind()函数就是将给这个描述字绑定一个名字。</li>
 <li>addr：一个const struct sockaddr *指针，指向要绑定给sockfd的协议地址。这个地址结构根据地址创建socket时的地址协议族的不同而不同，如ipv4对应的是：</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"># ipv4</div><div class="line">struct sockaddr_in &#123;</div><div class="line">    sa_family_t    sin_family; /* address family: AF_INET */</div><div class="line">    in_port_t      sin_port;   /* port in network byte order */</div><div class="line">    struct in_addr sin_addr;   /* internet address */</div><div class="line">&#125;;</div><div class="line"></div><div class="line">struct in_addr &#123;</div><div class="line">    uint32_t       s_addr;     /* address in network byte order */</div><div class="line">&#125;;</div><div class="line"># ipv6对应的是： </div><div class="line">struct sockaddr_in6 &#123; </div><div class="line">    sa_family_t     sin6_family;   /* AF_INET6 */ </div><div class="line">    in_port_t       sin6_port;     /* port number */ </div><div class="line">    uint32_t        sin6_flowinfo; /* IPv6 flow information */ </div><div class="line">    struct in6_addr sin6_addr;     /* IPv6 address */ </div><div class="line">    uint32_t        sin6_scope_id; /* Scope ID (new in 2.4) */ </div><div class="line">&#125;;</div><div class="line"></div><div class="line">struct in6_addr &#123; </div><div class="line">    unsigned char   s6_addr[16];   /* IPv6 address */ </div><div class="line">&#125;;</div><div class="line"></div><div class="line"># Unix域对应的是： </div><div class="line">#define UNIX_PATH_MAX    108</div><div class="line">struct sockaddr_un &#123; </div><div class="line">    sa_family_t sun_family;               /* AF_UNIX */ </div><div class="line">    char        sun_path[UNIX_PATH_MAX];  /* pathname */ </div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"># ipv4</span><br><span class="line">struct sockaddr_in &#123;</span><br><span class="line">    sa_family_t    sin_family; /* address family: AF_INET */</span><br><span class="line">    in_port_t      sin_port;   /* port in network byte order */</span><br><span class="line">    struct in_addr sin_addr;   /* internet address */</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct in_addr &#123;</span><br><span class="line">    uint32_t       s_addr;     /* address in network byte order */</span><br><span class="line">&#125;;</span><br><span class="line"># ipv6对应的是： </span><br><span class="line">struct sockaddr_in6 &#123; </span><br><span class="line">    sa_family_t     sin6_family;   /* AF_INET6 */ </span><br><span class="line">    in_port_t       sin6_port;     /* port number */ </span><br><span class="line">    uint32_t        sin6_flowinfo; /* IPv6 flow information */ </span><br><span class="line">    struct in6_addr sin6_addr;     /* IPv6 address */ </span><br><span class="line">    uint32_t        sin6_scope_id; /* Scope ID (new in 2.4) */ </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">struct in6_addr &#123; </span><br><span class="line">    unsigned char   s6_addr[16];   /* IPv6 address */ </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"># Unix域对应的是： </span><br><span class="line">#define UNIX_PATH_MAX    108</span><br><span class="line">struct sockaddr_un &#123; </span><br><span class="line">    sa_family_t sun_family;               /* AF_UNIX */ </span><br><span class="line">    char        sun_path[UNIX_PATH_MAX];  /* pathname */ </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>addrlen：对应的是地址的长度。</li>
 </ul>
@@ -221,14 +221,14 @@ var _hmt = _hmt || [];
 <p>通常服务器在启动的时候都会绑定一个众所周知的地址（如ip地址+端口号），用于提供服务，客户就可以通过它来接连服务器；而客户端就不用指定，有系统自动分配一个端口号和自身的ip地址组合。这就是为什么通常服务器端在listen之前会调用bind()，而客户端就不会调用，而是在connect()时由系统随机生成一个。</p>
 </blockquote>
 <h3 id="3、listen-函数"><a href="#3、listen-函数" class="headerlink" title="3、listen()函数"></a>3、listen()函数</h3><p>如果作为一个服务器，在调用socket()、bind()之后就会调用listen()来监听这个socket，如果客户端这时调用connect()发出连接请求，服务器端就会接收到这个请求。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">int listen(int sockfd, int backlog);</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int listen(int sockfd, int backlog);</span><br></pre></td></tr></table></figure>
 <p>两个参数</p>
 <ul>
 <li>sockfd：要监听的socket描述字</li>
 <li>backlog：相应socket可以排队的最大连接个数</li>
 </ul>
 <p>socket()函数创建的socket默认是一个主动类型的，listen函数将socket变为被动类型的，等待客户的连接请求。</p>
-<h3 id="4、connect-函数"><a href="#4、connect-函数" class="headerlink" title="4、connect()函数"></a>4、connect()函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);</div></pre></td></tr></table></figure>
+<h3 id="4、connect-函数"><a href="#4、connect-函数" class="headerlink" title="4、connect()函数"></a>4、connect()函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);</span><br></pre></td></tr></table></figure>
 <ul>
 <li>sockfd：要监听的socket描述字</li>
 <li>addr：服务器的socket地址</li>
@@ -238,7 +238,7 @@ var _hmt = _hmt || [];
 <h3 id="5、accept-函数"><a href="#5、accept-函数" class="headerlink" title="5、accept()函数"></a>5、accept()函数</h3><p>TCP服务器端依次调用socket()、bind()、listen()之后，就会监听指定的socket地址了。</p>
 <p>TCP客户端依次调用socket()、connect()之后就想TCP服务器发送了一个连接请求。</p>
 <p>TCP服务器监听到这个请求之后，就会调用accept()函数取接收请求，这样连接就建立好了。之后就可以开始网络I/O操作了，即类同于普通文件的读写I/O操作。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);</span><br></pre></td></tr></table></figure>
 <ul>
 <li>sockfd：服务器的socket描述字</li>
 <li>addr：指向struct sockaddr *的指针，用于返回客户端的协议地址</li>
@@ -250,24 +250,27 @@ var _hmt = _hmt || [];
 <h3 id="6、网络I-O"><a href="#6、网络I-O" class="headerlink" title="6、网络I/O"></a>6、网络I/O</h3><p>服务端：socket、bind、listen、accept</p>
 <p>客户端：socket、connect</p>
 <p>至此服务器与客户已经建立好连接，可以调用网络I/O进行读写操作，即实现了网咯中不同进程之间的通信！网络I/O操作有下面几组：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">read()/write()</div><div class="line">recv()/send()</div><div class="line">readv()/writev()</div><div class="line">recvmsg()/sendmsg()</div><div class="line">recvfrom()/sendto()</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">read()/write()</span><br><span class="line">recv()/send()</span><br><span class="line">readv()/writev()</span><br><span class="line">recvmsg()/sendmsg()</span><br><span class="line">recvfrom()/sendto()</span><br></pre></td></tr></table></figure>
 <p>recvmsg()/sendmsg()这两个函数是最通用的I/O函数。各函数需要对应的头文件如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">#include &lt;unistd.h&gt;</div><div class="line"></div><div class="line">ssize_t read(int fd, void *buf, size_t count);</div><div class="line">ssize_t write(int fd, const void *buf, size_t count);</div><div class="line"></div><div class="line">#include &lt;sys/types.h&gt;</div><div class="line">#include &lt;sys/socket.h&gt;</div><div class="line"></div><div class="line">ssize_t send(int sockfd, const void *buf, size_t len, int flags);</div><div class="line">ssize_t recv(int sockfd, void *buf, size_t len, int flags);</div><div class="line"></div><div class="line">ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,</div><div class="line">                      const struct sockaddr *dest_addr, socklen_t addrlen);</div><div class="line">ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,</div><div class="line">                        struct sockaddr *src_addr, socklen_t *addrlen);</div><div class="line"></div><div class="line">ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags);</div><div class="line">ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags);</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line"></span><br><span class="line">ssize_t read(int fd, void *buf, size_t count);</span><br><span class="line">ssize_t write(int fd, const void *buf, size_t count);</span><br><span class="line"></span><br><span class="line">#include &lt;sys/types.h&gt;</span><br><span class="line">#include &lt;sys/socket.h&gt;</span><br><span class="line"></span><br><span class="line">ssize_t send(int sockfd, const void *buf, size_t len, int flags);</span><br><span class="line">ssize_t recv(int sockfd, void *buf, size_t len, int flags);</span><br><span class="line"></span><br><span class="line">ssize_t sendto(int sockfd, const void *buf, size_t len, int flags,</span><br><span class="line">                      const struct sockaddr *dest_addr, socklen_t addrlen);</span><br><span class="line">ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,</span><br><span class="line">                        struct sockaddr *src_addr, socklen_t *addrlen);</span><br><span class="line"></span><br><span class="line">ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags);</span><br><span class="line">ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags);</span><br></pre></td></tr></table></figure>
 <h3 id="7、close-函数"><a href="#7、close-函数" class="headerlink" title="7、close()函数"></a>7、close()函数</h3><p>服务器与客户端建立连接之后，会进行一些读写操作，完成了读写操作就要关闭相应的socket描述字，好比操作完打开的文件要调用fclose关闭打开的文件。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">int close(int fd);</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int close(int fd);</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>close操作只是使相应socket描述字的引用计数-1，只有当引用计数为0的时候，才会触发TCP客户端向服务器发送终止连接请求。</p>
 </blockquote>
-<p>以上参考了这篇文章：<a href="http://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html" target="_blank" rel="external">Linux Socket编程（不限Linux）</a>，写的很不错。</p>
+<p>以上参考了这篇文章：<a href="http://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html" target="_blank" rel="noopener">Linux Socket编程（不限Linux）</a>，写的很不错。</p>
 <h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>服务端：socket() -&gt; bind() -&gt; listen() -&gt; accept() -&gt; I/O() -&gt; close()</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div></pre></td><td class="code"><pre><div class="line">// server.c</div><div class="line">#include &lt;netinet/in.h&gt;    	// sockaddr_in</div><div class="line">#include &lt;sys/types.h&gt;    	// socket</div><div class="line">#include &lt;sys/socket.h&gt;    	// socket</div><div class="line">#include &lt;stdio.h&gt;        	// printf</div><div class="line">#include &lt;stdlib.h&gt;        	// exit</div><div class="line">#include &lt;string.h&gt;        	// bzero</div><div class="line"></div><div class="line">#define SERVER_PORT    	6666 </div><div class="line">#define BUFFER_SIZE 	1024</div><div class="line"></div><div class="line">int main(int argc, char **argv)</div><div class="line">&#123;</div><div class="line">    // server的socket地址结构server_addr,三元组(地址,协议,端口)</div><div class="line">    struct sockaddr_in server_addr;</div><div class="line">    bzero(&amp;server_addr,sizeof(server_addr)); //把一段内存区的内容全部设置为0</div><div class="line">    server_addr.sin_family = AF_INET;</div><div class="line">    server_addr.sin_addr.s_addr = htonl(INADDR_ANY);</div><div class="line">    server_addr.sin_port = htons(SERVER_PORT);</div><div class="line"></div><div class="line">    // socket描述符</div><div class="line">    int server_socket = socket(AF_INET,SOCK_STREAM,0);</div><div class="line">    if( server_socket &lt; 0)</div><div class="line">    &#123;</div><div class="line">        printf(&quot;Create Socket Failed!&quot;);</div><div class="line">        exit(1);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // 给socket 描述符绑定一个地址，地址是我们上面定义好的</div><div class="line">    if( bind(server_socket,(struct sockaddr*)&amp;server_addr,sizeof(server_addr)))</div><div class="line">    &#123;</div><div class="line">        printf(&quot;Server Bind Port : %d Failed!&quot;, SERVER_PORT); </div><div class="line">        exit(1);</div><div class="line">    &#125;   </div><div class="line"> </div><div class="line">    // 监听这个socket, 第二个参数是排队的最大连接数</div><div class="line">    if ( listen(server_socket, 10) )</div><div class="line">    &#123;   </div><div class="line">        printf(&quot;Server Listen Failed!&quot;); </div><div class="line">        exit(1);</div><div class="line">    &#125;   </div><div class="line"></div><div class="line">    while (1) </div><div class="line">    &#123;   </div><div class="line">        // 定义客户端的socket地址结构client_addr</div><div class="line">        struct sockaddr_in client_addr;</div><div class="line">        socklen_t len = sizeof(client_addr);</div><div class="line"></div><div class="line">        // 如果没有连接请求,就等待到有连接请求--这是accept函数的特性</div><div class="line">        // accept函数返回一个新的socket,这个socket(new_server_socket)用于同连接到的客户的通信，代表了服务器和客户端之间的一个通信通道</div><div class="line">        // accept函数把连接到的客户端信息填写到客户端的socket地址结构client_addr中</div><div class="line">        int new_server_socket = accept(server_socket,(struct sockaddr*)&amp;client_addr,&amp;len);</div><div class="line">        if ( new_server_socket &lt; 0)</div><div class="line">        &#123;</div><div class="line">            printf(&quot;Server Accept Failed!\n&quot;);</div><div class="line">            continue;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        char buffer[BUFFER_SIZE];</div><div class="line">        bzero(buffer, BUFFER_SIZE);</div><div class="line">        // 接收从客户端来的请求</div><div class="line">        len = recv(new_server_socket,buffer,BUFFER_SIZE,0);</div><div class="line">        if (len &lt; 0)</div><div class="line">        &#123;</div><div class="line">            printf(&quot;Server Recieve Data Failed!\n&quot;);</div><div class="line">            break;</div><div class="line">        &#125;</div><div class="line">        buffer[len] = &apos;\0&apos;;</div><div class="line">        printf(&quot;recv msg from client: %s\n&quot;, buffer);</div><div class="line">        close(new_server_socket);</div><div class="line">    &#125;</div><div class="line">    close(server_socket);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">// server.c</span><br><span class="line">#include &lt;netinet/in.h&gt;    	// sockaddr_in</span><br><span class="line">#include &lt;sys/types.h&gt;    	// socket</span><br><span class="line">#include &lt;sys/socket.h&gt;    	// socket</span><br><span class="line">#include &lt;stdio.h&gt;        	// printf</span><br><span class="line">#include &lt;stdlib.h&gt;        	// exit</span><br><span class="line">#include &lt;string.h&gt;        	// bzero</span><br><span class="line"></span><br><span class="line">#define SERVER_PORT    	6666 </span><br><span class="line">#define BUFFER_SIZE 	1024</span><br><span class="line"></span><br><span class="line">int main(int argc, char **argv)</span><br><span class="line">&#123;</span><br><span class="line">    // server的socket地址结构server_addr,三元组(地址,协议,端口)</span><br><span class="line">    struct sockaddr_in server_addr;</span><br><span class="line">    bzero(&amp;server_addr,sizeof(server_addr)); //把一段内存区的内容全部设置为0</span><br><span class="line">    server_addr.sin_family = AF_INET;</span><br><span class="line">    server_addr.sin_addr.s_addr = htonl(INADDR_ANY);</span><br><span class="line">    server_addr.sin_port = htons(SERVER_PORT);</span><br><span class="line"></span><br><span class="line">    // socket描述符</span><br><span class="line">    int server_socket = socket(AF_INET,SOCK_STREAM,0);</span><br><span class="line">    if( server_socket &lt; 0)</span><br><span class="line">    &#123;</span><br><span class="line">        printf(&quot;Create Socket Failed!&quot;);</span><br><span class="line">        exit(1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 给socket 描述符绑定一个地址，地址是我们上面定义好的</span><br><span class="line">    if( bind(server_socket,(struct sockaddr*)&amp;server_addr,sizeof(server_addr)))</span><br><span class="line">    &#123;</span><br><span class="line">        printf(&quot;Server Bind Port : %d Failed!&quot;, SERVER_PORT); </span><br><span class="line">        exit(1);</span><br><span class="line">    &#125;   </span><br><span class="line"> </span><br><span class="line">    // 监听这个socket, 第二个参数是排队的最大连接数</span><br><span class="line">    if ( listen(server_socket, 10) )</span><br><span class="line">    &#123;   </span><br><span class="line">        printf(&quot;Server Listen Failed!&quot;); </span><br><span class="line">        exit(1);</span><br><span class="line">    &#125;   </span><br><span class="line"></span><br><span class="line">    while (1) </span><br><span class="line">    &#123;   </span><br><span class="line">        // 定义客户端的socket地址结构client_addr</span><br><span class="line">        struct sockaddr_in client_addr;</span><br><span class="line">        socklen_t len = sizeof(client_addr);</span><br><span class="line"></span><br><span class="line">        // 如果没有连接请求,就等待到有连接请求--这是accept函数的特性</span><br><span class="line">        // accept函数返回一个新的socket,这个socket(new_server_socket)用于同连接到的客户的通信，代表了服务器和客户端之间的一个通信通道</span><br><span class="line">        // accept函数把连接到的客户端信息填写到客户端的socket地址结构client_addr中</span><br><span class="line">        int new_server_socket = accept(server_socket,(struct sockaddr*)&amp;client_addr,&amp;len);</span><br><span class="line">        if ( new_server_socket &lt; 0)</span><br><span class="line">        &#123;</span><br><span class="line">            printf(&quot;Server Accept Failed!\n&quot;);</span><br><span class="line">            continue;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        char buffer[BUFFER_SIZE];</span><br><span class="line">        bzero(buffer, BUFFER_SIZE);</span><br><span class="line">        // 接收从客户端来的请求</span><br><span class="line">        len = recv(new_server_socket,buffer,BUFFER_SIZE,0);</span><br><span class="line">        if (len &lt; 0)</span><br><span class="line">        &#123;</span><br><span class="line">            printf(&quot;Server Recieve Data Failed!\n&quot;);</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">        buffer[len] = &apos;\0&apos;;</span><br><span class="line">        printf(&quot;recv msg from client: %s\n&quot;, buffer);</span><br><span class="line">        close(new_server_socket);</span><br><span class="line">    &#125;</span><br><span class="line">    close(server_socket);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>客户端：socket() -&gt; connect() -&gt; I/O() -&gt; close()</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line">// client.c</div><div class="line">#include &lt;netinet/in.h&gt;    	// sockaddr_in</div><div class="line">#include &lt;sys/types.h&gt;    	// socket</div><div class="line">#include &lt;sys/socket.h&gt;    	// socket</div><div class="line">#include &lt;stdio.h&gt;        	// printf</div><div class="line">#include &lt;stdlib.h&gt;        	// exit</div><div class="line">#include &lt;string.h&gt;        	// bzero</div><div class="line"> </div><div class="line">#define SERVER_PORT 6666 </div><div class="line">#define BUFFER_SIZE 1024</div><div class="line"> </div><div class="line">int main(int argc, char **argv)</div><div class="line">&#123;</div><div class="line">    if (argc != 2)</div><div class="line">    &#123;   </div><div class="line">        printf(&quot;Usage: ./%s ServerIPAddress\n&quot;,argv[0]);</div><div class="line">        exit(1);</div><div class="line">    &#125;   </div><div class="line"> </div><div class="line">    //创建socket描述符</div><div class="line">    int client_socket = socket(AF_INET,SOCK_STREAM,0);</div><div class="line">    if( client_socket &lt; 0)</div><div class="line">    &#123;   </div><div class="line">        printf(&quot;Create Socket Failed!\n&quot;);</div><div class="line">        exit(1);</div><div class="line">    &#125;   </div><div class="line"> </div><div class="line">    //设置server的地址，三元组</div><div class="line">    struct sockaddr_in server_addr;</div><div class="line">    bzero(&amp;server_addr,sizeof(server_addr));</div><div class="line">    server_addr.sin_family = AF_INET;</div><div class="line">    server_addr.sin_port = htons(SERVER_PORT);</div><div class="line">    if(inet_aton(argv[1],&amp;server_addr.sin_addr) == 0) //服务器的IP地址来自程序的参数</div><div class="line">    &#123;   </div><div class="line">        printf(&quot;Server IP Address Error!\n&quot;);</div><div class="line">        exit(1);</div><div class="line">    &#125;   </div><div class="line"></div><div class="line">    //向服务器发起连接,连接成功后client_socket代表了客户机和服务器的一个socket连接</div><div class="line">    if(connect(client_socket,(struct sockaddr*)&amp;server_addr, sizeof(server_addr)) &lt; 0)</div><div class="line">    &#123;   </div><div class="line">        printf(&quot;Can Not Connect To %s!\n&quot;,argv[1]);</div><div class="line">        exit(1);</div><div class="line">    &#125;   </div><div class="line">    printf(&quot;send msg to server!\n&quot;);</div><div class="line">    char sendline[BUFFER_SIZE];</div><div class="line">    fgets(sendline, BUFFER_SIZE, stdin);</div><div class="line"></div><div class="line">	// 向服务器发送数据</div><div class="line">    if (send(client_socket, sendline, strlen(sendline), 0) &lt; 0)&#123;</div><div class="line">        printf(&quot;send msg error!\n&quot;);</div><div class="line">        exit(1);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    close(client_socket);</div><div class="line">    return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">// client.c</span><br><span class="line">#include &lt;netinet/in.h&gt;    	// sockaddr_in</span><br><span class="line">#include &lt;sys/types.h&gt;    	// socket</span><br><span class="line">#include &lt;sys/socket.h&gt;    	// socket</span><br><span class="line">#include &lt;stdio.h&gt;        	// printf</span><br><span class="line">#include &lt;stdlib.h&gt;        	// exit</span><br><span class="line">#include &lt;string.h&gt;        	// bzero</span><br><span class="line"> </span><br><span class="line">#define SERVER_PORT 6666 </span><br><span class="line">#define BUFFER_SIZE 1024</span><br><span class="line"> </span><br><span class="line">int main(int argc, char **argv)</span><br><span class="line">&#123;</span><br><span class="line">    if (argc != 2)</span><br><span class="line">    &#123;   </span><br><span class="line">        printf(&quot;Usage: ./%s ServerIPAddress\n&quot;,argv[0]);</span><br><span class="line">        exit(1);</span><br><span class="line">    &#125;   </span><br><span class="line"> </span><br><span class="line">    //创建socket描述符</span><br><span class="line">    int client_socket = socket(AF_INET,SOCK_STREAM,0);</span><br><span class="line">    if( client_socket &lt; 0)</span><br><span class="line">    &#123;   </span><br><span class="line">        printf(&quot;Create Socket Failed!\n&quot;);</span><br><span class="line">        exit(1);</span><br><span class="line">    &#125;   </span><br><span class="line"> </span><br><span class="line">    //设置server的地址，三元组</span><br><span class="line">    struct sockaddr_in server_addr;</span><br><span class="line">    bzero(&amp;server_addr,sizeof(server_addr));</span><br><span class="line">    server_addr.sin_family = AF_INET;</span><br><span class="line">    server_addr.sin_port = htons(SERVER_PORT);</span><br><span class="line">    if(inet_aton(argv[1],&amp;server_addr.sin_addr) == 0) //服务器的IP地址来自程序的参数</span><br><span class="line">    &#123;   </span><br><span class="line">        printf(&quot;Server IP Address Error!\n&quot;);</span><br><span class="line">        exit(1);</span><br><span class="line">    &#125;   </span><br><span class="line"></span><br><span class="line">    //向服务器发起连接,连接成功后client_socket代表了客户机和服务器的一个socket连接</span><br><span class="line">    if(connect(client_socket,(struct sockaddr*)&amp;server_addr, sizeof(server_addr)) &lt; 0)</span><br><span class="line">    &#123;   </span><br><span class="line">        printf(&quot;Can Not Connect To %s!\n&quot;,argv[1]);</span><br><span class="line">        exit(1);</span><br><span class="line">    &#125;   </span><br><span class="line">    printf(&quot;send msg to server!\n&quot;);</span><br><span class="line">    char sendline[BUFFER_SIZE];</span><br><span class="line">    fgets(sendline, BUFFER_SIZE, stdin);</span><br><span class="line"></span><br><span class="line">	// 向服务器发送数据</span><br><span class="line">    if (send(client_socket, sendline, strlen(sendline), 0) &lt; 0)&#123;</span><br><span class="line">        printf(&quot;send msg error!\n&quot;);</span><br><span class="line">        exit(1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    close(client_socket);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>编译运行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">gcc server.c -o s</div><div class="line">gcc client.c -o c</div><div class="line"></div><div class="line"># ./s</div><div class="line">recv msg from client: hello socket</div><div class="line"></div><div class="line"># ./c 127.0.0.1</div><div class="line">send msg to server!</div><div class="line">hello socket     		// 交互输入</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">gcc server.c -o s</span><br><span class="line">gcc client.c -o c</span><br><span class="line"></span><br><span class="line"># ./s</span><br><span class="line">recv msg from client: hello socket</span><br><span class="line"></span><br><span class="line"># ./c 127.0.0.1</span><br><span class="line">send msg to server!</span><br><span class="line">hello socket     		// 交互输入</span><br></pre></td></tr></table></figure>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -369,11 +372,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/03/24/理解socket编程/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2017/03/24/理解socket编程/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -478,6 +482,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -579,10 +585,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -595,15 +597,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -623,19 +625,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -647,6 +645,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -655,19 +657,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -679,6 +673,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -687,15 +685,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -707,15 +709,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

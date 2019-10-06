@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>Map RBD Devices on NBD | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="jewel及以后的版本支持rbd-nbd的特性，在需要map支持较多特性的rbd image时，可以使用此方法。">
+<meta name="keywords" content="rbd">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Map RBD Devices on NBD">
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/06/07/Map-RBD-Devices-on-NBD/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="jewel及以后的版本支持rbd-nbd的特性，在需要map支持较多特性的rbd image时，可以使用此方法。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2018-03-27T01:00:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Map RBD Devices on NBD">
@@ -49,7 +51,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -77,9 +79,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -159,7 +158,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Map-RBD-Devices-on-NBD" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-Map-RBD-Devices-on-NBD" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -181,18 +181,18 @@ var _hmt = _hmt || [];
       
         <p>jewel及以后的版本支持rbd-nbd的特性，在需要map支持较多特性的rbd image时，可以使用此方法。<br><a id="more"></a></p>
 <h2 id="引出问题"><a href="#引出问题" class="headerlink" title="引出问题"></a>引出问题</h2><p>前一篇文章中说到在map特性比较丰富的rbd设备时，内核不支持，所以出现如如下错误</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># rbd nbd map rbd/image-1</div><div class="line">rbd: sysfs write failed</div><div class="line">RBD image feature set mismatch. You can disable features unsupported by the kernel with &quot;rbd feature disable&quot;.</div><div class="line">In some cases useful info is found in syslog - try &quot;dmesg | tail&quot; or so.</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># rbd nbd map rbd/image-1</span><br><span class="line">rbd: sysfs write failed</span><br><span class="line">RBD image feature set mismatch. You can disable features unsupported by the kernel with &quot;rbd feature disable&quot;.</span><br><span class="line">In some cases useful info is found in syslog - try &quot;dmesg | tail&quot; or so.</span><br></pre></td></tr></table></figure>
 <p>所以行不通，于是寻求其他解决方案。</p>
 <p>幸运的是，jewel及以后版本中，RBD支持将RBD image map为本地nbd设备，通过<code>rbd nbd map</code>命令即可映射为本地nbd设备。</p>
 <h3 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h3><p>安装 rbd-nbd</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install rbd-nbd -y</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install rbd-nbd -y</span><br></pre></td></tr></table></figure>
 <p>map</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># rbd nbd map rbd/image-1</div><div class="line">/dev/nbd0</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># rbd nbd map rbd/image-1</span><br><span class="line">/dev/nbd0</span><br></pre></td></tr></table></figure>
 <p>成功！</p>
 <p>这时就可以格式化并挂载来使用该设备了</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># mkfs.xfs -f /dev/nbd0</div><div class="line"># mkdir /mnt/nbd0</div><div class="line"># mount -noatime /dev/nbd0 /mnt/nbd0</div><div class="line"># lsblk</div><div class="line">...</div><div class="line">nbd0    43:0    0    1G  0 disk /mnt/nbd0</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># mkfs.xfs -f /dev/nbd0</span><br><span class="line"># mkdir /mnt/nbd0</span><br><span class="line"># mount -noatime /dev/nbd0 /mnt/nbd0</span><br><span class="line"># lsblk</span><br><span class="line">...</span><br><span class="line">nbd0    43:0    0    1G  0 disk /mnt/nbd0</span><br></pre></td></tr></table></figure>
 <p>查看已映射的nbd设备</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># rbd-nbd list-mapped</div><div class="line">/dev/nbd0</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># rbd-nbd list-mapped</span><br><span class="line">/dev/nbd0</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>查看已挂载的rbd设备的命令是：rbd showmapped</p>
 </blockquote>
@@ -206,13 +206,13 @@ var _hmt = _hmt || [];
 <li>NBD已经很好地集成到内核多年，是大多数现今的内核的一部分</li>
 </ul>
 <p>RBD-NBD依靠librbd的用户空间实现，该实现通过使用强大和完善的NBD（网络块设备）内核模块已经非常稳定。</p>
-<p>参考：<a href="http://www.sebastien-han.fr/blog/2016/04/04/ceph-jewel-preview-map-rbd-devices-on-nbd/" target="_blank" rel="external">Ceph Jewel Preview: map RBD devices on NBD</a></p>
+<p>参考：<a href="http://www.sebastien-han.fr/blog/2016/04/04/ceph-jewel-preview-map-rbd-devices-on-nbd/" target="_blank" rel="noopener">Ceph Jewel Preview: map RBD devices on NBD</a></p>
 <h3 id="和NFS的区别"><a href="#和NFS的区别" class="headerlink" title="和NFS的区别"></a>和NFS的区别</h3><ul>
 <li>NFS只是提供一个挂载点供客户端使用，客户端无法改变这个挂载点的分区格式</li>
 <li>NBD提供的是一个块设备，客户端可以把这个块设备格式化成各种类型的分区，更便于用户的使用</li>
 </ul>
 <h2 id="RBD-NBD"><a href="#RBD-NBD" class="headerlink" title="RBD-NBD"></a>RBD-NBD</h2><p><strong>rbd-nbd</strong> 是个 RADOS 块设备（ rbd ）映像的客户端，与 rbd 内核模块类似。它可以把一个 rbd 映像映射为 nbd （ Network Block Device，网络块设备）设备，这样就可以当常规的本地块设备使用了。</p>
-<h3 id="相关命令"><a href="#相关命令" class="headerlink" title="相关命令"></a>相关命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">rbd-nbd [-c conf] [–nbds_max limit] [–read-only] [–device nbd device] map image-spec | snap-spec</div><div class="line">rbd-nbd unmap nbd device</div><div class="line">rbd-nbd list-mapped</div></pre></td></tr></table></figure>
+<h3 id="相关命令"><a href="#相关命令" class="headerlink" title="相关命令"></a>相关命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rbd-nbd [-c conf] [–nbds_max limit] [–read-only] [–device nbd device] map image-spec | snap-spec</span><br><span class="line">rbd-nbd unmap nbd device</span><br><span class="line">rbd-nbd list-mapped</span><br></pre></td></tr></table></figure>
 <h3 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h3><ul>
 <li><p>-c ceph.conf</p>
 <p>指定 ceph.conf 配置文件，而不是用默认的 /etc/ceph/ceph.conf 来确定启动时需要的 monitor 地址。</p>
@@ -223,7 +223,7 @@ var _hmt = _hmt || [];
 <p>载入 NBD 内核模块时覆盖其参数，用于限制 nbd 设备的数量。</p>
 </li>
 </ul>
-<h3 id="映像名和快照名规则"><a href="#映像名和快照名规则" class="headerlink" title="映像名和快照名规则"></a>映像名和快照名规则</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">image-spec is [pool-name]/image-name</div><div class="line">snap-spec is [pool-name]/image-name@snap-name</div></pre></td></tr></table></figure>
+<h3 id="映像名和快照名规则"><a href="#映像名和快照名规则" class="headerlink" title="映像名和快照名规则"></a>映像名和快照名规则</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">image-spec is [pool-name]/image-name</span><br><span class="line">snap-spec is [pool-name]/image-name@snap-name</span><br></pre></td></tr></table></figure>
 <h2 id="ceph-rbd"><a href="#ceph-rbd" class="headerlink" title="ceph rbd"></a>ceph rbd</h2><p>使用Ceph的块存储有两种路径：</p>
 <p>一种是利用QEMU走librbd路径，另一种是使用kernel module，走kernel的路径，两种途径的接口实现不完全相同。就目前来说，前者是目前更稳定的途径，也是Ceph所有应用场景中最广泛使用的。</p>
 <ul>
@@ -232,7 +232,10 @@ var _hmt = _hmt || [];
 </ul>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -341,11 +344,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/06/07/Map-RBD-Devices-on-NBD/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2017/06/07/Map-RBD-Devices-on-NBD/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -450,6 +454,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -551,10 +557,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -567,15 +569,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -595,19 +597,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -619,6 +617,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -627,19 +629,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -651,6 +645,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -659,15 +657,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -679,15 +681,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

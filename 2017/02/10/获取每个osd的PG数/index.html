@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>获取每个osd的PG数 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="一个shell脚本，用于获取ceph集群中每个osd的PG数，同时分别统计每个pool上的PG数信息。">
+<meta name="keywords" content="shell,osd">
 <meta property="og:type" content="article">
 <meta property="og:title" content="获取每个osd的PG数">
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/02/10/获取每个osd的PG数/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="一个shell脚本，用于获取ceph集群中每个osd的PG数，同时分别统计每个pool上的PG数信息。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
 <meta property="og:updated_time" content="2018-03-27T00:46:05.000Z">
 <meta name="twitter:card" content="summary">
@@ -51,7 +53,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -79,9 +81,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -161,7 +160,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-获取每个osd的PG数" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-获取每个osd的PG数" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -183,18 +183,21 @@ var _hmt = _hmt || [];
       
         <p>一个shell脚本，用于获取ceph集群中每个osd的PG数，同时分别统计每个pool上的PG数信息。<br><a id="more"></a></p>
 <h2 id="Ceph集群信息"><a href="#Ceph集群信息" class="headerlink" title="Ceph集群信息"></a>Ceph集群信息</h2><p><strong>pool信息</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd lspools</div><div class="line">0 rbd,1 testpool,</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ceph osd lspools</span><br><span class="line">0 rbd,1 testpool,</span><br></pre></td></tr></table></figure>
 <p><strong>osd信息</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># ceph osd tree</div><div class="line">ID WEIGHT  TYPE NAME       UP/DOWN REWEIGHT PRIMARY-AFFINITY </div><div class="line">-1 0.54538 root default                                      </div><div class="line">-2 0.18179     host jewel0                                   </div><div class="line"> 0 0.18179         osd.0        up  1.00000          1.00000 </div><div class="line">-3 0.18179     host jewel1                                   </div><div class="line"> 1 0.18179         osd.1        up  1.00000          1.00000 </div><div class="line">-4 0.18179     host jewel2                                   </div><div class="line"> 2 0.18179         osd.2        up  1.00000          1.00000</div></pre></td></tr></table></figure>
-<h2 id="脚本执行结果展示"><a href="#脚本执行结果展示" class="headerlink" title="脚本执行结果展示"></a>脚本执行结果展示</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># sh pg-per-osd.sh </div><div class="line">dumped all in format plain</div><div class="line"></div><div class="line">pool :	0	1	| SUM </div><div class="line">--------------------------------</div><div class="line">osd.0	64	128	| 192</div><div class="line">osd.1	64	128	| 192</div><div class="line">osd.2	64	128	| 192</div><div class="line">--------------------------------</div><div class="line">SUM :	192	384</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># ceph osd tree</span><br><span class="line">ID WEIGHT  TYPE NAME       UP/DOWN REWEIGHT PRIMARY-AFFINITY </span><br><span class="line">-1 0.54538 root default                                      </span><br><span class="line">-2 0.18179     host jewel0                                   </span><br><span class="line"> 0 0.18179         osd.0        up  1.00000          1.00000 </span><br><span class="line">-3 0.18179     host jewel1                                   </span><br><span class="line"> 1 0.18179         osd.1        up  1.00000          1.00000 </span><br><span class="line">-4 0.18179     host jewel2                                   </span><br><span class="line"> 2 0.18179         osd.2        up  1.00000          1.00000</span><br></pre></td></tr></table></figure>
+<h2 id="脚本执行结果展示"><a href="#脚本执行结果展示" class="headerlink" title="脚本执行结果展示"></a>脚本执行结果展示</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># sh pg-per-osd.sh </span><br><span class="line">dumped all in format plain</span><br><span class="line"></span><br><span class="line">pool :	0	1	| SUM </span><br><span class="line">--------------------------------</span><br><span class="line">osd.0	64	128	| 192</span><br><span class="line">osd.1	64	128	| 192</span><br><span class="line">osd.2	64	128	| 192</span><br><span class="line">--------------------------------</span><br><span class="line">SUM :	192	384</span><br></pre></td></tr></table></figure>
 <p>每行显示单个OSD在每个pool中的PG数详情</p>
 <p>每列显示单个pool中每个OSD的PG数详情</p>
-<h2 id="shell脚本"><a href="#shell脚本" class="headerlink" title="shell脚本"></a>shell脚本</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># cat pg-per-osd.sh</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line"></div><div class="line">ceph pg dump | awk &apos;</div><div class="line"> /^pg_stat/ &#123; col=1; while($col!=&quot;up&quot;) &#123;col++&#125;; col++ &#125;</div><div class="line"> /^[0-9a-f]+\.[0-9a-f]+/ &#123; match($0,/^[0-9a-f]+/); pool=substr($0, RSTART, RLENGTH); poollist[pool]=0;</div><div class="line"> up=$col; i=0; RSTART=0; RLENGTH=0; delete osds; while(match(up,/[0-9]+/)&gt;0) &#123; osds[++i]=substr(up,RSTART,RLENGTH); up = substr(up, RSTART+RLENGTH) &#125;</div><div class="line"> for(i in osds) &#123;array[osds[i],pool]++; osdlist[osds[i]];&#125;</div><div class="line">&#125;</div><div class="line">END &#123;</div><div class="line"> printf(&quot;\n&quot;);</div><div class="line"> printf(&quot;pool :\t&quot;); for (i in poollist) printf(&quot;%s\t&quot;,i); printf(&quot;| SUM \n&quot;);</div><div class="line"> for (i in poollist) printf(&quot;--------&quot;); printf(&quot;----------------\n&quot;);</div><div class="line"> for (i in osdlist) &#123; printf(&quot;osd.%i\t&quot;, i); sum=0;</div><div class="line">   for (j in poollist) &#123; printf(&quot;%i\t&quot;, array[i,j]); sum+=array[i,j]; sumpool[j]+=array[i,j] &#125;; printf(&quot;| %i\n&quot;,sum) &#125;</div><div class="line"> for (i in poollist) printf(&quot;--------&quot;); printf(&quot;----------------\n&quot;);</div><div class="line"> printf(&quot;SUM :\t&quot;); for (i in poollist) printf(&quot;%s\t&quot;,sumpool[i]); printf(&quot;|\n&quot;);</div><div class="line">&#125;&apos;</div></pre></td></tr></table></figure>
+<h2 id="shell脚本"><a href="#shell脚本" class="headerlink" title="shell脚本"></a>shell脚本</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># cat pg-per-osd.sh</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">ceph pg dump | awk &apos;</span><br><span class="line"> /^pg_stat/ &#123; col=1; while($col!=&quot;up&quot;) &#123;col++&#125;; col++ &#125;</span><br><span class="line"> /^[0-9a-f]+\.[0-9a-f]+/ &#123; match($0,/^[0-9a-f]+/); pool=substr($0, RSTART, RLENGTH); poollist[pool]=0;</span><br><span class="line"> up=$col; i=0; RSTART=0; RLENGTH=0; delete osds; while(match(up,/[0-9]+/)&gt;0) &#123; osds[++i]=substr(up,RSTART,RLENGTH); up = substr(up, RSTART+RLENGTH) &#125;</span><br><span class="line"> for(i in osds) &#123;array[osds[i],pool]++; osdlist[osds[i]];&#125;</span><br><span class="line">&#125;</span><br><span class="line">END &#123;</span><br><span class="line"> printf(&quot;\n&quot;);</span><br><span class="line"> printf(&quot;pool :\t&quot;); for (i in poollist) printf(&quot;%s\t&quot;,i); printf(&quot;| SUM \n&quot;);</span><br><span class="line"> for (i in poollist) printf(&quot;--------&quot;); printf(&quot;----------------\n&quot;);</span><br><span class="line"> for (i in osdlist) &#123; printf(&quot;osd.%i\t&quot;, i); sum=0;</span><br><span class="line">   for (j in poollist) &#123; printf(&quot;%i\t&quot;, array[i,j]); sum+=array[i,j]; sumpool[j]+=array[i,j] &#125;; printf(&quot;| %i\n&quot;,sum) &#125;</span><br><span class="line"> for (i in poollist) printf(&quot;--------&quot;); printf(&quot;----------------\n&quot;);</span><br><span class="line"> printf(&quot;SUM :\t&quot;); for (i in poollist) printf(&quot;%s\t&quot;,sumpool[i]); printf(&quot;|\n&quot;);</span><br><span class="line">&#125;&apos;</span><br></pre></td></tr></table></figure>
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -307,11 +310,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/02/10/获取每个osd的PG数/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2017/02/10/获取每个osd的PG数/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -416,6 +420,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -517,10 +523,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -533,15 +535,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -561,19 +563,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -585,6 +583,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -593,19 +595,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -617,6 +611,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -625,15 +623,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -645,15 +647,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

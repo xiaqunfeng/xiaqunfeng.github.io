@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>ceph Luminous dashboard初探 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="体验ceph luminous，并初步探测ceph luminous的相关功能，这里先来看看官方标配的仪表盘长啥样。">
+<meta name="keywords" content="luminous">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ceph Luminous dashboard初探">
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/06/29/ceph-Luminous初探/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="体验ceph luminous，并初步探测ceph luminous的相关功能，这里先来看看官方标配的仪表盘长啥样。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/luminous-0.jpg">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/luminous-2.jpg">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/luminous-1.jpg">
@@ -53,7 +55,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -81,9 +83,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -163,7 +162,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-ceph-Luminous初探" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-ceph-Luminous初探" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -188,24 +188,24 @@ var _hmt = _hmt || [];
 <h2 id="Luminous集群"><a href="#Luminous集群" class="headerlink" title="Luminous集群"></a>Luminous集群</h2><p><strong>物理环境</strong></p>
 <p>3个 host ，每个 host 含有 2 个OSD</p>
 <p><strong>查看ceph版本</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph -v</div><div class="line">ceph version 12.1.0 (262617c9f16c55e863693258061c5b25dea5b086) luminous (dev)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ceph -v</span><br><span class="line">ceph version 12.1.0 (262617c9f16c55e863693258061c5b25dea5b086) luminous (dev)</span><br></pre></td></tr></table></figure>
 <h3 id="ceph-s"><a href="#ceph-s" class="headerlink" title="ceph -s"></a>ceph -s</h3><p>查看集群状态，这里发现 <code>ceph -s</code> 信息和之前的不一样。（更多新的命令后续探索后奉上）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"># ceph -s</div><div class="line">  cluster:</div><div class="line">    id:     4c7ec5af-cbd3-40fd-8c96-0615c77660d4</div><div class="line">    health: HEALTH_OK</div><div class="line"></div><div class="line">  services:</div><div class="line">    mon: 3 daemons, quorum luminous0,luminous1,luminous2</div><div class="line">    mgr: luminous0(active)</div><div class="line">    mds: 1/1/1 up &#123;0=luminous0=up:active&#125;</div><div class="line">    osd: 6 osds: 6 up, 6 in</div><div class="line"></div><div class="line">  data:</div><div class="line">    pools:   7 pools, 112 pgs</div><div class="line">    objects: 208 objects, 3359 bytes</div><div class="line">    usage:   6341 MB used, 54492 MB / 60833 MB avail</div><div class="line">    pgs:     112 active+clean</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># ceph -s</span><br><span class="line">  cluster:</span><br><span class="line">    id:     4c7ec5af-cbd3-40fd-8c96-0615c77660d4</span><br><span class="line">    health: HEALTH_OK</span><br><span class="line"></span><br><span class="line">  services:</span><br><span class="line">    mon: 3 daemons, quorum luminous0,luminous1,luminous2</span><br><span class="line">    mgr: luminous0(active)</span><br><span class="line">    mds: 1/1/1 up &#123;0=luminous0=up:active&#125;</span><br><span class="line">    osd: 6 osds: 6 up, 6 in</span><br><span class="line"></span><br><span class="line">  data:</span><br><span class="line">    pools:   7 pools, 112 pgs</span><br><span class="line">    objects: 208 objects, 3359 bytes</span><br><span class="line">    usage:   6341 MB used, 54492 MB / 60833 MB avail</span><br><span class="line">    pgs:     112 active+clean</span><br></pre></td></tr></table></figure>
 <p>这里我在机器 luminous0 上还部署了 mgr 和 mds。</p>
 <blockquote>
 <p>注意：mgr是高可用的，如果配置多个的话，会有standbys。我这里只配了一个 mgr，所以就只有active，没有standby。访问的时候，务必使用 active 进程所在节点的 IP ！！</p>
 </blockquote>
 <h2 id="dashboard"><a href="#dashboard" class="headerlink" title="dashboard"></a>dashboard</h2><h3 id="开启监控"><a href="#开启监控" class="headerlink" title="开启监控"></a>开启监控</h3><p>在所有运行了 ceph-mgr 守护进程的机器上编辑ceph配置文件 <code>/etc/ceph/ceph.conf</code> ，以启用 dashboard。</p>
 <p>添加如下配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[mgr]</div><div class="line">mgr_modules = dashboard</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[mgr]</span><br><span class="line">mgr_modules = dashboard</span><br></pre></td></tr></table></figure>
 <p>注意：不要重启 ceph-mgr 进程，还有其他的配置要做。</p>
 <h3 id="配置IP和端口"><a href="#配置IP和端口" class="headerlink" title="配置IP和端口"></a>配置IP和端口</h3><p>服务器地址和可选端口必须配置为 config-key</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph config-key put mgr/dashboard/server_addr 172.20.2.243</div><div class="line">set mgr/dashboard/server_addr</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ceph config-key put mgr/dashboard/server_addr 172.20.2.243</span><br><span class="line">set mgr/dashboard/server_addr</span><br></pre></td></tr></table></figure>
 <p>查看，发现<strong>默认端口是 7000</strong> </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># netstat -antpl | grep ceph-mgr | grep LISTEN</div><div class="line">tcp        0      0 0.0.0.0:6800            0.0.0.0:*               LISTEN      57645/ceph-mgr</div><div class="line">tcp        0      0 172.20.2.243:7000       0.0.0.0:*               LISTEN      57645/ceph-mgr</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># netstat -antpl | grep ceph-mgr | grep LISTEN</span><br><span class="line">tcp        0      0 0.0.0.0:6800            0.0.0.0:*               LISTEN      57645/ceph-mgr</span><br><span class="line">tcp        0      0 172.20.2.243:7000       0.0.0.0:*               LISTEN      57645/ceph-mgr</span><br></pre></td></tr></table></figure>
 <p>当然，可以改为指定端口号，使用如下命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph config-key put mgr/dashboard/server_port 8888</div></pre></td></tr></table></figure>
-<h3 id="重启ceph-mgr"><a href="#重启ceph-mgr" class="headerlink" title="重启ceph-mgr"></a>重启ceph-mgr</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># systemctl restart ceph-mgr@luminous0</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ceph config-key put mgr/dashboard/server_port 8888</span><br></pre></td></tr></table></figure>
+<h3 id="重启ceph-mgr"><a href="#重启ceph-mgr" class="headerlink" title="重启ceph-mgr"></a>重启ceph-mgr</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># systemctl restart ceph-mgr@luminous0</span><br></pre></td></tr></table></figure>
 <p>这时候就可以访问了。</p>
 <h3 id="访问界面"><a href="#访问界面" class="headerlink" title="访问界面"></a>访问界面</h3><p><strong>1、主界面</strong>（Cluster health）</p>
 <p><img src="http://oow6unnib.bkt.clouddn.com/luminous-0.jpg" alt="dashboard"></p>
@@ -218,7 +218,10 @@ var _hmt = _hmt || [];
 <p>3、比起ceph周边的监控软件：calamari、VSM、inkscope、grafana等，相去甚远，当然，可以简单展示基本信息，还是不错的。</p>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -327,11 +330,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/06/29/ceph-Luminous初探/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2017/06/29/ceph-Luminous初探/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -436,6 +440,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -537,10 +543,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -553,15 +555,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -581,19 +583,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -605,6 +603,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -613,19 +615,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -637,6 +631,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -645,15 +643,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -665,15 +667,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

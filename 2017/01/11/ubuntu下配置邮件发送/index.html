@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>ubuntu下配置邮件发送 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Linux下发送email有很多种方式，包括sendmail、mailx、mutt、uuencode等等。这里介绍ubuntu下使用mutt和msmtp发送邮件的配置方法。">
+<meta name="keywords" content="Linux,ubuntu">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ubuntu下配置邮件发送">
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/01/11/ubuntu下配置邮件发送/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="Linux下发送email有很多种方式，包括sendmail、mailx、mutt、uuencode等等。这里介绍ubuntu下使用mutt和msmtp发送邮件的配置方法。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2017-01-11T06:11:24.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ubuntu下配置邮件发送">
@@ -49,7 +51,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -77,9 +79,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -159,7 +158,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-ubuntu下配置邮件发送" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-ubuntu下配置邮件发送" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -180,52 +180,55 @@ var _hmt = _hmt || [];
     <div class="article-entry" itemprop="articleBody">
       
         <p>Linux下发送email有很多种方式，包括sendmail、mailx、mutt、uuencode等等。这里介绍ubuntu下使用mutt和msmtp发送邮件的配置方法。<br><a id="more"></a></p>
-<h2 id="软件包的安装"><a href="#软件包的安装" class="headerlink" title="软件包的安装"></a>软件包的安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install mutt</div><div class="line">sudo apt-get install msmtp</div></pre></td></tr></table></figure>
+<h2 id="软件包的安装"><a href="#软件包的安装" class="headerlink" title="软件包的安装"></a>软件包的安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install mutt</span><br><span class="line">sudo apt-get install msmtp</span><br></pre></td></tr></table></figure>
 <h2 id="文件的配置"><a href="#文件的配置" class="headerlink" title="文件的配置"></a>文件的配置</h2><h3 id="配置-mutt"><a href="#配置-mutt" class="headerlink" title="配置 mutt"></a>配置 mutt</h3><p>,系统全局设置配置文件在 /etc/Muttrc,如果使用某个系统用户，可以在~/.muttc中设置，没有该文件，就自己创建。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">vi .muttrc</div><div class="line"></div><div class="line">set sendmail=&quot;/usr/bin/msmtp&quot;</div><div class="line">set use_from=yes</div><div class="line">set realname=&quot;xia&quot;</div><div class="line">set from=abcdefg@126.com</div><div class="line">set envelope_from=yes</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vi .muttrc</span><br><span class="line"></span><br><span class="line">set sendmail=&quot;/usr/bin/msmtp&quot;</span><br><span class="line">set use_from=yes</span><br><span class="line">set realname=&quot;xia&quot;</span><br><span class="line">set from=abcdefg@126.com</span><br><span class="line">set envelope_from=yes</span><br></pre></td></tr></table></figure>
 <h3 id="配置msmtp"><a href="#配置msmtp" class="headerlink" title="配置msmtp"></a>配置msmtp</h3><p>创建 ~/.msmtprc 和 ~/.msmtp.log，分别为配置文件和日志文件。</p>
 <p><strong>1、创建配置文件</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vi .msmtprc</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi .msmtprc</span><br></pre></td></tr></table></figure>
 <p>添加以下内容</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">account default</div><div class="line">host smtp.126.com</div><div class="line">from youremailname@126.com</div><div class="line">auth plain</div><div class="line">user youremailname@126.com</div><div class="line">password xxxxxxx</div><div class="line">logfile ~/.msmtp.log</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">account default</span><br><span class="line">host smtp.126.com</span><br><span class="line">from youremailname@126.com</span><br><span class="line">auth plain</span><br><span class="line">user youremailname@126.com</span><br><span class="line">password xxxxxxx</span><br><span class="line">logfile ~/.msmtp.log</span><br></pre></td></tr></table></figure>
 <p>由于password是明文，所以需要修改此文件的访问权限</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chmod 600 .msmtprc</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 600 .msmtprc</span><br></pre></td></tr></table></figure>
 <p><strong>特别注意</strong>：</p>
 <blockquote>
 <p>这里的密码填的是你的授权密码，不是登录密码!</p>
 </blockquote>
 <p><strong>2、创建日志文件 </strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">touch ~/.msmtp.log</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch ~/.msmtp.log</span><br></pre></td></tr></table></figure>
 <h2 id="邮件发送测试"><a href="#邮件发送测试" class="headerlink" title="邮件发送测试"></a>邮件发送测试</h2><p>查看SMTP服务器是否支持认证的TLS加密</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># msmtp --host=smtp.126.com --serverinfo</div><div class="line">SMTP server at smtp.126.com (m15-111.126.com [220.181.15.111]), port 25:</div><div class="line">    126.com Anti-spam GT for Coremail System (126com[20140526])</div><div class="line">Capabilities:</div><div class="line">    PIPELINING:</div><div class="line">        Support for command grouping for faster transmission</div><div class="line">    STARTTLS:</div><div class="line">        Support for TLS encryption via the STARTTLS command</div><div class="line">    AUTH:</div><div class="line">        Supported authentication methods:</div><div class="line">        PLAIN LOGIN </div><div class="line">This server might advertise more or other capabilities when TLS is active.</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># msmtp --host=smtp.126.com --serverinfo</span><br><span class="line">SMTP server at smtp.126.com (m15-111.126.com [220.181.15.111]), port 25:</span><br><span class="line">    126.com Anti-spam GT for Coremail System (126com[20140526])</span><br><span class="line">Capabilities:</span><br><span class="line">    PIPELINING:</span><br><span class="line">        Support for command grouping for faster transmission</span><br><span class="line">    STARTTLS:</span><br><span class="line">        Support for TLS encryption via the STARTTLS command</span><br><span class="line">    AUTH:</span><br><span class="line">        Supported authentication methods:</span><br><span class="line">        PLAIN LOGIN </span><br><span class="line">This server might advertise more or other capabilities when TLS is active.</span><br></pre></td></tr></table></figure>
 <p>发送一个简单的邮件测试</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo &quot;hello world&quot; | mutt -s &quot;title&quot; 12456789@qq.com</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;hello world&quot; | mutt -s &quot;title&quot; 12456789@qq.com</span><br></pre></td></tr></table></figure>
 <p>登录QQ邮箱，可以正常收到邮件，成功！</p>
 <h2 id="四种发送方式"><a href="#四种发送方式" class="headerlink" title="四种发送方式"></a>四种发送方式</h2><p>1、<strong>带有主题，从文件中读取邮件的正文，并发送</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ mutt -s &quot;hello mutt&quot; user@example.com &lt; message.txt</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mutt -s &quot;hello mutt&quot; user@example.com &lt; message.txt</span><br></pre></td></tr></table></figure>
 <p>2、<strong>通过管道获取 <code>echo</code>命令输出作为邮件内容发送</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ echo &quot;hello mutt&quot; | mutt -s &quot;Testing mutt&quot; user@example.com</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ echo &quot;hello mutt&quot; | mutt -s &quot;Testing mutt&quot; user@example.com</span><br></pre></td></tr></table></figure>
 <p>3、<strong>发送带附件的邮件</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ echo &quot;hello mutt&quot; | mutt -s &quot;Testing mutt&quot; user@example.com -a test.tar.gz</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ echo &quot;hello mutt&quot; | mutt -s &quot;Testing mutt&quot; user@example.com -a test.tar.gz</span><br></pre></td></tr></table></figure>
 <p>多个附件的话在每个附件前加上 <code>-a</code> 即可。</p>
 <p>4、<strong>发送给多个收件人</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo &quot;hello mutt&quot; | mutt -s &quot;Testing muttt&quot; 111111@qq.com,222222@163.com -c 3333333@qq.com -b 44444444@126.com</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;hello mutt&quot; | mutt -s &quot;Testing muttt&quot; 111111@qq.com,222222@163.com -c 3333333@qq.com -b 44444444@126.com</span><br></pre></td></tr></table></figure>
 <p>多个收件人之间用逗号隔开</p>
 <p><strong>抄送</strong>，前面加参数 <code>-c</code> </p>
 <p><strong>密送</strong>，前面加参数 <code>-b</code></p>
 <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>1、出现如下错误</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">msmtp: authentication failed (method PLAIN)</div><div class="line">msmtp: server message: 530 Error: A secure connection is requiered(such as ssl). More information at http://service.mail.qq.com/cgi-bin/help?id=28</div><div class="line">msmtp: could not send mail (account default from /root/.msmtprc)</div><div class="line">Error sending message, child exited 77 (Insufficient permission.).</div><div class="line">Could not send the message.</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">msmtp: authentication failed (method PLAIN)</span><br><span class="line">msmtp: server message: 530 Error: A secure connection is requiered(such as ssl). More information at http://service.mail.qq.com/cgi-bin/help?id=28</span><br><span class="line">msmtp: could not send mail (account default from /root/.msmtprc)</span><br><span class="line">Error sending message, child exited 77 (Insufficient permission.).</span><br><span class="line">Could not send the message.</span><br></pre></td></tr></table></figure>
 <p>原因，没有权限进行操作</p>
 <p>解决方法：</p>
 <blockquote>
 <p>登录网页邮箱，设置开启POP3/SMTP服务、IMAP/SMTP服务</p>
 </blockquote>
 <p><strong>参考资料</strong></p>
-<p><a href="http://www.cnblogs.com/xiazh/archive/2011/04/15/2016966.html" target="_blank" rel="external">ubuntu下使用mutt和msmtp发送邮件的简单配置</a></p>
-<p><a href="https://linux.cn/article-5502-1.html" target="_blank" rel="external">4个可以发送电子邮件的命令行工具</a></p>
+<p><a href="http://www.cnblogs.com/xiazh/archive/2011/04/15/2016966.html" target="_blank" rel="noopener">ubuntu下使用mutt和msmtp发送邮件的简单配置</a></p>
+<p><a href="https://linux.cn/article-5502-1.html" target="_blank" rel="noopener">4个可以发送电子邮件的命令行工具</a></p>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -327,11 +330,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/01/11/ubuntu下配置邮件发送/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2017/01/11/ubuntu下配置邮件发送/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -436,6 +440,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -537,10 +543,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -553,15 +555,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -581,19 +583,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -605,6 +603,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -613,19 +615,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -637,6 +631,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -645,15 +643,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -665,15 +667,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>ceph luminous最佳部署实践 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="luminous版本ceph最佳部署实践，分别指定rocksdb、osd数据及元数据磁盘位置，最大化集群性能。">
+<meta name="keywords" content="luminous">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ceph luminous最佳部署实践">
 <meta property="og:url" content="http://xiaqunfeng.cc/2018/03/04/ceph-luminous最佳部署实践/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="luminous版本ceph最佳部署实践，分别指定rocksdb、osd数据及元数据磁盘位置，最大化集群性能。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2018-03-27T01:04:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ceph luminous最佳部署实践">
@@ -49,7 +51,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -77,9 +79,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -159,7 +158,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-ceph-luminous最佳部署实践" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-ceph-luminous最佳部署实践" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -181,7 +181,7 @@ var _hmt = _hmt || [];
       
         <p>luminous版本ceph最佳部署实践，分别指定rocksdb、osd数据及元数据磁盘位置，最大化集群性能。<br><a id="more"></a></p>
 <h2 id="磁盘分区"><a href="#磁盘分区" class="headerlink" title="磁盘分区"></a>磁盘分区</h2><p>每个OSD对应需要4个磁盘分区（简单起见在一块磁盘上分的四个区）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># lsblk</div><div class="line">NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</div><div class="line">sr0     11:0    1  436K  0 rom</div><div class="line">vda    253:0    0   20G  0 disk</div><div class="line">├─vda1 253:1    0    2M  0 part</div><div class="line">├─vda2 253:2    0  500M  0 part /boot</div><div class="line">└─vda3 253:3    0 19.5G  0 part /</div><div class="line">vdd    253:48   0   50G  0 disk</div><div class="line">├─vdd1 253:49   0 1023M  0 part </div><div class="line">├─vdd2 253:50   0   10G  0 part</div><div class="line">├─vdd3 253:51   0   10G  0 part</div><div class="line">└─vdd4 253:52   0   29G  0 part</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># lsblk</span><br><span class="line">NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sr0     11:0    1  436K  0 rom</span><br><span class="line">vda    253:0    0   20G  0 disk</span><br><span class="line">├─vda1 253:1    0    2M  0 part</span><br><span class="line">├─vda2 253:2    0  500M  0 part /boot</span><br><span class="line">└─vda3 253:3    0 19.5G  0 part /</span><br><span class="line">vdd    253:48   0   50G  0 disk</span><br><span class="line">├─vdd1 253:49   0 1023M  0 part </span><br><span class="line">├─vdd2 253:50   0   10G  0 part</span><br><span class="line">├─vdd3 253:51   0   10G  0 part</span><br><span class="line">└─vdd4 253:52   0   29G  0 part</span><br></pre></td></tr></table></figure>
 <p>四个分区分别用于：</p>
 <table>
 <thead>
@@ -221,9 +221,9 @@ var _hmt = _hmt || [];
 </table>
 <h2 id="安装ceph"><a href="#安装ceph" class="headerlink" title="安装ceph"></a>安装ceph</h2><p><strong>注意：先不要安装OSD</strong></p>
 <p>安装完后</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"># ceph -s</div><div class="line">  cluster:</div><div class="line">    id:     4c7ec5af-cbd3-40fd-8c96-0615c77660d4</div><div class="line">    health: HEALTH_OK</div><div class="line"></div><div class="line">  services:</div><div class="line">    mon: 3 daemons, quorum blue0,blue1,blue2</div><div class="line">    mgr: blue0(active)</div><div class="line">    osd: 0 osds: 0 up, 0 in</div><div class="line"></div><div class="line">  data:</div><div class="line">    pools:   0 pools, 0 pgs</div><div class="line">    objects: 0 objects, 0 bytes</div><div class="line">    usage:   0 kB used, 0 kB / 0 kB avail</div><div class="line">    pgs:</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># ceph -s</span><br><span class="line">  cluster:</span><br><span class="line">    id:     4c7ec5af-cbd3-40fd-8c96-0615c77660d4</span><br><span class="line">    health: HEALTH_OK</span><br><span class="line"></span><br><span class="line">  services:</span><br><span class="line">    mon: 3 daemons, quorum blue0,blue1,blue2</span><br><span class="line">    mgr: blue0(active)</span><br><span class="line">    osd: 0 osds: 0 up, 0 in</span><br><span class="line"></span><br><span class="line">  data:</span><br><span class="line">    pools:   0 pools, 0 pgs</span><br><span class="line">    objects: 0 objects, 0 bytes</span><br><span class="line">    usage:   0 kB used, 0 kB / 0 kB avail</span><br><span class="line">    pgs:</span><br></pre></td></tr></table></figure>
 <h2 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h2><p>1、修改配置文件 ceph.conf 中关于 osd 的部分，为每个OSD的不同部分指定磁盘</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">[osd]</div><div class="line">osd mkfs type = xfs</div><div class="line">osd mkfs options xfs = -f -i size=2048</div><div class="line">osd mount options xfs = noatime,largeio,inode64,swalloc</div><div class="line">osd journal size = 5120</div><div class="line"></div><div class="line">osd objectstore = bluestore</div><div class="line">bluestore = true</div><div class="line">bluestore fsck on mount = true</div><div class="line">bluestore block create = true</div><div class="line">bluestore block db size = 67108864</div><div class="line">bluestore block db create = true</div><div class="line">bluestore block wal size = 134217728</div><div class="line">bluestore block wal create =true</div><div class="line"></div><div class="line">[osd.0]</div><div class="line">host = luminous0</div><div class="line">osd data = /var/lib/ceph/osd/ceph-0</div><div class="line">bluestore block db path = /dev/vdd2</div><div class="line">bluestore block wal path = /dev/vdd3</div><div class="line">bluestore block path = /dev/vdd4</div><div class="line"></div><div class="line">[osd.1]</div><div class="line">host = luminous1</div><div class="line">osd data = /var/lib/ceph/osd/ceph-1</div><div class="line">bluestore block db path = /dev/vdd2</div><div class="line">bluestore block wal path = /dev/vdd3</div><div class="line">bluestore block path = /dev/vdd4</div><div class="line"></div><div class="line">[osd.2]</div><div class="line">host = luminous2</div><div class="line">osd data = /var/lib/ceph/osd/ceph-2</div><div class="line">bluestore block db path = /dev/vdd2</div><div class="line">bluestore block wal path = /dev/vdd3</div><div class="line">bluestore block path = /dev/vdd4</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">[osd]</span><br><span class="line">osd mkfs type = xfs</span><br><span class="line">osd mkfs options xfs = -f -i size=2048</span><br><span class="line">osd mount options xfs = noatime,largeio,inode64,swalloc</span><br><span class="line">osd journal size = 5120</span><br><span class="line"></span><br><span class="line">osd objectstore = bluestore</span><br><span class="line">bluestore = true</span><br><span class="line">bluestore fsck on mount = true</span><br><span class="line">bluestore block create = true</span><br><span class="line">bluestore block db size = 67108864</span><br><span class="line">bluestore block db create = true</span><br><span class="line">bluestore block wal size = 134217728</span><br><span class="line">bluestore block wal create =true</span><br><span class="line"></span><br><span class="line">[osd.0]</span><br><span class="line">host = luminous0</span><br><span class="line">osd data = /var/lib/ceph/osd/ceph-0</span><br><span class="line">bluestore block db path = /dev/vdd2</span><br><span class="line">bluestore block wal path = /dev/vdd3</span><br><span class="line">bluestore block path = /dev/vdd4</span><br><span class="line"></span><br><span class="line">[osd.1]</span><br><span class="line">host = luminous1</span><br><span class="line">osd data = /var/lib/ceph/osd/ceph-1</span><br><span class="line">bluestore block db path = /dev/vdd2</span><br><span class="line">bluestore block wal path = /dev/vdd3</span><br><span class="line">bluestore block path = /dev/vdd4</span><br><span class="line"></span><br><span class="line">[osd.2]</span><br><span class="line">host = luminous2</span><br><span class="line">osd data = /var/lib/ceph/osd/ceph-2</span><br><span class="line">bluestore block db path = /dev/vdd2</span><br><span class="line">bluestore block wal path = /dev/vdd3</span><br><span class="line">bluestore block path = /dev/vdd4</span><br></pre></td></tr></table></figure>
 <ul>
 <li>db path为rocksdb 存放数据的位置</li>
 <li>wal path 为rocksdb的原子操作位置</li>
@@ -231,18 +231,21 @@ var _hmt = _hmt || [];
 <li>/dev/vdd1 作为osd的元数据存放位置</li>
 </ul>
 <p>2、重启 ceph-mon 进程</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">systemctl restart ceph-mon.target</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart ceph-mon.target</span><br></pre></td></tr></table></figure>
 <h2 id="手动安装OSD"><a href="#手动安装OSD" class="headerlink" title="手动安装OSD"></a>手动安装OSD</h2><p>例如，手动安装 osd.1 步骤如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">mkdir -p /var/lib/ceph/osd/ceph-1</div><div class="line">mkfs -t xfs -d name=/dev/vdd1 -f</div><div class="line">mount -noatime /dev/vdd1 /var/lib/ceph/osd/ceph-1</div><div class="line">chown ceph:ceph /var/lib/ceph/osd/ceph-1</div><div class="line"></div><div class="line">ceph osd crush add-bucket luminous1 host</div><div class="line">ceph osd crush move luminous1 root=default</div><div class="line"></div><div class="line">ceph osd create</div><div class="line">ceph-osd -i 1 --mkfs --mkkey</div><div class="line">ceph auth add osd.1 osd &apos;allow *&apos; mon &apos;allow rwx&apos; -i /var/lib/ceph/osd/ceph-1/keyring</div><div class="line">ceph osd crush add osd.1 0.04 host=luminous1</div><div class="line">ceph osd in 1</div><div class="line">chown -R ceph:ceph /var/lib/ceph/osd/ceph-1</div><div class="line">systemctl start ceph-osd@1</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /var/lib/ceph/osd/ceph-1</span><br><span class="line">mkfs -t xfs -d name=/dev/vdd1 -f</span><br><span class="line">mount -noatime /dev/vdd1 /var/lib/ceph/osd/ceph-1</span><br><span class="line">chown ceph:ceph /var/lib/ceph/osd/ceph-1</span><br><span class="line"></span><br><span class="line">ceph osd crush add-bucket luminous1 host</span><br><span class="line">ceph osd crush move luminous1 root=default</span><br><span class="line"></span><br><span class="line">ceph osd create</span><br><span class="line">ceph-osd -i 1 --mkfs --mkkey</span><br><span class="line">ceph auth add osd.1 osd &apos;allow *&apos; mon &apos;allow rwx&apos; -i /var/lib/ceph/osd/ceph-1/keyring</span><br><span class="line">ceph osd crush add osd.1 0.04 host=luminous1</span><br><span class="line">ceph osd in 1</span><br><span class="line">chown -R ceph:ceph /var/lib/ceph/osd/ceph-1</span><br><span class="line">systemctl start ceph-osd@1</span><br></pre></td></tr></table></figure>
 <p>安装完后：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"># ll /var/lib/ceph/osd/ceph-0</div><div class="line">总用量 40</div><div class="line">lrwxrwxrwx. 1 ceph ceph  9 7月  24 18:13 block -&gt; /dev/vdd4</div><div class="line">lrwxrwxrwx. 1 ceph ceph  9 7月  24 18:13 block.db -&gt; /dev/vdd2</div><div class="line">lrwxrwxrwx. 1 ceph ceph  9 7月  24 18:13 block.wal -&gt; /dev/vdd3</div><div class="line">-rw-r--r--. 1 ceph ceph  2 7月  24 18:13 bluefs</div><div class="line">-rw-r--r--. 1 ceph ceph 37 7月  24 18:13 ceph_fsid</div><div class="line">-rw-r--r--. 1 ceph ceph 37 7月  24 18:13 fsid</div><div class="line">-rw-------. 1 ceph ceph 56 7月  24 18:13 keyring</div><div class="line">-rw-r--r--. 1 ceph ceph  8 7月  24 18:13 kv_backend</div><div class="line">-rw-r--r--. 1 ceph ceph 21 7月  24 18:13 magic</div><div class="line">-rw-r--r--. 1 ceph ceph  4 7月  24 18:13 mkfs_done</div><div class="line">-rw-r--r--. 1 ceph ceph  6 7月  24 18:13 ready</div><div class="line">-rw-r--r--. 1 ceph ceph 10 7月  24 18:13 type</div><div class="line">-rw-r--r--. 1 ceph ceph  2 7月  24 18:13 whoami</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># ll /var/lib/ceph/osd/ceph-0</span><br><span class="line">总用量 40</span><br><span class="line">lrwxrwxrwx. 1 ceph ceph  9 7月  24 18:13 block -&gt; /dev/vdd4</span><br><span class="line">lrwxrwxrwx. 1 ceph ceph  9 7月  24 18:13 block.db -&gt; /dev/vdd2</span><br><span class="line">lrwxrwxrwx. 1 ceph ceph  9 7月  24 18:13 block.wal -&gt; /dev/vdd3</span><br><span class="line">-rw-r--r--. 1 ceph ceph  2 7月  24 18:13 bluefs</span><br><span class="line">-rw-r--r--. 1 ceph ceph 37 7月  24 18:13 ceph_fsid</span><br><span class="line">-rw-r--r--. 1 ceph ceph 37 7月  24 18:13 fsid</span><br><span class="line">-rw-------. 1 ceph ceph 56 7月  24 18:13 keyring</span><br><span class="line">-rw-r--r--. 1 ceph ceph  8 7月  24 18:13 kv_backend</span><br><span class="line">-rw-r--r--. 1 ceph ceph 21 7月  24 18:13 magic</span><br><span class="line">-rw-r--r--. 1 ceph ceph  4 7月  24 18:13 mkfs_done</span><br><span class="line">-rw-r--r--. 1 ceph ceph  6 7月  24 18:13 ready</span><br><span class="line">-rw-r--r--. 1 ceph ceph 10 7月  24 18:13 type</span><br><span class="line">-rw-r--r--. 1 ceph ceph  2 7月  24 18:13 whoami</span><br></pre></td></tr></table></figure>
 <p>如果不更改配置，为OSD分别指定磁盘，安装完后的配置如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"># ll /var/lib/ceph/osd/ceph-0/</div><div class="line">总用量 484</div><div class="line">-rw-r--r--. 1 root root         429 7月  25 10:59 activate.monmap</div><div class="line">-rw-r--r--. 1 ceph ceph           3 7月  25 10:59 active</div><div class="line">-rw-r--r--. 1 ceph ceph 10737418240 7月  25 10:59 block</div><div class="line">-rw-r--r--. 1 ceph ceph           2 7月  25 10:59 bluefs</div><div class="line">-rw-r--r--. 1 ceph ceph          37 7月  25 10:59 ceph_fsid</div><div class="line">-rw-r--r--. 1 ceph ceph          37 7月  25 10:59 fsid</div><div class="line">-rw-------. 1 ceph ceph          56 7月  25 10:59 keyring</div><div class="line">-rw-r--r--. 1 ceph ceph           8 7月  25 10:59 kv_backend</div><div class="line">-rw-r--r--. 1 ceph ceph          21 7月  25 10:59 magic</div><div class="line">-rw-r--r--. 1 ceph ceph           4 7月  25 10:59 mkfs_done</div><div class="line">-rw-r--r--. 1 ceph ceph           6 7月  25 10:59 ready</div><div class="line">-rw-r--r--. 1 ceph ceph           0 7月  25 10:59 systemd</div><div class="line">-rw-r--r--. 1 ceph ceph          10 7月  25 10:59 type</div><div class="line">-rw-r--r--. 1 ceph ceph           2 7月  25 10:59 whoami</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># ll /var/lib/ceph/osd/ceph-0/</span><br><span class="line">总用量 484</span><br><span class="line">-rw-r--r--. 1 root root         429 7月  25 10:59 activate.monmap</span><br><span class="line">-rw-r--r--. 1 ceph ceph           3 7月  25 10:59 active</span><br><span class="line">-rw-r--r--. 1 ceph ceph 10737418240 7月  25 10:59 block</span><br><span class="line">-rw-r--r--. 1 ceph ceph           2 7月  25 10:59 bluefs</span><br><span class="line">-rw-r--r--. 1 ceph ceph          37 7月  25 10:59 ceph_fsid</span><br><span class="line">-rw-r--r--. 1 ceph ceph          37 7月  25 10:59 fsid</span><br><span class="line">-rw-------. 1 ceph ceph          56 7月  25 10:59 keyring</span><br><span class="line">-rw-r--r--. 1 ceph ceph           8 7月  25 10:59 kv_backend</span><br><span class="line">-rw-r--r--. 1 ceph ceph          21 7月  25 10:59 magic</span><br><span class="line">-rw-r--r--. 1 ceph ceph           4 7月  25 10:59 mkfs_done</span><br><span class="line">-rw-r--r--. 1 ceph ceph           6 7月  25 10:59 ready</span><br><span class="line">-rw-r--r--. 1 ceph ceph           0 7月  25 10:59 systemd</span><br><span class="line">-rw-r--r--. 1 ceph ceph          10 7月  25 10:59 type</span><br><span class="line">-rw-r--r--. 1 ceph ceph           2 7月  25 10:59 whoami</span><br></pre></td></tr></table></figure>
 <p>部署完后磁盘情况</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># lsblk</div><div class="line">NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</div><div class="line">sr0     11:0    1  436K  0 rom</div><div class="line">vda    253:0    0   20G  0 disk</div><div class="line">├─vda1 253:1    0    2M  0 part</div><div class="line">├─vda2 253:2    0  500M  0 part /boot</div><div class="line">└─vda3 253:3    0 19.5G  0 part /</div><div class="line">vdd    253:48   0   50G  0 disk</div><div class="line">├─vdd1 253:49   0 1023M  0 part /var/lib/ceph/osd/ceph-0</div><div class="line">├─vdd2 253:50   0   10G  0 part</div><div class="line">├─vdd3 253:51   0   10G  0 part</div><div class="line">└─vdd4 253:52   0   29G  0 part</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># lsblk</span><br><span class="line">NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sr0     11:0    1  436K  0 rom</span><br><span class="line">vda    253:0    0   20G  0 disk</span><br><span class="line">├─vda1 253:1    0    2M  0 part</span><br><span class="line">├─vda2 253:2    0  500M  0 part /boot</span><br><span class="line">└─vda3 253:3    0 19.5G  0 part /</span><br><span class="line">vdd    253:48   0   50G  0 disk</span><br><span class="line">├─vdd1 253:49   0 1023M  0 part /var/lib/ceph/osd/ceph-0</span><br><span class="line">├─vdd2 253:50   0   10G  0 part</span><br><span class="line">├─vdd3 253:51   0   10G  0 part</span><br><span class="line">└─vdd4 253:52   0   29G  0 part</span><br></pre></td></tr></table></figure>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -351,11 +354,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2018/03/04/ceph-luminous最佳部署实践/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2018/03/04/ceph-luminous最佳部署实践/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -460,6 +464,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -561,10 +567,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -577,15 +579,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -605,19 +607,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -629,6 +627,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -637,19 +639,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -661,6 +655,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -669,15 +667,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -689,15 +691,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

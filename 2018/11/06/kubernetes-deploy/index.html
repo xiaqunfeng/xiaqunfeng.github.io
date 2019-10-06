@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>用kubeadm在Ubuntu1604上构建k8s集群 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="介绍在部署k8s集群的过程，以及遇到的问题及解决方法。">
+<meta name="keywords" content="ubuntu">
 <meta property="og:type" content="article">
 <meta property="og:title" content="用kubeadm在Ubuntu1604上构建k8s集群">
 <meta property="og:url" content="http://xiaqunfeng.cc/2018/11/06/kubernetes-deploy/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="介绍在部署k8s集群的过程，以及遇到的问题及解决方法。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2018-11-06T09:03:09.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="用kubeadm在Ubuntu1604上构建k8s集群">
@@ -49,7 +51,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -77,9 +79,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -159,7 +158,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-kubernetes-deploy" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-kubernetes-deploy" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -183,22 +183,22 @@ var _hmt = _hmt || [];
 <h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>本次一共安装3台机器，一台master，两台slave。整个安装过程将在Ubuntu1604服务器上进行，安装kubeadm，以及kubernetes的基本集群，包括calico网络。</p>
 <p>注：服务器访问不了外网，所以采用国内源的方式。</p>
 <h3 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h3><p>1、更新Package索引：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get update</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
 <p>2、添加Https支持：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install \</div><div class="line">    apt-transport-https \</div><div class="line">    ca-certificates \</div><div class="line">    curl \</div><div class="line">    software-properties-common -y</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install \</span><br><span class="line">    apt-transport-https \</span><br><span class="line">    ca-certificates \</span><br><span class="line">    curl \</span><br><span class="line">    software-properties-common -y</span><br></pre></td></tr></table></figure>
 <p>3、添加Docker官方的GPG key:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</div><div class="line"></div><div class="line">## 如果上面的地址不能下载，可以使用国内镜像</div><div class="line">curl -fsSL https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/gpg  | sudo apt-key add -</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</span><br><span class="line"></span><br><span class="line">## 如果上面的地址不能下载，可以使用国内镜像</span><br><span class="line">curl -fsSL https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/gpg  | sudo apt-key add -</span><br></pre></td></tr></table></figure>
 <p>4、添加Docker-CE稳定版仓储地址：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sudo add-apt-repository \</div><div class="line">   &quot;deb [arch=amd64] https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu \</div><div class="line">   $(lsb_release -cs) \</div><div class="line">   stable&quot;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository \</span><br><span class="line">   &quot;deb [arch=amd64] https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu \</span><br><span class="line">   $(lsb_release -cs) \</span><br><span class="line">   stable&quot;</span><br></pre></td></tr></table></figure>
 <p>注：由于Docker官方仓储<code>download.docker.com</code>的访问较慢，故使用了中科大镜像源替代。</p>
 <p>5、安装：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install docker-ce</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install docker-ce</span><br></pre></td></tr></table></figure>
 <p>6、验证：</p>
 <p>运行<code>Hello Word</code>来验证一下是否安装成功：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo docker run hello-world</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run hello-world</span><br></pre></td></tr></table></figure>
 <p>7、释放sudo</p>
 <p>默认情况下，Docker需要使用root身份来访问，每次都使用<code>sudo</code>命令较为麻烦，我们可以将当前用户添加到<code>docker</code>用户组来实现非root用户访问：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo usermod -aG docker $USER</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -aG docker $USER</span><br></pre></td></tr></table></figure>
 <p>重新登录一下，便可以不使用<code>sudo</code>命令来操作docker了。</p>
 <h3 id="禁用swap文件"><a href="#禁用swap文件" class="headerlink" title="禁用swap文件"></a>禁用swap文件</h3><p>编辑<code>/etc/fstab</code>文件，注释掉引用<code>swap</code>的行，保存并重启后输入<code>sudo swapoff -a</code>即可。</p>
 <h2 id="在所有机器上安装kubeadm-kubelet-and-kubectl"><a href="#在所有机器上安装kubeadm-kubelet-and-kubectl" class="headerlink" title="在所有机器上安装kubeadm, kubelet and kubectl"></a>在所有机器上安装kubeadm, kubelet and kubectl</h2><ul>
@@ -206,29 +206,29 @@ var _hmt = _hmt || [];
 <li>kubelet: 在群集中的所有计算机上运行的组件, 并用来执行如启动pods和containers等操作。</li>
 <li>kubectl: 用于操作运行中的集群的命令行工具。</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># apt-get update &amp;&amp; apt-get install -y apt-transport-https curl</div><div class="line"># curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -</div><div class="line"># cat &lt;&lt;EOF &gt;/etc/apt/sources.list.d/kubernetes.list</div><div class="line">deb https://mirrors.ustc.edu.cn/kubernetes/apt kubernetes-xenial main</div><div class="line">EOF</div><div class="line"># apt-get update</div><div class="line"># apt-get install -y kubelet kubeadm kubectl</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># apt-get update &amp;&amp; apt-get install -y apt-transport-https curl</span><br><span class="line"># curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -</span><br><span class="line"># cat &lt;&lt;EOF &gt;/etc/apt/sources.list.d/kubernetes.list</span><br><span class="line">deb https://mirrors.ustc.edu.cn/kubernetes/apt kubernetes-xenial main</span><br><span class="line">EOF</span><br><span class="line"># apt-get update</span><br><span class="line"># apt-get install -y kubelet kubeadm kubectl</span><br></pre></td></tr></table></figure>
 <p>Q&amp;A</p>
 <p>出现如下错误：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">W: GPG error: https://mirrors.ustc.edu.cn/kubernetes/apt kubernetes-xenial InRelease: The following signatures couldn&apos;t be verified because the public key is not available: NO_PUBKEY 6A030B21BA07F4FB</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">W: GPG error: https://mirrors.ustc.edu.cn/kubernetes/apt kubernetes-xenial InRelease: The following signatures couldn&apos;t be verified because the public key is not available: NO_PUBKEY 6A030B21BA07F4FB</span><br></pre></td></tr></table></figure>
 <p>解决方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6A030B21BA07F4FB</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6A030B21BA07F4FB</span><br></pre></td></tr></table></figure>
 <p>再次之行 <code>apt-get update</code>，成功。</p>
 <h2 id="初始化master节点"><a href="#初始化master节点" class="headerlink" title="初始化master节点"></a>初始化master节点</h2><p>1、拉取镜像</p>
 <p>首先查询下当前版本需要哪些docker image。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">root@jqgpu34:~# kubeadm config images list --kubernetes-version v1.12.2</div><div class="line">k8s.gcr.io/kube-apiserver:v1.12.2</div><div class="line">k8s.gcr.io/kube-controller-manager:v1.12.2</div><div class="line">k8s.gcr.io/kube-scheduler:v1.12.2</div><div class="line">k8s.gcr.io/kube-proxy:v1.12.2</div><div class="line">k8s.gcr.io/pause:3.1</div><div class="line">k8s.gcr.io/etcd:3.2.24</div><div class="line">k8s.gcr.io/coredns:1.2.2</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">root@jqgpu34:~# kubeadm config images list --kubernetes-version v1.12.2</span><br><span class="line">k8s.gcr.io/kube-apiserver:v1.12.2</span><br><span class="line">k8s.gcr.io/kube-controller-manager:v1.12.2</span><br><span class="line">k8s.gcr.io/kube-scheduler:v1.12.2</span><br><span class="line">k8s.gcr.io/kube-proxy:v1.12.2</span><br><span class="line">k8s.gcr.io/pause:3.1</span><br><span class="line">k8s.gcr.io/etcd:3.2.24</span><br><span class="line">k8s.gcr.io/coredns:1.2.2</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>因为服务器没有翻墙，所以提前拉取k8s初始化需要用到的Images，并添加对应的<code>k8s.gcr.io</code>标签。推荐使用镜像：<a href="https://github.com/anjia0532/gcr.io_mirror来拉取，机器人自动跟官方同步，非常及时。" target="_blank" rel="external">https://github.com/anjia0532/gcr.io_mirror来拉取，机器人自动跟官方同步，非常及时。</a></p>
+<p>因为服务器没有翻墙，所以提前拉取k8s初始化需要用到的Images，并添加对应的<code>k8s.gcr.io</code>标签。推荐使用镜像：<a href="https://github.com/anjia0532/gcr.io_mirror来拉取，机器人自动跟官方同步，非常及时。" target="_blank" rel="noopener">https://github.com/anjia0532/gcr.io_mirror来拉取，机器人自动跟官方同步，非常及时。</a></p>
 </blockquote>
 <p>写了个脚本<code>pull-tag-rm-image.sh</code>，先pull，再改tag，最后移除pull的image：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"># cat pull-tag-rm-image.sh</div><div class="line">#!/usr/bin/env bash</div><div class="line"></div><div class="line">images=(</div><div class="line">    kube-apiserver:v1.12.2</div><div class="line">    kube-controller-manager:v1.12.2</div><div class="line">    kube-scheduler:v1.12.2</div><div class="line">    kube-proxy:v1.12.2</div><div class="line">    pause:3.1</div><div class="line">    etcd:3.2.24</div><div class="line">    coredns:1.2.2</div><div class="line">)</div><div class="line"></div><div class="line">for imagename in $&#123;images[@]&#125; ; do</div><div class="line">    docker pull anjia0532/google-containers.$imagename</div><div class="line">    docker tag anjia0532/google-containers.$imagename k8s.gcr.io/$imagename</div><div class="line">    docker rmi anjia0532/google-containers.$imagename</div><div class="line">done</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># cat pull-tag-rm-image.sh</span><br><span class="line">#!/usr/bin/env bash</span><br><span class="line"></span><br><span class="line">images=(</span><br><span class="line">    kube-apiserver:v1.12.2</span><br><span class="line">    kube-controller-manager:v1.12.2</span><br><span class="line">    kube-scheduler:v1.12.2</span><br><span class="line">    kube-proxy:v1.12.2</span><br><span class="line">    pause:3.1</span><br><span class="line">    etcd:3.2.24</span><br><span class="line">    coredns:1.2.2</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">for imagename in $&#123;images[@]&#125; ; do</span><br><span class="line">    docker pull anjia0532/google-containers.$imagename</span><br><span class="line">    docker tag anjia0532/google-containers.$imagename k8s.gcr.io/$imagename</span><br><span class="line">    docker rmi anjia0532/google-containers.$imagename</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
 <p>运行脚本：<code>bash pull-tag-rm-image.sh</code></p>
 <p>查看image</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">root@jqgpu34:~# docker image ls</div><div class="line">REPOSITORY                                                  TAG                 </div><div class="line">k8s.gcr.io/kube-proxy                                       v1.12.2            </div><div class="line">k8s.gcr.io/kube-apiserver                                   v1.12.2                </div><div class="line">k8s.gcr.io/kube-controller-manager                          v1.12.2            </div><div class="line">k8s.gcr.io/kube-scheduler                                   v1.12.2            </div><div class="line">ubuntu                                                      16.04              </div><div class="line">k8s.gcr.io/etcd                                             3.2.24             </div><div class="line">hello-world                                                 latest             </div><div class="line">k8s.gcr.io/coredns                                          1.2.2              </div><div class="line">k8s.gcr.io/pause                                            3.1</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">root@jqgpu34:~# docker image ls</span><br><span class="line">REPOSITORY                                                  TAG                 </span><br><span class="line">k8s.gcr.io/kube-proxy                                       v1.12.2            </span><br><span class="line">k8s.gcr.io/kube-apiserver                                   v1.12.2                </span><br><span class="line">k8s.gcr.io/kube-controller-manager                          v1.12.2            </span><br><span class="line">k8s.gcr.io/kube-scheduler                                   v1.12.2            </span><br><span class="line">ubuntu                                                      16.04              </span><br><span class="line">k8s.gcr.io/etcd                                             3.2.24             </span><br><span class="line">hello-world                                                 latest             </span><br><span class="line">k8s.gcr.io/coredns                                          1.2.2              </span><br><span class="line">k8s.gcr.io/pause                                            3.1</span><br></pre></td></tr></table></figure>
 <p>2、选择pod network</p>
-<p>这里选择网络为calico，具体参考<a href="https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#pod-network" target="_blank" rel="external">官网 pod-network</a></p>
+<p>这里选择网络为calico，具体参考<a href="https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#pod-network" target="_blank" rel="noopener">官网 pod-network</a></p>
 <p>3、初始化master</p>
 <p>Master节点就是运行着控制组件的机器，包括etcd(集群数据库)和API服务(kubectl CLI通讯服务)。<br>初始化master节点, 只需运行如下命令:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">root@jqgpu34:~# kubeadm init --pod-network-cidr=192.168.0.0/16 --kubernetes-version=1.12.2</div><div class="line">...</div><div class="line">[bootstraptoken] creating the &quot;cluster-info&quot; ConfigMap in the &quot;kube-public&quot; namespace</div><div class="line">[addons] Applied essential addon: CoreDNS</div><div class="line">[addons] Applied essential addon: kube-proxy</div><div class="line"></div><div class="line">Your Kubernetes master has initialized successfully!</div><div class="line"></div><div class="line">To start using your cluster, you need to run the following as a regular user:</div><div class="line"></div><div class="line">  mkdir -p $HOME/.kube</div><div class="line">  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</div><div class="line">  sudo chown $(id -u):$(id -g) $HOME/.kube/config</div><div class="line"></div><div class="line">You should now deploy a pod network to the cluster.</div><div class="line">Run &quot;kubectl apply -f [podnetwork].yaml&quot; with one of the options listed at:</div><div class="line">  https://kubernetes.io/docs/concepts/cluster-administration/addons/</div><div class="line"></div><div class="line">You can now join any number of machines by running the following on each node</div><div class="line">as root:</div><div class="line"></div><div class="line">  kubeadm join 192.168.212.103:6443 --token 4eqoi9.xekqw6hsc7hbqm9l --discovery-token-ca-cert-hash sha256:64a06d1fc3883066fcf94109399cb68eb6626ed2969153dbd08279e0124eb424</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">root@jqgpu34:~# kubeadm init --pod-network-cidr=192.168.0.0/16 --kubernetes-version=1.12.2</span><br><span class="line">...</span><br><span class="line">[bootstraptoken] creating the &quot;cluster-info&quot; ConfigMap in the &quot;kube-public&quot; namespace</span><br><span class="line">[addons] Applied essential addon: CoreDNS</span><br><span class="line">[addons] Applied essential addon: kube-proxy</span><br><span class="line"></span><br><span class="line">Your Kubernetes master has initialized successfully!</span><br><span class="line"></span><br><span class="line">To start using your cluster, you need to run the following as a regular user:</span><br><span class="line"></span><br><span class="line">  mkdir -p $HOME/.kube</span><br><span class="line">  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</span><br><span class="line">  sudo chown $(id -u):$(id -g) $HOME/.kube/config</span><br><span class="line"></span><br><span class="line">You should now deploy a pod network to the cluster.</span><br><span class="line">Run &quot;kubectl apply -f [podnetwork].yaml&quot; with one of the options listed at:</span><br><span class="line">  https://kubernetes.io/docs/concepts/cluster-administration/addons/</span><br><span class="line"></span><br><span class="line">You can now join any number of machines by running the following on each node</span><br><span class="line">as root:</span><br><span class="line"></span><br><span class="line">  kubeadm join 192.168.212.103:6443 --token 4eqoi9.xekqw6hsc7hbqm9l --discovery-token-ca-cert-hash sha256:64a06d1fc3883066fcf94109399cb68eb6626ed2969153dbd08279e0124eb424</span><br></pre></td></tr></table></figure>
 <ul>
 <li><code>--pod-network-cidr=192.168.0.0/16</code> ：指定pod网络的IP地址范围，它的值取决于下一步选择的网络插件类型。这里选择calico网络。</li>
 <li><code>--kubernetes-version=1.12.2</code>：指定Kubenetes版本，如果不指定该参数，会从google网站下载最新的版本信息。这里选择版本v1.12.2。</li>
@@ -237,87 +237,90 @@ var _hmt = _hmt || [];
 </ul>
 <p>4、设置使用kubectl的权限</p>
 <p>如果想在非root用户下使用<code>kubectl</code>，可以执行如下命令(也是<code>kubeadm init</code>输出的一部分)：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mkdir -p <span class="variable">$HOME</span>/.kube</div><div class="line">sudo cp -i /etc/kubernetes/admin.conf <span class="variable">$HOME</span>/.kube/config</div><div class="line">sudo chown $(id -u):$(id -g) <span class="variable">$HOME</span>/.kube/config</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p <span class="variable">$HOME</span>/.kube</span><br><span class="line">sudo cp -i /etc/kubernetes/admin.conf <span class="variable">$HOME</span>/.kube/config</span><br><span class="line">sudo chown $(id -u):$(id -g) <span class="variable">$HOME</span>/.kube/config</span><br></pre></td></tr></table></figure>
 <p>如果已是root用户，只需执行如下命令即可：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> KUBECONFIG=/etc/kubernetes/admin.conf</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> KUBECONFIG=/etc/kubernetes/admin.conf</span><br></pre></td></tr></table></figure>
 <h2 id="安装网络插件"><a href="#安装网络插件" class="headerlink" title="安装网络插件"></a>安装网络插件</h2><p>检查节点的状态，发现节点的状态为not ready：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">root@jqgpu34:~# kubectl get nodes</div><div class="line">NAME      STATUS     ROLES    AGE   VERSION</div><div class="line">jqgpu34   NotReady   master   14m   v1.12.2</div></pre></td></tr></table></figure>
-<p>原因是还没有配置网络。配置网络，具体参考参考<a href="https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#pod-network" target="_blank" rel="external">官网 pod-network</a>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@jqgpu34:~# kubectl get nodes</span><br><span class="line">NAME      STATUS     ROLES    AGE   VERSION</span><br><span class="line">jqgpu34   NotReady   master   14m   v1.12.2</span><br></pre></td></tr></table></figure>
+<p>原因是还没有配置网络。配置网络，具体参考参考<a href="https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/#pod-network" target="_blank" rel="noopener">官网 pod-network</a>。</p>
 <p>pods之间需要通过网络插件进行彼此通信。网络部署必须是优先于任何应用的部署，如<code>kube-dns</code>(本文中使用的是<code>coredns</code>)在网络部署成功之前是无法使用的。k8s下通信需要CNI（Container Network Interface），（kubeadm不支持kubenet）。比较常见的network addon有：Calico, Canal, Flannel, Kube-router, Romana, Weave Net等。</p>
 <p>1、安装网络插件</p>
 <p>使用下列命令来安装网络插件:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">kubectl apply -f &lt;add-on.yaml&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f &lt;add-on.yaml&gt;</span><br></pre></td></tr></table></figure>
 <p>在本文中，我使用的是Calico网络，安装如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/rbac-kdd.yaml</div><div class="line"># kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/kubernetes-datastore/calico-networking/1.7/calico.yaml</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/rbac-kdd.yaml</span><br><span class="line"># kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/kubernetes-datastore/calico-networking/1.7/calico.yaml</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>为了Calico可以正常运行，必须在执行kubeadm init时使用 <code>--pod-network-cidr=192.168.0.0/16</code>。</p>
 </blockquote>
 <p>这时候，发现节点的状态变为ready了</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">root@jqgpu34:~# kubectl get nodes</div><div class="line">NAME      STATUS   ROLES    AGE   VERSION</div><div class="line">jqgpu34   Ready    master   18m   v1.12.2</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@jqgpu34:~# kubectl get nodes</span><br><span class="line">NAME      STATUS   ROLES    AGE   VERSION</span><br><span class="line">jqgpu34   Ready    master   18m   v1.12.2</span><br></pre></td></tr></table></figure>
 <p>网络插件安装完成后，可以通过检查<code>coredns pod</code>的运行状态来判断网络插件是否正常运行，一旦<code>CoreDNS pod</code>起来并运行，就可以继续加入节点。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">root@jqgpu34:~# kubectl get pods --all-namespaces</div><div class="line">NAMESPACE     NAME                              READY   STATUS    RESTARTS   AGE</div><div class="line">kube-system   calico-node-vps6h                 2/2     Running   0          2m8s</div><div class="line">kube-system   coredns-576cbf47c7-56kmg          1/1     Running   0          18m</div><div class="line">kube-system   coredns-576cbf47c7-wrvzn          1/1     Running   0          18m</div><div class="line">kube-system   etcd-jqgpu34                      1/1     Running   0          17m</div><div class="line">kube-system   kube-apiserver-jqgpu34            1/1     Running   0          17m</div><div class="line">kube-system   kube-controller-manager-jqgpu34   1/1     Running   0          18m</div><div class="line">kube-system   kube-proxy-7jdqx                  1/1     Running   0          18m</div><div class="line">kube-system   kube-scheduler-jqgpu34            1/1     Running   0          18m</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@jqgpu34:~# kubectl get pods --all-namespaces</span><br><span class="line">NAMESPACE     NAME                              READY   STATUS    RESTARTS   AGE</span><br><span class="line">kube-system   calico-node-vps6h                 2/2     Running   0          2m8s</span><br><span class="line">kube-system   coredns-576cbf47c7-56kmg          1/1     Running   0          18m</span><br><span class="line">kube-system   coredns-576cbf47c7-wrvzn          1/1     Running   0          18m</span><br><span class="line">kube-system   etcd-jqgpu34                      1/1     Running   0          17m</span><br><span class="line">kube-system   kube-apiserver-jqgpu34            1/1     Running   0          17m</span><br><span class="line">kube-system   kube-controller-manager-jqgpu34   1/1     Running   0          18m</span><br><span class="line">kube-system   kube-proxy-7jdqx                  1/1     Running   0          18m</span><br><span class="line">kube-system   kube-scheduler-jqgpu34            1/1     Running   0          18m</span><br></pre></td></tr></table></figure>
 <p>2、隔离主节点</p>
 <p>默认情况下，出于安全的考虑，并不会在主节点上运行pod，如果你想在主节点上运行pod，比如：运行一个单机版的kubernetes集群时，可运行如下命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root@jqgpu34:~# kubectl taint nodes --all node-role.kubernetes.io/master-</div><div class="line">node/jqgpu34 untainted</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@jqgpu34:~# kubectl taint nodes --all node-role.kubernetes.io/master-</span><br><span class="line">node/jqgpu34 untainted</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>我这里就三台机器，两台计算节点不够用，所以也把master加入计算节点。这时候Scheduler便可以在任何节点上安排运行pod了。</p>
 </blockquote>
 <h2 id="slave节点加入集群"><a href="#slave节点加入集群" class="headerlink" title="slave节点加入集群"></a>slave节点加入集群</h2><p>节点就是负载（容器和pod等等）运行的地方。ssh到slave机器上执行<code>kubeadm init</code>输出的那句命令，即可将slave节点加入集群：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">kubeadm join 192.168.212.103:6443 --token 4eqoi9.xekqw6hsc7hbqm9l --discovery-token-ca-cert-hash sha256:64a06d1fc3883066fcf94109399cb68eb6626ed2969153dbd08279e0124eb424</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubeadm join 192.168.212.103:6443 --token 4eqoi9.xekqw6hsc7hbqm9l --discovery-token-ca-cert-hash sha256:64a06d1fc3883066fcf94109399cb68eb6626ed2969153dbd08279e0124eb424</span><br></pre></td></tr></table></figure>
 <p>随后就可以在master节点上通过命令<code>kubectl get nodes</code>看到新加入的机器了：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">root@jqgpu34:~# kubectl get nodes</div><div class="line">NAME      STATUS     ROLES    AGE   VERSION</div><div class="line">jqgpu34   Ready      master   27m   v1.12.2</div><div class="line">jqgpu35   NotReady   &lt;none&gt;   27s   v1.12.2</div><div class="line">jqgpu36   NotReady   &lt;none&gt;   10s   v1.12.2</div></pre></td></tr></table></figure>
-<p>其他可选安装步骤参考<a href="https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/" target="_blank" rel="external">官网</a>.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@jqgpu34:~# kubectl get nodes</span><br><span class="line">NAME      STATUS     ROLES    AGE   VERSION</span><br><span class="line">jqgpu34   Ready      master   27m   v1.12.2</span><br><span class="line">jqgpu35   NotReady   &lt;none&gt;   27s   v1.12.2</span><br><span class="line">jqgpu36   NotReady   &lt;none&gt;   10s   v1.12.2</span><br></pre></td></tr></table></figure>
+<p>其他可选安装步骤参考<a href="https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/" target="_blank" rel="noopener">官网</a>.</p>
 <p>其他参考资料：</p>
 <ul>
-<li><a href="https://kubernetes.io/docs/setup/independent/install-kubeadm/" target="_blank" rel="external">https://kubernetes.io/docs/setup/independent/install-kubeadm/</a></li>
-<li><a href="https://docs.projectcalico.org/v3.3/getting-started/kubernetes/" target="_blank" rel="external">https://docs.projectcalico.org/v3.3/getting-started/kubernetes/</a></li>
-<li><a href="https://jimmysong.io/kubernetes-handbook/practice/install-kubernetes-on-ubuntu-server-16.04-with-kubeadm.html" target="_blank" rel="external">https://jimmysong.io/kubernetes-handbook/practice/install-kubernetes-on-ubuntu-server-16.04-with-kubeadm.html</a></li>
-<li><a href="https://www.cnblogs.com/RainingNight/p/using-kubeadm-to-create-a-cluster.html" target="_blank" rel="external">https://www.cnblogs.com/RainingNight/p/using-kubeadm-to-create-a-cluster.html</a></li>
+<li><a href="https://kubernetes.io/docs/setup/independent/install-kubeadm/" target="_blank" rel="noopener">https://kubernetes.io/docs/setup/independent/install-kubeadm/</a></li>
+<li><a href="https://docs.projectcalico.org/v3.3/getting-started/kubernetes/" target="_blank" rel="noopener">https://docs.projectcalico.org/v3.3/getting-started/kubernetes/</a></li>
+<li><a href="https://jimmysong.io/kubernetes-handbook/practice/install-kubernetes-on-ubuntu-server-16.04-with-kubeadm.html" target="_blank" rel="noopener">https://jimmysong.io/kubernetes-handbook/practice/install-kubernetes-on-ubuntu-server-16.04-with-kubeadm.html</a></li>
+<li><a href="https://www.cnblogs.com/RainingNight/p/using-kubeadm-to-create-a-cluster.html" target="_blank" rel="noopener">https://www.cnblogs.com/RainingNight/p/using-kubeadm-to-create-a-cluster.html</a></li>
 </ul>
 <h2 id="slave节点一直not-ready"><a href="#slave节点一直not-ready" class="headerlink" title="slave节点一直not ready"></a>slave节点一直not ready</h2><blockquote>
 <p>这个问题花了挺多时间，记录一下</p>
 </blockquote>
-<p>和该问题一模一样：<a href="https://stackoverflow.com/questions/47918549/kubernetes-slave-node-is-in-not-ready-state，但是并没有说解决方法，需要看日志。" target="_blank" rel="external">https://stackoverflow.com/questions/47918549/kubernetes-slave-node-is-in-not-ready-state，但是并没有说解决方法，需要看日志。</a></p>
+<p>和该问题一模一样：<a href="https://stackoverflow.com/questions/47918549/kubernetes-slave-node-is-in-not-ready-state，但是并没有说解决方法，需要看日志。" target="_blank" rel="noopener">https://stackoverflow.com/questions/47918549/kubernetes-slave-node-is-in-not-ready-state，但是并没有说解决方法，需要看日志。</a></p>
 <p>1、master上查看kubelet log</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># journalctl -u kubelet</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># journalctl -u kubelet</span><br></pre></td></tr></table></figure>
 <p>发现如下错误</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dns.go:131] Nameserver limits were exceeded, some nameservers have been omitted,</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dns.go:131] Nameserver limits were exceeded, some nameservers have been omitted,</span><br></pre></td></tr></table></figure>
 <p>网上找到遇到类似问题的：</p>
-<p><a href="https://www.reddit.com/r/kubernetes/comments/7ruq0f/kubelet_nameserver_limits_were_exceeded/" target="_blank" rel="external">https://www.reddit.com/r/kubernetes/comments/7ruq0f/kubelet_nameserver_limits_were_exceeded/</a></p>
-<p><a href="https://stackoverflow.com/questions/47918549/kubernetes-slave-node-is-in-not-ready-state" target="_blank" rel="external">https://stackoverflow.com/questions/47918549/kubernetes-slave-node-is-in-not-ready-state</a></p>
+<p><a href="https://www.reddit.com/r/kubernetes/comments/7ruq0f/kubelet_nameserver_limits_were_exceeded/" target="_blank" rel="noopener">https://www.reddit.com/r/kubernetes/comments/7ruq0f/kubelet_nameserver_limits_were_exceeded/</a></p>
+<p><a href="https://stackoverflow.com/questions/47918549/kubernetes-slave-node-is-in-not-ready-state" target="_blank" rel="noopener">https://stackoverflow.com/questions/47918549/kubernetes-slave-node-is-in-not-ready-state</a></p>
 <p>是dns的问题。查看resol.conf</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># cat /etc/resolv.conf</div><div class="line">nameserver 119.28.28.28</div><div class="line">nameserver 119.29.29.29</div><div class="line">nameserver 114.114.114.114</div><div class="line">nameserver 114.114.115.115</div><div class="line">options timeout:2 attempts:1</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># cat /etc/resolv.conf</span><br><span class="line">nameserver 119.28.28.28</span><br><span class="line">nameserver 119.29.29.29</span><br><span class="line">nameserver 114.114.114.114</span><br><span class="line">nameserver 114.114.115.115</span><br><span class="line">options timeout:2 attempts:1</span><br></pre></td></tr></table></figure>
 <p>也没找到其他解决方法。</p>
 <p>2、slave节点上查看日志</p>
 <p>除了上述dns的错误外，还有</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cni.go:188] Unable to update cni config: No networks found in /etc/cni/net.d</div><div class="line">kubelet.go:2167] Container runtime network not ready: NetworkReady=false reason:NetworkPluginNotReady message:docker: network plugin is not ready: cni config uninitialized</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cni.go:188] Unable to update cni config: No networks found in /etc/cni/net.d</span><br><span class="line">kubelet.go:2167] Container runtime network not ready: NetworkReady=false reason:NetworkPluginNotReady message:docker: network plugin is not ready: cni config uninitialized</span><br></pre></td></tr></table></figure>
 <p>在master上</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ls /etc/cni/net.d/</div><div class="line">10-calico.conflist  calico-kubeconfig</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ls /etc/cni/net.d/</span><br><span class="line">10-calico.conflist  calico-kubeconfig</span><br></pre></td></tr></table></figure>
 <p>而两个slave节点没有<code>/etc/cni/net.d/</code>这个目录。在slave节点上创建两个目录：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mkdir -p /etc/cni/net.d</div><div class="line">mkdir -p /opt/cni/bin</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /etc/cni/net.d</span><br><span class="line">mkdir -p /opt/cni/bin</span><br></pre></td></tr></table></figure>
 <p>3、回到master上操作</p>
 <p>查看etcd的状态，正常running</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># kubectl -n kube-system get pod -o wide | grep etcd</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># kubectl -n kube-system get pod -o wide | grep etcd</span><br></pre></td></tr></table></figure>
 <p>查看calico的状态，只有master和etcd是runing</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># kubectl -n kube-system get pod -o wide  | grep calico</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># kubectl -n kube-system get pod -o wide  | grep calico</span><br></pre></td></tr></table></figure>
 <p>查看非running pod <code>calico-node-222fg</code>的详细信息</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># kubectl -n kube-system describe pod calico-node-222fg</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># kubectl -n kube-system describe pod calico-node-222fg</span><br></pre></td></tr></table></figure>
 <p>发现没有这个镜像<code>k8s.gcr.io/pause:3.1</code>，可能之前脚本拉的时候没有成功，在每台机器上再拉一下。</p>
 <p>下载应用的calico yaml文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">wget https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/rbac.yaml</div><div class="line">wget https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/calico.yaml</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/rbac.yaml</span><br><span class="line">wget https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/calico.yaml</span><br></pre></td></tr></table></figure>
 <p>Calico.yaml里的IP为: <code>etcd_endpoints: &quot;http://10.96.232.136:6666&quot;</code></p>
 <p>修改里面的IP，重新应用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">kubectl delete -f rbac.yaml</div><div class="line">kubectl delete -f calico.yaml</div><div class="line">kubectl apply -f rbac.yaml</div><div class="line">kubectl apply -f calico.yaml</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kubectl delete -f rbac.yaml</span><br><span class="line">kubectl delete -f calico.yaml</span><br><span class="line">kubectl apply -f rbac.yaml</span><br><span class="line">kubectl apply -f calico.yaml</span><br></pre></td></tr></table></figure>
 <p>修改kube-apiserver.yaml文件，修改IP</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># ls /etc/kubernetes/manifests/</div><div class="line">etcd.yaml  kube-apiserver.yaml  kube-controller-manager.yaml  kube-scheduler.yaml</div><div class="line"></div><div class="line"># docker ps -a |grep kube-api</div><div class="line">567dfc84a46c        51a9c329b7c5           &quot;kube-apiserver --au…&quot;   19 hours ago        Up 19 hours                                       k8s_kube-apiserver_kube-apiserver-jqgpu34_kube-system_ce9a856edd3006dfeece62c00bf608a8_0</div><div class="line">b0110d62f45f        k8s.gcr.io/pause:3.1   &quot;/pause&quot;                 19 hours ago        Up 19 hours                                       k8s_POD_kube-apiserver-jqgpu34_kube-system_ce9a856edd3006dfeece62c00bf608a8_0</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># ls /etc/kubernetes/manifests/</span><br><span class="line">etcd.yaml  kube-apiserver.yaml  kube-controller-manager.yaml  kube-scheduler.yaml</span><br><span class="line"></span><br><span class="line"># docker ps -a |grep kube-api</span><br><span class="line">567dfc84a46c        51a9c329b7c5           &quot;kube-apiserver --au…&quot;   19 hours ago        Up 19 hours                                       k8s_kube-apiserver_kube-apiserver-jqgpu34_kube-system_ce9a856edd3006dfeece62c00bf608a8_0</span><br><span class="line">b0110d62f45f        k8s.gcr.io/pause:3.1   &quot;/pause&quot;                 19 hours ago        Up 19 hours                                       k8s_POD_kube-apiserver-jqgpu34_kube-system_ce9a856edd3006dfeece62c00bf608a8_0</span><br></pre></td></tr></table></figure>
 <p>看看etcd都监听了哪些端口</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># netstat -natlp | grep etcd</div><div class="line">tcp        0      0 127.0.0.1:2379          0.0.0.0:*               LISTEN      1226075/etcd</div><div class="line">tcp        0      0 127.0.0.1:2380          0.0.0.0:*               LISTEN      1226075/etcd</div><div class="line">...</div><div class="line">tcp6       0      0 :::6666                 :::*                    LISTEN      1232066/etcd</div><div class="line">tcp6       0      0 :::6667                 :::*                    LISTEN      1232066/etcd</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># netstat -natlp | grep etcd</span><br><span class="line">tcp        0      0 127.0.0.1:2379          0.0.0.0:*               LISTEN      1226075/etcd</span><br><span class="line">tcp        0      0 127.0.0.1:2380          0.0.0.0:*               LISTEN      1226075/etcd</span><br><span class="line">...</span><br><span class="line">tcp6       0      0 :::6666                 :::*                    LISTEN      1232066/etcd</span><br><span class="line">tcp6       0      0 :::6667                 :::*                    LISTEN      1232066/etcd</span><br></pre></td></tr></table></figure>
 <p>上面整理的有一点乱，究其根源就是etcd占用了<code>127.0.0.1</code>的网段，而calico</p>
 <p>解决以后：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">root@jqgpu34:~# kubectl get nodes</div><div class="line">NAME      STATUS   ROLES    AGE   VERSION</div><div class="line">jqgpu34   Ready    master   20h   v1.12.2</div><div class="line">jqgpu35   Ready    &lt;none&gt;   19h   v1.12.2</div><div class="line">jqgpu36   Ready    &lt;none&gt;   19h   v1.12.2</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@jqgpu34:~# kubectl get nodes</span><br><span class="line">NAME      STATUS   ROLES    AGE   VERSION</span><br><span class="line">jqgpu34   Ready    master   20h   v1.12.2</span><br><span class="line">jqgpu35   Ready    &lt;none&gt;   19h   v1.12.2</span><br><span class="line">jqgpu36   Ready    &lt;none&gt;   19h   v1.12.2</span><br></pre></td></tr></table></figure>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -426,11 +429,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2018/11/06/kubernetes-deploy/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2018/11/06/kubernetes-deploy/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -535,6 +539,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -636,10 +642,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -652,15 +654,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -680,19 +682,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -704,6 +702,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -712,19 +714,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -736,6 +730,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -744,15 +742,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -764,15 +766,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

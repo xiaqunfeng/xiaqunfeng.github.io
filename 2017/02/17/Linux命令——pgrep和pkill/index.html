@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>Linux命令——pgrep和pkill | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="通过程序名来查询进程PID的命令pgrep，以及对应的杀进程命令pkill。">
+<meta name="keywords" content="Linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux命令——pgrep和pkill">
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/02/17/Linux命令——pgrep和pkill/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="通过程序名来查询进程PID的命令pgrep，以及对应的杀进程命令pkill。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
 <meta property="og:updated_time" content="2017-02-19T14:40:50.000Z">
 <meta name="twitter:card" content="summary">
@@ -51,7 +53,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -79,9 +81,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -161,7 +160,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Linux命令——pgrep和pkill" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-Linux命令——pgrep和pkill" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -185,12 +185,12 @@ var _hmt = _hmt || [];
 <h2 id="pgrep"><a href="#pgrep" class="headerlink" title="pgrep"></a>pgrep</h2><p>在linux中查看进程信息，经常要用到<code>pa auxf</code>，具体到某个进程的时候，又需进行grep管道。如：<code>ps auxf|grep java|grep -v grep</code> ，即然这么长，可以不可以简化呢？当然可以，如果还是使用ps命令的话，可以改为<code>ps auxf|grep jav[a]</code>，这样就不用排除自身了。不过感觉命令还是长了点，能不能再简点，可以，使用<code>pgrep java</code>，不过此时得出的只是pid 。</p>
 <p>pgrep是linux中常用的通过 <strong>程序名</strong> 来查询进程PID信息的命令。</p>
 <p>pgrep命令相当于</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ps -eo pid,cmd | awk &apos;&#123;print $1,$2&#125;&apos;  | grep KeyWord</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -eo pid,cmd | awk &apos;&#123;print $1,$2&#125;&apos;  | grep KeyWord</span><br></pre></td></tr></table></figure>
 <p>注：pgrep命令查找的的是程序名，不包括其参数。如果参数里包括查找的keyword，而程序名中不包括，所则使用pgrep命令无法查到该进程。这时可以使用<code>ps -aux|grep keyword</code>命令。</p>
-<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pgrep [options] &lt;pattern&gt;</div></pre></td></tr></table></figure>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pgrep [options] &lt;pattern&gt;</span><br></pre></td></tr></table></figure>
 <p>默认只显示PID，可以加选项来显示更多信息</p>
 <h3 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h3><p>通过命令 <code>pgrep --help</code> 获得</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">Options:</div><div class="line"> -d, --delimiter &lt;string&gt;  specify output delimiter</div><div class="line"> -l, --list-name           list PID and process name</div><div class="line"> -v, --inverse             negates the matching</div><div class="line"> -w, --lightweight         list all TID</div><div class="line"> -c, --count               count of matching processes</div><div class="line"> -f, --full                use full process name to match</div><div class="line"> -g, --pgroup &lt;id,...&gt;     match listed process group IDs</div><div class="line"> -G, --group &lt;gid,...&gt;     match real group IDs</div><div class="line"> -n, --newest              select most recently started</div><div class="line"> -o, --oldest              select least recently started</div><div class="line"> -P, --parent &lt;ppid,...&gt;   match only child processes of the given parent</div><div class="line"> -s, --session &lt;sid,...&gt;   match session IDs</div><div class="line"> -t, --terminal &lt;tty,...&gt;  match by controlling terminal</div><div class="line"> -u, --euid &lt;id,...&gt;       match by effective IDs</div><div class="line"> -U, --uid &lt;id,...&gt;        match by real IDs</div><div class="line"> -x, --exact               match exactly with the command name</div><div class="line"> -F, --pidfile &lt;file&gt;      read PIDs from file</div><div class="line"> -L, --logpidfile          fail if PID file is not locked</div><div class="line"> --ns &lt;pid&gt;                match the processes that belong to the same</div><div class="line">                           namespace as &lt;pid&gt;</div><div class="line"> --nslist &lt;ns,...&gt;         list which namespaces will be considered for</div><div class="line">                           the --ns option.</div><div class="line">                           Available namespaces: ipc, mnt, net, pid, user, uts</div><div class="line"></div><div class="line"> -h, --help     display this help and exit</div><div class="line"> -V, --version  output version information and exit</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">Options:</span><br><span class="line"> -d, --delimiter &lt;string&gt;  specify output delimiter</span><br><span class="line"> -l, --list-name           list PID and process name</span><br><span class="line"> -v, --inverse             negates the matching</span><br><span class="line"> -w, --lightweight         list all TID</span><br><span class="line"> -c, --count               count of matching processes</span><br><span class="line"> -f, --full                use full process name to match</span><br><span class="line"> -g, --pgroup &lt;id,...&gt;     match listed process group IDs</span><br><span class="line"> -G, --group &lt;gid,...&gt;     match real group IDs</span><br><span class="line"> -n, --newest              select most recently started</span><br><span class="line"> -o, --oldest              select least recently started</span><br><span class="line"> -P, --parent &lt;ppid,...&gt;   match only child processes of the given parent</span><br><span class="line"> -s, --session &lt;sid,...&gt;   match session IDs</span><br><span class="line"> -t, --terminal &lt;tty,...&gt;  match by controlling terminal</span><br><span class="line"> -u, --euid &lt;id,...&gt;       match by effective IDs</span><br><span class="line"> -U, --uid &lt;id,...&gt;        match by real IDs</span><br><span class="line"> -x, --exact               match exactly with the command name</span><br><span class="line"> -F, --pidfile &lt;file&gt;      read PIDs from file</span><br><span class="line"> -L, --logpidfile          fail if PID file is not locked</span><br><span class="line"> --ns &lt;pid&gt;                match the processes that belong to the same</span><br><span class="line">                           namespace as &lt;pid&gt;</span><br><span class="line"> --nslist &lt;ns,...&gt;         list which namespaces will be considered for</span><br><span class="line">                           the --ns option.</span><br><span class="line">                           Available namespaces: ipc, mnt, net, pid, user, uts</span><br><span class="line"></span><br><span class="line"> -h, --help     display this help and exit</span><br><span class="line"> -V, --version  output version information and exit</span><br></pre></td></tr></table></figure>
 <p>翻译和解释如下：</p>
 <table>
 <thead>
@@ -274,39 +274,42 @@ var _hmt = _hmt || [];
 </tr>
 </tbody>
 </table>
-<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><h4 id="列出要查找的进程"><a href="#列出要查找的进程" class="headerlink" title="列出要查找的进程"></a>列出要查找的进程</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># pgrep -l ceph</div><div class="line">1478 ceph-msgr</div><div class="line">4682 ceph-watch-noti</div><div class="line">7058 ceph-mon</div><div class="line">9371 ceph-osd</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># ps -eo pid,cmd | awk &apos;&#123;print $1,$2&#125;&apos;  | grep ceph</div><div class="line">1478 [ceph-msgr]</div><div class="line">4682 [ceph-watch-noti]</div><div class="line">7058 /usr/bin/ceph-mon</div><div class="line">9371 /usr/bin/ceph-osd</div></pre></td></tr></table></figure>
-<h4 id="自定义输出进程间分隔符"><a href="#自定义输出进程间分隔符" class="headerlink" title="自定义输出进程间分隔符"></a>自定义输出进程间分隔符</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># pgrep -l -d , ceph</div><div class="line">1478 ceph-msgr,4682 ceph-watch-noti,7058 ceph-mon,9371 ceph-osd</div><div class="line"># pgrep -l -d ... ceph</div><div class="line">1478 ceph-msgr...4682 ceph-watch-noti...7058 ceph-mon...9371 ceph-osd</div></pre></td></tr></table></figure>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><h4 id="列出要查找的进程"><a href="#列出要查找的进程" class="headerlink" title="列出要查找的进程"></a>列出要查找的进程</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># pgrep -l ceph</span><br><span class="line">1478 ceph-msgr</span><br><span class="line">4682 ceph-watch-noti</span><br><span class="line">7058 ceph-mon</span><br><span class="line">9371 ceph-osd</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># ps -eo pid,cmd | awk &apos;&#123;print $1,$2&#125;&apos;  | grep ceph</span><br><span class="line">1478 [ceph-msgr]</span><br><span class="line">4682 [ceph-watch-noti]</span><br><span class="line">7058 /usr/bin/ceph-mon</span><br><span class="line">9371 /usr/bin/ceph-osd</span><br></pre></td></tr></table></figure>
+<h4 id="自定义输出进程间分隔符"><a href="#自定义输出进程间分隔符" class="headerlink" title="自定义输出进程间分隔符"></a>自定义输出进程间分隔符</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># pgrep -l -d , ceph</span><br><span class="line">1478 ceph-msgr,4682 ceph-watch-noti,7058 ceph-mon,9371 ceph-osd</span><br><span class="line"># pgrep -l -d ... ceph</span><br><span class="line">1478 ceph-msgr...4682 ceph-watch-noti...7058 ceph-mon...9371 ceph-osd</span><br></pre></td></tr></table></figure>
 <h4 id="否定匹配"><a href="#否定匹配" class="headerlink" title="否定匹配"></a>否定匹配</h4><p>列出所有进程名中不包含 ceph 的</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"># pgrep -l -v ceph</div><div class="line">...</div><div class="line">4046 scst_mgmtd</div><div class="line">5408 kworker/2:1H</div><div class="line">6402 bioset</div><div class="line">6403 rbd00_0</div><div class="line">8734 rbd01_0</div><div class="line">8739 xfsalloc</div><div class="line">8741 xfs_mru_cache</div><div class="line">9153 xfs-buf/vdb1</div><div class="line">9154 xfs-data/vdb1</div><div class="line">9155 xfs-conv/vdb1</div><div class="line">9156 xfs-cil/vdb1</div><div class="line">...</div></pre></td></tr></table></figure>
-<h4 id="列出所有TID"><a href="#列出所有TID" class="headerlink" title="列出所有TID"></a>列出所有TID</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"># pgrep -l -w ceph</div><div class="line">1478 ceph-msgr</div><div class="line">4682 ceph-watch-noti</div><div class="line">7058 ceph-mon</div><div class="line">7062 ceph-mon</div><div class="line">7063 ceph-mon</div><div class="line">...</div><div class="line">6661 ceph-mon</div><div class="line">9371 ceph-osd</div><div class="line">9373 ceph-osd</div><div class="line">9374 ceph-osd</div><div class="line">...</div><div class="line">9702 ceph-osd</div><div class="line">27446 ceph-osd</div></pre></td></tr></table></figure>
-<h4 id="统计匹配到的进程数"><a href="#统计匹配到的进程数" class="headerlink" title="统计匹配到的进程数"></a>统计匹配到的进程数</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># pgrep -c ceph</div><div class="line">4</div></pre></td></tr></table></figure>
-<h4 id="匹配全名"><a href="#匹配全名" class="headerlink" title="匹配全名"></a>匹配全名</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># pgrep -l -f ceph</div><div class="line">1478 ceph-msgr</div><div class="line">4682 ceph-watch-noti</div><div class="line">7058 ceph-mon</div><div class="line">9371 ceph-osd</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># pgrep -l -v ceph</span><br><span class="line">...</span><br><span class="line">4046 scst_mgmtd</span><br><span class="line">5408 kworker/2:1H</span><br><span class="line">6402 bioset</span><br><span class="line">6403 rbd00_0</span><br><span class="line">8734 rbd01_0</span><br><span class="line">8739 xfsalloc</span><br><span class="line">8741 xfs_mru_cache</span><br><span class="line">9153 xfs-buf/vdb1</span><br><span class="line">9154 xfs-data/vdb1</span><br><span class="line">9155 xfs-conv/vdb1</span><br><span class="line">9156 xfs-cil/vdb1</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h4 id="列出所有TID"><a href="#列出所有TID" class="headerlink" title="列出所有TID"></a>列出所有TID</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># pgrep -l -w ceph</span><br><span class="line">1478 ceph-msgr</span><br><span class="line">4682 ceph-watch-noti</span><br><span class="line">7058 ceph-mon</span><br><span class="line">7062 ceph-mon</span><br><span class="line">7063 ceph-mon</span><br><span class="line">...</span><br><span class="line">6661 ceph-mon</span><br><span class="line">9371 ceph-osd</span><br><span class="line">9373 ceph-osd</span><br><span class="line">9374 ceph-osd</span><br><span class="line">...</span><br><span class="line">9702 ceph-osd</span><br><span class="line">27446 ceph-osd</span><br></pre></td></tr></table></figure>
+<h4 id="统计匹配到的进程数"><a href="#统计匹配到的进程数" class="headerlink" title="统计匹配到的进程数"></a>统计匹配到的进程数</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># pgrep -c ceph</span><br><span class="line">4</span><br></pre></td></tr></table></figure>
+<h4 id="匹配全名"><a href="#匹配全名" class="headerlink" title="匹配全名"></a>匹配全名</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># pgrep -l -f ceph</span><br><span class="line">1478 ceph-msgr</span><br><span class="line">4682 ceph-watch-noti</span><br><span class="line">7058 ceph-mon</span><br><span class="line">9371 ceph-osd</span><br></pre></td></tr></table></figure>
 <p>感觉并没有什么卵用</p>
 <h4 id="匹配分组"><a href="#匹配分组" class="headerlink" title="匹配分组"></a>匹配分组</h4><p>//TODO</p>
-<h4 id="查找最新和最旧进程"><a href="#查找最新和最旧进程" class="headerlink" title="查找最新和最旧进程"></a>查找最新和最旧进程</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># pgrep -l ceph</div><div class="line">1478 ceph-msgr</div><div class="line">4682 ceph-watch-noti</div><div class="line">7058 ceph-mon</div><div class="line">9371 ceph-osd</div></pre></td></tr></table></figure>
+<h4 id="查找最新和最旧进程"><a href="#查找最新和最旧进程" class="headerlink" title="查找最新和最旧进程"></a>查找最新和最旧进程</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># pgrep -l ceph</span><br><span class="line">1478 ceph-msgr</span><br><span class="line">4682 ceph-watch-noti</span><br><span class="line">7058 ceph-mon</span><br><span class="line">9371 ceph-osd</span><br></pre></td></tr></table></figure>
 <p>查找最新(newest)、最后启动的进程</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># pgrep -l -n ceph</div><div class="line">4682 ceph-watch-noti</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># pgrep -l -n ceph</span><br><span class="line">4682 ceph-watch-noti</span><br></pre></td></tr></table></figure>
 <p>查找最旧(oldest)、最早启动的进程</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># pgrep -l -o ceph</div><div class="line">7058 ceph-mon</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># pgrep -l -o ceph</span><br><span class="line">7058 ceph-mon</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>注：进程号越大，并不一定意味着进程的启动时间越晚、进程越新</p>
 </blockquote>
-<h4 id="显示所有父进程的子进程"><a href="#显示所有父进程的子进程" class="headerlink" title="显示所有父进程的子进程"></a>显示所有父进程的子进程</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># pgrep -P 2380</div><div class="line">2381</div><div class="line">2382</div><div class="line">2383</div><div class="line">2384</div><div class="line">2385</div></pre></td></tr></table></figure>
-<h4 id="完全匹配"><a href="#完全匹配" class="headerlink" title="完全匹配"></a>完全匹配</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># pgrep -l ceph</div><div class="line">1478 ceph-msgr</div><div class="line">4682 ceph-watch-noti</div><div class="line">7058 ceph-mon</div><div class="line">9371 ceph-osd</div><div class="line"># pgrep -x ceph</div><div class="line"># pgrep -x ceph-osd</div><div class="line">9371</div></pre></td></tr></table></figure>
-<h4 id="从文件中读取PID"><a href="#从文件中读取PID" class="headerlink" title="从文件中读取PID"></a>从文件中读取PID</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># cat pid-file.txt </div><div class="line">1478</div><div class="line">7051</div><div class="line">2222</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># pgrep -l -F pid-file.txt </div><div class="line">1478 ceph-msgr</div></pre></td></tr></table></figure>
+<h4 id="显示所有父进程的子进程"><a href="#显示所有父进程的子进程" class="headerlink" title="显示所有父进程的子进程"></a>显示所有父进程的子进程</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># pgrep -P 2380</span><br><span class="line">2381</span><br><span class="line">2382</span><br><span class="line">2383</span><br><span class="line">2384</span><br><span class="line">2385</span><br></pre></td></tr></table></figure>
+<h4 id="完全匹配"><a href="#完全匹配" class="headerlink" title="完全匹配"></a>完全匹配</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># pgrep -l ceph</span><br><span class="line">1478 ceph-msgr</span><br><span class="line">4682 ceph-watch-noti</span><br><span class="line">7058 ceph-mon</span><br><span class="line">9371 ceph-osd</span><br><span class="line"># pgrep -x ceph</span><br><span class="line"># pgrep -x ceph-osd</span><br><span class="line">9371</span><br></pre></td></tr></table></figure>
+<h4 id="从文件中读取PID"><a href="#从文件中读取PID" class="headerlink" title="从文件中读取PID"></a>从文件中读取PID</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># cat pid-file.txt </span><br><span class="line">1478</span><br><span class="line">7051</span><br><span class="line">2222</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># pgrep -l -F pid-file.txt </span><br><span class="line">1478 ceph-msgr</span><br></pre></td></tr></table></figure>
 <h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>PID和TID的区别</p>
 <p>pid是进程标识符，tid是线程标识符。</p>
 <p>内核不会在它们之间做出真正的区分：线程就像进程一样，但它们与同一组的其他实例共享一些东西（内存，fds …）。</p>
 <p>因此，tid实际上是内核（线程）中可调度对象的标识符，而pid是共享内存和fds（进程）的可调度对象组的标识符。当一个进程只有一个线程，pid和tid总是相同的。 所以任何使用tid的函数都会自动使用pid。</p>
 <p>值得注意的是，许多函数/系统调用/命令行实用程序记录使用pid实际上使用tids。 但如果效果是过程范围的，你就不会注意到差异。</p>
 <h2 id="pkill"><a href="#pkill" class="headerlink" title="pkill"></a>pkill</h2><p>与 <code>pgrep</code> 使用方法基本类似，不再赘述。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"># pkill --help</div><div class="line"></div><div class="line">Usage:</div><div class="line"> pkill [options] &lt;pattern&gt;</div><div class="line"></div><div class="line">Options:</div><div class="line"> -&lt;sig&gt;, --signal &lt;sig&gt;    signal to send (either number or name)</div><div class="line"> -e, --echo                display what is killed</div><div class="line"> -c, --count               count of matching processes</div><div class="line"> -f, --full                use full process name to match</div><div class="line"> -g, --pgroup &lt;id,...&gt;     match listed process group IDs</div><div class="line"> -G, --group &lt;gid,...&gt;     match real group IDs</div><div class="line"> -n, --newest              select most recently started</div><div class="line"> -o, --oldest              select least recently started</div><div class="line"> -P, --parent &lt;ppid,...&gt;   match only child processes of the given parent</div><div class="line"> -s, --session &lt;sid,...&gt;   match session IDs</div><div class="line"> -t, --terminal &lt;tty,...&gt;  match by controlling terminal</div><div class="line"> -u, --euid &lt;id,...&gt;       match by effective IDs</div><div class="line"> -U, --uid &lt;id,...&gt;        match by real IDs</div><div class="line"> -x, --exact               match exactly with the command name</div><div class="line"> -F, --pidfile &lt;file&gt;      read PIDs from file</div><div class="line"> -L, --logpidfile          fail if PID file is not locked</div><div class="line"> --ns &lt;pid&gt;                match the processes that belong to the same</div><div class="line">                           namespace as &lt;pid&gt;</div><div class="line"> --nslist &lt;ns,...&gt;         list which namespaces will be considered for</div><div class="line">                           the --ns option.</div><div class="line">                           Available namespaces: ipc, mnt, net, pid, user, uts</div><div class="line"></div><div class="line"> -h, --help     display this help and exit</div><div class="line"> -V, --version  output version information and exit</div><div class="line"></div><div class="line">For more details see pgrep(1).</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"># pkill --help</span><br><span class="line"></span><br><span class="line">Usage:</span><br><span class="line"> pkill [options] &lt;pattern&gt;</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line"> -&lt;sig&gt;, --signal &lt;sig&gt;    signal to send (either number or name)</span><br><span class="line"> -e, --echo                display what is killed</span><br><span class="line"> -c, --count               count of matching processes</span><br><span class="line"> -f, --full                use full process name to match</span><br><span class="line"> -g, --pgroup &lt;id,...&gt;     match listed process group IDs</span><br><span class="line"> -G, --group &lt;gid,...&gt;     match real group IDs</span><br><span class="line"> -n, --newest              select most recently started</span><br><span class="line"> -o, --oldest              select least recently started</span><br><span class="line"> -P, --parent &lt;ppid,...&gt;   match only child processes of the given parent</span><br><span class="line"> -s, --session &lt;sid,...&gt;   match session IDs</span><br><span class="line"> -t, --terminal &lt;tty,...&gt;  match by controlling terminal</span><br><span class="line"> -u, --euid &lt;id,...&gt;       match by effective IDs</span><br><span class="line"> -U, --uid &lt;id,...&gt;        match by real IDs</span><br><span class="line"> -x, --exact               match exactly with the command name</span><br><span class="line"> -F, --pidfile &lt;file&gt;      read PIDs from file</span><br><span class="line"> -L, --logpidfile          fail if PID file is not locked</span><br><span class="line"> --ns &lt;pid&gt;                match the processes that belong to the same</span><br><span class="line">                           namespace as &lt;pid&gt;</span><br><span class="line"> --nslist &lt;ns,...&gt;         list which namespaces will be considered for</span><br><span class="line">                           the --ns option.</span><br><span class="line">                           Available namespaces: ipc, mnt, net, pid, user, uts</span><br><span class="line"></span><br><span class="line"> -h, --help     display this help and exit</span><br><span class="line"> -V, --version  output version information and exit</span><br><span class="line"></span><br><span class="line">For more details see pgrep(1).</span><br></pre></td></tr></table></figure>
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -404,11 +407,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/02/17/Linux命令——pgrep和pkill/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2017/02/17/Linux命令——pgrep和pkill/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -513,6 +517,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -614,10 +620,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -630,15 +632,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -658,19 +660,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -682,6 +680,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -690,19 +692,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -714,6 +708,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -722,15 +720,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -742,15 +744,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

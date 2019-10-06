@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>Flashcache vs Cache tier | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="使用SSD作为缓存来提高性能有多种方法，文章前言里会介绍，主要有bcache、dm-cache、flashcache、cache tier等，本文比较两种在ceph中的常用方案：flashcache 和 cache tier。">
+<meta name="keywords" content="storage">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Flashcache vs Cache tier">
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/02/03/Flashcache-vs-Cache-tier/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="使用SSD作为缓存来提高性能有多种方法，文章前言里会介绍，主要有bcache、dm-cache、flashcache、cache tier等，本文比较两种在ceph中的常用方案：flashcache 和 cache tier。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/flashcache.png">
 <meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/cache%20tier.png">
 <meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
@@ -53,7 +55,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -81,9 +83,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -163,7 +162,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Flashcache-vs-Cache-tier" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-Flashcache-vs-Cache-tier" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -217,9 +217,9 @@ var _hmt = _hmt || [];
 <p>如果有的话，就先刷脏数据，然后再把刚才从devicemapper传来的IO写到backing disk上</p>
 <p>如果没有脏数据，则直接写到backing disk上，这也就是为什么当使用fio测试小于4KB的随机IO时，flashcache几乎没有效果。</p>
 <p>部分参考资料：</p>
-<p><a href="http://mogu.io/Facebook_flashcache-81" target="_blank" rel="external">Facebook flashcache介绍与使用</a></p>
-<p><a href="https://www.ibm.com/developerworks/community/blogs/5144904d-5d75-45ed-9d2b-cf1754ee936a/entry/flashcache-introduction?lang=en" target="_blank" rel="external">flashcache 简介</a></p>
-<p><a href="http://blog.csdn.net/kidd_3/article/category/905673" target="_blank" rel="external">其他flashcache资料</a></p>
+<p><a href="http://mogu.io/Facebook_flashcache-81" target="_blank" rel="noopener">Facebook flashcache介绍与使用</a></p>
+<p><a href="https://www.ibm.com/developerworks/community/blogs/5144904d-5d75-45ed-9d2b-cf1754ee936a/entry/flashcache-introduction?lang=en" target="_blank" rel="noopener">flashcache 简介</a></p>
+<p><a href="http://blog.csdn.net/kidd_3/article/category/905673" target="_blank" rel="noopener">其他flashcache资料</a></p>
 <h2 id="cache-tier"><a href="#cache-tier" class="headerlink" title="cache tier"></a>cache tier</h2><p>缓存分层通过将一部分数据存到缓存层，给ceph客户端提供更好的IO性能。通常是在更快的磁盘上创建存储池，如SSD/NVMe。数据最终被透明的写入常规的存储池中，它们由副本或纠删码类型的存储池所构建。</p>
 <p><img src="http://ojet8bprn.bkt.clouddn.com/cache%20tier.png" alt="cache tier"></p>
 <p>缓存层代理自动处理缓存层和后端存储之间的数据迁移，对客户端透明，管理员可以配置迁移进行的方式。</p>
@@ -248,7 +248,7 @@ var _hmt = _hmt || [];
 <li>更多的网络开销，可能会有更多的CPU开销。</li>
 <li>需要更长的时间才能将内容缓存</li>
 </ul>
-<p>参考资料：<a href="http://lists.ceph.com/pipermail/ceph-users-ceph.com/2014-March/037861.html" target="_blank" rel="external"> OSD + FlashCache vs. Cache Pool for RBD</a></p>
+<p>参考资料：<a href="http://lists.ceph.com/pipermail/ceph-users-ceph.com/2014-March/037861.html" target="_blank" rel="noopener"> OSD + FlashCache vs. Cache Pool for RBD</a></p>
 <p><strong>关于成本</strong></p>
 <p>高速缓存中的数据总是硬盘驱动器上的数据的第二个副本。 缓存的故障很少产生数据丢失，只是性能损失，因为一切都需要从机械驱动器提供，直到缓存可以被替换。</p>
 <p> SSD层可能是自动分层系统中唯一的数据副本，不能容忍SSD层的故障，因此这些系统必须通过使用类似RAID的数据保护方案在冗余配置中设置SSD层。 不得不购买额外的SSD来支持类似RAID的功能，使已经高价的技术更加昂贵。</p>
@@ -257,13 +257,16 @@ var _hmt = _hmt || [];
 <p><strong>终上所述</strong></p>
 <p>从用户的角度来看，如果适当的冗余存在，缓存或分层没有显着的优势，因此不应该单独选择基于闪存的存储系统。 IT规划人员可能想要调查其他因素，例如将某些数据集固定到闪存层或缓存区，以及与环境或应用程序集成的能力。</p>
 <p>参考资料：（这两篇文章是同一个作者）</p>
-<p><a href="http://www.networkcomputing.com/storage/ssd-options-tier-vs-cache/1267262167" target="_blank" rel="external">SSD Options: Tier Vs. Cache</a></p>
-<p><a href="http://searchsolidstatestorage.techtarget.com/tip/Tiering-vs-caching-in-flash-based-storage-systems" target="_blank" rel="external">Tiering vs. caching in flash-based storage systems</a></p>
+<p><a href="http://www.networkcomputing.com/storage/ssd-options-tier-vs-cache/1267262167" target="_blank" rel="noopener">SSD Options: Tier Vs. Cache</a></p>
+<p><a href="http://searchsolidstatestorage.techtarget.com/tip/Tiering-vs-caching-in-flash-based-storage-systems" target="_blank" rel="noopener">Tiering vs. caching in flash-based storage systems</a></p>
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -372,11 +375,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/02/03/Flashcache-vs-Cache-tier/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2017/02/03/Flashcache-vs-Cache-tier/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -481,6 +485,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -582,10 +588,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -598,15 +600,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -626,19 +628,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -650,6 +648,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -658,19 +660,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -682,6 +676,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -690,15 +688,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -710,15 +712,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

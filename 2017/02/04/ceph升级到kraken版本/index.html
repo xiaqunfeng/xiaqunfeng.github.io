@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>ceph升级到kraken版本 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="记录从jewel版本升级到kraken版本的过程，其中重启mon和osd部分官网上的命令并不凑效，这里纠正并记录之。">
+<meta name="keywords" content="kraken">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ceph升级到kraken版本">
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/02/04/ceph升级到kraken版本/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="记录从jewel版本升级到kraken版本的过程，其中重启mon和osd部分官网上的命令并不凑效，这里纠正并记录之。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
 <meta property="og:updated_time" content="2018-03-27T01:07:44.000Z">
 <meta name="twitter:card" content="summary">
@@ -51,7 +53,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -79,9 +81,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -161,7 +160,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-ceph升级到kraken版本" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-ceph升级到kraken版本" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -182,34 +182,37 @@ var _hmt = _hmt || [];
     <div class="article-entry" itemprop="articleBody">
       
         <p>记录从jewel版本升级到kraken版本的过程，其中重启mon和osd部分官网上的命令并不凑效，这里纠正并记录之。<br><a id="more"></a></p>
-<h2 id="1、在Jewel集群上设置sortbitwise标志"><a href="#1、在Jewel集群上设置sortbitwise标志" class="headerlink" title="1、在Jewel集群上设置sortbitwise标志"></a>1、在Jewel集群上设置sortbitwise标志</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph osd set sortbitwise</div></pre></td></tr></table></figure>
-<h2 id="2、添加安装源"><a href="#2、添加安装源" class="headerlink" title="2、添加安装源"></a>2、添加安装源</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo deb https://download.ceph.com/debian-kraken/ $(lsb_release -sc) main | sudo tee /etc/apt/sources.list.d/ceph.list</div></pre></td></tr></table></figure>
+<h2 id="1、在Jewel集群上设置sortbitwise标志"><a href="#1、在Jewel集群上设置sortbitwise标志" class="headerlink" title="1、在Jewel集群上设置sortbitwise标志"></a>1、在Jewel集群上设置sortbitwise标志</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ceph osd set sortbitwise</span><br></pre></td></tr></table></figure>
+<h2 id="2、添加安装源"><a href="#2、添加安装源" class="headerlink" title="2、添加安装源"></a>2、添加安装源</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo deb https://download.ceph.com/debian-kraken/ $(lsb_release -sc) main | sudo tee /etc/apt/sources.list.d/ceph.list</span><br></pre></td></tr></table></figure>
 <p><strong>设置环境变量</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export CEPH_DEPLOY_REPO_URL=http://mirrors.163.com/ceph/debian-kraken</div></pre></td></tr></table></figure>
-<h2 id="3、升级软件包"><a href="#3、升级软件包" class="headerlink" title="3、升级软件包"></a>3、升级软件包</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph-deploy install --release kraken ceph-0 ceph-1 ceph-2</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export CEPH_DEPLOY_REPO_URL=http://mirrors.163.com/ceph/debian-kraken</span><br></pre></td></tr></table></figure>
+<h2 id="3、升级软件包"><a href="#3、升级软件包" class="headerlink" title="3、升级软件包"></a>3、升级软件包</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ceph-deploy install --release kraken ceph-0 ceph-1 ceph-2</span><br></pre></td></tr></table></figure>
 <p>此时，ceph已升级到 11.2.0 版本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph --version</div><div class="line">ceph version 11.2.0 (f223e27eeb35991352ebc1f67423d4ebc252adb7)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ceph --version</span><br><span class="line">ceph version 11.2.0 (f223e27eeb35991352ebc1f67423d4ebc252adb7)</span><br></pre></td></tr></table></figure>
 <p>但是，osd和mon的版本还是 10.2.5</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># ceph tell mon.* version</div><div class="line">mon.ceph-0: ceph version 10.2.5 (c461ee19ecbc0c5c330aca20f7392c9a00730367)</div><div class="line">mon.ceph-1: ceph version 10.2.5 (c461ee19ecbc0c5c330aca20f7392c9a00730367)</div><div class="line">mon.ceph-2: ceph version 10.2.5 (c461ee19ecbc0c5c330aca20f7392c9a00730367)</div><div class="line"></div><div class="line"># ceph tell osd.* version</div><div class="line">osd.0: &#123;</div><div class="line">    &quot;version&quot;: &quot;ceph version 10.2.5 (c461ee19ecbc0c5c330aca20f7392c9a00730367)&quot;</div><div class="line">&#125;</div><div class="line">...省略</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># ceph tell mon.* version</span><br><span class="line">mon.ceph-0: ceph version 10.2.5 (c461ee19ecbc0c5c330aca20f7392c9a00730367)</span><br><span class="line">mon.ceph-1: ceph version 10.2.5 (c461ee19ecbc0c5c330aca20f7392c9a00730367)</span><br><span class="line">mon.ceph-2: ceph version 10.2.5 (c461ee19ecbc0c5c330aca20f7392c9a00730367)</span><br><span class="line"></span><br><span class="line"># ceph tell osd.* version</span><br><span class="line">osd.0: &#123;</span><br><span class="line">    &quot;version&quot;: &quot;ceph version 10.2.5 (c461ee19ecbc0c5c330aca20f7392c9a00730367)&quot;</span><br><span class="line">&#125;</span><br><span class="line">...省略</span><br></pre></td></tr></table></figure>
 <h2 id="4、在各节点上重启相关ceph守护进程"><a href="#4、在各节点上重启相关ceph守护进程" class="headerlink" title="4、在各节点上重启相关ceph守护进程"></a>4、在各节点上重启相关ceph守护进程</h2><p>安装官网上的命令操作是这样的</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo /etc/init.d/ceph -a restart</div><div class="line">ssh ceph-1 sudo /etc/init.d/ceph -a restart</div><div class="line">ssh ceph-2 sudo /etc/init.d/ceph -a restart</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo /etc/init.d/ceph -a restart</span><br><span class="line">ssh ceph-1 sudo /etc/init.d/ceph -a restart</span><br><span class="line">ssh ceph-2 sudo /etc/init.d/ceph -a restart</span><br></pre></td></tr></table></figure>
 <p>然而，查看 mon 的进程号发现并没有重启，所以版本还是 10.2.5</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ps aux | grep ceph-osd</div><div class="line"># ps aux | grep ceph-mon</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ps aux | grep ceph-osd</span><br><span class="line"># ps aux | grep ceph-mon</span><br></pre></td></tr></table></figure>
 <p><strong>正确的重启命令:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># 重启mon</div><div class="line">restart ceph-mon-all</div><div class="line">ssh ceph-1 restart ceph-mon-all</div><div class="line">ssh ceph-2 restart ceph-mon-all</div><div class="line"></div><div class="line"># 重启osd</div><div class="line">restart ceph-osd-all</div><div class="line">ssh ceph-1 restart ceph-osd-all</div><div class="line">ssh ceph-2 restart ceph-osd-all</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 重启mon</span><br><span class="line">restart ceph-mon-all</span><br><span class="line">ssh ceph-1 restart ceph-mon-all</span><br><span class="line">ssh ceph-2 restart ceph-mon-all</span><br><span class="line"></span><br><span class="line"># 重启osd</span><br><span class="line">restart ceph-osd-all</span><br><span class="line">ssh ceph-1 restart ceph-osd-all</span><br><span class="line">ssh ceph-2 restart ceph-osd-all</span><br></pre></td></tr></table></figure>
 <p>也可以单独重启某一个</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># restart ceph-mon id=ceph-0</div><div class="line">ceph-mon (ceph/ceph-0) start/running, process 23629</div><div class="line"></div><div class="line"># restart ceph-osd id=0</div><div class="line">ceph-osd (ceph/0) start/running, process 23700</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># restart ceph-mon id=ceph-0</span><br><span class="line">ceph-mon (ceph/ceph-0) start/running, process 23629</span><br><span class="line"></span><br><span class="line"># restart ceph-osd id=0</span><br><span class="line">ceph-osd (ceph/0) start/running, process 23700</span><br></pre></td></tr></table></figure>
 <p>查看最新mon和osd版本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># ceph tell mon.* version</div><div class="line">mon.ceph-0: ceph version 11.2.0 (f223e27eeb35991352ebc1f67423d4ebc252adb7)</div><div class="line">mon.ceph-1: ceph version 11.2.0 (f223e27eeb35991352ebc1f67423d4ebc252adb7)</div><div class="line">mon.ceph-2: ceph version 11.2.0 (f223e27eeb35991352ebc1f67423d4ebc252adb7)</div><div class="line"></div><div class="line"># ceph tell osd.* version</div><div class="line">osd.0: &#123;</div><div class="line">    &quot;version&quot;: &quot;ceph version 11.2.0 (f223e27eeb35991352ebc1f67423d4ebc252adb7)&quot;</div><div class="line">&#125;</div><div class="line">...省略</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># ceph tell mon.* version</span><br><span class="line">mon.ceph-0: ceph version 11.2.0 (f223e27eeb35991352ebc1f67423d4ebc252adb7)</span><br><span class="line">mon.ceph-1: ceph version 11.2.0 (f223e27eeb35991352ebc1f67423d4ebc252adb7)</span><br><span class="line">mon.ceph-2: ceph version 11.2.0 (f223e27eeb35991352ebc1f67423d4ebc252adb7)</span><br><span class="line"></span><br><span class="line"># ceph tell osd.* version</span><br><span class="line">osd.0: &#123;</span><br><span class="line">    &quot;version&quot;: &quot;ceph version 11.2.0 (f223e27eeb35991352ebc1f67423d4ebc252adb7)&quot;</span><br><span class="line">&#125;</span><br><span class="line">...省略</span><br></pre></td></tr></table></figure>
 <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>执行 <code>ceph -s</code> 的时候，出现如下问题</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># ceph -s</div><div class="line">    cluster 7251c881-bb25-4c36-9be1-653f66c69e1c</div><div class="line">     health HEALTH_WARN</div><div class="line">            all OSDs are running kraken or later but the &apos;require_kraken_osds&apos; osdmap flag is not set</div><div class="line">...省略</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># ceph -s</span><br><span class="line">    cluster 7251c881-bb25-4c36-9be1-653f66c69e1c</span><br><span class="line">     health HEALTH_WARN</span><br><span class="line">            all OSDs are running kraken or later but the &apos;require_kraken_osds&apos; osdmap flag is not set</span><br><span class="line">...省略</span><br></pre></td></tr></table></figure>
 <p><strong>解决方法</strong></p>
 <p>执行如下命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd set require_kraken_osds</div><div class="line">require_kraken_osds is set</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ceph osd set require_kraken_osds</span><br><span class="line">require_kraken_osds is set</span><br></pre></td></tr></table></figure>
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -318,11 +321,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/02/04/ceph升级到kraken版本/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2017/02/04/ceph升级到kraken版本/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -427,6 +431,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -528,10 +534,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -544,15 +546,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -572,19 +574,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -596,6 +594,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -604,19 +606,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -628,6 +622,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -636,15 +634,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -656,15 +658,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

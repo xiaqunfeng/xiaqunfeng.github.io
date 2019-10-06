@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>ceph placement group | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -14,6 +14,7 @@
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/07/28/ceph-placement-group/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="从PG的命名开始介绍，利用一个对象详细演练PG各个状态的变化，并介绍PG状态列表及意义。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2018-03-27T01:07:13.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ceph placement group">
@@ -49,7 +50,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -77,9 +78,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -159,7 +157,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-ceph-placement-group" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-ceph-placement-group" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -181,113 +180,113 @@ var _hmt = _hmt || [];
       
         <p>从PG的命名开始介绍，利用一个对象详细演练PG各个状态的变化，并介绍PG状态列表及意义。<br><a id="more"></a></p>
 <h2 id="PG命名"><a href="#PG命名" class="headerlink" title="PG命名"></a>PG命名</h2><h3 id="PG唯一标识符"><a href="#PG唯一标识符" class="headerlink" title="PG唯一标识符"></a>PG唯一标识符</h3><p>归置组 ID 包含存储池号（不是存储池名字），后面跟一个点（ . ），然后是归置组 ID，一个十六进制数字。用 <code>ceph osd lspools</code> 可查看存储池号及其名字，默认存储池rbd 对应的存储池号是 0  。完整的归置组 ID 格式如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;pool-num&#125;.&#123;pg-id&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;pool-num&#125;.&#123;pg-id&#125;</span><br></pre></td></tr></table></figure>
 <p>例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">0.1f</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0.1f</span><br></pre></td></tr></table></figure>
 <p>系统默认生成的<code>rbd</code>池的id号为<code>0</code>，所以 rbd 池内的所有PG都会以<code>0.</code>开头。</p>
-<h3 id="查看osd目录里pg"><a href="#查看osd目录里pg" class="headerlink" title="查看osd目录里pg"></a>查看osd目录里pg</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># ls /var/lib/ceph/osd/ceph-0/</div><div class="line">activate.monmap  ceph_fsid        fsid             journal_uuid     magic            store_version    systemd          whoami</div><div class="line">active           current/         journal          keyring          ready            superblock       type</div></pre></td></tr></table></figure>
+<h3 id="查看osd目录里pg"><a href="#查看osd目录里pg" class="headerlink" title="查看osd目录里pg"></a>查看osd目录里pg</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># ls /var/lib/ceph/osd/ceph-0/</span><br><span class="line">activate.monmap  ceph_fsid        fsid             journal_uuid     magic            store_version    systemd          whoami</span><br><span class="line">active           current/         journal          keyring          ready            superblock       type</span><br></pre></td></tr></table></figure>
 <p><code>osd.0</code>下<code>current</code>目录的内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ls /var/lib/ceph/osd/ceph-0/current/</div><div class="line">0.0_head   0.1d_head  0.34_head  0.45_head  0.4e_head</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ls /var/lib/ceph/osd/ceph-0/current/</span><br><span class="line">0.0_head   0.1d_head  0.34_head  0.45_head  0.4e_head</span><br></pre></td></tr></table></figure>
 <p>每个OSD的<code>current</code>目录下都保存了部分的PG，而rbd池的PG以<code>0.xxx_head</code>的目录形式存在！</p>
 <h2 id="PG状态"><a href="#PG状态" class="headerlink" title="PG状态"></a>PG状态</h2><p>查看所有归置组状态</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph pg stat</div><div class="line">v614916: 128 pgs: 128 active+clean; 27194 kB data, 185 MB used, 15141 MB / 15326 MB avail; 56023 B/s rd, 0 B/s wr, 89 op/s</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ceph pg stat</span><br><span class="line">v614916: 128 pgs: 128 active+clean; 27194 kB data, 185 MB used, 15141 MB / 15326 MB avail; 56023 B/s rd, 0 B/s wr, 89 op/s</span><br></pre></td></tr></table></figure>
 <p>有一些问题的状态</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph pg stat</div><div class="line">v2167: 120 pgs: 120 active+undersized+degraded; 1799 bytes data, 86476 kB used, 10133 MB / 10217 MB avail; 173/519 objects degraded (33.333%)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ceph pg stat</span><br><span class="line">v2167: 120 pgs: 120 active+undersized+degraded; 1799 bytes data, 86476 kB used, 10133 MB / 10217 MB avail; 173/519 objects degraded (33.333%)</span><br></pre></td></tr></table></figure>
 <p>或者这样的</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph pg stat</div><div class="line">v1468117: 5440 pgs: 4 active+clean+scrubbing+deep, 77 active+remapped+backfilling, 5359 active+clean; 33452 GB data, 68799 GB used, 43742 GB / 109 TB avail; 134 kB/s rd, 154 op/s; 6668502/138960328 objects misplaced (4.799%); 40810 kB/s, 81 objects/s recovering</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ceph pg stat</span><br><span class="line">v1468117: 5440 pgs: 4 active+clean+scrubbing+deep, 77 active+remapped+backfilling, 5359 active+clean; 33452 GB data, 68799 GB used, 43742 GB / 109 TB avail; 134 kB/s rd, 154 op/s; 6668502/138960328 objects misplaced (4.799%); 40810 kB/s, 81 objects/s recovering</span><br></pre></td></tr></table></figure>
 <h2 id="获取PG列表"><a href="#获取PG列表" class="headerlink" title="获取PG列表"></a>获取PG列表</h2><p>用下列命令获取归置组列表：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph pg dump</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ceph pg dump</span><br></pre></td></tr></table></figure>
 <p>你也可以让它输出到 JSON 格式，并保存到文件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph pg dump -o &#123;filename&#125; --format=json</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ceph pg dump -o &#123;filename&#125; --format=json</span><br></pre></td></tr></table></figure>
 <p>要查询某个归置组，用下列命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph pg &#123;poolnum&#125;.&#123;pg-id&#125; query</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ceph pg &#123;poolnum&#125;.&#123;pg-id&#125; query</span><br></pre></td></tr></table></figure>
 <p>Ceph 会输出成 JSON 格式</p>
 <h2 id="写一个object"><a href="#写一个object" class="headerlink" title="写一个object"></a>写一个object</h2><p>1、新建一个文件，内容如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># cat xinfanyang.txt</div><div class="line">xin fan yang have delicious food</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># cat xinfanyang.txt</span><br><span class="line">xin fan yang have delicious food</span><br></pre></td></tr></table></figure>
 <p>2、查看数据在pool中默认保存的份数、最小保存份数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># ceph osd pool get rbd size</div><div class="line">size: 3</div><div class="line"># ceph osd pool get rbd min_size</div><div class="line">min_size: 2</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># ceph osd pool get rbd size</span><br><span class="line">size: 3</span><br><span class="line"># ceph osd pool get rbd min_size</span><br><span class="line">min_size: 2</span><br></pre></td></tr></table></figure>
 <p>3、写一个文件，在集群中保存对象名为 <code>xfy</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># rados -p rbd put xfy xinfanyang.txt</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># rados -p rbd put xfy xinfanyang.txt</span><br></pre></td></tr></table></figure>
 <p>4、查看文件保存的位置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd map rbd xfy</div><div class="line">osdmap e47 pool &apos;rbd&apos; (0) object &apos;xfy&apos; -&gt; pg 0.c76c82f (0.2f) -&gt; up ([1,2,0], p1) acting ([1,2,0], p1)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ceph osd map rbd xfy</span><br><span class="line">osdmap e47 pool &apos;rbd&apos; (0) object &apos;xfy&apos; -&gt; pg 0.c76c82f (0.2f) -&gt; up ([1,2,0], p1) acting ([1,2,0], p1)</span><br></pre></td></tr></table></figure>
 <p>文件保存在pg（0.2f）中，pg位于OSD的[1，2，0]中，其中OSD1是主，其他是从。</p>
 <p>5、查看内容</p>
 <p>在三台机器的三个OSD上，输出内容一致。举例 osd.2，内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># ll /var/lib/ceph/osd/ceph-2/current/0.2f*</div><div class="line">/var/lib/ceph/osd/ceph-2/current/0.2f_head:</div><div class="line">总用量 4</div><div class="line">-rw-r--r--. 1 ceph ceph  0 6月  21 15:45 __head_0000002F__0</div><div class="line">-rw-r--r--. 1 ceph ceph 33 7月  27 19:35 xfy__head_0C76C82F__0</div><div class="line"></div><div class="line">/var/lib/ceph/osd/ceph-2/current/0.2f_TEMP:</div><div class="line">总用量 0</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># ll /var/lib/ceph/osd/ceph-2/current/0.2f*</span><br><span class="line">/var/lib/ceph/osd/ceph-2/current/0.2f_head:</span><br><span class="line">总用量 4</span><br><span class="line">-rw-r--r--. 1 ceph ceph  0 6月  21 15:45 __head_0000002F__0</span><br><span class="line">-rw-r--r--. 1 ceph ceph 33 7月  27 19:35 xfy__head_0C76C82F__0</span><br><span class="line"></span><br><span class="line">/var/lib/ceph/osd/ceph-2/current/0.2f_TEMP:</span><br><span class="line">总用量 0</span><br></pre></td></tr></table></figure>
 <p>实际对象内容存在 <code>xfy__head_0C76C82F__0</code> 中</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># cat /var/lib/ceph/osd/ceph-2/current/0.2f_head/xfy__head_0C76C82F__0</div><div class="line">xin fan yang have delicious food</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># cat /var/lib/ceph/osd/ceph-2/current/0.2f_head/xfy__head_0C76C82F__0</span><br><span class="line">xin fan yang have delicious food</span><br></pre></td></tr></table></figure>
 <p>osd分布</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># ceph osd tree</div><div class="line">ID WEIGHT  TYPE NAME       UP/DOWN REWEIGHT PRIMARY-AFFINITY</div><div class="line">-1 0.05457 root default</div><div class="line">-2 0.01819     host ceph-1</div><div class="line"> 0 0.00909         osd.0        up  1.00000          1.00000</div><div class="line"> 3 0.00909         osd.3        up  1.00000          1.00000</div><div class="line">-3 0.01819     host ceph-0</div><div class="line"> 2 0.00909         osd.2        up  1.00000          1.00000</div><div class="line"> 4 0.00909         osd.4        up  1.00000          1.00000</div><div class="line">-4 0.01819     host ceph-2</div><div class="line"> 1 0.00909         osd.1        up  1.00000          1.00000</div><div class="line"> 5 0.00909         osd.5        up  1.00000          1.00000</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># ceph osd tree</span><br><span class="line">ID WEIGHT  TYPE NAME       UP/DOWN REWEIGHT PRIMARY-AFFINITY</span><br><span class="line">-1 0.05457 root default</span><br><span class="line">-2 0.01819     host ceph-1</span><br><span class="line"> 0 0.00909         osd.0        up  1.00000          1.00000</span><br><span class="line"> 3 0.00909         osd.3        up  1.00000          1.00000</span><br><span class="line">-3 0.01819     host ceph-0</span><br><span class="line"> 2 0.00909         osd.2        up  1.00000          1.00000</span><br><span class="line"> 4 0.00909         osd.4        up  1.00000          1.00000</span><br><span class="line">-4 0.01819     host ceph-2</span><br><span class="line"> 1 0.00909         osd.1        up  1.00000          1.00000</span><br><span class="line"> 5 0.00909         osd.5        up  1.00000          1.00000</span><br></pre></td></tr></table></figure>
 <h2 id="PG状态变化"><a href="#PG状态变化" class="headerlink" title="PG状态变化"></a>PG状态变化</h2><p><strong>1、查看 pg[0.2f] 的状态</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph pg dump_stuck |egrep ^0.2f</div><div class="line">ok</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ceph pg dump_stuck |egrep ^0.2f</span><br><span class="line">ok</span><br></pre></td></tr></table></figure>
 <p><strong>2、挂掉一台机器挂</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># systemctl stop ceph-osd@2</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># systemctl stop ceph-osd@2</span><br></pre></td></tr></table></figure>
 <p>这时降为两副本了</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd map rbd xfy</div><div class="line">osdmap e54 pool &apos;rbd&apos; (0) object &apos;xfy&apos; -&gt; pg 0.c76c82f (0.2f) -&gt; up ([1,0], p1) acting ([1,0], p1)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ceph osd map rbd xfy</span><br><span class="line">osdmap e54 pool &apos;rbd&apos; (0) object &apos;xfy&apos; -&gt; pg 0.c76c82f (0.2f) -&gt; up ([1,0], p1) acting ([1,0], p1)</span><br></pre></td></tr></table></figure>
 <p>查看pg状态</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># ceph pg dump_stuck |egrep ^0.2f</div><div class="line">ok</div><div class="line">0.0	active+undersized+degraded	[1,0]	1	[1,0]	1</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># ceph pg dump_stuck |egrep ^0.2f</span><br><span class="line">ok</span><br><span class="line">0.0	active+undersized+degraded	[1,0]	1	[1,0]	1</span><br></pre></td></tr></table></figure>
 <p>因为之前设置的最小副本数是2，所以没影响，可以正常读取</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># rados -p rbd get xfy 111</div><div class="line"># cat 111</div><div class="line">xin fan yang have delicious food</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># rados -p rbd get xfy 111</span><br><span class="line"># cat 111</span><br><span class="line">xin fan yang have delicious food</span><br></pre></td></tr></table></figure>
 <p><strong>3、osd out</strong></p>
 <p>将 osd.2 out</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd out 2</div><div class="line">marked out osd.2.</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ceph osd out 2</span><br><span class="line">marked out osd.2.</span><br></pre></td></tr></table></figure>
 <p>如果osd out出集群了，那么 crush 算法就会重新分配一个osd进来</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd map rbd xfy</div><div class="line">osdmap e103 pool &apos;rbd&apos; (0) object &apos;xfy&apos; -&gt; pg 0.c76c82f (0.2f) -&gt; up ([1,0,4], p1) acting ([1,0,4], p1)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ceph osd map rbd xfy</span><br><span class="line">osdmap e103 pool &apos;rbd&apos; (0) object &apos;xfy&apos; -&gt; pg 0.c76c82f (0.2f) -&gt; up ([1,0,4], p1) acting ([1,0,4], p1)</span><br></pre></td></tr></table></figure>
 <p>当然，也可以不out，默认 600s 后自动out，具体时间可调，默认配置如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph daemon osd.1 config show | grep mon_osd_down_out_interval</div><div class="line">    &quot;mon_osd_down_out_interval&quot;: &quot;600&quot;,</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ceph daemon osd.1 config show | grep mon_osd_down_out_interval</span><br><span class="line">    &quot;mon_osd_down_out_interval&quot;: &quot;600&quot;,</span><br></pre></td></tr></table></figure>
 <p>重新将 osd.2 加入集群</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd in 2</div><div class="line">marked in osd.2.</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ceph osd in 2</span><br><span class="line">marked in osd.2.</span><br></pre></td></tr></table></figure>
 <p>这时候该对象的分布</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd map rbd xfy</div><div class="line">osdmap e117 pool &apos;rbd&apos; (0) object &apos;xfy&apos; -&gt; pg 0.c76c82f (0.2f) -&gt; up ([1,0], p1) acting ([1,0,4], p1)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ceph osd map rbd xfy</span><br><span class="line">osdmap e117 pool &apos;rbd&apos; (0) object &apos;xfy&apos; -&gt; pg 0.c76c82f (0.2f) -&gt; up ([1,0], p1) acting ([1,0,4], p1)</span><br></pre></td></tr></table></figure>
 <p>可以看到，pg最终的分布是 [1,0]，当前的acting分布是 [1,0,4]</p>
 <p><strong>4、挂掉两台机器</strong></p>
 <p>down掉主副本所在的 osd.1</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># systemctl stop ceph-osd@1</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># systemctl stop ceph-osd@1</span><br></pre></td></tr></table></figure>
 <p>此时只有一个副本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd map rbd xfy</div><div class="line">osdmap e56 pool &apos;rbd&apos; (0) object &apos;xfy&apos; -&gt; pg 0.c76c82f (0.2f) -&gt; up ([0], p0) acting ([0], p0)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ceph osd map rbd xfy</span><br><span class="line">osdmap e56 pool &apos;rbd&apos; (0) object &apos;xfy&apos; -&gt; pg 0.c76c82f (0.2f) -&gt; up ([0], p0) acting ([0], p0)</span><br></pre></td></tr></table></figure>
 <p>查看pg状态</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># ceph pg dump_stuck |egrep ^0.2f</div><div class="line">ok</div><div class="line">0.2f    undersized+degraded+peered   [0]          0    [0]              0</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># ceph pg dump_stuck |egrep ^0.2f</span><br><span class="line">ok</span><br><span class="line">0.2f    undersized+degraded+peered   [0]          0    [0]              0</span><br></pre></td></tr></table></figure>
 <p>此时再去get这个对象的话，会一直得不到返回</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># rados -p rbd get xfy 222</div><div class="line">...							// 一直在等待</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># rados -p rbd get xfy 222</span><br><span class="line">...							// 一直在等待</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>原因：当对象的副本数小于设定的最小数（min_size）时，ceph不响应对应object的IO请求</p>
 </blockquote>
 <p><strong>5、启动 osd.1</strong> </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># systemctl start ceph-osd@1</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># systemctl start ceph-osd@1</span><br></pre></td></tr></table></figure>
 <p>此时，会发现，上面卡着的那个命令返回了，并且得到的内容正确。</p>
 <p>查看当前pg分布</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd map rbd xfy</div><div class="line">osdmap e76 pool &apos;rbd&apos; (0) object &apos;xfy&apos; -&gt; pg 0.c76c82f (0.2f) -&gt; up ([1,4], p1) acting ([1,4], p1)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ceph osd map rbd xfy</span><br><span class="line">osdmap e76 pool &apos;rbd&apos; (0) object &apos;xfy&apos; -&gt; pg 0.c76c82f (0.2f) -&gt; up ([1,4], p1) acting ([1,4], p1)</span><br></pre></td></tr></table></figure>
 <p>pg状态</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># ceph pg dump_stuck |egrep ^0.2f</div><div class="line">ok</div><div class="line">0.2f    active+undersized+degraded [1,4]          1   [1,4]              1</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># ceph pg dump_stuck |egrep ^0.2f</span><br><span class="line">ok</span><br><span class="line">0.2f    active+undersized+degraded [1,4]          1   [1,4]              1</span><br></pre></td></tr></table></figure>
 <p>注意，这里一个有意思的事情是，在第三步的时候只有一个副本在 osd.0 上，因为 osd.1 是主副本</p>
 <p>启动的时候，4 作为临时pg加入，然后等 1 恢复完以后</p>
 <p><strong>6、启动 osd.2</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># systemctl start ceph-osd@2</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># systemctl start ceph-osd@2</span><br></pre></td></tr></table></figure>
 <p>此时，pg 映射恢复正常</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph osd map rbd xfy</div><div class="line">osdmap e83 pool &apos;rbd&apos; (0) object &apos;xfy&apos; -&gt; pg 0.c76c82f (0.2f) -&gt; up ([1,2,0], p1) acting ([1,2,0], p1)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ceph osd map rbd xfy</span><br><span class="line">osdmap e83 pool &apos;rbd&apos; (0) object &apos;xfy&apos; -&gt; pg 0.c76c82f (0.2f) -&gt; up ([1,2,0], p1) acting ([1,2,0], p1)</span><br></pre></td></tr></table></figure>
 <p>pg的状态开始变化</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># ceph pg dump_stuck |egrep ^0.2f</div><div class="line">ok</div><div class="line">0.2f               active+remapped [1,2]          1 [1,2,4]              1</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># ceph pg dump_stuck |egrep ^0.2f</span><br><span class="line">ok</span><br><span class="line">0.2f               active+remapped [1,2]          1 [1,2,4]              1</span><br></pre></td></tr></table></figure>
 <p>直至OK</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph pg dump_stuck |egrep ^0.2f</div><div class="line">ok</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ceph pg dump_stuck |egrep ^0.2f</span><br><span class="line">ok</span><br></pre></td></tr></table></figure>
 <h2 id="PG修复"><a href="#PG修复" class="headerlink" title="PG修复"></a>PG修复</h2><p><strong>1、我修改一下 osd.1 中对象 xfy 主副本的内容</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># cat /var/lib/ceph/osd/ceph-2/current/0.2f_head/xfy__head_0C76C82F__0</div><div class="line">xin fan yang have delicious food</div><div class="line">// 改为</div><div class="line"># cat /var/lib/ceph/osd/ceph-2/current/0.2f_head/xfy__head_0C76C82F__0</div><div class="line">xin fan yang have food</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># cat /var/lib/ceph/osd/ceph-2/current/0.2f_head/xfy__head_0C76C82F__0</span><br><span class="line">xin fan yang have delicious food</span><br><span class="line">// 改为</span><br><span class="line"># cat /var/lib/ceph/osd/ceph-2/current/0.2f_head/xfy__head_0C76C82F__0</span><br><span class="line">xin fan yang have food</span><br></pre></td></tr></table></figure>
 <p>2、扫描这个PG</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph pg scrub 0.2f</div><div class="line">instructing pg 0.2f on osd.1 to scrub</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ceph pg scrub 0.2f</span><br><span class="line">instructing pg 0.2f on osd.1 to scrub</span><br></pre></td></tr></table></figure>
 <p><strong>3、读这个对象</strong></p>
 <p>这时候会不会发生读到改过的错误内容呢？</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># rados -p rbd get xfy 333</div><div class="line"># cat 333</div><div class="line">xin fan yang have delicious food</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># rados -p rbd get xfy 333</span><br><span class="line"># cat 333</span><br><span class="line">xin fan yang have delicious food</span><br></pre></td></tr></table></figure>
 <p>并没有，读到的仍然是正确的内容</p>
 <p><strong>4、查看ceph状态</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># ceph -s</div><div class="line">    cluster 4c7ec5af-cbd3-40fd-8c96-0615c77660d4</div><div class="line">     health HEALTH_ERR</div><div class="line">            1 pgs inconsistent</div><div class="line">            1 scrub errors</div><div class="line">  ...</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># ceph -s</span><br><span class="line">    cluster 4c7ec5af-cbd3-40fd-8c96-0615c77660d4</span><br><span class="line">     health HEALTH_ERR</span><br><span class="line">            1 pgs inconsistent</span><br><span class="line">            1 scrub errors</span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
 <p>报的错误是：有一个pg inconsistent，就是内容不一致。那么具体是哪个pg scurb errors了呢？</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># ceph health detail</div><div class="line">HEALTH_ERR 1 pgs inconsistent; 1 scrub errors</div><div class="line">pg 0.2f is active+clean+inconsistent, acting [1,2,0]</div><div class="line">1 scrub errors</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># ceph health detail</span><br><span class="line">HEALTH_ERR 1 pgs inconsistent; 1 scrub errors</span><br><span class="line">pg 0.2f is active+clean+inconsistent, acting [1,2,0]</span><br><span class="line">1 scrub errors</span><br></pre></td></tr></table></figure>
 <p>可以看到，正是我们修改的那个pg</p>
 <p><strong>5、修复PG</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph pg repair 0.2f</div><div class="line">instructing pg 0.2f on osd.1 to repair</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ceph pg repair 0.2f</span><br><span class="line">instructing pg 0.2f on osd.1 to repair</span><br></pre></td></tr></table></figure>
 <p><strong>6、此时内容已被纠正过来</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># cat  /var/lib/ceph/osd/ceph-1/current/0.2f_head/xfy__head_0C76C82F__0</div><div class="line">xin fan yang have delicious food</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># cat  /var/lib/ceph/osd/ceph-1/current/0.2f_head/xfy__head_0C76C82F__0</span><br><span class="line">xin fan yang have delicious food</span><br></pre></td></tr></table></figure>
 <p>此时，集群状态OK</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># ceph health detail</div><div class="line">HEALTH_OK</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ceph health detail</span><br><span class="line">HEALTH_OK</span><br></pre></td></tr></table></figure>
 <h2 id="PG状态列表"><a href="#PG状态列表" class="headerlink" title="PG状态列表"></a>PG状态列表</h2><p><strong>1、peering</strong></p>
 <p>Ceph 为归置组建立互联时，会让存储归置组副本的 OSD 之间就其中的对象和元数据状态达成一致。 Ceph 完成了互联，也就意味着存储着归置组的 OSD 就其当前状态达成了一致。然而，互联过程的完成并不能表明各副本都有了数据的最新版本。</p>
 <p><strong>2、active</strong></p>
@@ -339,11 +338,11 @@ var _hmt = _hmt || [];
 <p><strong>9、undersized</strong></p>
 <p>PG的副本数比pool的配置中副本数少。</p>
 <p>可以通过如下命令查看指定pool的副本数，默认是3。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># ceph osd pool get &#123;poolname&#125; size</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># ceph osd pool get &#123;poolname&#125; size</span><br></pre></td></tr></table></figure>
 <p><strong>10、peered</strong></p>
 <p>PG已经peered，但是副本数少于pool配置中指定的最小副本数，不能向client提供IO操作。在这种状态下会出发 recovery 操作，所以 pg 最终会愈合到最小副本数。</p>
 <p>可通过如下命令得到指定pool的最小副本数，默认是2。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># ceph osd pool get &#123;poolname&#125; min_size</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># ceph osd pool get &#123;poolname&#125; min_size</span><br></pre></td></tr></table></figure>
 <p><strong>11、incomplete</strong></p>
 <p>ceph检测到一个PG缺少可能已经发生的写入信息，或没有任何健康的副本。如果看到此状态，请尝试启动任何可能包含所需信息的失败的OSD，或暂时调整min_size以允许恢复。</p>
 <p><strong>其他：</strong></p>
@@ -354,10 +353,13 @@ var _hmt = _hmt || [];
 <li>Stale: 归置组们处于一种未知状态，因为存储它们的 OSD 有一阵子没向监视器报告了（由 mon osd report timeout 配置）。</li>
 </ul>
 <p>找出卡住的归置组</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ceph pg dump_stuck [unclean|inactive|stale|undersized|degraded]</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ceph pg dump_stuck [unclean|inactive|stale|undersized|degraded]</span><br></pre></td></tr></table></figure>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -455,11 +457,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/07/28/ceph-placement-group/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2017/07/28/ceph-placement-group/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -564,6 +567,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -665,10 +670,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -681,15 +682,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -709,19 +710,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -733,6 +730,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -741,19 +742,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -765,6 +758,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -773,15 +770,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -793,15 +794,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

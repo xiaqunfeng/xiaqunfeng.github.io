@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>Ceph中严重数据不一致性BUG | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="目前，块存储服务是Ceph存储中被使用的最普遍的服务之一，通过块存储服务，可以向客户端以使用块设备一样访问Ceph集群。然而，目前在使用块存储服务时，尤其是OpenStack与Ceph对接时，如果没有严格的控制Ceph端的对象大小（使用 &amp;gt;= 8MB对象时），将有可能导致严重的数据不一致情况，该异常由于XFS文件系统本身对Fiemap的支持特性导致的。">
+<meta name="keywords" content="ceph">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ceph中严重数据不一致性BUG">
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/01/20/Ceph中严重数据不一致性BUG/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="目前，块存储服务是Ceph存储中被使用的最普遍的服务之一，通过块存储服务，可以向客户端以使用块设备一样访问Ceph集群。然而，目前在使用块存储服务时，尤其是OpenStack与Ceph对接时，如果没有严格的控制Ceph端的对象大小（使用 &amp;gt;= 8MB对象时），将有可能导致严重的数据不一致情况，该异常由于XFS文件系统本身对Fiemap的支持特性导致的。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://www.ustack.com/wp-content/uploads/2016/11/1.png">
 <meta property="og:image" content="https://www.ustack.com/wp-content/uploads/2016/11/2-1.jpg">
 <meta property="og:image" content="https://www.ustack.com/wp-content/uploads/2016/11/3.jpg">
@@ -54,7 +56,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -82,9 +84,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -164,7 +163,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Ceph中严重数据不一致性BUG" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-Ceph中严重数据不一致性BUG" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -188,7 +188,7 @@ var _hmt = _hmt || [];
 <h2 id="触发场景"><a href="#触发场景" class="headerlink" title="触发场景"></a>触发场景</h2><p>XFS使用fiemap时，当extents数量大于1364时，通过ioctl的FS_IOC_FIEMAP接口，获取的extents数量上限为1364，导致超出部分extents数据获取不到。这将导致，在开启fiemap时，Ceph集群进行recovery与backfill之后，产生大量数据不一致的情况，也是迄今为止Ceph中影响最大的，最严重的数据不一致BUG。</p>
 <p>由于fiemap BUG，碎片化对象在recovery与backfill之后（fiemap 获取不正确的数据），从而使的恢复的对象数据与原对象数据不一致。而恢复后的副本若成为主副本，则可能发生静默读错误，并且如果使用Ceph策略自动修复对象（repair object之后），可能将错误数据覆盖至正确数据，数据将永远损毁。在某些情况下，还会触发对象永远处于inconsistent状态。</p>
 <h2 id="复现方式"><a href="#复现方式" class="headerlink" title="复现方式"></a>复现方式</h2><p>初始化大量extents碎片文件test，使其成为一个拥有3999个extents的碎片文件。<br><img src="https://www.ustack.com/wp-content/uploads/2016/11/1.png" alt="1"></p>
-<p>通过fiemap系统调用，获取这些extents<br><a href="https://www.ustack.com/wp-content/uploads/2016/11/2-1.jpg" target="_blank" rel="external"><img src="https://www.ustack.com/wp-content/uploads/2016/11/2-1.jpg" alt="2"></a><br>编译g++ do_fiemap.cc -o do_fiemap</p>
+<p>通过fiemap系统调用，获取这些extents<br><a href="https://www.ustack.com/wp-content/uploads/2016/11/2-1.jpg" target="_blank" rel="noopener"><img src="https://www.ustack.com/wp-content/uploads/2016/11/2-1.jpg" alt="2"></a><br>编译g++ do_fiemap.cc -o do_fiemap</p>
 <p>通过该程序可以打印出可以获取的到fiemap extents, do_fiemap test，通过xfs_bmap test 打印出真正的extents数量后，进行比较。<br><img src="https://www.ustack.com/wp-content/uploads/2016/11/3.jpg" alt="3"></p>
 <p>可以看到，我们最先写了2000个extents，并通过xfs_bmap获取到了 2000个有内容的extents，但是通过fiemap系统调用，只获取到了1364个有数据的extents，所以在ceph中使用fiemap系统调用在某些情况下导致数据一致性BUG。</p>
 <h2 id="修复方案"><a href="#修复方案" class="headerlink" title="修复方案"></a>修复方案</h2><p>1）目前，在使用块存储使用场景时，通常情况下，默认使用4MB对象。在无特殊情况下，不用使用大于4MB 对象的RBD 镜像。</p>
@@ -196,10 +196,13 @@ var _hmt = _hmt || [];
 <p>这组系统调用，可以让使用者通过while循环，反复的发现文件中的data 与 hole，从而组织出一个文件中真正存在的数据，能够避免产生与fiemap系统调用类似的BUG，又保证了recovery或者clone时候只复制有用数据，而反复的系统调，应该会带来一定性能上的影响，请读者们自行测试。</p>
 <p>目前，在I版本以后的ceph中，提供参数filestore_seek_data_hole，来启用该功能。当filestore_seek_data_hole 与 filestore_fiemap同时设置时，只用文件系统支持seek_data_hole，那么就会先通过seek_data_hole方式来获取文件的extents，所以在I版本以后的ceph中，应启用filestore_seek_data_hole功能来替代filestore_fiemap 功能。</p>
 <p>3）对于已经使用8MB，16MB 甚至更大对象大小的RBD镜像，请暂时设置禁用Fiemap功能，并等待后续版本修复。</p>
-<p>原文链接：<a href="https://www.ustack.com/blog/%E9%98%B2%E7%81%AB%E9%98%B2%E7%9B%97%E9%98%B2bug-%E6%9C%89%E4%BA%91%E5%AD%98%E5%82%A8%E5%9B%A2%E9%98%9F%E5%85%AC%E5%B8%83ceph%E4%B8%AD%E6%9C%80%E4%B8%A5%E9%87%8D%E6%95%B0%E6%8D%AE%E4%B8%8D%E4%B8%80/" target="_blank" rel="external">有云存储团队公布Ceph中最严重数据不一致BUG!</a></p>
+<p>原文链接：<a href="https://www.ustack.com/blog/%E9%98%B2%E7%81%AB%E9%98%B2%E7%9B%97%E9%98%B2bug-%E6%9C%89%E4%BA%91%E5%AD%98%E5%82%A8%E5%9B%A2%E9%98%9F%E5%85%AC%E5%B8%83ceph%E4%B8%AD%E6%9C%80%E4%B8%A5%E9%87%8D%E6%95%B0%E6%8D%AE%E4%B8%8D%E4%B8%80/" target="_blank" rel="noopener">有云存储团队公布Ceph中最严重数据不一致BUG!</a></p>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -297,11 +300,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/01/20/Ceph中严重数据不一致性BUG/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2017/01/20/Ceph中严重数据不一致性BUG/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -406,6 +410,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -507,10 +513,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -523,15 +525,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -551,19 +553,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -575,6 +573,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -583,19 +585,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -607,6 +601,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -615,15 +613,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -635,15 +637,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

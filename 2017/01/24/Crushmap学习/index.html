@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>Crushmap学习 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="介绍了ceph中crush的优点、原理及作用，同时dump出自己的crushmap内容，进行详细的分解学习。">
+<meta name="keywords" content="ceph">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Crushmap学习">
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/01/24/Crushmap学习/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="介绍了ceph中crush的优点、原理及作用，同时dump出自己的crushmap内容，进行详细的分解学习。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/osdmap.png">
 <meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
 <meta property="og:updated_time" content="2017-01-24T05:52:34.000Z">
@@ -52,7 +54,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -80,9 +82,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -162,7 +161,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Crushmap学习" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-Crushmap学习" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -205,15 +205,15 @@ var _hmt = _hmt || [];
 <p>说了半天，一句话说明CRUSH的作用，就是——<strong>根据PG ID得到一个OSD列表</strong>。</p>
 <h2 id="crush的工作形式"><a href="#crush的工作形式" class="headerlink" title="crush的工作形式"></a>crush的工作形式</h2><p>CRUSH是基于一张描述当前集群资源状态的map（Crush map）按照一定的规则（rules）得到这个OSD列表的。Ceph将系统的所有硬件资源描述成一个树状结构，然后再基于这个结构按照一定的容错规则生成一个逻辑上的树形结构作为Crush map。数的叶子节点是OSD。</p>
 <h2 id="实例讲解"><a href="#实例讲解" class="headerlink" title="实例讲解"></a>实例讲解</h2><h3 id="集群详情"><a href="#集群详情" class="headerlink" title="集群详情"></a>集群详情</h3><p>三个节点（ceph1，ceph2，ceph3），每个节点三个OSD，如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"># ceph osd tree</div><div class="line">ID WEIGHT  TYPE NAME      UP/DOWN REWEIGHT PRIMARY-AFFINITY </div><div class="line">-1 1.36345 root default                                     </div><div class="line">-2 0.45448     host ceph1                                   </div><div class="line"> 0 0.09090         osd.0       up  1.00000          1.00000 </div><div class="line"> 1 0.18179         osd.1       up  1.00000          1.00000 </div><div class="line"> 2 0.18179         osd.2       up  1.00000          1.00000 </div><div class="line">-3 0.45448     host ceph2                                   </div><div class="line"> 3 0.09090         osd.3       up  1.00000          1.00000 </div><div class="line"> 4 0.18179         osd.4       up  1.00000          1.00000 </div><div class="line"> 5 0.18179         osd.5       up  1.00000          1.00000 </div><div class="line">-4 0.45448     host ceph3                                   </div><div class="line"> 6 0.09090         osd.6       up  1.00000          1.00000 </div><div class="line"> 7 0.18179         osd.7       up  1.00000          1.00000 </div><div class="line"> 8 0.18179         osd.8       up  1.00000          1.00000</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># ceph osd tree</span><br><span class="line">ID WEIGHT  TYPE NAME      UP/DOWN REWEIGHT PRIMARY-AFFINITY </span><br><span class="line">-1 1.36345 root default                                     </span><br><span class="line">-2 0.45448     host ceph1                                   </span><br><span class="line"> 0 0.09090         osd.0       up  1.00000          1.00000 </span><br><span class="line"> 1 0.18179         osd.1       up  1.00000          1.00000 </span><br><span class="line"> 2 0.18179         osd.2       up  1.00000          1.00000 </span><br><span class="line">-3 0.45448     host ceph2                                   </span><br><span class="line"> 3 0.09090         osd.3       up  1.00000          1.00000 </span><br><span class="line"> 4 0.18179         osd.4       up  1.00000          1.00000 </span><br><span class="line"> 5 0.18179         osd.5       up  1.00000          1.00000 </span><br><span class="line">-4 0.45448     host ceph3                                   </span><br><span class="line"> 6 0.09090         osd.6       up  1.00000          1.00000 </span><br><span class="line"> 7 0.18179         osd.7       up  1.00000          1.00000 </span><br><span class="line"> 8 0.18179         osd.8       up  1.00000          1.00000</span><br></pre></td></tr></table></figure>
 <h3 id="crushmap内容"><a href="#crushmap内容" class="headerlink" title="crushmap内容"></a>crushmap内容</h3><p>来看一下crushmap</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div></pre></td><td class="code"><pre><div class="line"># begin crush map</div><div class="line">tunable choose_local_tries 0</div><div class="line">tunable choose_local_fallback_tries 0</div><div class="line">tunable choose_total_tries 50</div><div class="line">tunable chooseleaf_descend_once 1</div><div class="line">tunable chooseleaf_vary_r 1</div><div class="line">tunable straw_calc_version 1</div><div class="line"></div><div class="line"># devices</div><div class="line">device 0 osd.0</div><div class="line">device 1 osd.1</div><div class="line">device 2 osd.2</div><div class="line">device 3 osd.3</div><div class="line">device 4 osd.4</div><div class="line">device 5 osd.5</div><div class="line">device 6 osd.6</div><div class="line">device 7 osd.7</div><div class="line">device 8 osd.8</div><div class="line"></div><div class="line"># types</div><div class="line">type 0 osd</div><div class="line">type 1 host</div><div class="line">type 2 chassis</div><div class="line">type 3 rack</div><div class="line">type 4 row</div><div class="line">type 5 pdu</div><div class="line">type 6 pod</div><div class="line">type 7 room</div><div class="line">type 8 datacenter</div><div class="line">type 9 region</div><div class="line">type 10 root</div><div class="line"></div><div class="line"># buckets</div><div class="line">host ceph1 &#123;</div><div class="line">	id -2		# do not change unnecessarily</div><div class="line">	# weight 0.454</div><div class="line">	alg straw</div><div class="line">	hash 0	# rjenkins1</div><div class="line">	item osd.0 weight 0.091</div><div class="line">	item osd.1 weight 0.182</div><div class="line">	item osd.2 weight 0.182</div><div class="line">&#125;</div><div class="line">host ceph2 &#123;</div><div class="line">	id -3		# do not change unnecessarily</div><div class="line">	# weight 0.454</div><div class="line">	alg straw</div><div class="line">	hash 0	# rjenkins1</div><div class="line">	item osd.3 weight 0.091</div><div class="line">	item osd.4 weight 0.182</div><div class="line">	item osd.5 weight 0.182</div><div class="line">&#125;</div><div class="line">host ceph3 &#123;</div><div class="line">	id -4		# do not change unnecessarily</div><div class="line">	# weight 0.454</div><div class="line">	alg straw</div><div class="line">	hash 0	# rjenkins1</div><div class="line">	item osd.6 weight 0.091</div><div class="line">	item osd.7 weight 0.182</div><div class="line">	item osd.8 weight 0.182</div><div class="line">&#125;</div><div class="line">root default &#123;</div><div class="line">	id -1		# do not change unnecessarily</div><div class="line">	# weight 1.363</div><div class="line">	alg straw</div><div class="line">	hash 0	# rjenkins1</div><div class="line">	item ceph1 weight 0.454</div><div class="line">	item ceph2 weight 0.454</div><div class="line">	item ceph3 weight 0.454</div><div class="line">&#125;</div><div class="line"></div><div class="line"># rules</div><div class="line">rule replicated_ruleset &#123;</div><div class="line">	ruleset 0</div><div class="line">	type replicated</div><div class="line">	min_size 1</div><div class="line">	max_size 10</div><div class="line">	step take default</div><div class="line">	step chooseleaf firstn 0 type host</div><div class="line">	step emit</div><div class="line">&#125;</div><div class="line"></div><div class="line"># end crush map</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"># begin crush map</span><br><span class="line">tunable choose_local_tries 0</span><br><span class="line">tunable choose_local_fallback_tries 0</span><br><span class="line">tunable choose_total_tries 50</span><br><span class="line">tunable chooseleaf_descend_once 1</span><br><span class="line">tunable chooseleaf_vary_r 1</span><br><span class="line">tunable straw_calc_version 1</span><br><span class="line"></span><br><span class="line"># devices</span><br><span class="line">device 0 osd.0</span><br><span class="line">device 1 osd.1</span><br><span class="line">device 2 osd.2</span><br><span class="line">device 3 osd.3</span><br><span class="line">device 4 osd.4</span><br><span class="line">device 5 osd.5</span><br><span class="line">device 6 osd.6</span><br><span class="line">device 7 osd.7</span><br><span class="line">device 8 osd.8</span><br><span class="line"></span><br><span class="line"># types</span><br><span class="line">type 0 osd</span><br><span class="line">type 1 host</span><br><span class="line">type 2 chassis</span><br><span class="line">type 3 rack</span><br><span class="line">type 4 row</span><br><span class="line">type 5 pdu</span><br><span class="line">type 6 pod</span><br><span class="line">type 7 room</span><br><span class="line">type 8 datacenter</span><br><span class="line">type 9 region</span><br><span class="line">type 10 root</span><br><span class="line"></span><br><span class="line"># buckets</span><br><span class="line">host ceph1 &#123;</span><br><span class="line">	id -2		# do not change unnecessarily</span><br><span class="line">	# weight 0.454</span><br><span class="line">	alg straw</span><br><span class="line">	hash 0	# rjenkins1</span><br><span class="line">	item osd.0 weight 0.091</span><br><span class="line">	item osd.1 weight 0.182</span><br><span class="line">	item osd.2 weight 0.182</span><br><span class="line">&#125;</span><br><span class="line">host ceph2 &#123;</span><br><span class="line">	id -3		# do not change unnecessarily</span><br><span class="line">	# weight 0.454</span><br><span class="line">	alg straw</span><br><span class="line">	hash 0	# rjenkins1</span><br><span class="line">	item osd.3 weight 0.091</span><br><span class="line">	item osd.4 weight 0.182</span><br><span class="line">	item osd.5 weight 0.182</span><br><span class="line">&#125;</span><br><span class="line">host ceph3 &#123;</span><br><span class="line">	id -4		# do not change unnecessarily</span><br><span class="line">	# weight 0.454</span><br><span class="line">	alg straw</span><br><span class="line">	hash 0	# rjenkins1</span><br><span class="line">	item osd.6 weight 0.091</span><br><span class="line">	item osd.7 weight 0.182</span><br><span class="line">	item osd.8 weight 0.182</span><br><span class="line">&#125;</span><br><span class="line">root default &#123;</span><br><span class="line">	id -1		# do not change unnecessarily</span><br><span class="line">	# weight 1.363</span><br><span class="line">	alg straw</span><br><span class="line">	hash 0	# rjenkins1</span><br><span class="line">	item ceph1 weight 0.454</span><br><span class="line">	item ceph2 weight 0.454</span><br><span class="line">	item ceph3 weight 0.454</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># rules</span><br><span class="line">rule replicated_ruleset &#123;</span><br><span class="line">	ruleset 0</span><br><span class="line">	type replicated</span><br><span class="line">	min_size 1</span><br><span class="line">	max_size 10</span><br><span class="line">	step take default</span><br><span class="line">	step chooseleaf firstn 0 type host</span><br><span class="line">	step emit</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># end crush map</span><br></pre></td></tr></table></figure>
 <h3 id="begin-crush-map"><a href="#begin-crush-map" class="headerlink" title="begin crush map"></a>begin crush map</h3><p>配置参数</p>
 <h3 id="devices"><a href="#devices" class="headerlink" title="devices"></a>devices</h3><p>列出集群的OSD设备</p>
 <h3 id="types"><a href="#types" class="headerlink" title="types"></a>types</h3><p>表示buckets的类型 <img src="http://ojet8bprn.bkt.clouddn.com/osdmap.png" alt="osdmap"></p>
-<h3 id="Buckets"><a href="#Buckets" class="headerlink" title="Buckets"></a>Buckets</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">host ceph1 &#123;</div><div class="line">	id -2		# do not change unnecessarily</div><div class="line">	# weight 0.454</div><div class="line">	alg straw</div><div class="line">	hash 0	# rjenkins1</div><div class="line">	item osd.0 weight 0.091</div><div class="line">	item osd.1 weight 0.182</div><div class="line">	item osd.2 weight 0.182</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="Buckets"><a href="#Buckets" class="headerlink" title="Buckets"></a>Buckets</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">host ceph1 &#123;</span><br><span class="line">	id -2		# do not change unnecessarily</span><br><span class="line">	# weight 0.454</span><br><span class="line">	alg straw</span><br><span class="line">	hash 0	# rjenkins1</span><br><span class="line">	item osd.0 weight 0.091</span><br><span class="line">	item osd.1 weight 0.182</span><br><span class="line">	item osd.2 weight 0.182</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>具体的定义是这样</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[bucket-type] [bucket-name] &#123;</div><div class="line">  	id 		[a unique negative numeric ID]</div><div class="line">  	weight	[the relative capacity the item]</div><div class="line">  	alg		[the bucket type: uniform | list | tree | straw | straw2]</div><div class="line">  	hash	[the hash type: 0 by default]</div><div class="line">  	item	[item-name]		weight		[weight]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[bucket-type] [bucket-name] &#123;</span><br><span class="line">  	id 		[a unique negative numeric ID]</span><br><span class="line">  	weight	[the relative capacity the item]</span><br><span class="line">  	alg		[the bucket type: uniform | list | tree | straw | straw2]</span><br><span class="line">  	hash	[the hash type: 0 by default]</span><br><span class="line">  	item	[item-name]		weight		[weight]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>Bucket-type: bucket的类型，用来指定OSD在CRUSH分层结构中的位置</p>
 <p>bucket-name：唯一的bucket名称</p>
 <p>id：唯一的ID，用一个负整数表示</p>
@@ -224,9 +224,9 @@ var _hmt = _hmt || [];
 </blockquote>
 <p>hash：每个bucket都具有hash算法。目前ceph支持jrenkins1算法，默认hash设置为0使用该算法。</p>
 <p>item：bucket里包含的元素，即叶子bucket，及其权重。这里bucket为host，叶子为OSD。</p>
-<h3 id="rules"><a href="#rules" class="headerlink" title="rules"></a>rules</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">rules</div><div class="line">rule replicated_ruleset &#123;</div><div class="line">	ruleset 0</div><div class="line">	type replicated</div><div class="line">	min_size 1</div><div class="line">	max_size 10</div><div class="line">	step take default</div><div class="line">	step chooseleaf firstn 0 type host</div><div class="line">	step emit</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="rules"><a href="#rules" class="headerlink" title="rules"></a>rules</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">rules</span><br><span class="line">rule replicated_ruleset &#123;</span><br><span class="line">	ruleset 0</span><br><span class="line">	type replicated</span><br><span class="line">	min_size 1</span><br><span class="line">	max_size 10</span><br><span class="line">	step take default</span><br><span class="line">	step chooseleaf firstn 0 type host</span><br><span class="line">	step emit</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>具体定义</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">rule [rulename] &#123;</div><div class="line">  	ruleset		[ruleset]</div><div class="line">  	type		[replicated | erasure]</div><div class="line">  	min_size	[min-size]</div><div class="line">  	max_size	[max-size]</div><div class="line">  	step take	[bucket-type]</div><div class="line">  	step		[choose | chooseleaf]	firstn	[num]	type	[bucket-type]</div><div class="line">  	step emit</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">rule [rulename] &#123;</span><br><span class="line">  	ruleset		[ruleset]</span><br><span class="line">  	type		[replicated | erasure]</span><br><span class="line">  	min_size	[min-size]</span><br><span class="line">  	max_size	[max-size]</span><br><span class="line">  	step take	[bucket-type]</span><br><span class="line">  	step		[choose | chooseleaf]	firstn	[num]	type	[bucket-type]</span><br><span class="line">  	step emit</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>rulename：定义的规则名称</p>
 <p>ruleset：一个整数值，指定这条规则所属的规则集</p>
 <p>min_size和max_size用来限定这个rule的使用范围，即当一个pool的副本数小于min_size或者大于max_size的时候不使用这个rule。</p>
@@ -253,7 +253,10 @@ var _hmt = _hmt || [];
 
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -351,11 +354,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/01/24/Crushmap学习/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2017/01/24/Crushmap学习/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -460,6 +464,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -561,10 +567,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -577,15 +579,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -605,19 +607,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -629,6 +627,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -637,19 +639,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -661,6 +655,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -669,15 +667,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -689,15 +691,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

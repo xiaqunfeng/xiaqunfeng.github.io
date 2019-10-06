@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>linux command day day up | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="This article is aim to record some not commonly used linux command which used in the work.">
+<meta name="keywords" content="cmd">
 <meta property="og:type" content="article">
 <meta property="og:title" content="linux command day day up">
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/09/21/linux-command-day-day-up/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="This article is aim to record some not commonly used linux command which used in the work.">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2018-03-27T00:51:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux command day day up">
@@ -49,7 +51,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -77,9 +79,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -159,7 +158,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-linux-command-day-day-up" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-linux-command-day-day-up" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -229,9 +229,9 @@ var _hmt = _hmt || [];
 </tbody>
 </table>
 <p>比如，测试该系统是否含有某一个文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># cat test.sh</div><div class="line">if test -f /etc/redhat-release ; then</div><div class="line">    echo &quot;this system is centos&quot;</div><div class="line">else</div><div class="line">    echo &quot;this system is unbuntu&quot;</div><div class="line">fi</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># cat test.sh</span><br><span class="line">if test -f /etc/redhat-release ; then</span><br><span class="line">    echo &quot;this system is centos&quot;</span><br><span class="line">else</span><br><span class="line">    echo &quot;this system is unbuntu&quot;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
 <p>在centos系统上执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># sh test.sh</div><div class="line">this system is centos</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># sh test.sh</span><br><span class="line">this system is centos</span><br></pre></td></tr></table></figure>
 <p>centos上<code>test -f /etc/redhat-release</code> 返回真，ubuntu系统上返回假。</p>
 <p><strong>2、字符串测试</strong></p>
 <table>
@@ -296,18 +296,21 @@ var _hmt = _hmt || [];
 </tbody>
 </table>
 <h2 id="type"><a href="#type" class="headerlink" title="type"></a>type</h2><p>该命令用来显示指定命令的类型，判断给出的指令是内部指令还是外部指令。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"># type cd</div><div class="line">cd 是 shell 内嵌</div><div class="line"># type date</div><div class="line">date 是 /usr/bin/date</div><div class="line"># type if</div><div class="line">if 是 shell 关键字</div><div class="line"># type mysql</div><div class="line">-bash: type: mysql: 未找到</div><div class="line"># type ll</div><div class="line">ll 是 `ls -l --color=auto&apos; 的别名</div><div class="line"># type yum</div><div class="line">yum 是 /usr/bin/yum</div><div class="line"># type apt-get</div><div class="line">-bash: type: apt-get: 未找到</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># type cd</span><br><span class="line">cd 是 shell 内嵌</span><br><span class="line"># type date</span><br><span class="line">date 是 /usr/bin/date</span><br><span class="line"># type if</span><br><span class="line">if 是 shell 关键字</span><br><span class="line"># type mysql</span><br><span class="line">-bash: type: mysql: 未找到</span><br><span class="line"># type ll</span><br><span class="line">ll 是 `ls -l --color=auto&apos; 的别名</span><br><span class="line"># type yum</span><br><span class="line">yum 是 /usr/bin/yum</span><br><span class="line"># type apt-get</span><br><span class="line">-bash: type: apt-get: 未找到</span><br></pre></td></tr></table></figure>
 <p>一些选项：</p>
 <ul>
 <li>-t：输出“file”、“alias”或者“builtin”，分别表示给定的指令为“外部指令”、“命令别名”或者“内部指令”； </li>
 <li>-p：如果给出的指令为外部指令，则显示其绝对路径； </li>
 <li>-a：在环境变量“PATH”指定的路径中，显示给定指令的信息，包括命令别名。</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"># type -t cd</div><div class="line">builtin</div><div class="line"># type -t ll</div><div class="line">alias</div><div class="line"># type -t yum</div><div class="line">file</div><div class="line"># type -t if</div><div class="line">keyword</div><div class="line">#################</div><div class="line"># type -p yum</div><div class="line">/usr/bin/yum</div><div class="line">#################</div><div class="line"># type -a cd</div><div class="line">cd 是 shell 内嵌</div><div class="line">cd 是 /usr/bin/cd</div><div class="line"># type -a date</div><div class="line">date 是 /usr/bin/date</div><div class="line"># type -a yum</div><div class="line">yum 是 /usr/bin/yum</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># type -t cd</span><br><span class="line">builtin</span><br><span class="line"># type -t ll</span><br><span class="line">alias</span><br><span class="line"># type -t yum</span><br><span class="line">file</span><br><span class="line"># type -t if</span><br><span class="line">keyword</span><br><span class="line">#################</span><br><span class="line"># type -p yum</span><br><span class="line">/usr/bin/yum</span><br><span class="line">#################</span><br><span class="line"># type -a cd</span><br><span class="line">cd 是 shell 内嵌</span><br><span class="line">cd 是 /usr/bin/cd</span><br><span class="line"># type -a date</span><br><span class="line">date 是 /usr/bin/date</span><br><span class="line"># type -a yum</span><br><span class="line">yum 是 /usr/bin/yum</span><br></pre></td></tr></table></figure>
 <h2 id="TO-BE-ADD"><a href="#TO-BE-ADD" class="headerlink" title="TO BE ADD"></a>TO BE ADD</h2><p>TODO</p>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -416,11 +419,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/09/21/linux-command-day-day-up/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2017/09/21/linux-command-day-day-up/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -525,6 +529,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -626,10 +632,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -642,15 +644,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -670,19 +672,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -694,6 +692,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -702,19 +704,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -726,6 +720,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -734,15 +732,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -754,15 +756,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>Hive架构及应用介绍 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="介绍Hive的架构及应用，在工作中的一个产品中用到了，所以系统地了解一下。">
+<meta name="keywords" content="architecture">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hive架构及应用介绍">
 <meta property="og:url" content="http://xiaqunfeng.cc/2018/10/18/Hive/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="介绍Hive的架构及应用，在工作中的一个产品中用到了，所以系统地了解一下。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/hive1.jpg">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/hive2.jpg">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/hive3.jpg">
@@ -27,7 +29,7 @@
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/hive11.jpg">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/hive12.jpg">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/hive13.jpg">
-<meta property="og:updated_time" content="2019-01-21T03:54:14.319Z">
+<meta property="og:updated_time" content="2019-01-21T03:54:14.320Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hive架构及应用介绍">
 <meta name="twitter:description" content="介绍Hive的架构及应用，在工作中的一个产品中用到了，所以系统地了解一下。">
@@ -63,7 +65,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -91,9 +93,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -173,7 +172,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Hive" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-Hive" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -197,21 +197,21 @@ var _hmt = _hmt || [];
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Hive这个框架在Hadoop的生态体系结构中占有及其重要的地位，在实际的业务当中用的也非常多，可以说Hadoop之所以这么流行在很大程度上是因为Hive的存在。那么Hive究竟是什么，为什么在Hadoop家族中占有这么重要的地位，本篇文章将围绕Hive的体系结构(架构)、Hive的操作、Hive与Hbase的区别等对Hive进行全方面的阐述。 </p>
 <h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p>在此之前，先给大家介绍一个业务场景，让大家感受一下为什么Hive如此的受欢迎： </p>
 <p>业务描述：统计业务表consumer.txt中北京的客户有多少位？下面是相应的业务数据：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">id      city    name    sex           </div><div class="line">0001    beijing zhangli man </div><div class="line">0002    guizhou lifang  woman </div><div class="line">0003    tianjin wangwei man </div><div class="line">0004    chengde wanghe  woman </div><div class="line">0005    beijing lidong  man </div><div class="line">0006    lanzhou wuting  woman </div><div class="line">0007    beijing guona   woman </div><div class="line">0008    chengde houkuo  man</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">id      city    name    sex           </span><br><span class="line">0001    beijing zhangli man </span><br><span class="line">0002    guizhou lifang  woman </span><br><span class="line">0003    tianjin wangwei man </span><br><span class="line">0004    chengde wanghe  woman </span><br><span class="line">0005    beijing lidong  man </span><br><span class="line">0006    lanzhou wuting  woman </span><br><span class="line">0007    beijing guona   woman </span><br><span class="line">0008    chengde houkuo  man</span><br></pre></td></tr></table></figure>
 <p>首先我先用大家所熟悉的MapReduce程序来实现这个业务分析，完整代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div></pre></td><td class="code"><pre><div class="line">package IT;</div><div class="line"></div><div class="line">import java.io.IOException;</div><div class="line">import java.net.URI;</div><div class="line"></div><div class="line">import org.apache.hadoop.conf.Configuration;</div><div class="line">import org.apache.hadoop.fs.FSDataInputStream;</div><div class="line">import org.apache.hadoop.fs.FileSystem;</div><div class="line">import org.apache.hadoop.fs.Path;</div><div class="line">import org.apache.hadoop.io.IOUtils;</div><div class="line">import org.apache.hadoop.io.LongWritable;</div><div class="line">import org.apache.hadoop.io.Text;</div><div class="line">import org.apache.hadoop.mapreduce.Job;</div><div class="line">import org.apache.hadoop.mapreduce.Mapper;</div><div class="line">import org.apache.hadoop.mapreduce.Reducer;</div><div class="line">import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;</div><div class="line">import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;</div><div class="line">import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;</div><div class="line">import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;</div><div class="line">import org.apache.hadoop.mapreduce.lib.partition.HashPartitioner;</div><div class="line"></div><div class="line">public class Consumer</div><div class="line">&#123;</div><div class="line">    public static String path1 = &quot;hdfs://192.168.80.80:9000/consumer.txt&quot;;</div><div class="line">    public static String path2 = &quot;hdfs://192.168.80.80:9000/dir&quot;;</div><div class="line">    public static void main(String[] args) throws Exception</div><div class="line">    &#123;</div><div class="line">          FileSystem fileSystem = FileSystem.get(new URI(path1) , new Configuration());</div><div class="line">          if(fileSystem.exists(new Path(path2)))</div><div class="line">          &#123;</div><div class="line">              fileSystem.delete(new Path(path2), true);</div><div class="line">          &#125;</div><div class="line"></div><div class="line">          Job job = new Job(new Configuration(),&quot;Consumer&quot;);</div><div class="line">          FileInputFormat.setInputPaths(job, new Path(path1));</div><div class="line">          job.setInputFormatClass(TextInputFormat.class);</div><div class="line">          job.setMapperClass(MyMapper.class);</div><div class="line">          job.setMapOutputKeyClass(Text.class);</div><div class="line">          job.setMapOutputValueClass(LongWritable.class);</div><div class="line"></div><div class="line">          job.setNumReduceTasks(1);</div><div class="line">          job.setPartitionerClass(HashPartitioner.class);</div><div class="line"></div><div class="line">          job.setReducerClass(MyReducer.class);</div><div class="line">          job.setOutputKeyClass(Text.class);</div><div class="line">          job.setOutputValueClass(LongWritable.class);</div><div class="line">          job.setOutputFormatClass(TextOutputFormat.class);</div><div class="line">          FileOutputFormat.setOutputPath(job, new Path(path2));</div><div class="line">          job.waitForCompletion(true);</div><div class="line">          //查看执行结果</div><div class="line">          FSDataInputStream fr = fileSystem.open(new Path(&quot;hdfs://hadoop80:9000/dir/part-r-00000&quot;));</div><div class="line">          IOUtils.copyBytes(fr, System.out, 1024, true);</div><div class="line">     &#125;</div><div class="line">    public static class MyMapper extends Mapper&lt;LongWritable, Text, Text, LongWritable&gt;</div><div class="line">    &#123;      </div><div class="line">            public static long sum = 0L;</div><div class="line">            protected void map(LongWritable k1, Text v1,Context context) throws IOException, InterruptedException</div><div class="line">            &#123;</div><div class="line">                  String[] splited = v1.toString().split(&quot;\t&quot;);</div><div class="line">                  if(splited[1].equals(&quot;beijing&quot;))</div><div class="line">                  &#123;</div><div class="line">                      sum++;</div><div class="line">                  &#125;</div><div class="line">            &#125;</div><div class="line">            protected void cleanup(Context context)throws IOException, InterruptedException</div><div class="line">            &#123;</div><div class="line">                  String str = &quot;beijing&quot;;</div><div class="line">                  context.write(new Text(str),new LongWritable(sum));</div><div class="line">            &#125;</div><div class="line">    &#125;</div><div class="line">    public static class MyReducer extends Reducer&lt;Text, LongWritable, Text, LongWritable&gt;</div><div class="line">    &#123;</div><div class="line">            protected void reduce(Text k2, Iterable&lt;LongWritable&gt; v2s,Context context)throws IOException, InterruptedException</div><div class="line">            &#123;</div><div class="line">                  for (LongWritable v2 : v2s)</div><div class="line">                 &#123;</div><div class="line">                     context.write(k2, v2);</div><div class="line">                 &#125;</div><div class="line">            &#125;   </div><div class="line">    &#125;   </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">package IT;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.net.URI;</span><br><span class="line"></span><br><span class="line">import org.apache.hadoop.conf.Configuration;</span><br><span class="line">import org.apache.hadoop.fs.FSDataInputStream;</span><br><span class="line">import org.apache.hadoop.fs.FileSystem;</span><br><span class="line">import org.apache.hadoop.fs.Path;</span><br><span class="line">import org.apache.hadoop.io.IOUtils;</span><br><span class="line">import org.apache.hadoop.io.LongWritable;</span><br><span class="line">import org.apache.hadoop.io.Text;</span><br><span class="line">import org.apache.hadoop.mapreduce.Job;</span><br><span class="line">import org.apache.hadoop.mapreduce.Mapper;</span><br><span class="line">import org.apache.hadoop.mapreduce.Reducer;</span><br><span class="line">import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;</span><br><span class="line">import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;</span><br><span class="line">import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;</span><br><span class="line">import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;</span><br><span class="line">import org.apache.hadoop.mapreduce.lib.partition.HashPartitioner;</span><br><span class="line"></span><br><span class="line">public class Consumer</span><br><span class="line">&#123;</span><br><span class="line">    public static String path1 = &quot;hdfs://192.168.80.80:9000/consumer.txt&quot;;</span><br><span class="line">    public static String path2 = &quot;hdfs://192.168.80.80:9000/dir&quot;;</span><br><span class="line">    public static void main(String[] args) throws Exception</span><br><span class="line">    &#123;</span><br><span class="line">          FileSystem fileSystem = FileSystem.get(new URI(path1) , new Configuration());</span><br><span class="line">          if(fileSystem.exists(new Path(path2)))</span><br><span class="line">          &#123;</span><br><span class="line">              fileSystem.delete(new Path(path2), true);</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">          Job job = new Job(new Configuration(),&quot;Consumer&quot;);</span><br><span class="line">          FileInputFormat.setInputPaths(job, new Path(path1));</span><br><span class="line">          job.setInputFormatClass(TextInputFormat.class);</span><br><span class="line">          job.setMapperClass(MyMapper.class);</span><br><span class="line">          job.setMapOutputKeyClass(Text.class);</span><br><span class="line">          job.setMapOutputValueClass(LongWritable.class);</span><br><span class="line"></span><br><span class="line">          job.setNumReduceTasks(1);</span><br><span class="line">          job.setPartitionerClass(HashPartitioner.class);</span><br><span class="line"></span><br><span class="line">          job.setReducerClass(MyReducer.class);</span><br><span class="line">          job.setOutputKeyClass(Text.class);</span><br><span class="line">          job.setOutputValueClass(LongWritable.class);</span><br><span class="line">          job.setOutputFormatClass(TextOutputFormat.class);</span><br><span class="line">          FileOutputFormat.setOutputPath(job, new Path(path2));</span><br><span class="line">          job.waitForCompletion(true);</span><br><span class="line">          //查看执行结果</span><br><span class="line">          FSDataInputStream fr = fileSystem.open(new Path(&quot;hdfs://hadoop80:9000/dir/part-r-00000&quot;));</span><br><span class="line">          IOUtils.copyBytes(fr, System.out, 1024, true);</span><br><span class="line">     &#125;</span><br><span class="line">    public static class MyMapper extends Mapper&lt;LongWritable, Text, Text, LongWritable&gt;</span><br><span class="line">    &#123;      </span><br><span class="line">            public static long sum = 0L;</span><br><span class="line">            protected void map(LongWritable k1, Text v1,Context context) throws IOException, InterruptedException</span><br><span class="line">            &#123;</span><br><span class="line">                  String[] splited = v1.toString().split(&quot;\t&quot;);</span><br><span class="line">                  if(splited[1].equals(&quot;beijing&quot;))</span><br><span class="line">                  &#123;</span><br><span class="line">                      sum++;</span><br><span class="line">                  &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            protected void cleanup(Context context)throws IOException, InterruptedException</span><br><span class="line">            &#123;</span><br><span class="line">                  String str = &quot;beijing&quot;;</span><br><span class="line">                  context.write(new Text(str),new LongWritable(sum));</span><br><span class="line">            &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    public static class MyReducer extends Reducer&lt;Text, LongWritable, Text, LongWritable&gt;</span><br><span class="line">    &#123;</span><br><span class="line">            protected void reduce(Text k2, Iterable&lt;LongWritable&gt; v2s,Context context)throws IOException, InterruptedException</span><br><span class="line">            &#123;</span><br><span class="line">                  for (LongWritable v2 : v2s)</span><br><span class="line">                 &#123;</span><br><span class="line">                     context.write(k2, v2);</span><br><span class="line">                 &#125;</span><br><span class="line">            &#125;   </span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>MapReduce程序代码运行结果如下： </p>
 <p><img src="http://oow6unnib.bkt.clouddn.com/hive1.jpg" alt="PIC1"></p>
 <p>从运行结果可以看出：在consumer.txt业务表中，北京的客户共有三位。下面我们将用Hive来实现相同的功能，即统计业务表consumer.txt中北京的客户有多少位？<br>Hive操作如下： </p>
 <p><img src="http://oow6unnib.bkt.clouddn.com/hive2.jpg" alt="PIC2"></p>
 <p>Hive运行结果如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">OK</div><div class="line">beijing 3</div><div class="line">Time taken: 19.768 seconds, Fetched: 1 row(s)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">OK</span><br><span class="line">beijing 3</span><br><span class="line">Time taken: 19.768 seconds, Fetched: 1 row(s)</span><br></pre></td></tr></table></figure>
 <p>到这里，是不是感觉Hive这个运行框架很神奇—–对于相同的业务逻辑只需要写几行Sql命令就可以获取我们所需要的结果，这也恰恰是Hive为什么这么流行的原因。</p>
 <p>Hive的优势主要体现在：<br>①Hive支持标准的SQL语法，免去了用户编写MapReduce程序的过程，大大减少了公司的开发成本<br>②Hive的出现可以让那些精通SQL技能、但是不熟悉MapReduce 、编程能力较弱与不擅长Java语言的用户能够在HDFS大规模数据集上很方便地利用SQL 语言查询、汇总、分析数据，毕竟精通SQL语言的人要比精通Java语言的多得多<br>③Hive是为大数据批量处理而生的，Hive的出现解决了传统的关系型数据库(MySql、Oracle)在大数据处理上的瓶颈<br>好了，上面通过一个简单的小业务场景说明了Hive的巨大优势，接下来将进入本篇文章的正题。 </p>
 <h2 id="（一）Hive体系结构-架构-的介绍"><a href="#（一）Hive体系结构-架构-的介绍" class="headerlink" title="（一）Hive体系结构(架构)的介绍"></a>（一）Hive体系结构(架构)的介绍</h2><h3 id="1、Hive的概念："><a href="#1、Hive的概念：" class="headerlink" title="1、Hive的概念："></a>1、Hive的概念：</h3><p>①Hive是为了简化用户编写MapReduce程序而生成的一种框架，使用MapReduce做过数据分析的人都知道，很多分析程序除业务逻辑不同外，程序流程基本一样。在这种情况下，就需要Hive这样的用户编程接口。Hive提供了一套类SQL的查询语言，称为QL，而在创造Hive框架的过程中之所以使用SQL实现Hive是因为大家对SQL语言非常的熟悉，转换成本低，可以大大普及我们Hadoop用户使用的范围，类似作用的Pig就不是通过SQL实现的。<br>Hive是基于Hadoop的一个开源数据仓库系统，可以将结构化的数据文件映射为一张数据库表，并提供完整的sql查询功能，Hive可以把SQL中的表、字段转换为HDFS中的目录、文件。 </p>
 <p>②Hive是建立在Hadoop之上的数据仓库基础构架、是为了减少MapReduce编写工作的批处理系统，Hive本身不存储和计算数据，它完全依赖于HDFS和MapReduce。Hive可以理解为一个客户端工具，将我们的sql操作转换为相应的MapReduce jobs，然后在Hadoop上面运行。 </p>
 <p>在开始为大家列举的consumer.txt小业务当中，从编写Sql到最后得出Beijing 3的分析结果实际上中间走的是MapReduce程序， 只不过这个MapReduce程序不用用户自己编写，而是由Hive这个客户端工具将我们的sql操作转化为了相应的MapReduce程序，下面是我们运行sql命令时显示的相关日志：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">hive&gt; select city,count(*)</div><div class="line">    &gt; from t4    </div><div class="line">    &gt; where city=&apos;beijing&apos;</div><div class="line">    &gt; group by city;</div><div class="line">Total MapReduce jobs = 1</div><div class="line">Launching Job 1 out of 1</div><div class="line">Number of reduce tasks not specified. Estimated from input data size: 1</div><div class="line">In order to change the average load for a reducer (in bytes):</div><div class="line">  set hive.exec.reducers.bytes.per.reducer=&lt;number&gt;</div><div class="line">In order to limit the maximum number of reducers:</div><div class="line">  set hive.exec.reducers.max=&lt;number&gt;</div><div class="line">In order to set a constant number of reducers:</div><div class="line">  set mapred.reduce.tasks=&lt;number&gt;</div><div class="line">Starting Job = job_1478233923484_0902, Tracking URL = http://hadoop22:8088/proxy/application_1478233923484_0902/</div><div class="line">Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1478233923484_0902</div><div class="line">Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1</div><div class="line">2016-11-09 11:36:36,688 Stage-1 map = 0%,  reduce = 0%</div><div class="line">2016-11-09 11:36:42,018 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.21 sec</div><div class="line">2016-11-09 11:36:43,062 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.21 sec</div><div class="line">2016-11-09 11:36:44,105 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.21 sec</div><div class="line">2016-11-09 11:36:45,149 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.21 sec</div><div class="line">2016-11-09 11:36:46,193 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.21 sec</div><div class="line">2016-11-09 11:36:47,237 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.21 sec</div><div class="line">2016-11-09 11:36:48,283 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.21 sec</div><div class="line">2016-11-09 11:36:49,329 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 3.7 sec</div><div class="line">2016-11-09 11:36:50,384 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 3.7 sec</div><div class="line">MapReduce Total cumulative CPU time: 3 seconds 700 msec</div><div class="line">Ended Job = job_1478233923484_0902</div><div class="line">MapReduce Jobs Launched: </div><div class="line">Job 0: Map: 1  Reduce: 1   Cumulative CPU: 3.7 sec   HDFS Read: 419 HDFS Write: 10 SUCCESS</div><div class="line">Total MapReduce CPU Time Spent: 3 seconds 700 msec</div><div class="line">OK</div><div class="line">beijing 3</div><div class="line">Time taken: 19.768 seconds, Fetched: 1 row(s)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; select city,count(*)</span><br><span class="line">    &gt; from t4    </span><br><span class="line">    &gt; where city=&apos;beijing&apos;</span><br><span class="line">    &gt; group by city;</span><br><span class="line">Total MapReduce jobs = 1</span><br><span class="line">Launching Job 1 out of 1</span><br><span class="line">Number of reduce tasks not specified. Estimated from input data size: 1</span><br><span class="line">In order to change the average load for a reducer (in bytes):</span><br><span class="line">  set hive.exec.reducers.bytes.per.reducer=&lt;number&gt;</span><br><span class="line">In order to limit the maximum number of reducers:</span><br><span class="line">  set hive.exec.reducers.max=&lt;number&gt;</span><br><span class="line">In order to set a constant number of reducers:</span><br><span class="line">  set mapred.reduce.tasks=&lt;number&gt;</span><br><span class="line">Starting Job = job_1478233923484_0902, Tracking URL = http://hadoop22:8088/proxy/application_1478233923484_0902/</span><br><span class="line">Kill Command = /usr/local/hadoop/bin/hadoop job  -kill job_1478233923484_0902</span><br><span class="line">Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1</span><br><span class="line">2016-11-09 11:36:36,688 Stage-1 map = 0%,  reduce = 0%</span><br><span class="line">2016-11-09 11:36:42,018 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.21 sec</span><br><span class="line">2016-11-09 11:36:43,062 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.21 sec</span><br><span class="line">2016-11-09 11:36:44,105 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.21 sec</span><br><span class="line">2016-11-09 11:36:45,149 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.21 sec</span><br><span class="line">2016-11-09 11:36:46,193 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.21 sec</span><br><span class="line">2016-11-09 11:36:47,237 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.21 sec</span><br><span class="line">2016-11-09 11:36:48,283 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.21 sec</span><br><span class="line">2016-11-09 11:36:49,329 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 3.7 sec</span><br><span class="line">2016-11-09 11:36:50,384 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 3.7 sec</span><br><span class="line">MapReduce Total cumulative CPU time: 3 seconds 700 msec</span><br><span class="line">Ended Job = job_1478233923484_0902</span><br><span class="line">MapReduce Jobs Launched: </span><br><span class="line">Job 0: Map: 1  Reduce: 1   Cumulative CPU: 3.7 sec   HDFS Read: 419 HDFS Write: 10 SUCCESS</span><br><span class="line">Total MapReduce CPU Time Spent: 3 seconds 700 msec</span><br><span class="line">OK</span><br><span class="line">beijing 3</span><br><span class="line">Time taken: 19.768 seconds, Fetched: 1 row(s)</span><br></pre></td></tr></table></figure>
 <p>从日志可以看出，Hive将我们的sql命令解析成了相应的MapReduce任务，最后得到了我们的分析结果。 </p>
 <p>③Hive可以认为是MapReduce的一个封装、包装。Hive的意义就是在业务分析中将用户容易编写、会写的Sql语言转换为复杂难写的MapReduce程序，从而大大降低了Hadoop学习的门槛，让更多的用户可以利用Hadoop进行数据挖掘分析。 </p>
 <p>为了让大家容易理解Hive的实质——-“Hive就是一个SQL解析引擎，将SQL语句转化为相应的MapReduce程序”这句话，博主用一个图示进行示例：</p>
@@ -276,11 +276,14 @@ var _hmt = _hmt || [];
 </ul>
 <p>Hbase与Hive的区别就谈到此，同时Hive入门笔记也写到此处，如有问题欢迎留言。</p>
 <blockquote>
-<p>本文内容为转载，原文链接：<a href="https://blog.csdn.net/a2011480169/article/details/51482799" target="_blank" rel="external">Hive架构以及应用介绍</a></p>
+<p>本文内容为转载，原文链接：<a href="https://blog.csdn.net/a2011480169/article/details/51482799" target="_blank" rel="noopener">Hive架构以及应用介绍</a></p>
 </blockquote>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -378,11 +381,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2018/10/18/Hive/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2018/10/18/Hive/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -487,6 +491,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -588,10 +594,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -604,15 +606,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -632,19 +634,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -656,6 +654,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -664,19 +666,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -688,6 +682,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -696,15 +694,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -716,15 +718,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

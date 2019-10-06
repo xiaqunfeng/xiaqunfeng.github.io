@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>解决calamari无法获取集群hosts信息的BUG | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="如题，环境是ubuntu 14.04，解决过程和方法详见正文。">
+<meta name="keywords" content="ceph">
 <meta property="og:type" content="article">
 <meta property="og:title" content="解决calamari无法获取集群hosts信息的BUG">
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/01/12/解决calamari无法获取集群hosts信息的BUG/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="如题，环境是ubuntu 14.04，解决过程和方法详见正文。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/calamari-1.png">
 <meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/calamari-2.png">
 <meta property="og:updated_time" content="2017-01-12T09:55:14.000Z">
@@ -52,7 +54,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -80,9 +82,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -162,7 +161,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-解决calamari无法获取集群hosts信息的BUG" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-解决calamari无法获取集群hosts信息的BUG" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -188,27 +188,30 @@ var _hmt = _hmt || [];
 <p>这部分的内容为折腾求证的过程，想看解决方法的可以直接跳过！</p>
 </blockquote>
 <p>在ubuntu上并没有这个文件和路径，通过tab可以看到site开头的只有这几个：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root@calamari:~# vim /usr/lib/python2.7/site</div><div class="line">sitecustomize.py   sitecustomize.pyc  site.py            site.pyc</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@calamari:~# vim /usr/lib/python2.7/site</span><br><span class="line">sitecustomize.py   sitecustomize.pyc  site.py            site.pyc</span><br></pre></td></tr></table></figure>
 <p>我以为可能是系统下包安装的位置不对而已，好，那我就查看一下ubuntu下salt-master的安装位置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">root@calamari:~# dpkg -L salt-master</div><div class="line">/.</div><div class="line">/usr</div><div class="line">/usr/share</div><div class="line">/usr/share/man</div><div class="line">/usr/share/man/man1</div><div class="line">/usr/share/man/man1/salt.1.gz</div><div class="line">/usr/share/man/man1/salt-run.1.gz</div><div class="line">/usr/share/man/man1/salt-master.1.gz</div><div class="line">/usr/share/man/man1/salt-key.1.gz</div><div class="line">/usr/share/man/man1/salt-cp.1.gz</div><div class="line">/usr/share/doc</div><div class="line">/usr/share/doc/salt-master</div><div class="line">/usr/share/doc/salt-master/changelog.Debian.gz</div><div class="line">/usr/share/doc/salt-master/NEWS.Debian.gz</div><div class="line">/usr/share/doc/salt-master/copyright</div><div class="line">/usr/bin</div><div class="line">/usr/bin/salt-run</div><div class="line">/usr/bin/salt-master</div><div class="line">/usr/bin/salt-key</div><div class="line">/usr/bin/salt-cp</div><div class="line">/usr/bin/salt</div><div class="line">/lib</div><div class="line">/lib/systemd</div><div class="line">/lib/systemd/system</div><div class="line">/lib/systemd/system/salt-master.service</div><div class="line">/etc</div><div class="line">/etc/init.d</div><div class="line">/etc/init.d/salt-master</div><div class="line">/etc/init</div><div class="line">/etc/init/salt-master.conf</div><div class="line">/etc/salt</div><div class="line">/etc/salt/master</div><div class="line">/etc/salt/master.d</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">root@calamari:~# dpkg -L salt-master</span><br><span class="line">/.</span><br><span class="line">/usr</span><br><span class="line">/usr/share</span><br><span class="line">/usr/share/man</span><br><span class="line">/usr/share/man/man1</span><br><span class="line">/usr/share/man/man1/salt.1.gz</span><br><span class="line">/usr/share/man/man1/salt-run.1.gz</span><br><span class="line">/usr/share/man/man1/salt-master.1.gz</span><br><span class="line">/usr/share/man/man1/salt-key.1.gz</span><br><span class="line">/usr/share/man/man1/salt-cp.1.gz</span><br><span class="line">/usr/share/doc</span><br><span class="line">/usr/share/doc/salt-master</span><br><span class="line">/usr/share/doc/salt-master/changelog.Debian.gz</span><br><span class="line">/usr/share/doc/salt-master/NEWS.Debian.gz</span><br><span class="line">/usr/share/doc/salt-master/copyright</span><br><span class="line">/usr/bin</span><br><span class="line">/usr/bin/salt-run</span><br><span class="line">/usr/bin/salt-master</span><br><span class="line">/usr/bin/salt-key</span><br><span class="line">/usr/bin/salt-cp</span><br><span class="line">/usr/bin/salt</span><br><span class="line">/lib</span><br><span class="line">/lib/systemd</span><br><span class="line">/lib/systemd/system</span><br><span class="line">/lib/systemd/system/salt-master.service</span><br><span class="line">/etc</span><br><span class="line">/etc/init.d</span><br><span class="line">/etc/init.d/salt-master</span><br><span class="line">/etc/init</span><br><span class="line">/etc/init/salt-master.conf</span><br><span class="line">/etc/salt</span><br><span class="line">/etc/salt/master</span><br><span class="line">/etc/salt/master.d</span><br></pre></td></tr></table></figure>
 <p>然后通过 <code>find</code> 命令去 <code>/etc, /usr, /lib</code> 这几个目录下找 <code>master.py</code> ，结果真没有</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">find: `master.py&apos;: No such file or directory</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find: `master.py&apos;: No such file or directory</span><br></pre></td></tr></table></figure>
 <p>好吧，下面来看问题。</p>
 <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>在calamari的web界面下，查看 MANAGE -&gt; Cluster -&gt;HOSTS 信息，发现啥也没有，如下图所示：<img src="http://ojet8bprn.bkt.clouddn.com/calamari-1.png" alt="calamari-1"></p>
 <h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>calamari的salt-master节点在读取</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/var/cache/salt/master/minions/&#123;minion-hostname&#125;/data.p</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/var/cache/salt/master/minions/&#123;minion-hostname&#125;/data.p</span><br></pre></td></tr></table></figure>
 <p>该文件的时候有权限问题，当前权限为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-rw------- 1 root root 3019 Jan 10 11:06 data.p</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-rw------- 1 root root 3019 Jan 10 11:06 data.p</span><br></pre></td></tr></table></figure>
 <h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>修改权限为 644 即可，写了个脚本，如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">for x in 0 1 2</div><div class="line">do</div><div class="line">    chmod 644 /var/cache/salt/master/minions/ceph$x/data.p</div><div class="line">done</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">for x in 0 1 2</span><br><span class="line">do</span><br><span class="line">    chmod 644 /var/cache/salt/master/minions/ceph$x/data.p</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
 <p>修改完后，再次查看，可以看到hosts的详细信息了<img src="http://ojet8bprn.bkt.clouddn.com/calamari-2.png" alt="calamari-2"></p>
 <blockquote>
 <p>当然，重启 salt-minion 后又需要在 salt-master 机器上重新执行一遍，<del>~~(&gt;_&lt;)</del>~~，忧伤~</p>
 </blockquote>
-<p>磨磨的方法：<a href="http://www.zphj1987.com/2017/01/09/calamari-node-info/" target="_blank" rel="external">centos下该问题的解决方法</a></p>
+<p>磨磨的方法：<a href="http://www.zphj1987.com/2017/01/09/calamari-node-info/" target="_blank" rel="noopener">centos下该问题的解决方法</a></p>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -306,11 +309,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/01/12/解决calamari无法获取集群hosts信息的BUG/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2017/01/12/解决calamari无法获取集群hosts信息的BUG/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -415,6 +419,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -516,10 +522,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -532,15 +534,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -560,19 +562,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -584,6 +582,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -592,19 +594,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -616,6 +610,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -624,15 +622,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -644,15 +646,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>【论文阅读】Deep Learning Flow for Video Recognition | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="目前唯一一个End to End的Video Detection方法。">
+<meta name="keywords" content="paper">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【论文阅读】Deep Learning Flow for Video Recognition">
 <meta property="og:url" content="http://xiaqunfeng.cc/2018/09/17/dff/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="目前唯一一个End to End的Video Detection方法。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/dff-1.jpg">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/dff-2.jpg">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/dff-3.jpg">
@@ -54,7 +56,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -82,9 +84,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -164,7 +163,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-dff" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-dff" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -241,19 +241,19 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <h2 id="三、DFF（Deep-Feature-Flow）"><a href="#三、DFF（Deep-Feature-Flow）" class="headerlink" title="三、DFF（Deep Feature Flow）"></a>三、DFF（Deep Feature Flow）</h2><h3 id="推理"><a href="#推理" class="headerlink" title="推理"></a>推理</h3><p>对于给定的前馈神经网络N ，I为图像输入，输出结果为y=N(I)</p>
 <p>这里将N分解为两个连续的子网络:</p>
 <ul>
-<li>第一个子网络：$N<em>{feat}$，被称为特征网络，该网络是全卷积且输出一些中间特征图，$f=N</em>{feat}(I)$。</li>
-<li>第二个子网络：$N<em>{task}$，被称为任务网络，具有特定的任务结构，并在特征图上执行识别任务，$y=N</em>{task}(f)$。</li>
+<li>第一个子网络：$N_{feat}$，被称为特征网络，该网络是全卷积且输出一些中间特征图，$f=N_{feat}(I)$。</li>
+<li>第二个子网络：$N_{task}$，被称为任务网络，具有特定的任务结构，并在特征图上执行识别任务，$y=N_{task}(f)$。</li>
 </ul>
-<p>连续的视频帧具有高度的相似性，且越深的特征层相似性越高，我们通过该相似性减少计算开销。具体的，$N<em>{feat}$ 仅运行在特定稀疏关键帧上，非关键帧 $I</em>{i}$ 的特征通过其之前的关键帧 $I_{k}$ 传播得到。</p>
+<p>连续的视频帧具有高度的相似性，且越深的特征层相似性越高，我们通过该相似性减少计算开销。具体的，$N_{feat}$ 仅运行在特定稀疏关键帧上，非关键帧 $I_{i}$ 的特征通过其之前的关键帧 $I_{k}$ 传播得到。</p>
 <p><img src="http://oow6unnib.bkt.clouddn.com/dff-2.jpg" alt="2"></p>
-<p>$M<em>{i \rightarrow k}$ 是一个二维的流场，其通过一个流估计算法 F 得到。然后通过双线性缩放到与用于传播的特征图相同的大小。当前帧 i 的位置 p 通过流场得到其与关键帧 k 的位置偏差得到，偏差 $\delta p=M</em>{i \rightarrow k}(p)$。</p>
+<p>$M_{i \rightarrow k}$ 是一个二维的流场，其通过一个流估计算法 F 得到。然后通过双线性缩放到与用于传播的特征图相同的大小。当前帧 i 的位置 p 通过流场得到其与关键帧 k 的位置偏差得到，偏差 $\delta p=M_{i \rightarrow k}(p)$。</p>
 <p>因此特征扭曲可以通过双线性差值得到：</p>
 <p>$f^c_i(p)=∑_qG(q,p+δp)f^c_k(q)$            (1)</p>
 <p>c表示特征通道，q是特征图的所有空间位置，G(·,·)为双线性差值核，是二维的，因此将其分解为两个一维核：</p>
 <p>$G(q,p+δp)=g(q_x,p_x+δp_x)⋅g(q_y,p_y+δp_y)$        (2)</p>
 <p>$g(a,b)=max(0,1−|a−b|)$</p>
 <p>空间扭曲可能由于流估计错误导致不准确。为了更好估计特征，其强度通过尺度场（scale field）进行调节。尺度场通过尺度函数 S 得到 $Si→k=S(I_k,I_i)$。最后，特征传播方程定义为：</p>
-<p>$f_i=W(f<em>k,M</em>{i\rightarrow k},S_{i \rightarrow k})$        (3)</p>
+<p>$f_i=W(f_k,M_{i\rightarrow k},S_{i \rightarrow k})$        (3)</p>
 <p>该函数对所有位置、所有通道的特征进行处理，并对特征乘以尺度因子。</p>
 <p>该视频识别算法被称为深度特征流。F 流场函数是手工设计的低级别流，如SIFT-Flow，不需要训练，马上可用。尺度函数 S 的每个位置为1。</p>
 <p><img src="http://oow6unnib.bkt.clouddn.com/dff-3.jpg" alt="3"></p>
@@ -264,16 +264,16 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <ul>
 <li>前向传播时，特征网络 $N_{feat}$ 对关键帧图像 $I_k$ 计算得到特征图 $f_k$。</li>
 <li>然后在帧  $I_k, I_i$ 上运行流网络 F，来计算流场和尺度场。当 i &gt; k时，根据公式（3）特征 $f_k$ 传播至 $f_i$，否则不传播。最后，任务网络，否则不传播。</li>
-<li>最后，在特征图 $f<em>i$ 上应用任务网络 $N</em> {task}$ 生成结果，并产生损失值。反向传播损失到所以组件。可以发现，当 $i=k$ 时退化为每帧训练。</li>
+<li>最后，在特征图 $f_i$ 上应用任务网络 $N_ {task}$ 生成结果，并产生损失值。反向传播损失到所以组件。可以发现，当 $i=k$ 时退化为每帧训练。</li>
 </ul>
 <p>流网络比特征网络快得多。</p>
-<p>公式（3）中特征传播函数是无参且完全可微的，我们计算特征 $f_i$ 中关于特征 $f<em>k$ 的导数，尺度场 $S</em>{i\rightarrow j}$，流场 $M_{i\rightarrow j}$。前两个使用链式法则容易计算。对于后一个，导数为：</p>
-<p>$\frac{\partial f<em>i^c(p)}{\partial M</em>{i\rightarrow j}}=S^c_{i\rightarrow j}(p)\sum<em>q \frac{\partial G(q,p+\delta p)}{\partial \delta p}f </em> k^c(q)$        （4） </p>
+<p>公式（3）中特征传播函数是无参且完全可微的，我们计算特征 $f_i$ 中关于特征 $f_k$ 的导数，尺度场 $S_{i\rightarrow j}$，流场 $M_{i\rightarrow j}$。前两个使用链式法则容易计算。对于后一个，导数为：</p>
+<p>$\frac{\partial f_i^c(p)}{\partial M_{i\rightarrow j}}=S^c_{i\rightarrow j}(p)\sum_q \frac{\partial G(q,p+\delta p)}{\partial \delta p}f _ k^c(q)$        （4） </p>
 <p>Pre-frame训练方法只能使用已标注的帧，而DFF可以使用所有帧，只要帧 $I_i$是已标注的。 </p>
 <h3 id="复杂度计算"><a href="#复杂度计算" class="headerlink" title="复杂度计算"></a>复杂度计算</h3><p>非关键帧计算开销与每帧计算开销的比例：</p>
-<p>$r=\frac{O(F)+O(S)+O(W)+O(N<em>{task})}{O(N</em>{feat})+O(N _ {task})}$        （5）</p>
-<p>$N<em>{task}$ 的复杂度通常很小，$N</em>{feat}$和 F 的复杂度较高：</p>
-<p>$O(N<em>{task})  &lt;&lt; O(N</em>{teat})$</p>
+<p>$r=\frac{O(F)+O(S)+O(W)+O(N_{task})}{O(N_{feat})+O(N _ {task})}$        （5）</p>
+<p>$N_{task}$ 的复杂度通常很小，$N_{feat}$和 F 的复杂度较高：</p>
+<p>$O(N_{task})  &lt;&lt; O(N_{teat})$</p>
 <p>$O(N_{task})  &lt;&lt; O(F)$</p>
 <p>因为W和S非常简单</p>
 <p>$O(W) &lt;&lt; O(F)$</p>
@@ -315,7 +315,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <li>ImageNet VID：用于物体检测</li>
 </ul>
 <p>方法和结果详见原论文。</p>
-<p>效果：<a href="https://www.youtube.com/watch?v=J0rMHE6ehGw" target="_blank" rel="external">https://www.youtube.com/watch?v=J0rMHE6ehGw</a></p>
+<p>效果：<a href="https://www.youtube.com/watch?v=J0rMHE6ehGw" target="_blank" rel="noopener">https://www.youtube.com/watch?v=J0rMHE6ehGw</a></p>
 <h2 id="六、未来工作"><a href="#六、未来工作" class="headerlink" title="六、未来工作"></a>六、未来工作</h2><ul>
 <li>联合学习对于流场质量的影响，当前由于缺少gt数据无法评估。</li>
 <li>目前的光流工作受限于合成数据或小的真实数据，对深度学习来说还不够。</li>
@@ -325,7 +325,10 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 </ul>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -434,11 +437,12 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2018/09/17/dff/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2018/09/17/dff/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -543,6 +547,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -644,10 +650,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -660,15 +662,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -688,19 +690,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -712,6 +710,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -720,19 +722,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -744,6 +738,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -752,15 +750,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -772,15 +774,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

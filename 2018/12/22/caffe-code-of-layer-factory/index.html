@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>【源码分析】caffe code of layer factory | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="caffe 代码阅读之 layer factory，本文分析记录了layer的注册和创建过程，源码文件注释详见layer_factory-annotation.hpp。">
+<meta name="keywords" content="code">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【源码分析】caffe code of layer factory">
 <meta property="og:url" content="http://xiaqunfeng.cc/2018/12/22/caffe-code-of-layer-factory/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="caffe 代码阅读之 layer factory，本文分析记录了layer的注册和创建过程，源码文件注释详见layer_factory-annotation.hpp。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2018-12-22T02:28:23.217Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【源码分析】caffe code of layer factory">
@@ -49,7 +51,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -77,9 +79,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -159,7 +158,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-caffe-code-of-layer-factory" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-caffe-code-of-layer-factory" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -179,35 +179,38 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>caffe 代码阅读之 layer factory，本文分析记录了layer的注册和创建过程，源码文件注释详见<a href="https://github.com/xiaqunfeng/caffe-study/blob/master/code-analyze/layer_factory-annotation.hpp" target="_blank" rel="external">layer_factory-annotation.hpp</a>。<br><a id="more"></a></p>
+        <p>caffe 代码阅读之 layer factory，本文分析记录了layer的注册和创建过程，源码文件注释详见<a href="https://github.com/xiaqunfeng/caffe-study/blob/master/code-analyze/layer_factory-annotation.hpp" target="_blank" rel="noopener">layer_factory-annotation.hpp</a>。<br><a id="more"></a></p>
 <h2 id="layer-factory"><a href="#layer-factory" class="headerlink" title="layer factory"></a>layer factory</h2><h3 id="LayerRegistry类"><a href="#LayerRegistry类" class="headerlink" title="LayerRegistry类"></a>LayerRegistry类</h3><p>主要的实现是由该类来完成的。内部维护了一个map，key为layer的string（类型名称），value为对应Creator（工厂函数），caffe就是通过该map来管理string和Creator映射关系的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">typedef shared_ptr&lt;Layer&lt;Dtype&gt; &gt; (*Creator)(const LayerParameter&amp;);</div><div class="line">typedef std::map&lt;string, Creator&gt; CreatorRegistry;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">typedef shared_ptr&lt;Layer&lt;Dtype&gt; &gt; (*Creator)(const LayerParameter&amp;);</span><br><span class="line">typedef std::map&lt;string, Creator&gt; CreatorRegistry;</span><br></pre></td></tr></table></figure>
 <p>map类型为<code>CreatorRegistry</code>，实际类型为<code>std::map&lt;string, Creator&gt;</code>。</p>
 <h3 id="layer的注册"><a href="#layer的注册" class="headerlink" title="layer的注册"></a>layer的注册</h3><p>caffe通过两组宏来实现layer的注册：</p>
 <p>1、先来看宏 <code>REGISTER_LAYER_CLASS</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">#define REGISTER_LAYER_CLASS(type)                                             \</div><div class="line">  template &lt;typename Dtype&gt;                                                    \</div><div class="line">  shared_ptr&lt;Layer&lt;Dtype&gt; &gt; Creator_##type##Layer(const LayerParameter&amp; param) \</div><div class="line">  &#123;                                                                            \</div><div class="line">    return shared_ptr&lt;Layer&lt;Dtype&gt; &gt;(new type##Layer&lt;Dtype&gt;(param));           \</div><div class="line">  &#125;                                                                            \</div><div class="line">  REGISTER_LAYER_CREATOR(type, Creator_##type##Layer)`</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#define REGISTER_LAYER_CLASS(type)                                             \</span><br><span class="line">  template &lt;typename Dtype&gt;                                                    \</span><br><span class="line">  shared_ptr&lt;Layer&lt;Dtype&gt; &gt; Creator_##type##Layer(const LayerParameter&amp; param) \</span><br><span class="line">  &#123;                                                                            \</span><br><span class="line">    return shared_ptr&lt;Layer&lt;Dtype&gt; &gt;(new type##Layer&lt;Dtype&gt;(param));           \</span><br><span class="line">  &#125;                                                                            \</span><br><span class="line">  REGISTER_LAYER_CREATOR(type, Creator_##type##Layer)`</span><br></pre></td></tr></table></figure>
 <p>该宏实现为指定type的Layer创建一个Creator工厂函数，然后调用<code>REGISTER_LAYER_CREATOR</code>将工厂函数和Layer的类型名进行注册，支持两种Layer的数据类型，float和double。</p>
 <p>在每个XX_layer.cpp文件末尾处调用，进行layer的添加注册，比如在<code>bias_layer.cpp</code>的末尾：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">REGISTER_LAYER_CLASS(Bias);</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">REGISTER_LAYER_CLASS(Bias);</span><br></pre></td></tr></table></figure>
 <p>2、再来看宏 <code>REGISTER_LAYER_CREATOR</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#define REGISTER_LAYER_CREATOR(type, creator)                                  \</div><div class="line">  static LayerRegisterer&lt;float&gt; g_creator_f_##type(#type, creator&lt;float&gt;);     \</div><div class="line">  static LayerRegisterer&lt;double&gt; g_creator_d_##type(#type, creator&lt;double&gt;)    \</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#define REGISTER_LAYER_CREATOR(type, creator)                                  \</span><br><span class="line">  static LayerRegisterer&lt;float&gt; g_creator_f_##type(#type, creator&lt;float&gt;);     \</span><br><span class="line">  static LayerRegisterer&lt;double&gt; g_creator_d_##type(#type, creator&lt;double&gt;)    \</span><br></pre></td></tr></table></figure>
 <p>声明了两个变量，分别对应float和double两种类型，两个变量通过调用LayerRegisterer类的构造函数来完成初始化</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">class LayerRegisterer &#123;</div><div class="line"> public:</div><div class="line">  LayerRegisterer(const string&amp; type,</div><div class="line">                  shared_ptr&lt;Layer&lt;Dtype&gt; &gt; (*creator)(const LayerParameter&amp;)) &#123;</div><div class="line">    // LOG(INFO) &lt;&lt; &quot;Registering layer type: &quot; &lt;&lt; type;</div><div class="line">    LayerRegistry&lt;Dtype&gt;::AddCreator(type, creator);</div><div class="line">  &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class LayerRegisterer &#123;</span><br><span class="line"> public:</span><br><span class="line">  LayerRegisterer(const string&amp; type,</span><br><span class="line">                  shared_ptr&lt;Layer&lt;Dtype&gt; &gt; (*creator)(const LayerParameter&amp;)) &#123;</span><br><span class="line">    // LOG(INFO) &lt;&lt; &quot;Registering layer type: &quot; &lt;&lt; type;</span><br><span class="line">    LayerRegistry&lt;Dtype&gt;::AddCreator(type, creator);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <h3 id="LayerRegisterer类"><a href="#LayerRegisterer类" class="headerlink" title="LayerRegisterer类"></a>LayerRegisterer类</h3><p>代码如上，该类只有一个方法，即构造函数，在LayerRegisterer的构造方法中调用了<code>LayerRegistry</code>类的静态方法<code>AddCreator</code>，将新的layer和creator注册并添加到registry list中去。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">class LayerRegistry &#123;</div><div class="line">...</div><div class="line">  static CreatorRegistry&amp; Registry() &#123;</div><div class="line">    static CreatorRegistry* g_registry_ = new CreatorRegistry();</div><div class="line">    return *g_registry_;</div><div class="line">  &#125;</div><div class="line">  // Adds a creator.</div><div class="line">  static void AddCreator(const string&amp; type, Creator creator) &#123;</div><div class="line">    CreatorRegistry&amp; registry = Registry();</div><div class="line">    CHECK_EQ(registry.count(type), 0)</div><div class="line">        &lt;&lt; &quot;Layer type &quot; &lt;&lt; type &lt;&lt; &quot; already registered.&quot;;</div><div class="line">    registry[type] = creator;</div><div class="line">  &#125;</div><div class="line">...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class LayerRegistry &#123;</span><br><span class="line">...</span><br><span class="line">  static CreatorRegistry&amp; Registry() &#123;</span><br><span class="line">    static CreatorRegistry* g_registry_ = new CreatorRegistry();</span><br><span class="line">    return *g_registry_;</span><br><span class="line">  &#125;</span><br><span class="line">  // Adds a creator.</span><br><span class="line">  static void AddCreator(const string&amp; type, Creator creator) &#123;</span><br><span class="line">    CreatorRegistry&amp; registry = Registry();</span><br><span class="line">    CHECK_EQ(registry.count(type), 0)</span><br><span class="line">        &lt;&lt; &quot;Layer type &quot; &lt;&lt; type &lt;&lt; &quot; already registered.&quot;;</span><br><span class="line">    registry[type] = creator;</span><br><span class="line">  &#125;</span><br><span class="line">...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>以上实现了动态注册</p>
 <h3 id="创建layer"><a href="#创建layer" class="headerlink" title="创建layer"></a>创建layer</h3><p>注册完后，在xxnet.prototxt中定义相关的layer参数，比如mnist文件夹下的lenet.prototxt中定义type为Pooling的layer：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">layer &#123;</div><div class="line">  name: &quot;pool1&quot;</div><div class="line">  type: &quot;Pooling&quot;</div><div class="line">  bottom: &quot;conv1&quot;</div><div class="line">  top: &quot;pool1&quot;</div><div class="line">  pooling_param &#123;</div><div class="line">    pool: MAX</div><div class="line">    kernel_size: 2</div><div class="line">    stride: 2</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">layer &#123;</span><br><span class="line">  name: &quot;pool1&quot;</span><br><span class="line">  type: &quot;Pooling&quot;</span><br><span class="line">  bottom: &quot;conv1&quot;</span><br><span class="line">  top: &quot;pool1&quot;</span><br><span class="line">  pooling_param &#123;</span><br><span class="line">    pool: MAX</span><br><span class="line">    kernel_size: 2</span><br><span class="line">    stride: 2</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在net.cpp中创建方式如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">void Net&lt;Dtype&gt;::Init(const NetParameter&amp; in_param) &#123;</div><div class="line">...</div><div class="line">    // Setup layer.</div><div class="line">    const LayerParameter&amp; layer_param = param.layer(layer_id);</div><div class="line">    if (layer_param.propagate_down_size() &gt; 0) &#123;</div><div class="line">      CHECK_EQ(layer_param.propagate_down_size(),</div><div class="line">          layer_param.bottom_size())</div><div class="line">          &lt;&lt; &quot;propagate_down param must be specified &quot;</div><div class="line">          &lt;&lt; &quot;either 0 or bottom_size times &quot;;</div><div class="line">    &#125;</div><div class="line">    layers_.push_back(LayerRegistry&lt;Dtype&gt;::CreateLayer(layer_param));</div><div class="line">...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">void Net&lt;Dtype&gt;::Init(const NetParameter&amp; in_param) &#123;</span><br><span class="line">...</span><br><span class="line">    // Setup layer.</span><br><span class="line">    const LayerParameter&amp; layer_param = param.layer(layer_id);</span><br><span class="line">    if (layer_param.propagate_down_size() &gt; 0) &#123;</span><br><span class="line">      CHECK_EQ(layer_param.propagate_down_size(),</span><br><span class="line">          layer_param.bottom_size())</span><br><span class="line">          &lt;&lt; &quot;propagate_down param must be specified &quot;</span><br><span class="line">          &lt;&lt; &quot;either 0 or bottom_size times &quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    layers_.push_back(LayerRegistry&lt;Dtype&gt;::CreateLayer(layer_param));</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>调用<code>LayerRegistry</code>类的静态方法<code>CreateLayer</code>来实现layer的创建</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">class LayerRegistry &#123;</div><div class="line">  ...</div><div class="line">  // Get a layer using a LayerParameter.</div><div class="line">  static shared_ptr&lt;Layer&lt;Dtype&gt; &gt; CreateLayer(const LayerParameter&amp; param) &#123;</div><div class="line">    if (Caffe::root_solver()) &#123;</div><div class="line">      LOG(INFO) &lt;&lt; &quot;Creating layer &quot; &lt;&lt; param.name();</div><div class="line">    &#125;</div><div class="line">    const string&amp; type = param.type();</div><div class="line">    CreatorRegistry&amp; registry = Registry();</div><div class="line">    CHECK_EQ(registry.count(type), 1) &lt;&lt; &quot;Unknown layer type: &quot; &lt;&lt; type</div><div class="line">        &lt;&lt; &quot; (known types: &quot; &lt;&lt; LayerTypeListString() &lt;&lt; &quot;)&quot;;</div><div class="line">    return registry[type](param);</div><div class="line">  &#125;</div><div class="line">  ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class LayerRegistry &#123;</span><br><span class="line">  ...</span><br><span class="line">  // Get a layer using a LayerParameter.</span><br><span class="line">  static shared_ptr&lt;Layer&lt;Dtype&gt; &gt; CreateLayer(const LayerParameter&amp; param) &#123;</span><br><span class="line">    if (Caffe::root_solver()) &#123;</span><br><span class="line">      LOG(INFO) &lt;&lt; &quot;Creating layer &quot; &lt;&lt; param.name();</span><br><span class="line">    &#125;</span><br><span class="line">    const string&amp; type = param.type();</span><br><span class="line">    CreatorRegistry&amp; registry = Registry();</span><br><span class="line">    CHECK_EQ(registry.count(type), 1) &lt;&lt; &quot;Unknown layer type: &quot; &lt;&lt; type</span><br><span class="line">        &lt;&lt; &quot; (known types: &quot; &lt;&lt; LayerTypeListString() &lt;&lt; &quot;)&quot;;</span><br><span class="line">    return registry[type](param);</span><br><span class="line">  &#125;</span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>caffe layer的设计用到了设计模式里<a href="https://blog.csdn.net/wuzhekai1985/article/details/6660462" target="_blank" rel="external">工厂模式</a>中的工厂方法模式。</p>
+<p>caffe layer的设计用到了设计模式里<a href="https://blog.csdn.net/wuzhekai1985/article/details/6660462" target="_blank" rel="noopener">工厂模式</a>中的工厂方法模式。</p>
 </blockquote>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -316,11 +319,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2018/12/22/caffe-code-of-layer-factory/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2018/12/22/caffe-code-of-layer-factory/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -425,6 +429,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -526,10 +532,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -542,15 +544,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -570,19 +572,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -594,6 +592,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -602,19 +604,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -626,6 +620,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -634,15 +632,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -654,15 +656,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

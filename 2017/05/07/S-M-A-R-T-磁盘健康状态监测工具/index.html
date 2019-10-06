@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>S.M.A.R.T--磁盘健康状态监测工具 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="介绍磁盘状态监测工具：S.M.A.R.T。">
+<meta name="keywords" content="storage">
 <meta property="og:type" content="article">
 <meta property="og:title" content="S.M.A.R.T--磁盘健康状态监测工具">
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/05/07/S-M-A-R-T-磁盘健康状态监测工具/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="介绍磁盘状态监测工具：S.M.A.R.T。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2018-03-27T01:01:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="S.M.A.R.T--磁盘健康状态监测工具">
@@ -49,7 +51,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -77,9 +79,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -159,7 +158,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-S-M-A-R-T-磁盘健康状态监测工具" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-S-M-A-R-T-磁盘健康状态监测工具" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -185,16 +185,16 @@ var _hmt = _hmt || [];
 <blockquote>
 <p>文章内容大部分为转载，硬盘信息和配置部分为自己实验所得。</p>
 </blockquote>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install smartmontools</div></pre></td></tr></table></figure>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install smartmontools</span><br></pre></td></tr></table></figure>
 <p>参数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">smartctl -a  &lt;device&gt;    		显示硬盘所有SMART信息。</div><div class="line">smartctl -i &lt;device&gt;   			显示硬盘model number, serial number,是否开启SMART等信息。</div><div class="line">smartctl -s on &lt;device&gt;    		如果没有打开SMART技术，使用该命令打开SMART技术。</div><div class="line">smartctl -t short &lt;device&gt;    	后台检测硬盘，消耗时间短</div><div class="line">smartctl -t long &lt;device&gt;      	后台检测硬盘，消耗时间长</div><div class="line">smartctl -C -t short &lt;device&gt; 	前台检测硬盘，消耗时间短</div><div class="line">smartctl -C -t long &lt;device&gt;  	前台检测硬盘，消耗时间长</div><div class="line">smartctl -X &lt;device&gt;  			中断后台检测硬盘。</div><div class="line">smartctl -l selftest &lt;device&gt;  	显示硬盘检测日志。</div><div class="line">smartctl -l error &lt;device&gt; 		显示硬盘错误汇总。</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">smartctl -a  &lt;device&gt;    		显示硬盘所有SMART信息。</span><br><span class="line">smartctl -i &lt;device&gt;   			显示硬盘model number, serial number,是否开启SMART等信息。</span><br><span class="line">smartctl -s on &lt;device&gt;    		如果没有打开SMART技术，使用该命令打开SMART技术。</span><br><span class="line">smartctl -t short &lt;device&gt;    	后台检测硬盘，消耗时间短</span><br><span class="line">smartctl -t long &lt;device&gt;      	后台检测硬盘，消耗时间长</span><br><span class="line">smartctl -C -t short &lt;device&gt; 	前台检测硬盘，消耗时间短</span><br><span class="line">smartctl -C -t long &lt;device&gt;  	前台检测硬盘，消耗时间长</span><br><span class="line">smartctl -X &lt;device&gt;  			中断后台检测硬盘。</span><br><span class="line">smartctl -l selftest &lt;device&gt;  	显示硬盘检测日志。</span><br><span class="line">smartctl -l error &lt;device&gt; 		显示硬盘错误汇总。</span><br></pre></td></tr></table></figure>
 <p>列出和系统相连的硬盘</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls -l /dev | grep -E &apos;sd|hd&apos;</div></pre></td></tr></table></figure>
-<h2 id="显示出某个指定硬盘的信息"><a href="#显示出某个指定硬盘的信息" class="headerlink" title="显示出某个指定硬盘的信息"></a>显示出某个指定硬盘的信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"># smartctl --info /dev/sdc</div><div class="line">smartctl 6.2 2013-07-26 r3841 [x86_64-linux-4.9.23-26.el7.x86_64] (local build)</div><div class="line">Copyright (C) 2002-13, Bruce Allen, Christian Franke, www.smartmontools.org</div><div class="line"></div><div class="line">=== START OF INFORMATION SECTION ===</div><div class="line">Device Model:     TOSHIBA MG03ACA400</div><div class="line">Serial Number:    565BK4CXF</div><div class="line">LU WWN Device Id: 5 000039 70bc0043a</div><div class="line">Firmware Version: FL1A</div><div class="line">User Capacity:    4,000,787,030,016 bytes [4.00 TB]</div><div class="line">Sector Size:      512 bytes logical/physical</div><div class="line">Rotation Rate:    7200 rpm</div><div class="line">Device is:        Not in smartctl database [for details use: -P showall]</div><div class="line">ATA Version is:   ATA8-ACS (minor revision not indicated)</div><div class="line">SATA Version is:  SATA 3.0, 6.0 Gb/s (current: 6.0 Gb/s)</div><div class="line">Local Time is:    Sun May  7 15:10:58 2017 CST</div><div class="line">SMART support is: Available - device has SMART capability.</div><div class="line">SMART support is: Enabled</div></pre></td></tr></table></figure>
-<h2 id="检测某个硬盘的健康状况"><a href="#检测某个硬盘的健康状况" class="headerlink" title="检测某个硬盘的健康状况"></a>检测某个硬盘的健康状况</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div></pre></td><td class="code"><pre><div class="line"># smartctl -s on -a /dev/sdc</div><div class="line">smartctl 6.2 2013-07-26 r3841 [x86_64-linux-4.9.23-26.el7.x86_64] (local build)</div><div class="line">Copyright (C) 2002-13, Bruce Allen, Christian Franke, www.smartmontools.org</div><div class="line"></div><div class="line">=== START OF INFORMATION SECTION ===</div><div class="line">Device Model:     TOSHIBA MG03ACA400</div><div class="line">Serial Number:    565BK4CXF</div><div class="line">LU WWN Device Id: 5 000039 70bc0043a</div><div class="line">Firmware Version: FL1A</div><div class="line">User Capacity:    4,000,787,030,016 bytes [4.00 TB]</div><div class="line">Sector Size:      512 bytes logical/physical</div><div class="line">Rotation Rate:    7200 rpm</div><div class="line">Device is:        Not in smartctl database [for details use: -P showall]</div><div class="line">ATA Version is:   ATA8-ACS (minor revision not indicated)</div><div class="line">SATA Version is:  SATA 3.0, 6.0 Gb/s (current: 6.0 Gb/s)</div><div class="line">Local Time is:    Sun May  7 15:12:44 2017 CST</div><div class="line">SMART support is: Available - device has SMART capability.</div><div class="line">SMART support is: Enabled</div><div class="line"></div><div class="line">=== START OF ENABLE/DISABLE COMMANDS SECTION ===</div><div class="line">SMART Enabled.</div><div class="line"></div><div class="line">=== START OF READ SMART DATA SECTION ===</div><div class="line">SMART overall-health self-assessment test result: PASSED</div><div class="line"></div><div class="line">General SMART Values:</div><div class="line">Offline data collection status:  (0x82)	Offline data collection activity</div><div class="line">					was completed without error.</div><div class="line">					Auto Offline Data Collection: Enabled.</div><div class="line">Self-test execution status:      (   0)	The previous self-test routine completed</div><div class="line">					without error or no self-test has ever</div><div class="line">					been run.</div><div class="line">Total time to complete Offline</div><div class="line">data collection: 		(  120) seconds.</div><div class="line">Offline data collection</div><div class="line">capabilities: 			 (0x5b) SMART execute Offline immediate.</div><div class="line">					Auto Offline data collection on/off support.</div><div class="line">					Suspend Offline collection upon new</div><div class="line">					command.</div><div class="line">					Offline surface scan supported.</div><div class="line">					Self-test supported.</div><div class="line">					No Conveyance Self-test supported.</div><div class="line">					Selective Self-test supported.</div><div class="line">SMART capabilities:            (0x0003)	Saves SMART data before entering</div><div class="line">					power-saving mode.</div><div class="line">					Supports SMART auto save timer.</div><div class="line">Error logging capability:        (0x01)	Error logging supported.</div><div class="line">					General Purpose Logging supported.</div><div class="line">Short self-test routine</div><div class="line">recommended polling time: 	 (   2) minutes.</div><div class="line">Extended self-test routine</div><div class="line">recommended polling time: 	 ( 616) minutes.</div><div class="line">SCT capabilities: 	       (0x003d)	SCT Status supported.</div><div class="line">					SCT Error Recovery Control supported.</div><div class="line">					SCT Feature Control supported.</div><div class="line">					SCT Data Table supported.</div><div class="line"></div><div class="line">SMART Attributes Data Structure revision number: 16</div><div class="line">Vendor Specific SMART Attributes with Thresholds:</div><div class="line">ID# ATTRIBUTE_NAME          FLAG     VALUE WORST THRESH TYPE      UPDATED  WHEN_FAILED RAW_VALUE</div><div class="line">  1 Raw_Read_Error_Rate     0x000b   100   100   050    Pre-fail  Always       -       0</div><div class="line">  2 Throughput_Performance  0x0005   100   100   050    Pre-fail  Offline      -       0</div><div class="line">  3 Spin_Up_Time            0x0027   100   100   001    Pre-fail  Always       -       7416</div><div class="line">  4 Start_Stop_Count        0x0032   100   100   000    Old_age   Always       -       12</div><div class="line">  5 Reallocated_Sector_Ct   0x0033   100   100   050    Pre-fail  Always       -       0</div><div class="line">  7 Seek_Error_Rate         0x000b   100   100   050    Pre-fail  Always       -       0</div><div class="line">  8 Seek_Time_Performance   0x0005   100   100   050    Pre-fail  Offline      -       0</div><div class="line">  9 Power_On_Hours          0x0032   092   092   000    Old_age   Always       -       3390</div><div class="line"> 10 Spin_Retry_Count        0x0033   100   100   030    Pre-fail  Always       -       0</div><div class="line"> 12 Power_Cycle_Count       0x0032   100   100   000    Old_age   Always       -       12</div><div class="line">191 G-Sense_Error_Rate      0x0032   100   100   000    Old_age   Always       -       0</div><div class="line">192 Power-Off_Retract_Count 0x0032   100   100   000    Old_age   Always       -       4</div><div class="line">193 Load_Cycle_Count        0x0032   100   100   000    Old_age   Always       -       118</div><div class="line">194 Temperature_Celsius     0x0022   100   100   000    Old_age   Always       -       25 (Min/Max 15/35)</div><div class="line">196 Reallocated_Event_Count 0x0032   100   100   000    Old_age   Always       -       0</div><div class="line">197 Current_Pending_Sector  0x0032   100   100   000    Old_age   Always       -       0</div><div class="line">198 Offline_Uncorrectable   0x0030   100   100   000    Old_age   Offline      -       0</div><div class="line">199 UDMA_CRC_Error_Count    0x0032   200   200   000    Old_age   Always       -       0</div><div class="line">220 Disk_Shift              0x0002   100   100   000    Old_age   Always       -       0</div><div class="line">222 Loaded_Hours            0x0032   098   098   000    Old_age   Always       -       1112</div><div class="line">223 Load_Retry_Count        0x0032   100   100   000    Old_age   Always       -       0</div><div class="line">224 Load_Friction           0x0022   100   100   000    Old_age   Always       -       0</div><div class="line">226 Load-in_Time            0x0026   100   100   000    Old_age   Always       -       595</div><div class="line">240 Head_Flying_Hours       0x0001   100   100   001    Pre-fail  Offline      -       0</div><div class="line"></div><div class="line">SMART Error Log Version: 1</div><div class="line">No Errors Logged</div><div class="line"></div><div class="line">SMART Self-test log structure revision number 1</div><div class="line">No self-tests have been logged.  [To run self-tests, use: smartctl -t]</div><div class="line"></div><div class="line"></div><div class="line">SMART Selective self-test log data structure revision number 1</div><div class="line"> SPAN  MIN_LBA  MAX_LBA  CURRENT_TEST_STATUS</div><div class="line">    1        0        0  Not_testing</div><div class="line">    2        0        0  Not_testing</div><div class="line">    3        0        0  Not_testing</div><div class="line">    4        0        0  Not_testing</div><div class="line">    5        0        0  Not_testing</div><div class="line">Selective self-test flags (0x0):</div><div class="line">  After scanning selected spans, do NOT read-scan remainder of disk.</div><div class="line">If Selective self-test is pending on power-up, resume after 0 minute delay.</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -l /dev | grep -E &apos;sd|hd&apos;</span><br></pre></td></tr></table></figure>
+<h2 id="显示出某个指定硬盘的信息"><a href="#显示出某个指定硬盘的信息" class="headerlink" title="显示出某个指定硬盘的信息"></a>显示出某个指定硬盘的信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># smartctl --info /dev/sdc</span><br><span class="line">smartctl 6.2 2013-07-26 r3841 [x86_64-linux-4.9.23-26.el7.x86_64] (local build)</span><br><span class="line">Copyright (C) 2002-13, Bruce Allen, Christian Franke, www.smartmontools.org</span><br><span class="line"></span><br><span class="line">=== START OF INFORMATION SECTION ===</span><br><span class="line">Device Model:     TOSHIBA MG03ACA400</span><br><span class="line">Serial Number:    565BK4CXF</span><br><span class="line">LU WWN Device Id: 5 000039 70bc0043a</span><br><span class="line">Firmware Version: FL1A</span><br><span class="line">User Capacity:    4,000,787,030,016 bytes [4.00 TB]</span><br><span class="line">Sector Size:      512 bytes logical/physical</span><br><span class="line">Rotation Rate:    7200 rpm</span><br><span class="line">Device is:        Not in smartctl database [for details use: -P showall]</span><br><span class="line">ATA Version is:   ATA8-ACS (minor revision not indicated)</span><br><span class="line">SATA Version is:  SATA 3.0, 6.0 Gb/s (current: 6.0 Gb/s)</span><br><span class="line">Local Time is:    Sun May  7 15:10:58 2017 CST</span><br><span class="line">SMART support is: Available - device has SMART capability.</span><br><span class="line">SMART support is: Enabled</span><br></pre></td></tr></table></figure>
+<h2 id="检测某个硬盘的健康状况"><a href="#检测某个硬盘的健康状况" class="headerlink" title="检测某个硬盘的健康状况"></a>检测某个硬盘的健康状况</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line"># smartctl -s on -a /dev/sdc</span><br><span class="line">smartctl 6.2 2013-07-26 r3841 [x86_64-linux-4.9.23-26.el7.x86_64] (local build)</span><br><span class="line">Copyright (C) 2002-13, Bruce Allen, Christian Franke, www.smartmontools.org</span><br><span class="line"></span><br><span class="line">=== START OF INFORMATION SECTION ===</span><br><span class="line">Device Model:     TOSHIBA MG03ACA400</span><br><span class="line">Serial Number:    565BK4CXF</span><br><span class="line">LU WWN Device Id: 5 000039 70bc0043a</span><br><span class="line">Firmware Version: FL1A</span><br><span class="line">User Capacity:    4,000,787,030,016 bytes [4.00 TB]</span><br><span class="line">Sector Size:      512 bytes logical/physical</span><br><span class="line">Rotation Rate:    7200 rpm</span><br><span class="line">Device is:        Not in smartctl database [for details use: -P showall]</span><br><span class="line">ATA Version is:   ATA8-ACS (minor revision not indicated)</span><br><span class="line">SATA Version is:  SATA 3.0, 6.0 Gb/s (current: 6.0 Gb/s)</span><br><span class="line">Local Time is:    Sun May  7 15:12:44 2017 CST</span><br><span class="line">SMART support is: Available - device has SMART capability.</span><br><span class="line">SMART support is: Enabled</span><br><span class="line"></span><br><span class="line">=== START OF ENABLE/DISABLE COMMANDS SECTION ===</span><br><span class="line">SMART Enabled.</span><br><span class="line"></span><br><span class="line">=== START OF READ SMART DATA SECTION ===</span><br><span class="line">SMART overall-health self-assessment test result: PASSED</span><br><span class="line"></span><br><span class="line">General SMART Values:</span><br><span class="line">Offline data collection status:  (0x82)	Offline data collection activity</span><br><span class="line">					was completed without error.</span><br><span class="line">					Auto Offline Data Collection: Enabled.</span><br><span class="line">Self-test execution status:      (   0)	The previous self-test routine completed</span><br><span class="line">					without error or no self-test has ever</span><br><span class="line">					been run.</span><br><span class="line">Total time to complete Offline</span><br><span class="line">data collection: 		(  120) seconds.</span><br><span class="line">Offline data collection</span><br><span class="line">capabilities: 			 (0x5b) SMART execute Offline immediate.</span><br><span class="line">					Auto Offline data collection on/off support.</span><br><span class="line">					Suspend Offline collection upon new</span><br><span class="line">					command.</span><br><span class="line">					Offline surface scan supported.</span><br><span class="line">					Self-test supported.</span><br><span class="line">					No Conveyance Self-test supported.</span><br><span class="line">					Selective Self-test supported.</span><br><span class="line">SMART capabilities:            (0x0003)	Saves SMART data before entering</span><br><span class="line">					power-saving mode.</span><br><span class="line">					Supports SMART auto save timer.</span><br><span class="line">Error logging capability:        (0x01)	Error logging supported.</span><br><span class="line">					General Purpose Logging supported.</span><br><span class="line">Short self-test routine</span><br><span class="line">recommended polling time: 	 (   2) minutes.</span><br><span class="line">Extended self-test routine</span><br><span class="line">recommended polling time: 	 ( 616) minutes.</span><br><span class="line">SCT capabilities: 	       (0x003d)	SCT Status supported.</span><br><span class="line">					SCT Error Recovery Control supported.</span><br><span class="line">					SCT Feature Control supported.</span><br><span class="line">					SCT Data Table supported.</span><br><span class="line"></span><br><span class="line">SMART Attributes Data Structure revision number: 16</span><br><span class="line">Vendor Specific SMART Attributes with Thresholds:</span><br><span class="line">ID# ATTRIBUTE_NAME          FLAG     VALUE WORST THRESH TYPE      UPDATED  WHEN_FAILED RAW_VALUE</span><br><span class="line">  1 Raw_Read_Error_Rate     0x000b   100   100   050    Pre-fail  Always       -       0</span><br><span class="line">  2 Throughput_Performance  0x0005   100   100   050    Pre-fail  Offline      -       0</span><br><span class="line">  3 Spin_Up_Time            0x0027   100   100   001    Pre-fail  Always       -       7416</span><br><span class="line">  4 Start_Stop_Count        0x0032   100   100   000    Old_age   Always       -       12</span><br><span class="line">  5 Reallocated_Sector_Ct   0x0033   100   100   050    Pre-fail  Always       -       0</span><br><span class="line">  7 Seek_Error_Rate         0x000b   100   100   050    Pre-fail  Always       -       0</span><br><span class="line">  8 Seek_Time_Performance   0x0005   100   100   050    Pre-fail  Offline      -       0</span><br><span class="line">  9 Power_On_Hours          0x0032   092   092   000    Old_age   Always       -       3390</span><br><span class="line"> 10 Spin_Retry_Count        0x0033   100   100   030    Pre-fail  Always       -       0</span><br><span class="line"> 12 Power_Cycle_Count       0x0032   100   100   000    Old_age   Always       -       12</span><br><span class="line">191 G-Sense_Error_Rate      0x0032   100   100   000    Old_age   Always       -       0</span><br><span class="line">192 Power-Off_Retract_Count 0x0032   100   100   000    Old_age   Always       -       4</span><br><span class="line">193 Load_Cycle_Count        0x0032   100   100   000    Old_age   Always       -       118</span><br><span class="line">194 Temperature_Celsius     0x0022   100   100   000    Old_age   Always       -       25 (Min/Max 15/35)</span><br><span class="line">196 Reallocated_Event_Count 0x0032   100   100   000    Old_age   Always       -       0</span><br><span class="line">197 Current_Pending_Sector  0x0032   100   100   000    Old_age   Always       -       0</span><br><span class="line">198 Offline_Uncorrectable   0x0030   100   100   000    Old_age   Offline      -       0</span><br><span class="line">199 UDMA_CRC_Error_Count    0x0032   200   200   000    Old_age   Always       -       0</span><br><span class="line">220 Disk_Shift              0x0002   100   100   000    Old_age   Always       -       0</span><br><span class="line">222 Loaded_Hours            0x0032   098   098   000    Old_age   Always       -       1112</span><br><span class="line">223 Load_Retry_Count        0x0032   100   100   000    Old_age   Always       -       0</span><br><span class="line">224 Load_Friction           0x0022   100   100   000    Old_age   Always       -       0</span><br><span class="line">226 Load-in_Time            0x0026   100   100   000    Old_age   Always       -       595</span><br><span class="line">240 Head_Flying_Hours       0x0001   100   100   001    Pre-fail  Offline      -       0</span><br><span class="line"></span><br><span class="line">SMART Error Log Version: 1</span><br><span class="line">No Errors Logged</span><br><span class="line"></span><br><span class="line">SMART Self-test log structure revision number 1</span><br><span class="line">No self-tests have been logged.  [To run self-tests, use: smartctl -t]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">SMART Selective self-test log data structure revision number 1</span><br><span class="line"> SPAN  MIN_LBA  MAX_LBA  CURRENT_TEST_STATUS</span><br><span class="line">    1        0        0  Not_testing</span><br><span class="line">    2        0        0  Not_testing</span><br><span class="line">    3        0        0  Not_testing</span><br><span class="line">    4        0        0  Not_testing</span><br><span class="line">    5        0        0  Not_testing</span><br><span class="line">Selective self-test flags (0x0):</span><br><span class="line">  After scanning selected spans, do NOT read-scan remainder of disk.</span><br><span class="line">If Selective self-test is pending on power-up, resume after 0 minute delay.</span><br></pre></td></tr></table></figure>
 <p>其中，”READ SMART DATA”部分显示出硬盘的整体健康状况</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">=== START OF READ SMART DATA SECTION ===</div><div class="line">SMART overall-health self-assessment test result: PASSED</div></pre></td></tr></table></figure>
-<h2 id="SMART属性表"><a href="#SMART属性表" class="headerlink" title="SMART属性表"></a>SMART属性表</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">ID# ATTRIBUTE_NAME          FLAG     VALUE WORST THRESH TYPE      UPDATED  WHEN_FAILED RAW_VALUE</div><div class="line">  1 Raw_Read_Error_Rate     0x000b   100   100   050    Pre-fail  Always       -       0</div><div class="line">  2 Throughput_Performance  0x0005   100   100   050    Pre-fail  Offline      -       0</div><div class="line">  3 Spin_Up_Time            0x0027   100   100   001    Pre-fail  Always       -       7416</div><div class="line">  4 Start_Stop_Count        0x0032   100   100   000    Old_age   Always       -       12</div><div class="line">  5 Reallocated_Sector_Ct   0x0033   100   100   050    Pre-fail  Always       -       0</div><div class="line">  7 Seek_Error_Rate         0x000b   100   100   050    Pre-fail  Always       -       0</div><div class="line">  8 Seek_Time_Performance   0x0005   100   100   050    Pre-fail  Offline      -       0</div><div class="line">  9 Power_On_Hours          0x0032   092   092   000    Old_age   Always       -       3390</div><div class="line"> 10 Spin_Retry_Count        0x0033   100   100   030    Pre-fail  Always       -       0</div><div class="line"> 12 Power_Cycle_Count       0x0032   100   100   000    Old_age   Always       -       12</div><div class="line">191 G-Sense_Error_Rate      0x0032   100   100   000    Old_age   Always       -       0</div><div class="line">192 Power-Off_Retract_Count 0x0032   100   100   000    Old_age   Always       -       4</div><div class="line">193 Load_Cycle_Count        0x0032   100   100   000    Old_age   Always       -       118</div><div class="line">194 Temperature_Celsius     0x0022   100   100   000    Old_age   Always       -       25 (Min/Max 15/35)</div><div class="line">196 Reallocated_Event_Count 0x0032   100   100   000    Old_age   Always       -       0</div><div class="line">197 Current_Pending_Sector  0x0032   100   100   000    Old_age   Always       -       0</div><div class="line">198 Offline_Uncorrectable   0x0030   100   100   000    Old_age   Offline      -       0</div><div class="line">199 UDMA_CRC_Error_Count    0x0032   200   200   000    Old_age   Always       -       0</div><div class="line">220 Disk_Shift              0x0002   100   100   000    Old_age   Always       -       0</div><div class="line">222 Loaded_Hours            0x0032   098   098   000    Old_age   Always       -       1112</div><div class="line">223 Load_Retry_Count        0x0032   100   100   000    Old_age   Always       -       0</div><div class="line">224 Load_Friction           0x0022   100   100   000    Old_age   Always       -       0</div><div class="line">226 Load-in_Time            0x0026   100   100   000    Old_age   Always       -       595</div><div class="line">240 Head_Flying_Hours       0x0001   100   100   001    Pre-fail  Offline      -       0</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">=== START OF READ SMART DATA SECTION ===</span><br><span class="line">SMART overall-health self-assessment test result: PASSED</span><br></pre></td></tr></table></figure>
+<h2 id="SMART属性表"><a href="#SMART属性表" class="headerlink" title="SMART属性表"></a>SMART属性表</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">ID# ATTRIBUTE_NAME          FLAG     VALUE WORST THRESH TYPE      UPDATED  WHEN_FAILED RAW_VALUE</span><br><span class="line">  1 Raw_Read_Error_Rate     0x000b   100   100   050    Pre-fail  Always       -       0</span><br><span class="line">  2 Throughput_Performance  0x0005   100   100   050    Pre-fail  Offline      -       0</span><br><span class="line">  3 Spin_Up_Time            0x0027   100   100   001    Pre-fail  Always       -       7416</span><br><span class="line">  4 Start_Stop_Count        0x0032   100   100   000    Old_age   Always       -       12</span><br><span class="line">  5 Reallocated_Sector_Ct   0x0033   100   100   050    Pre-fail  Always       -       0</span><br><span class="line">  7 Seek_Error_Rate         0x000b   100   100   050    Pre-fail  Always       -       0</span><br><span class="line">  8 Seek_Time_Performance   0x0005   100   100   050    Pre-fail  Offline      -       0</span><br><span class="line">  9 Power_On_Hours          0x0032   092   092   000    Old_age   Always       -       3390</span><br><span class="line"> 10 Spin_Retry_Count        0x0033   100   100   030    Pre-fail  Always       -       0</span><br><span class="line"> 12 Power_Cycle_Count       0x0032   100   100   000    Old_age   Always       -       12</span><br><span class="line">191 G-Sense_Error_Rate      0x0032   100   100   000    Old_age   Always       -       0</span><br><span class="line">192 Power-Off_Retract_Count 0x0032   100   100   000    Old_age   Always       -       4</span><br><span class="line">193 Load_Cycle_Count        0x0032   100   100   000    Old_age   Always       -       118</span><br><span class="line">194 Temperature_Celsius     0x0022   100   100   000    Old_age   Always       -       25 (Min/Max 15/35)</span><br><span class="line">196 Reallocated_Event_Count 0x0032   100   100   000    Old_age   Always       -       0</span><br><span class="line">197 Current_Pending_Sector  0x0032   100   100   000    Old_age   Always       -       0</span><br><span class="line">198 Offline_Uncorrectable   0x0030   100   100   000    Old_age   Offline      -       0</span><br><span class="line">199 UDMA_CRC_Error_Count    0x0032   200   200   000    Old_age   Always       -       0</span><br><span class="line">220 Disk_Shift              0x0002   100   100   000    Old_age   Always       -       0</span><br><span class="line">222 Loaded_Hours            0x0032   098   098   000    Old_age   Always       -       1112</span><br><span class="line">223 Load_Retry_Count        0x0032   100   100   000    Old_age   Always       -       0</span><br><span class="line">224 Load_Friction           0x0022   100   100   000    Old_age   Always       -       0</span><br><span class="line">226 Load-in_Time            0x0026   100   100   000    Old_age   Always       -       595</span><br><span class="line">240 Head_Flying_Hours       0x0001   100   100   001    Pre-fail  Offline      -       0</span><br></pre></td></tr></table></figure>
 <p>SMART属性表列出了制造商在硬盘中定义好的属性值，以及这些属性相关的故障阈值。这个表由驱动固件自动生成和更新。</p>
 <ul>
 <li><strong>ID</strong>：属性ID，通常是一个1到255之间的十进制或十六进制的数字。</li>
@@ -209,11 +209,11 @@ var _hmt = _hmt || [];
 <li><strong>RAW_VALUE</strong>：制造商定义的原始值，从VALUE派生。</li>
 </ul>
 <h2 id="实时监控"><a href="#实时监控" class="headerlink" title="实时监控"></a>实时监控</h2><p>编辑smartctl的配置文件(/etc/default/smartmontools)以便在系统启动时启动smartd，并以秒为单位指定间隔时间（如7200 = 2小时）。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">start_smartd=yes</div><div class="line">smartd_opts=&quot;--interval=7200&quot;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">start_smartd=yes</span><br><span class="line">smartd_opts=&quot;--interval=7200&quot;</span><br></pre></td></tr></table></figure>
 <p>编辑smartd的配置文件，添加以下行内容。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># vim /etc/smartmontools/smartd</div><div class="line">smartd.conf        smartd_warning.d/  smartd_warning.sh</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/dev/sda -m myemail@mydomain.com -M test</div></pre></td></tr></table></figure>
-<p><strong>-m </strong>：指定发送测试报告到某个电子邮件地址。这里可以是系统用户比如root，或者如果服务器已经配置成发送电子邮件到系统外部，则是类似于<a href="mailto:myemail@mydomain.com" target="_blank" rel="external">myemail@mydomain.com</a>的邮件地址。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># vim /etc/smartmontools/smartd</span><br><span class="line">smartd.conf        smartd_warning.d/  smartd_warning.sh</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/dev/sda -m myemail@mydomain.com -M test</span><br></pre></td></tr></table></figure>
+<p><strong>-m </strong>：指定发送测试报告到某个电子邮件地址。这里可以是系统用户比如root，或者如果服务器已经配置成发送电子邮件到系统外部，则是类似于<a href="mailto:myemail@mydomain.com" target="_blank" rel="noopener">myemail@mydomain.com</a>的邮件地址。</p>
 <p><strong>-M </strong>：指定发送邮件报告的期望类型。</p>
 <ul>
 <li><strong>once</strong>：为检测到的每种磁盘问题只发送一封警告邮件。</li>
@@ -241,13 +241,16 @@ var _hmt = _hmt || [];
 </ul>
 <p>在上述表达中的小圆点表示所有可能的值。形如’(A|B|C)’在圆括号里的表达式表示三个可能值A、B和C中的任意一个。形如[1-5]在方括号中的表达式表示1到5的范围（包含5）.</p>
 <p>例如，想要在每个工作日的下午一点为所有的磁盘执行一次长测试，在/etc/smartd.conf中添加如下行内容。确保编辑完重启smartd。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">DEVICESCAN -s (L/../../[1-5]/13)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DEVICESCAN -s (L/../../[1-5]/13)</span><br></pre></td></tr></table></figure>
 <p>参考：</p>
-<p><a href="https://zh.wikipedia.org/wiki/S.M.A.R.T" target="_blank" rel="external">https://zh.wikipedia.org/wiki/S.M.A.R.T</a>.</p>
-<p><a href="https://linux.cn/article-4461-1.html" target="_blank" rel="external">使用 smartmontools 查看硬盘的健康状态</a></p>
+<p><a href="https://zh.wikipedia.org/wiki/S.M.A.R.T" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/S.M.A.R.T</a>.</p>
+<p><a href="https://linux.cn/article-4461-1.html" target="_blank" rel="noopener">使用 smartmontools 查看硬盘的健康状态</a></p>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -345,11 +348,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/05/07/S-M-A-R-T-磁盘健康状态监测工具/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2017/05/07/S-M-A-R-T-磁盘健康状态监测工具/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -454,6 +458,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -555,10 +561,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -571,15 +573,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -599,19 +601,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -623,6 +621,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -631,19 +633,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -655,6 +649,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -663,15 +661,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -683,15 +685,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

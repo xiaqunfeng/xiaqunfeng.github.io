@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>Linux命令——history及其优化 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="没啥好说的，就是查看历史输入的命令。这里引入两个优化点，一是历史记录带时间，二是可以统计汇总不同终端下的命令。">
+<meta name="keywords" content="Linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux命令——history及其优化">
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/01/11/Linux命令——history及其优化/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="没啥好说的，就是查看历史输入的命令。这里引入两个优化点，一是历史记录带时间，二是可以统计汇总不同终端下的命令。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2017-01-11T06:01:13.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux命令——history及其优化">
@@ -49,7 +51,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -77,9 +79,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -159,7 +158,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Linux命令——history及其优化" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-Linux命令——history及其优化" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -180,7 +180,7 @@ var _hmt = _hmt || [];
     <div class="article-entry" itemprop="articleBody">
       
         <p>没啥好说的，就是查看历史输入的命令。这里引入两个优化点，一是历史记录带时间，二是可以统计汇总不同终端下的命令。<br><a id="more"></a></p>
-<h2 id="命令格式"><a href="#命令格式" class="headerlink" title="命令格式"></a>命令格式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">history [n]</div><div class="line">history [-c]</div><div class="line">history [-raw] histfiles</div></pre></td></tr></table></figure>
+<h2 id="命令格式"><a href="#命令格式" class="headerlink" title="命令格式"></a>命令格式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">history [n]</span><br><span class="line">history [-c]</span><br><span class="line">history [-raw] histfiles</span><br></pre></td></tr></table></figure>
 <p>参数解释：</p>
 <table>
 <thead>
@@ -214,7 +214,7 @@ var _hmt = _hmt || [];
 </table>
 <h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><p>通常都是直接 <code>history</code> 然后通过管道配合 <code>more, less, tail, head</code> 来使用，其他复杂用法这里不作介绍。</p>
 <p>如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">history | more</div><div class="line">history | tail -4</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">history | more</span><br><span class="line">history | tail -4</span><br></pre></td></tr></table></figure>
 <h2 id="命令优化"><a href="#命令优化" class="headerlink" title="命令优化"></a>命令优化</h2><p><strong>出发点</strong>：在项目中，在不同终端下执行了一系列的命令后，翻不到历史记录，也没有汇总，也不知道每条命令的执行时间，所以需要对该命令进行优化。</p>
 <p><strong>优化点</strong></p>
 <ul>
@@ -225,32 +225,35 @@ var _hmt = _hmt || [];
 <p>命令的汇总限同一个机器下的同一个用户</p>
 </blockquote>
 <p>注：以下设置方法适用ubuntu，其他系统类似。ubuntu上修改的文件是 <code>/etc/bash.bashrc</code>，mac上修改的文件是 <code>/etc/bashrc</code> 。</p>
-<h3 id="添加日期"><a href="#添加日期" class="headerlink" title="添加日期"></a>添加日期</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim /etc/bash.bashrc</div></pre></td></tr></table></figure>
+<h3 id="添加日期"><a href="#添加日期" class="headerlink" title="添加日期"></a>添加日期</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/bash.bashrc</span><br></pre></td></tr></table></figure>
 <p>在末尾添加</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">HISTTIMEFORMAT=&quot;%F %T &quot;</div><div class="line">export HISTTIMEFORMAT</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">HISTTIMEFORMAT=&quot;%F %T &quot;</span><br><span class="line">export HISTTIMEFORMAT</span><br></pre></td></tr></table></figure>
 <p>执行使生效</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source /etc/bash.bashrc</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/bash.bashrc</span><br></pre></td></tr></table></figure>
 <p><strong>新开终端</strong>的时候，history命令的显示就带有日期了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">448  2017-01-11 11:42:01 vim /etc/bash.bashrc </div><div class="line">449  2017-01-11 11:42:45 source /etc/bash.bashrc </div><div class="line">450  2017-01-11 11:40:18 history</div><div class="line">451  2017-01-11 11:41:11 ls</div><div class="line">452  2017-01-11 11:41:12 pwd</div><div class="line">453  2017-01-11 11:41:35 history</div></pre></td></tr></table></figure>
-<h3 id="不同终端命令汇总"><a href="#不同终端命令汇总" class="headerlink" title="不同终端命令汇总"></a>不同终端命令汇总</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim /etc/bash.bashrc</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">448  2017-01-11 11:42:01 vim /etc/bash.bashrc </span><br><span class="line">449  2017-01-11 11:42:45 source /etc/bash.bashrc </span><br><span class="line">450  2017-01-11 11:40:18 history</span><br><span class="line">451  2017-01-11 11:41:11 ls</span><br><span class="line">452  2017-01-11 11:41:12 pwd</span><br><span class="line">453  2017-01-11 11:41:35 history</span><br></pre></td></tr></table></figure>
+<h3 id="不同终端命令汇总"><a href="#不同终端命令汇总" class="headerlink" title="不同终端命令汇总"></a>不同终端命令汇总</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/bash.bashrc</span><br></pre></td></tr></table></figure>
 <p>在末尾添加</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># Avoid duplicates</div><div class="line">export HISTCONTROL=ignoredups:erasedups</div><div class="line"># When the shell exits, append to the history file instead of overwriting it</div><div class="line">shopt -s histappend</div><div class="line"></div><div class="line"># After each command, append to the history file and reread it</div><div class="line">export PROMPT_COMMAND=&quot;$&#123;PROMPT_COMMAND:+$PROMPT_COMMAND$&apos;\n&apos;&#125;history -a; history -c; history -r&quot;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># Avoid duplicates</span><br><span class="line">export HISTCONTROL=ignoredups:erasedups</span><br><span class="line"># When the shell exits, append to the history file instead of overwriting it</span><br><span class="line">shopt -s histappend</span><br><span class="line"></span><br><span class="line"># After each command, append to the history file and reread it</span><br><span class="line">export PROMPT_COMMAND=&quot;$&#123;PROMPT_COMMAND:+$PROMPT_COMMAND$&apos;\n&apos;&#125;history -a; history -c; history -r&quot;</span><br></pre></td></tr></table></figure>
 <p>执行使生效</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source /etc/bash.bashrc</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/bash.bashrc</span><br></pre></td></tr></table></figure>
 <p><strong>新开终端</strong>的时候就可以看到之前在该机器该用户下的所有命令操作。</p>
-<h3 id="调整记录命令长度"><a href="#调整记录命令长度" class="headerlink" title="调整记录命令长度"></a>调整记录命令长度</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim /etc/bash.bashrc</div></pre></td></tr></table></figure>
+<h3 id="调整记录命令长度"><a href="#调整记录命令长度" class="headerlink" title="调整记录命令长度"></a>调整记录命令长度</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/bash.bashrc</span><br></pre></td></tr></table></figure>
 <p>在末尾添加</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export HISTSIZE=1000	# 该数字自己定</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export HISTSIZE=1000	# 该数字自己定</span><br></pre></td></tr></table></figure>
 <p>执行使生效</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source /etc/bash.bashrc</div></pre></td></tr></table></figure>
-<h3 id="剔除连续重复的条目"><a href="#剔除连续重复的条目" class="headerlink" title="剔除连续重复的条目"></a>剔除连续重复的条目</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim /etc/bash.bashrc</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/bash.bashrc</span><br></pre></td></tr></table></figure>
+<h3 id="剔除连续重复的条目"><a href="#剔除连续重复的条目" class="headerlink" title="剔除连续重复的条目"></a>剔除连续重复的条目</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/bash.bashrc</span><br></pre></td></tr></table></figure>
 <p>将 HISTCONTROL 设置为 ignoredups</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># Avoid duplicates</div><div class="line">export HISTCONTROL=ignoredups:erasedups</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Avoid duplicates</span><br><span class="line">export HISTCONTROL=ignoredups:erasedups</span><br></pre></td></tr></table></figure>
 <p>执行使生效</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source /etc/bash.bashrc</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/bash.bashrc</span><br></pre></td></tr></table></figure>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -348,11 +351,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/01/11/Linux命令——history及其优化/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2017/01/11/Linux命令——history及其优化/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -457,6 +461,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -558,10 +564,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -574,15 +576,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -602,19 +604,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -626,6 +624,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -634,19 +636,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -658,6 +652,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -666,15 +664,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -686,15 +688,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

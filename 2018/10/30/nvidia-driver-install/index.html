@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>安装nvidia显卡驱动 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="记录在GPU机器上安装显卡驱动的过程。">
+<meta name="keywords" content="ubuntu">
 <meta property="og:type" content="article">
 <meta property="og:title" content="安装nvidia显卡驱动">
 <meta property="og:url" content="http://xiaqunfeng.cc/2018/10/30/nvidia-driver-install/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="记录在GPU机器上安装显卡驱动的过程。">
-<meta property="og:updated_time" content="2019-03-27T03:22:36.300Z">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-27T03:22:36.301Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="安装nvidia显卡驱动">
 <meta name="twitter:description" content="记录在GPU机器上安装显卡驱动的过程。">
@@ -49,7 +51,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -77,9 +79,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -159,7 +158,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-nvidia-driver-install" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-nvidia-driver-install" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -181,49 +181,52 @@ var _hmt = _hmt || [];
       
         <p>记录在GPU机器上安装显卡驱动的过程。<br><a id="more"></a></p>
 <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>1、系统版本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">root@jqgpu34:~# lsb_release -a</div><div class="line">No LSB modules are available.</div><div class="line">Distributor ID:	Ubuntu</div><div class="line">Description:	Ubuntu 16.04.2 LTS</div><div class="line">Release:	16.04</div><div class="line">Codename:	xenial</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@jqgpu34:~# lsb_release -a</span><br><span class="line">No LSB modules are available.</span><br><span class="line">Distributor ID:	Ubuntu</span><br><span class="line">Description:	Ubuntu 16.04.2 LTS</span><br><span class="line">Release:	16.04</span><br><span class="line">Codename:	xenial</span><br></pre></td></tr></table></figure>
 <p>2、内核版本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root@jqgpu34:~# uname -r</div><div class="line">4.4.0-62-generic</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@jqgpu34:~# uname -r</span><br><span class="line">4.4.0-62-generic</span><br></pre></td></tr></table></figure>
 <p>3、显卡</p>
 <p>显卡型号：Tesla P4</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">root@jqgpu34:~# lspci | grep -i nvidia</div><div class="line">04:00.0 3D controller: NVIDIA Corporation Device 1bb3 (rev a1)</div><div class="line">05:00.0 3D controller: NVIDIA Corporation Device 1bb3 (rev a1)</div><div class="line">08:00.0 3D controller: NVIDIA Corporation Device 1bb3 (rev a1)</div><div class="line">09:00.0 3D controller: NVIDIA Corporation Device 1bb3 (rev a1)</div><div class="line">85:00.0 3D controller: NVIDIA Corporation Device 1bb3 (rev a1)</div><div class="line">86:00.0 3D controller: NVIDIA Corporation Device 1bb3 (rev a1)</div><div class="line">89:00.0 3D controller: NVIDIA Corporation Device 1bb3 (rev a1)</div><div class="line">8a:00.0 3D controller: NVIDIA Corporation Device 1bb3 (rev a1)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@jqgpu34:~# lspci | grep -i nvidia</span><br><span class="line">04:00.0 3D controller: NVIDIA Corporation Device 1bb3 (rev a1)</span><br><span class="line">05:00.0 3D controller: NVIDIA Corporation Device 1bb3 (rev a1)</span><br><span class="line">08:00.0 3D controller: NVIDIA Corporation Device 1bb3 (rev a1)</span><br><span class="line">09:00.0 3D controller: NVIDIA Corporation Device 1bb3 (rev a1)</span><br><span class="line">85:00.0 3D controller: NVIDIA Corporation Device 1bb3 (rev a1)</span><br><span class="line">86:00.0 3D controller: NVIDIA Corporation Device 1bb3 (rev a1)</span><br><span class="line">89:00.0 3D controller: NVIDIA Corporation Device 1bb3 (rev a1)</span><br><span class="line">8a:00.0 3D controller: NVIDIA Corporation Device 1bb3 (rev a1)</span><br></pre></td></tr></table></figure>
 <p>显示有8张卡。</p>
 <h2 id="卸载掉原有驱动"><a href="#卸载掉原有驱动" class="headerlink" title="卸载掉原有驱动"></a>卸载掉原有驱动</h2><p>如果没有安装驱动，忽略</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get remove –purge nvidia*</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get remove –purge nvidia*</span><br></pre></td></tr></table></figure>
 <h2 id="禁用nouveau"><a href="#禁用nouveau" class="headerlink" title="禁用nouveau"></a>禁用nouveau</h2><p>安装NVIDIA需要把系统自带的驱动禁用</p>
 <p>禁用前：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">root@jqgpu34:~# lsmod | grep nouveau</div><div class="line">nouveau              1495040  0</div><div class="line">video                  40960  1 nouveau</div><div class="line">ttm                    94208  2 ast,nouveau</div><div class="line">drm_kms_helper        155648  2 ast,nouveau</div><div class="line">mxm_wmi                16384  1 nouveau</div><div class="line">i2c_algo_bit           16384  3 ast,igb,nouveau</div><div class="line">drm                   364544  5 ast,ttm,drm_kms_helper,nouveau</div><div class="line">wmi                    20480  2 mxm_wmi,nouveau</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@jqgpu34:~# lsmod | grep nouveau</span><br><span class="line">nouveau              1495040  0</span><br><span class="line">video                  40960  1 nouveau</span><br><span class="line">ttm                    94208  2 ast,nouveau</span><br><span class="line">drm_kms_helper        155648  2 ast,nouveau</span><br><span class="line">mxm_wmi                16384  1 nouveau</span><br><span class="line">i2c_algo_bit           16384  3 ast,igb,nouveau</span><br><span class="line">drm                   364544  5 ast,ttm,drm_kms_helper,nouveau</span><br><span class="line">wmi                    20480  2 mxm_wmi,nouveau</span><br></pre></td></tr></table></figure>
 <p>1、打开文件: <code>/etc/modprobe.d/blacklist.conf</code>，在末尾添加：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">blacklist nouveau</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">blacklist nouveau</span><br></pre></td></tr></table></figure>
 <p>2、执行生效命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">root@jqgpu34:~# update-initramfs -u</div><div class="line">update-initramfs: Generating /boot/initrd.img-4.4.0-62-generic</div><div class="line">cryptsetup: WARNING: could not determine root device from /etc/fstab</div><div class="line">W: Possible missing firmware /lib/firmware/ast_dp501_fw.bin for module ast</div><div class="line">W: mdadm: /etc/mdadm/mdadm.conf defines no arrays.</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@jqgpu34:~# update-initramfs -u</span><br><span class="line">update-initramfs: Generating /boot/initrd.img-4.4.0-62-generic</span><br><span class="line">cryptsetup: WARNING: could not determine root device from /etc/fstab</span><br><span class="line">W: Possible missing firmware /lib/firmware/ast_dp501_fw.bin for module ast</span><br><span class="line">W: mdadm: /etc/mdadm/mdadm.conf defines no arrays.</span><br></pre></td></tr></table></figure>
 <p>忽略warning。</p>
 <p>3、重启并输入如下命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">root@jqgpu34:~# lsmod | grep nouveau</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@jqgpu34:~# lsmod | grep nouveau</span><br></pre></td></tr></table></figure>
 <p>无任何输出，表示禁用成功。</p>
 <h2 id="安装nvidia显卡驱动"><a href="#安装nvidia显卡驱动" class="headerlink" title="安装nvidia显卡驱动"></a>安装nvidia显卡驱动</h2><p>1、下载并安装</p>
-<p>下载驱动：<a href="https://www.nvidia.cn/Download/index.aspx?lang=cn" target="_blank" rel="external">https://www.nvidia.cn/Download/index.aspx?lang=cn</a></p>
+<p>下载驱动：<a href="https://www.nvidia.cn/Download/index.aspx?lang=cn" target="_blank" rel="noopener">https://www.nvidia.cn/Download/index.aspx?lang=cn</a></p>
 <p>根据系统和显卡情况正确选择并下载驱动</p>
 <p>将下载的驱动文件拷贝到GPU机器上</p>
 <p>添加可执行权限并运行</p>
-<p>注：Tesla P4 + Ubuntu1604 + 64-bit + CUDA Toolkit 10.0 + Chinese <a href="http://p926l57yp.bkt.clouddn.com/NVIDIA-Linux-x86_64-410.72.run" target="_blank" rel="external">下载链接</a>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">root@jqgpu34:~# chmod a+x NVIDIA-Linux-x86_64-410.72.run</div><div class="line">root@jqgpu34:~# ./NVIDIA-Linux-x86_64-410.72.run</div><div class="line">Verifying archive integrity... OK</div><div class="line">Uncompressing NVIDIA Accelerated Graphics Driver for Linux-x86_64 410.72...................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................</div></pre></td></tr></table></figure>
+<p>注：Tesla P4 + Ubuntu1604 + 64-bit + CUDA Toolkit 10.0 + Chinese <a href="http://p926l57yp.bkt.clouddn.com/NVIDIA-Linux-x86_64-410.72.run" target="_blank" rel="noopener">下载链接</a>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@jqgpu34:~# chmod a+x NVIDIA-Linux-x86_64-410.72.run</span><br><span class="line">root@jqgpu34:~# ./NVIDIA-Linux-x86_64-410.72.run</span><br><span class="line">Verifying archive integrity... OK</span><br><span class="line">Uncompressing NVIDIA Accelerated Graphics Driver for Linux-x86_64 410.72...................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................</span><br></pre></td></tr></table></figure>
 <p>中间会出现 <code>WARNING</code>，一路回车忽略。</p>
 <p>2、检查是否安装成功</p>
 <p>显示如下表示安装成功</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">root@jqgpu34:~# nvidia-smi</div><div class="line">Tue Oct 30 16:37:24 2018</div><div class="line">+-----------------------------------------------------------------------------+</div><div class="line">| NVIDIA-SMI 410.72       Driver Version: 410.72       CUDA Version: 10.0     |</div><div class="line">|-------------------------------+----------------------+----------------------+</div><div class="line">| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |</div><div class="line">| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |</div><div class="line">|===============================+======================+======================|</div><div class="line">|   0  Tesla P4            Off  | 00000000:04:00.0 Off |                  N/A |</div><div class="line">| N/A   38C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</div><div class="line">+-------------------------------+----------------------+----------------------+</div><div class="line">|   1  Tesla P4            Off  | 00000000:05:00.0 Off |                  N/A |</div><div class="line">| N/A   39C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</div><div class="line">+-------------------------------+----------------------+----------------------+</div><div class="line">|   2  Tesla P4            Off  | 00000000:08:00.0 Off |                  N/A |</div><div class="line">| N/A   39C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</div><div class="line">+-------------------------------+----------------------+----------------------+</div><div class="line">|   3  Tesla P4            Off  | 00000000:09:00.0 Off |                  N/A |</div><div class="line">| N/A   38C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</div><div class="line">+-------------------------------+----------------------+----------------------+</div><div class="line">|   4  Tesla P4            Off  | 00000000:85:00.0 Off |                  N/A |</div><div class="line">| N/A   35C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</div><div class="line">+-------------------------------+----------------------+----------------------+</div><div class="line">|   5  Tesla P4            Off  | 00000000:86:00.0 Off |                  N/A |</div><div class="line">| N/A   38C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</div><div class="line">+-------------------------------+----------------------+----------------------+</div><div class="line">|   6  Tesla P4            Off  | 00000000:89:00.0 Off |                  N/A |</div><div class="line">| N/A   37C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</div><div class="line">+-------------------------------+----------------------+----------------------+</div><div class="line">|   7  Tesla P4            Off  | 00000000:8A:00.0 Off |                  N/A |</div><div class="line">| N/A   38C    P0    23W /  75W |      0MiB /  7611MiB |      4%      Default |</div><div class="line">+-------------------------------+----------------------+----------------------+</div><div class="line"></div><div class="line">+-----------------------------------------------------------------------------+</div><div class="line">| Processes:                                                       GPU Memory |</div><div class="line">|  GPU       PID   Type   Process name                             Usage      |</div><div class="line">|=============================================================================|</div><div class="line">|  No running processes found                                                 |</div><div class="line">+-----------------------------------------------------------------------------+</div></pre></td></tr></table></figure>
-<h2 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h2><h3 id="添加-NVIDIA-官方-PPA"><a href="#添加-NVIDIA-官方-PPA" class="headerlink" title="添加 NVIDIA 官方 PPA"></a>添加 NVIDIA 官方 PPA</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo add-apt-repository ppa:graphics-drivers/ppa</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">root@jqgpu34:~# nvidia-smi</span><br><span class="line">Tue Oct 30 16:37:24 2018</span><br><span class="line">+-----------------------------------------------------------------------------+</span><br><span class="line">| NVIDIA-SMI 410.72       Driver Version: 410.72       CUDA Version: 10.0     |</span><br><span class="line">|-------------------------------+----------------------+----------------------+</span><br><span class="line">| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |</span><br><span class="line">| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |</span><br><span class="line">|===============================+======================+======================|</span><br><span class="line">|   0  Tesla P4            Off  | 00000000:04:00.0 Off |                  N/A |</span><br><span class="line">| N/A   38C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</span><br><span class="line">+-------------------------------+----------------------+----------------------+</span><br><span class="line">|   1  Tesla P4            Off  | 00000000:05:00.0 Off |                  N/A |</span><br><span class="line">| N/A   39C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</span><br><span class="line">+-------------------------------+----------------------+----------------------+</span><br><span class="line">|   2  Tesla P4            Off  | 00000000:08:00.0 Off |                  N/A |</span><br><span class="line">| N/A   39C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</span><br><span class="line">+-------------------------------+----------------------+----------------------+</span><br><span class="line">|   3  Tesla P4            Off  | 00000000:09:00.0 Off |                  N/A |</span><br><span class="line">| N/A   38C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</span><br><span class="line">+-------------------------------+----------------------+----------------------+</span><br><span class="line">|   4  Tesla P4            Off  | 00000000:85:00.0 Off |                  N/A |</span><br><span class="line">| N/A   35C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</span><br><span class="line">+-------------------------------+----------------------+----------------------+</span><br><span class="line">|   5  Tesla P4            Off  | 00000000:86:00.0 Off |                  N/A |</span><br><span class="line">| N/A   38C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</span><br><span class="line">+-------------------------------+----------------------+----------------------+</span><br><span class="line">|   6  Tesla P4            Off  | 00000000:89:00.0 Off |                  N/A |</span><br><span class="line">| N/A   37C    P0    23W /  75W |      0MiB /  7611MiB |      0%      Default |</span><br><span class="line">+-------------------------------+----------------------+----------------------+</span><br><span class="line">|   7  Tesla P4            Off  | 00000000:8A:00.0 Off |                  N/A |</span><br><span class="line">| N/A   38C    P0    23W /  75W |      0MiB /  7611MiB |      4%      Default |</span><br><span class="line">+-------------------------------+----------------------+----------------------+</span><br><span class="line"></span><br><span class="line">+-----------------------------------------------------------------------------+</span><br><span class="line">| Processes:                                                       GPU Memory |</span><br><span class="line">|  GPU       PID   Type   Process name                             Usage      |</span><br><span class="line">|=============================================================================|</span><br><span class="line">|  No running processes found                                                 |</span><br><span class="line">+-----------------------------------------------------------------------------+</span><br></pre></td></tr></table></figure>
+<h2 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h2><h3 id="添加-NVIDIA-官方-PPA"><a href="#添加-NVIDIA-官方-PPA" class="headerlink" title="添加 NVIDIA 官方 PPA"></a>添加 NVIDIA 官方 PPA</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo add-apt-repository ppa:graphics-drivers/ppa</span><br></pre></td></tr></table></figure>
 <p>果上面命令执行报<code>sudo: add-apt-repository: command not found</code>，试试下面这个命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install software-properties-common</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install software-properties-common</span><br></pre></td></tr></table></figure>
 <p>如果上面命令运行后报<code>E: dpkg was interrupted, you must manually run &#39;sudo dpkg --configure -a&#39; to correct the problem.</code>，运行下面命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo dpkg --configure -a</div></pre></td></tr></table></figure>
-<h3 id="安装显卡驱动"><a href="#安装显卡驱动" class="headerlink" title="安装显卡驱动"></a>安装显卡驱动</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ sudo apt update</div><div class="line">$ sudo apt install nvidia-396</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo dpkg --configure -a</span><br></pre></td></tr></table></figure>
+<h3 id="安装显卡驱动"><a href="#安装显卡驱动" class="headerlink" title="安装显卡驱动"></a>安装显卡驱动</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt update</span><br><span class="line">$ sudo apt install nvidia-396</span><br></pre></td></tr></table></figure>
 <p>安装完<code>nvidia-396</code>再执行<code>nvidia-smi</code>，显示如下表示显卡驱动已经装好了：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">$ nvidia-smi</div><div class="line"></div><div class="line">Thu Dec 20 20:23:36 2018</div><div class="line">+-----------------------------------------------------------------------------+</div><div class="line">| NVIDIA-SMI 390.46                 Driver Version: 390.46                   |</div><div class="line">|-------------------------------+----------------------+----------------------+</div><div class="line">| GPU Name       Persistence-M| Bus-Id       Disp.A | Volatile Uncorr. ECC |</div><div class="line">| Fan Temp Perf Pwr:Usage/Cap|         Memory-Usage | GPU-Util Compute M. |</div><div class="line">|===============================+======================+======================|</div><div class="line">|   0 Tesla V100-SXM2... Off | 00000000:00:07.0 Off |                    0 |</div><div class="line">| N/A   30C   P0   32W / 300W |     0MiB / 16160MiB |      0%     Default |</div><div class="line">+-------------------------------+----------------------+----------------------+</div><div class="line"></div><div class="line">+-----------------------------------------------------------------------------+</div><div class="line">| Processes:                                                       GPU Memory |</div><div class="line">| GPU       PID   Type   Process name                             Usage     |</div><div class="line">|=============================================================================|</div><div class="line">| No running processes found                                                 |</div><div class="line">+-----------------------------------------------------------------------------+</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$ nvidia-smi</span><br><span class="line"></span><br><span class="line">Thu Dec 20 20:23:36 2018</span><br><span class="line">+-----------------------------------------------------------------------------+</span><br><span class="line">| NVIDIA-SMI 390.46                 Driver Version: 390.46                   |</span><br><span class="line">|-------------------------------+----------------------+----------------------+</span><br><span class="line">| GPU Name       Persistence-M| Bus-Id       Disp.A | Volatile Uncorr. ECC |</span><br><span class="line">| Fan Temp Perf Pwr:Usage/Cap|         Memory-Usage | GPU-Util Compute M. |</span><br><span class="line">|===============================+======================+======================|</span><br><span class="line">|   0 Tesla V100-SXM2... Off | 00000000:00:07.0 Off |                    0 |</span><br><span class="line">| N/A   30C   P0   32W / 300W |     0MiB / 16160MiB |      0%     Default |</span><br><span class="line">+-------------------------------+----------------------+----------------------+</span><br><span class="line"></span><br><span class="line">+-----------------------------------------------------------------------------+</span><br><span class="line">| Processes:                                                       GPU Memory |</span><br><span class="line">| GPU       PID   Type   Process name                             Usage     |</span><br><span class="line">|=============================================================================|</span><br><span class="line">| No running processes found                                                 |</span><br><span class="line">+-----------------------------------------------------------------------------+</span><br></pre></td></tr></table></figure>
 <p>如果驱动安装后，运行<code>nvidia-smi</code>遇到<code>Failed to initialize NVML: Driver/library version mismatch</code>，重启即可。</p>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -321,11 +324,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2018/10/30/nvidia-driver-install/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2018/10/30/nvidia-driver-install/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -430,6 +434,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -531,10 +537,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -547,15 +549,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -575,19 +577,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -599,6 +597,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -607,19 +609,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -631,6 +625,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -639,15 +637,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -659,15 +661,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

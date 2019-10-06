@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>centos 7下操纵ceph进程 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="分享一个以前的笔记。官网给的通过/etc/init.d/cephstop、start等命令在centos7下不行，service命令也是不行的。现在都使用原生的 systemd 来管理ceph进程。">
+<meta name="keywords" content="centos">
 <meta property="og:type" content="article">
 <meta property="og:title" content="centos 7下操纵ceph进程">
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/06/16/centos-7下操纵ceph进程/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="分享一个以前的笔记。官网给的通过/etc/init.d/cephstop、start等命令在centos7下不行，service命令也是不行的。现在都使用原生的 systemd 来管理ceph进程。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2018-03-27T01:03:45.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="centos 7下操纵ceph进程">
@@ -49,7 +51,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -77,9 +79,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -159,7 +158,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-centos-7下操纵ceph进程" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-centos-7下操纵ceph进程" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -180,7 +180,7 @@ var _hmt = _hmt || [];
     <div class="article-entry" itemprop="articleBody">
       
         <p>分享一个以前的笔记。官网给的通过<code>/etc/init.d/ceph</code>stop、start等命令在centos7下不行，service命令也是不行的。现在都使用原生的 systemd 来管理ceph进程。<br><a id="more"></a></p>
-<h2 id="操作集群"><a href="#操作集群" class="headerlink" title="操作集群"></a>操作集群</h2><p>在<a href="http://docs.ceph.org.cn/rados/operations/operating/" target="_blank" rel="external">官方文档</a>中给出了几种操作方法：</p>
+<h2 id="操作集群"><a href="#操作集群" class="headerlink" title="操作集群"></a>操作集群</h2><p>在<a href="http://docs.ceph.org.cn/rados/operations/operating/" target="_blank" rel="noopener">官方文档</a>中给出了几种操作方法：</p>
 <p><strong>1、用 UPSTART 控制 CEPH</strong></p>
 <p>用 ceph-deploy 把 Ceph Cuttlefish 及更高版部署到 Ubuntu 之后，你可以用基于事件的 Upstart来启动、关闭 Ceph 节点上的守护进程。 Upstart 不要求你在配置文件里定义守护进程例程。</p>
 <p><strong>2、通过 SYSVINIT 机制运行 CEPH</strong></p>
@@ -189,28 +189,31 @@ var _hmt = _hmt || [];
 <p>如果你是用 ceph-deploy 部署 Argonaut 或 Bobtail 的，那么 Ceph 可以作为服务运行（还可以用 sysvinit ）。</p>
 <h2 id="CentOS-7"><a href="#CentOS-7" class="headerlink" title="CentOS 7"></a>CentOS 7</h2><p>但是，现在所有支持 systemd 的发行版（ CentOS 7 、 Fedora 、 Debian Jessie 8.x 、 SUSE ）都用原生的 systemd 文件来管理 ceph 守护进程，不再使用原来的 sysvinit 脚本了。</p>
 <p>例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo systemctl start ceph.target       # start all daemons</div><div class="line">sudo systemctl status ceph-osd@12      # check status of osd.12</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start ceph.target       # start all daemons</span><br><span class="line">sudo systemctl status ceph-osd@12      # check status of osd.12</span><br></pre></td></tr></table></figure>
 <p>罗列节点上 Ceph 的 systemd unit 用此命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo systemctl status ceph\*.service ceph\*.target</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl status ceph\*.service ceph\*.target</span><br></pre></td></tr></table></figure>
 <h3 id="启动所有守护进程"><a href="#启动所有守护进程" class="headerlink" title="启动所有守护进程"></a>启动所有守护进程</h3><p>要启动一 Ceph 节点（任何类型）上的所有守护进程，用下列命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo systemctl start ceph.target</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start ceph.target</span><br></pre></td></tr></table></figure>
 <h3 id="停止所有守护进程"><a href="#停止所有守护进程" class="headerlink" title="停止所有守护进程"></a>停止所有守护进程</h3><p>要停止一 Ceph 节点（任何类型）上的所有守护进程，用下列命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo systemctl stop ceph\*.service ceph\*.target</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl stop ceph\*.service ceph\*.target</span><br></pre></td></tr></table></figure>
 <h3 id="按类型启动所有守护进程"><a href="#按类型启动所有守护进程" class="headerlink" title="按类型启动所有守护进程"></a>按类型启动所有守护进程</h3><p>要启动一节点上的某一类守护进程，用下列命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo systemctl start ceph-osd.target</div><div class="line">sudo systemctl start ceph-mon.target</div><div class="line">sudo systemctl start ceph-mds.target</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start ceph-osd.target</span><br><span class="line">sudo systemctl start ceph-mon.target</span><br><span class="line">sudo systemctl start ceph-mds.target</span><br></pre></td></tr></table></figure>
 <h3 id="按类型停止所有守护进程"><a href="#按类型停止所有守护进程" class="headerlink" title="按类型停止所有守护进程"></a>按类型停止所有守护进程</h3><p>要停止一节点上的某一类守护进程，用下列命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo systemctl stop ceph-mon\*.service ceph-mon.target</div><div class="line">sudo systemctl stop ceph-osd\*.service ceph-osd.target</div><div class="line">sudo systemctl stop ceph-mds\*.service ceph-mds.target</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl stop ceph-mon\*.service ceph-mon.target</span><br><span class="line">sudo systemctl stop ceph-osd\*.service ceph-osd.target</span><br><span class="line">sudo systemctl stop ceph-mds\*.service ceph-mds.target</span><br></pre></td></tr></table></figure>
 <h3 id="启动单个进程"><a href="#启动单个进程" class="headerlink" title="启动单个进程"></a>启动单个进程</h3><p>要启动某节点上的某个守护进程例程，用下列命令之一：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo systemctl start ceph-osd@&#123;id&#125;</div><div class="line">sudo systemctl start ceph-mon@&#123;hostname&#125;</div><div class="line">sudo systemctl start ceph-mds@&#123;hostname&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start ceph-osd@&#123;id&#125;</span><br><span class="line">sudo systemctl start ceph-mon@&#123;hostname&#125;</span><br><span class="line">sudo systemctl start ceph-mds@&#123;hostname&#125;</span><br></pre></td></tr></table></figure>
 <p>例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo systemctl start ceph-osd@1</div><div class="line">sudo systemctl start ceph-mon@ceph-server</div><div class="line">sudo systemctl start ceph-mds@ceph-server</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start ceph-osd@1</span><br><span class="line">sudo systemctl start ceph-mon@ceph-server</span><br><span class="line">sudo systemctl start ceph-mds@ceph-server</span><br></pre></td></tr></table></figure>
 <h3 id="停止单个进程"><a href="#停止单个进程" class="headerlink" title="停止单个进程"></a>停止单个进程</h3><p>要停止某节点上的某个守护进程例程，用下列命令之一：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo systemctl stop ceph-osd@&#123;id&#125;</div><div class="line">sudo systemctl stop ceph-mon@&#123;hostname&#125;</div><div class="line">sudo systemctl stop ceph-mds@&#123;hostname&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl stop ceph-osd@&#123;id&#125;</span><br><span class="line">sudo systemctl stop ceph-mon@&#123;hostname&#125;</span><br><span class="line">sudo systemctl stop ceph-mds@&#123;hostname&#125;</span><br></pre></td></tr></table></figure>
 <p>例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo systemctl stop ceph-osd@1</div><div class="line">sudo systemctl stop ceph-mon@ceph-server</div><div class="line">sudo systemctl stop ceph-mds@ceph-server</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl stop ceph-osd@1</span><br><span class="line">sudo systemctl stop ceph-mon@ceph-server</span><br><span class="line">sudo systemctl stop ceph-mds@ceph-server</span><br></pre></td></tr></table></figure>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -319,11 +322,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/06/16/centos-7下操纵ceph进程/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2017/06/16/centos-7下操纵ceph进程/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -428,6 +432,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -529,10 +535,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -545,15 +547,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -573,19 +575,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -597,6 +595,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -605,19 +607,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -629,6 +623,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -637,15 +635,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -657,15 +659,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

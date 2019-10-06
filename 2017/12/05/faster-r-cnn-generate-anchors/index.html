@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>【代码阅读】generate_anchors.py | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="阅读Faster R-CNN里产生anchors的代码。">
+<meta name="keywords" content="code">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【代码阅读】generate_anchors.py">
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/12/05/faster-r-cnn-generate-anchors/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="阅读Faster R-CNN里产生anchors的代码。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2018-03-27T00:33:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【代码阅读】generate_anchors.py">
@@ -49,7 +51,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -77,9 +79,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -159,7 +158,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-faster-r-cnn-generate-anchors" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-faster-r-cnn-generate-anchors" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -180,14 +180,17 @@ var _hmt = _hmt || [];
     <div class="article-entry" itemprop="articleBody">
       
         <p>阅读Faster R-CNN里产生anchors的代码。<br><a id="more"></a></p>
-<p>原代码地址：<a href="https://github.com/rbgirshick/py-faster-rcnn/blob/master/lib/rpn/generate_anchors.py" target="_blank" rel="external">https://github.com/rbgirshick/py-faster-rcnn/blob/master/lib/rpn/generate_anchors.py</a></p>
-<p>注释代码地址：<a href="https://github.com/xiaqunfeng/py-faster-rcnn/blob/master/lib/rpn/generate_anchors.py" target="_blank" rel="external">https://github.com/xiaqunfeng/py-faster-rcnn/blob/master/lib/rpn/generate_anchors.py</a></p>
+<p>原代码地址：<a href="https://github.com/rbgirshick/py-faster-rcnn/blob/master/lib/rpn/generate_anchors.py" target="_blank" rel="noopener">https://github.com/rbgirshick/py-faster-rcnn/blob/master/lib/rpn/generate_anchors.py</a></p>
+<p>注释代码地址：<a href="https://github.com/xiaqunfeng/py-faster-rcnn/blob/master/lib/rpn/generate_anchors.py" target="_blank" rel="noopener">https://github.com/xiaqunfeng/py-faster-rcnn/blob/master/lib/rpn/generate_anchors.py</a></p>
 <h2 id="generate-anchors-py"><a href="#generate-anchors-py" class="headerlink" title="generate_anchors.py"></a>generate_anchors.py</h2><p>功能：生成多尺度多宽高比的anchors</p>
 <p>代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div></pre></td><td class="code"><pre><div class="line"># --------------------------------------------------------</div><div class="line"># Faster R-CNN</div><div class="line"># Copyright (c) 2015 Microsoft</div><div class="line"># Licensed under The MIT License [see LICENSE for details]</div><div class="line"># Written by Ross Girshick and Sean Bell</div><div class="line"># --------------------------------------------------------</div><div class="line"></div><div class="line">import numpy as np</div><div class="line"></div><div class="line"># Verify that we compute the same anchors as Shaoqing&apos;s matlab implementation:</div><div class="line">#</div><div class="line">#    &gt;&gt; load output/rpn_cachedir/faster_rcnn_VOC2007_ZF_stage1_rpn/anchors.mat</div><div class="line">#    &gt;&gt; anchors</div><div class="line">#</div><div class="line">#    anchors =</div><div class="line">#</div><div class="line">#       -83   -39   100    56</div><div class="line">#      -175   -87   192   104</div><div class="line">#      -359  -183   376   200</div><div class="line">#       -55   -55    72    72</div><div class="line">#      -119  -119   136   136</div><div class="line">#      -247  -247   264   264</div><div class="line">#       -35   -79    52    96</div><div class="line">#       -79  -167    96   184</div><div class="line">#      -167  -343   184   360</div><div class="line"></div><div class="line">#array([[ -83.,  -39.,  100.,   56.],</div><div class="line">#       [-175.,  -87.,  192.,  104.],</div><div class="line">#       [-359., -183.,  376.,  200.],</div><div class="line">#       [ -55.,  -55.,   72.,   72.],</div><div class="line">#       [-119., -119.,  136.,  136.],</div><div class="line">#       [-247., -247.,  264.,  264.],</div><div class="line">#       [ -35.,  -79.,   52.,   96.],</div><div class="line">#       [ -79., -167.,   96.,  184.],</div><div class="line">#       [-167., -343.,  184.,  360.]])</div><div class="line"></div><div class="line"># base_size =16 是因为从conv4层出来的最小的检测大小是16个像素</div><div class="line"># 在 fast_rcnn/config.py中有定义：__C.TRAIN.RPN_MIN_SIZE = 16</div><div class="line"># ratios 是宽高比，即 w:h = 1:2, 1:1, 2:1</div><div class="line"># scales = 8, 16, 32</div><div class="line"># [0，0，15，15]这四个数分别表示[x_l,y_l,x_r,y_r]，表示左上角和右下角的坐标</div><div class="line">def generate_anchors(base_size=16, ratios=[0.5, 1, 2],</div><div class="line">                     scales=2**np.arange(3, 6)):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Generate anchor (reference) windows by enumerating aspect ratios X</div><div class="line">    scales wrt a reference (0, 0, 15, 15) window.</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    base_anchor = np.array([1, 1, base_size, base_size]) - 1  #初始基准anchor[0，0，15，15]</div><div class="line">    ratio_anchors = _ratio_enum(base_anchor, ratios)  #枚举三种宽高比，得到3*4维anchor矩阵</div><div class="line">    #垂直方向上堆叠数组</div><div class="line">    anchors = np.vstack([_scale_enum(ratio_anchors[i, :], scales)</div><div class="line">                         for i in xrange(ratio_anchors.shape[0])]) #读取矩阵第一维大小，为3</div><div class="line">    return anchors</div><div class="line"></div><div class="line"># 根据输入的anchor[x,y,w,h]，返回宽、高、中心坐标：w,h,(x_ctr, y_ctr)</div><div class="line">def _whctrs(anchor):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Return width, height, x center, and y center for an anchor (window).</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    w = anchor[2] - anchor[0] + 1  #anchor里第三个值减去第一个值得到w</div><div class="line">    h = anchor[3] - anchor[1] + 1  #anchor里第四个值减去第二个值得到h</div><div class="line">    x_ctr = anchor[0] + 0.5 * (w - 1)  #通过左下角的点和w、h得到中心点</div><div class="line">    y_ctr = anchor[1] + 0.5 * (h - 1)</div><div class="line">    return w, h, x_ctr, y_ctr</div><div class="line"></div><div class="line"># 给定一组宽高向量，输出向量维度个数个anchor</div><div class="line">def _mkanchors(ws, hs, x_ctr, y_ctr):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Given a vector of widths (ws) and heights (hs) around a center</div><div class="line">    (x_ctr, y_ctr), output a set of anchors (windows).</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    ws = ws[:, np.newaxis]  #将数组转置成 X*1 维的矩阵，X为ws数组中元素的个数</div><div class="line">    hs = hs[:, np.newaxis]</div><div class="line">    anchors = np.hstack((x_ctr - 0.5 * (ws - 1),  #水平方向上将数组堆叠起来，得到一个X*4维的矩阵</div><div class="line">                         y_ctr - 0.5 * (hs - 1),  #[[-3.5,  2, 18.5, 13]</div><div class="line">                         x_ctr + 0.5 * (ws - 1),  # [   0,  0,   15, 15]</div><div class="line">                         y_ctr + 0.5 * (hs - 1))) # [ 2.5, -3, 12.5, 18]]</div><div class="line">    return anchors</div><div class="line"></div><div class="line"># 枚举一个anchor的三种宽高比，ratios[0.5，1，2]</div><div class="line">def _ratio_enum(anchor, ratios):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Enumerate a set of anchors for each aspect ratio wrt an anchor.</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    w, h, x_ctr, y_ctr = _whctrs(anchor) #得到框、高、中心点</div><div class="line">    size = w * h  </div><div class="line">    size_ratios = size / ratios          #[512，256，128]</div><div class="line">    ws = np.round(np.sqrt(size_ratios))  #[23，16，11]</div><div class="line">    hs = np.round(ws * ratios)           #[12，16，22]</div><div class="line">    anchors = _mkanchors(ws, hs, x_ctr, y_ctr) #输出三个预测窗口</div><div class="line">    return anchors</div><div class="line"></div><div class="line"># 枚举输入anchor的三种尺度，scales[8，16，32]</div><div class="line">def _scale_enum(anchor, scales):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Enumerate a set of anchors for each scale wrt an anchor.</div><div class="line">    &quot;&quot;&quot;</div><div class="line"></div><div class="line">    w, h, x_ctr, y_ctr = _whctrs(anchor)</div><div class="line">    ws = w * scales  #同比例扩大宽高</div><div class="line">    hs = h * scales</div><div class="line">    anchors = _mkanchors(ws, hs, x_ctr, y_ctr)</div><div class="line">    return anchors</div><div class="line"></div><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">    import time</div><div class="line">    t = time.time()</div><div class="line">    a = generate_anchors()  #入口函数</div><div class="line">    print time.time() - t</div><div class="line">    print a</div><div class="line">    from IPython import embed; embed()</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><span class="line"># --------------------------------------------------------</span><br><span class="line"># Faster R-CNN</span><br><span class="line"># Copyright (c) 2015 Microsoft</span><br><span class="line"># Licensed under The MIT License [see LICENSE for details]</span><br><span class="line"># Written by Ross Girshick and Sean Bell</span><br><span class="line"># --------------------------------------------------------</span><br><span class="line"></span><br><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line"># Verify that we compute the same anchors as Shaoqing&apos;s matlab implementation:</span><br><span class="line">#</span><br><span class="line">#    &gt;&gt; load output/rpn_cachedir/faster_rcnn_VOC2007_ZF_stage1_rpn/anchors.mat</span><br><span class="line">#    &gt;&gt; anchors</span><br><span class="line">#</span><br><span class="line">#    anchors =</span><br><span class="line">#</span><br><span class="line">#       -83   -39   100    56</span><br><span class="line">#      -175   -87   192   104</span><br><span class="line">#      -359  -183   376   200</span><br><span class="line">#       -55   -55    72    72</span><br><span class="line">#      -119  -119   136   136</span><br><span class="line">#      -247  -247   264   264</span><br><span class="line">#       -35   -79    52    96</span><br><span class="line">#       -79  -167    96   184</span><br><span class="line">#      -167  -343   184   360</span><br><span class="line"></span><br><span class="line">#array([[ -83.,  -39.,  100.,   56.],</span><br><span class="line">#       [-175.,  -87.,  192.,  104.],</span><br><span class="line">#       [-359., -183.,  376.,  200.],</span><br><span class="line">#       [ -55.,  -55.,   72.,   72.],</span><br><span class="line">#       [-119., -119.,  136.,  136.],</span><br><span class="line">#       [-247., -247.,  264.,  264.],</span><br><span class="line">#       [ -35.,  -79.,   52.,   96.],</span><br><span class="line">#       [ -79., -167.,   96.,  184.],</span><br><span class="line">#       [-167., -343.,  184.,  360.]])</span><br><span class="line"></span><br><span class="line"># base_size =16 是因为从conv4层出来的最小的检测大小是16个像素</span><br><span class="line"># 在 fast_rcnn/config.py中有定义：__C.TRAIN.RPN_MIN_SIZE = 16</span><br><span class="line"># ratios 是宽高比，即 w:h = 1:2, 1:1, 2:1</span><br><span class="line"># scales = 8, 16, 32</span><br><span class="line"># [0，0，15，15]这四个数分别表示[x_l,y_l,x_r,y_r]，表示左上角和右下角的坐标</span><br><span class="line">def generate_anchors(base_size=16, ratios=[0.5, 1, 2],</span><br><span class="line">                     scales=2**np.arange(3, 6)):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    Generate anchor (reference) windows by enumerating aspect ratios X</span><br><span class="line">    scales wrt a reference (0, 0, 15, 15) window.</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    base_anchor = np.array([1, 1, base_size, base_size]) - 1  #初始基准anchor[0，0，15，15]</span><br><span class="line">    ratio_anchors = _ratio_enum(base_anchor, ratios)  #枚举三种宽高比，得到3*4维anchor矩阵</span><br><span class="line">    #垂直方向上堆叠数组</span><br><span class="line">    anchors = np.vstack([_scale_enum(ratio_anchors[i, :], scales)</span><br><span class="line">                         for i in xrange(ratio_anchors.shape[0])]) #读取矩阵第一维大小，为3</span><br><span class="line">    return anchors</span><br><span class="line"></span><br><span class="line"># 根据输入的anchor[x,y,w,h]，返回宽、高、中心坐标：w,h,(x_ctr, y_ctr)</span><br><span class="line">def _whctrs(anchor):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    Return width, height, x center, and y center for an anchor (window).</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    w = anchor[2] - anchor[0] + 1  #anchor里第三个值减去第一个值得到w</span><br><span class="line">    h = anchor[3] - anchor[1] + 1  #anchor里第四个值减去第二个值得到h</span><br><span class="line">    x_ctr = anchor[0] + 0.5 * (w - 1)  #通过左下角的点和w、h得到中心点</span><br><span class="line">    y_ctr = anchor[1] + 0.5 * (h - 1)</span><br><span class="line">    return w, h, x_ctr, y_ctr</span><br><span class="line"></span><br><span class="line"># 给定一组宽高向量，输出向量维度个数个anchor</span><br><span class="line">def _mkanchors(ws, hs, x_ctr, y_ctr):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    Given a vector of widths (ws) and heights (hs) around a center</span><br><span class="line">    (x_ctr, y_ctr), output a set of anchors (windows).</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    ws = ws[:, np.newaxis]  #将数组转置成 X*1 维的矩阵，X为ws数组中元素的个数</span><br><span class="line">    hs = hs[:, np.newaxis]</span><br><span class="line">    anchors = np.hstack((x_ctr - 0.5 * (ws - 1),  #水平方向上将数组堆叠起来，得到一个X*4维的矩阵</span><br><span class="line">                         y_ctr - 0.5 * (hs - 1),  #[[-3.5,  2, 18.5, 13]</span><br><span class="line">                         x_ctr + 0.5 * (ws - 1),  # [   0,  0,   15, 15]</span><br><span class="line">                         y_ctr + 0.5 * (hs - 1))) # [ 2.5, -3, 12.5, 18]]</span><br><span class="line">    return anchors</span><br><span class="line"></span><br><span class="line"># 枚举一个anchor的三种宽高比，ratios[0.5，1，2]</span><br><span class="line">def _ratio_enum(anchor, ratios):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    Enumerate a set of anchors for each aspect ratio wrt an anchor.</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    w, h, x_ctr, y_ctr = _whctrs(anchor) #得到框、高、中心点</span><br><span class="line">    size = w * h  </span><br><span class="line">    size_ratios = size / ratios          #[512，256，128]</span><br><span class="line">    ws = np.round(np.sqrt(size_ratios))  #[23，16，11]</span><br><span class="line">    hs = np.round(ws * ratios)           #[12，16，22]</span><br><span class="line">    anchors = _mkanchors(ws, hs, x_ctr, y_ctr) #输出三个预测窗口</span><br><span class="line">    return anchors</span><br><span class="line"></span><br><span class="line"># 枚举输入anchor的三种尺度，scales[8，16，32]</span><br><span class="line">def _scale_enum(anchor, scales):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    Enumerate a set of anchors for each scale wrt an anchor.</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    w, h, x_ctr, y_ctr = _whctrs(anchor)</span><br><span class="line">    ws = w * scales  #同比例扩大宽高</span><br><span class="line">    hs = h * scales</span><br><span class="line">    anchors = _mkanchors(ws, hs, x_ctr, y_ctr)</span><br><span class="line">    return anchors</span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    import time</span><br><span class="line">    t = time.time()</span><br><span class="line">    a = generate_anchors()  #入口函数</span><br><span class="line">    print time.time() - t</span><br><span class="line">    print a</span><br><span class="line">    from IPython import embed; embed()</span><br></pre></td></tr></table></figure>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -296,11 +299,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/12/05/faster-r-cnn-generate-anchors/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2017/12/05/faster-r-cnn-generate-anchors/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -405,6 +409,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -506,10 +512,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -522,15 +524,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -550,19 +552,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -574,6 +572,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -582,19 +584,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -606,6 +600,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -614,15 +612,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -634,15 +636,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

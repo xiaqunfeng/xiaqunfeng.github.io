@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>【论文阅读】A Rank-Order Distance based Clustering Algorithm for Face Tagging | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="一篇关于人脸聚类的文章">
+<meta name="keywords" content="paper">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【论文阅读】A Rank-Order Distance based Clustering Algorithm for Face Tagging">
 <meta property="og:url" content="http://xiaqunfeng.cc/2018/04/04/rank-order-clustering/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="一篇关于人脸聚类的文章">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://pminmin.github.io/img/rank-order-1.png">
 <meta property="og:image" content="https://pminmin.github.io/img/rank-order-2.png">
 <meta property="og:updated_time" content="2018-04-08T12:33:32.000Z">
@@ -52,7 +54,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -80,9 +82,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -162,7 +161,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-rank-order-clustering" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-rank-order-clustering" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -183,8 +183,8 @@ var _hmt = _hmt || [];
     <div class="article-entry" itemprop="articleBody">
       
         <p>一篇关于人脸聚类的文章<br><a id="more"></a></p>
-<p>原文链接：<a href="https://pdfs.semanticscholar.org/efd6/4b7641bea8ca536f4e179be6e2dd25d519d6.pdf" target="_blank" rel="external">2011_CVPR_A Rank-Order Distance based Clustering Algorithm for Face Tagging</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Rank-Order distance, which measures the dissimilarity between two faces using their neighboring information in the dataset. </div><div class="line">The Rank-Order distance is motivated by an observation that faces of the same person usually share their top neigh- bors.</div></pre></td></tr></table></figure>
+<p>原文链接：<a href="https://pdfs.semanticscholar.org/efd6/4b7641bea8ca536f4e179be6e2dd25d519d6.pdf" target="_blank" rel="noopener">2011_CVPR_A Rank-Order Distance based Clustering Algorithm for Face Tagging</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Rank-Order distance, which measures the dissimilarity between two faces using their neighboring information in the dataset. </span><br><span class="line">The Rank-Order distance is motivated by an observation that faces of the same person usually share their top neigh- bors.</span><br></pre></td></tr></table></figure>
 <p>由于人脸的复杂场景，比如光照、姿态、表情等因素，绝对距离的度量方式可能会造成相同人的不同照片相似度很低，而不同人的照片反而相似度很高，所以单纯的L1或L2距离已不再适用。</p>
 <p>由于大部分家庭照片都拍摄于不同的环境，对于人脸聚类会有一些要求和挑战：</p>
 <p>1、相册中的人脸通常会在高维空间形成几个脸部簇，并具有不同的密度，大小和形状。这种非均匀分布使得绝对距离（例如，两个人脸识别特征之间的L1或L2距离）容易失败。如下图所示，男孩的群集比女孩的群集更稀疏。如果我们在这个例子中使用绝对距离，那么这个在中间男孩的脸更接近女孩群。</p>
@@ -194,12 +194,15 @@ var _hmt = _hmt || [];
 <p>Rank-order distance来度量两个人脸的相似度。这个距离是基于一个有趣的观察：同一个人的两张脸有许多共享的top邻居，但是来自不同人的人脸的邻居通常差异很大。</p>
 <p>Rank-Order Distance</p>
 <p><img src="https://pminmin.github.io/img/rank-order-1.png" alt="1"></p>
-<h3 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h3><p><a href="https://pminmin.github.io/img/rank-order-2.png" target="_blank" rel="external"><img src="https://pminmin.github.io/img/rank-order-2.png" alt="img"></a></p>
+<h3 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h3><p><a href="https://pminmin.github.io/img/rank-order-2.png" target="_blank" rel="noopener"><img src="https://pminmin.github.io/img/rank-order-2.png" alt="img"></a></p>
 <p>该算法的时间复杂度是O(N2)O(N2)，其中DRDR和DNDN对应的两个阈值是固定参数，而K近邻是可以选择的参数，该参数大小直接影响最后聚类的簇数目。</p>
-<p>参考资料：<a href="https://pminmin.github.io/2016/12/13/rank-order/" target="_blank" rel="external">https://pminmin.github.io/2016/12/13/rank-order/</a></p>
+<p>参考资料：<a href="https://pminmin.github.io/2016/12/13/rank-order/" target="_blank" rel="noopener">https://pminmin.github.io/2016/12/13/rank-order/</a></p>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -308,11 +311,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2018/04/04/rank-order-clustering/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2018/04/04/rank-order-clustering/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -417,6 +421,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -518,10 +524,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -534,15 +536,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -562,19 +564,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -586,6 +584,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -594,19 +596,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -618,6 +612,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -626,15 +624,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -646,15 +648,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

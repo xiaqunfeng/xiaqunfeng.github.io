@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>Ceph — V11.2.0 KRAKEN(译) | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="ceph的版本出到K了，针对bluestore又有了新的优化，并进行了一定的压力和故障测试，当然还有其他的特性，针对Jewel版本有较多改动。当前还没有什么中文资料，ceph中文社区中关于V11.2.0还没有更新进去，所以闲暇之余翻译了一下，也给大家节省时间。">
+<meta name="keywords" content="ceph">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ceph — V11.2.0 KRAKEN(译)">
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/01/24/Ceph-KRAKEN(V11.2.0)/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="ceph的版本出到K了，针对bluestore又有了新的优化，并进行了一定的压力和故障测试，当然还有其他的特性，针对Jewel版本有较多改动。当前还没有什么中文资料，ceph中文社区中关于V11.2.0还没有更新进去，所以闲暇之余翻译了一下，也给大家节省时间。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg">
 <meta property="og:updated_time" content="2017-01-24T09:52:50.000Z">
 <meta name="twitter:card" content="summary">
@@ -51,7 +53,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -79,9 +81,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -161,7 +160,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Ceph-KRAKEN(V11.2.0)" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-Ceph-KRAKEN(V11.2.0)" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -181,8 +181,8 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>ceph的版本出到K了，针对bluestore又有了新的优化，并进行了一定的压力和故障测试，当然还有其他的特性，针对Jewel版本有较多改动。当前还没有什么中文资料，<a href="http://docs.ceph.org.cn/" target="_blank" rel="external">ceph中文社区</a>中关于V11.2.0还没有更新进去，所以闲暇之余翻译了一下，也给大家节省时间。<br><a id="more"></a></p>
-<p>英文原文链接：<a href="http://docs.ceph.com/docs/master/release-notes/#v11.2.0-kraken" target="_blank" rel="external">http://docs.ceph.com/docs/master/release-notes/#v11.2.0-kraken</a></p>
+        <p>ceph的版本出到K了，针对bluestore又有了新的优化，并进行了一定的压力和故障测试，当然还有其他的特性，针对Jewel版本有较多改动。当前还没有什么中文资料，<a href="http://docs.ceph.org.cn/" target="_blank" rel="noopener">ceph中文社区</a>中关于V11.2.0还没有更新进去，所以闲暇之余翻译了一下，也给大家节省时间。<br><a id="more"></a></p>
+<p>英文原文链接：<a href="http://docs.ceph.com/docs/master/release-notes/#v11.2.0-kraken" target="_blank" rel="noopener">http://docs.ceph.com/docs/master/release-notes/#v11.2.0-kraken</a></p>
 <h2 id="V11-2-0-KRAKEN"><a href="#V11-2-0-KRAKEN" class="headerlink" title="V11.2.0 KRAKEN"></a>V11.2.0 KRAKEN</h2><p>这是Kraken系列的第一个release版本。它适用于生产部署，并将维护到下一个稳定的版本Luminous，将在2017年春季完成。</p>
 <h2 id="对比JEWEL版本的主要变化"><a href="#对比JEWEL版本的主要变化" class="headerlink" title="对比JEWEL版本的主要变化"></a>对比JEWEL版本的主要变化</h2><h3 id="RADOS"><a href="#RADOS" class="headerlink" title="RADOS"></a>RADOS</h3><ul>
 <li>新的BlueStore 后端现在有一个稳定的磁盘格式，并通过了我们的故障和压力测试。尽管该后端仍被标记为实验性的，但我们鼓励用户使用非生产集群和非关键数据集进行尝试。</li>
@@ -232,12 +232,15 @@ var _hmt = _hmt || [];
 </ul>
 <p>BlueStore磁盘格式预计将继续发展。但是，我们将在OSD中提供支持，以便在升级时迁移到新格式。</p>
 <p>为了启用BlueStore，将以下内容添加到ceph.conf：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">enable experimental unrecoverable data corrupting features = bluestore</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">enable experimental unrecoverable data corrupting features = bluestore</span><br></pre></td></tr></table></figure>
 <p>要创建一个BlueStore OSD，在OSD创建期间将-bluestore选项传递给ceph-disk或ceph-deploy。</p>
 <h2 id="打赏通道"><a href="#打赏通道" class="headerlink" title="打赏通道"></a>打赏通道</h2><p align="center">如果本文对你有所帮助，欢迎小额赞助。您的打赏也是我坚持随笔总结的动力！</p><br><div style="text-align: center"><img src="http://ojet8bprn.bkt.clouddn.com/%E6%89%93%E8%B5%8F1.jpg"></div><br><p align="center">谢谢O(∩_∩)O~</p> 
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -335,11 +338,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/01/24/Ceph-KRAKEN(V11.2.0)/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2017/01/24/Ceph-KRAKEN(V11.2.0)/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -444,6 +448,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -545,10 +551,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -561,15 +563,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -589,19 +591,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -613,6 +611,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -621,19 +623,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -645,6 +639,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -653,15 +651,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -673,15 +675,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

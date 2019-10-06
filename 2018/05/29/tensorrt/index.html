@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>TensorRT | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -14,7 +14,8 @@
 <meta property="og:url" content="http://xiaqunfeng.cc/2018/05/29/tensorrt/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="tensorrt简介、安装及python转caffe脚本。">
-<meta property="og:updated_time" content="2019-03-25T07:25:55.043Z">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-25T07:25:55.044Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TensorRT">
 <meta name="twitter:description" content="tensorrt简介、安装及python转caffe脚本。">
@@ -49,7 +50,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -77,9 +78,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -159,7 +157,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-tensorrt" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-tensorrt" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -200,24 +199,24 @@ var _hmt = _hmt || [];
 <li>使用用户自定义层API定义和实现独特的功能</li>
 </ul>
 <h2 id="TensorRT-3的安装"><a href="#TensorRT-3的安装" class="headerlink" title="TensorRT 3的安装"></a>TensorRT 3的安装</h2><p><strong>1、查看系统环境</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// 系统版本</div><div class="line"># cat /etc/issue</div><div class="line">Ubuntu 16.04.3 LTS \n \l</div><div class="line"> </div><div class="line">//cuda版本</div><div class="line"># cat /usr/local/cuda/version.txt</div><div class="line">CUDA Version 8.0.61</div><div class="line"> </div><div class="line">//python版本</div><div class="line"># python --version</div><div class="line">Python 2.7.12</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 系统版本</span><br><span class="line"># cat /etc/issue</span><br><span class="line">Ubuntu 16.04.3 LTS \n \l</span><br><span class="line"> </span><br><span class="line">//cuda版本</span><br><span class="line"># cat /usr/local/cuda/version.txt</span><br><span class="line">CUDA Version 8.0.61</span><br><span class="line"> </span><br><span class="line">//python版本</span><br><span class="line"># python --version</span><br><span class="line">Python 2.7.12</span><br></pre></td></tr></table></figure>
 <p><strong>2、下载对应的安装包</strong></p>
 <p><strong>3、安装 TensorRT</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># sudo dpkg -i nv-tensorrt-repo-ubuntu1604-ga-cuda8.0-trt3.0-20171128_1-1_amd64.deb</div><div class="line"># sudo apt-get update</div><div class="line"># sudo apt-get install tensorrt</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># sudo dpkg -i nv-tensorrt-repo-ubuntu1604-ga-cuda8.0-trt3.0-20171128_1-1_amd64.deb</span><br><span class="line"># sudo apt-get update</span><br><span class="line"># sudo apt-get install tensorrt</span><br></pre></td></tr></table></figure>
 <p><strong>4、安装python依赖包</strong></p>
 <p>依赖包包括：python-libnvinfer、python-libnvinfer-dev、swig、swig3.0</p>
 <p>执行如下命令安装即可：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># sudo apt-get install python-libnvinfer-doc</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># sudo apt-get install python-libnvinfer-doc</span><br></pre></td></tr></table></figure>
 <p><strong>5、验证安装</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># dpkg -l | grep TensorRT</div><div class="line">ii  libnvinfer-dev   4.0.1-1+cuda8 amd64         TensorRT development libraries and he</div><div class="line">ii  libnvinfer-sampl 4.0.1-1+cuda8 amd64         TensorRT samples and documentation</div><div class="line">ii  libnvinfer4      4.0.1-1+cuda8 amd64         TensorRT runtime libraries</div><div class="line">ii  python-libnvinfe 4.0.1-1+cuda8 amd64         Python bindings for TensorRT</div><div class="line">ii  tensorrt         3.0.1-1+cuda8 amd64         Meta package of TensorRT</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># dpkg -l | grep TensorRT</span><br><span class="line">ii  libnvinfer-dev   4.0.1-1+cuda8 amd64         TensorRT development libraries and he</span><br><span class="line">ii  libnvinfer-sampl 4.0.1-1+cuda8 amd64         TensorRT samples and documentation</span><br><span class="line">ii  libnvinfer4      4.0.1-1+cuda8 amd64         TensorRT runtime libraries</span><br><span class="line">ii  python-libnvinfe 4.0.1-1+cuda8 amd64         Python bindings for TensorRT</span><br><span class="line">ii  tensorrt         3.0.1-1+cuda8 amd64         Meta package of TensorRT</span><br></pre></td></tr></table></figure>
 <p>至此，tensorrt安装完成</p>
 <p><strong>6、安装Python UFF包</strong></p>
 <p>下载tar包</p>
 <p>进入解压后文件夹</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># cd TensorRT-3.0.1/uff</div><div class="line"># ls</div><div class="line">uff-0.2.0-py2.py3-none-any.whl</div><div class="line"># sudo pip install uff-0.2.0-py2.py3-none-any.whl</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># cd TensorRT-3.0.1/uff</span><br><span class="line"># ls</span><br><span class="line">uff-0.2.0-py2.py3-none-any.whl</span><br><span class="line"># sudo pip install uff-0.2.0-py2.py3-none-any.whl</span><br></pre></td></tr></table></figure>
 <h2 id="NVCaffe-Python"><a href="#NVCaffe-Python" class="headerlink" title="NVCaffe Python"></a>NVCaffe Python</h2><p>TensorRT 3.0添加了对TensorRT python API的支持，以加载和优化NVCaffe模型，然后将其作为便携式PLAN文件执行和存储。</p>
 <p><strong>1、package的导入</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">import tensorrt as trt         </div><div class="line">import pycuda.driver as cuda</div><div class="line">import pycuda.autoinit</div><div class="line">import numpy as np</div><div class="line">from PIL import Image</div><div class="line">from tensorrt.parsers import caffeparser</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import tensorrt as trt         </span><br><span class="line">import pycuda.driver as cuda</span><br><span class="line">import pycuda.autoinit</span><br><span class="line">import numpy as np</span><br><span class="line">from PIL import Image</span><br><span class="line">from tensorrt.parsers import caffeparser</span><br></pre></td></tr></table></figure>
 <ul>
 <li>tensorrt - 导入tensorrt</li>
 <li>pycuda - PyCUDA处理在GPU上分配内存所需的CUDA操作，并将数据传输到GPU并返回到CPU</li>
@@ -226,42 +225,45 @@ var _hmt = _hmt || [];
 <li>caffeparser - 转换 NVCaffe 模型</li>
 </ul>
 <p><strong>2、定义模型的一些常量和路径</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">INPUT_LAYERS = [&apos;data&apos;]</div><div class="line">OUTPUT_LAYERS = [&apos;prob&apos;]</div><div class="line">INPUT_H = 28</div><div class="line">INPUT_W = 28</div><div class="line">OUTPUT_SIZE = 10</div><div class="line"></div><div class="line">MODEL_PROTOTXT = &apos;/data/mnist/mnist.prototxt&apos;</div><div class="line">CAFFE_MODEL = &apos;/data/mnist/mnist.caffemodel&apos;</div><div class="line">DATA = &apos;/data/mnist/&apos;</div><div class="line">IMAGE_MEAN = &apos;/data/mnist/mnist_mean.binaryproto&apos;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">INPUT_LAYERS = [&apos;data&apos;]</span><br><span class="line">OUTPUT_LAYERS = [&apos;prob&apos;]</span><br><span class="line">INPUT_H = 28</span><br><span class="line">INPUT_W = 28</span><br><span class="line">OUTPUT_SIZE = 10</span><br><span class="line"></span><br><span class="line">MODEL_PROTOTXT = &apos;/data/mnist/mnist.prototxt&apos;</span><br><span class="line">CAFFE_MODEL = &apos;/data/mnist/mnist.caffemodel&apos;</span><br><span class="line">DATA = &apos;/data/mnist/&apos;</span><br><span class="line">IMAGE_MEAN = &apos;/data/mnist/mnist_mean.binaryproto&apos;</span><br></pre></td></tr></table></figure>
 <p><strong>3、创建 engine</strong></p>
 <p>使用在 tensorrt.utils 中的 NVCaffe 模型转换工具</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">engine = tensorrt.utils.caffe_to_trt_engine(G_LOGGER,</div><div class="line">                                            MODEL_PROTOTXT,</div><div class="line">                                            CAFFE_MODEL,</div><div class="line">                                            1,</div><div class="line">                                            1 &lt;&lt; 20,</div><div class="line">                                            OUTPUT_LAYERS,</div><div class="line">                                            trt.infer.DataType.FLOAT)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">engine = tensorrt.utils.caffe_to_trt_engine(G_LOGGER,</span><br><span class="line">                                            MODEL_PROTOTXT,</span><br><span class="line">                                            CAFFE_MODEL,</span><br><span class="line">                                            1,</span><br><span class="line">                                            1 &lt;&lt; 20,</span><br><span class="line">                                            OUTPUT_LAYERS,</span><br><span class="line">                                            trt.infer.DataType.FLOAT)</span><br></pre></td></tr></table></figure>
 <p><strong>4、对输入的image应用 mean</strong></p>
 <p>使用 caffeparper 从 .binaryproto 文件中读取出来</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">parser = caffeparser.create_caffe_parser()</div><div class="line">mean_blob = parser.parse_binary_proto(IMAGE_MEAN)</div><div class="line">parser.destroy()</div><div class="line">mean = mean_blob.get_data(INPUT_W ** 2)</div><div class="line">data = np.empty([INPUT_W ** 2])</div><div class="line">for i in range(INPUT_W ** 2):</div><div class="line">    data[i] = float(img[i]) - mean[i]</div><div class="line">mean_blob.destroy()</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">parser = caffeparser.create_caffe_parser()</span><br><span class="line">mean_blob = parser.parse_binary_proto(IMAGE_MEAN)</span><br><span class="line">parser.destroy()</span><br><span class="line">mean = mean_blob.get_data(INPUT_W ** 2)</span><br><span class="line">data = np.empty([INPUT_W ** 2])</span><br><span class="line">for i in range(INPUT_W ** 2):</span><br><span class="line">    data[i] = float(img[i]) - mean[i]</span><br><span class="line">mean_blob.destroy()</span><br></pre></td></tr></table></figure>
 <p><strong>5、为推理创建一个 runtime，为engine 创建一个 context</strong></p>
 <p><strong>6、运行推理</strong></p>
 <p>在CPU上创建一个空的数组用于存放推理的结果</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">output = np.empty(output_size, dtype = np.float32)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">output = np.empty(output_size, dtype = np.float32)</span><br></pre></td></tr></table></figure>
 <p><strong>7、使用pycuda在GPU上分配内存并将其注册到engine中</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">d_input = cuda.mem_alloc(1 * img.size * img.dtype.itemsize)</div><div class="line">d_output = cuda.mem_alloc(1 * output.size * output.dtype.itemsize)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">d_input = cuda.mem_alloc(1 * img.size * img.dtype.itemsize)</span><br><span class="line">d_output = cuda.mem_alloc(1 * output.size * output.dtype.itemsize)</span><br></pre></td></tr></table></figure>
 <p><strong>8、engine需要绑定，作为指向GPU内存的指针，pycuda通过将这些分配转换为 ints 来完成内存分配</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bindings = [int(d_input), int(d_output)]</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bindings = [int(d_input), int(d_output)]</span><br></pre></td></tr></table></figure>
 <p><strong>9、创建一个CUDA stream 来运行推理</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">stream = cuda.Stream()</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stream = cuda.Stream()</span><br></pre></td></tr></table></figure>
 <p><strong>10、将数据传输到GPU，运行推理，然后将结果复制回来</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">#transfer input data to device</div><div class="line">cuda.memcpy_htod_async(d_input, img, stream)</div><div class="line">#execute model</div><div class="line">context.enqueue(1, bindings, stream.handle, None)</div><div class="line">#transfer predictions back</div><div class="line">cuda.memcpy_dtoh_async(output, d_output, stream)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#transfer input data to device</span><br><span class="line">cuda.memcpy_htod_async(d_input, img, stream)</span><br><span class="line">#execute model</span><br><span class="line">context.enqueue(1, bindings, stream.handle, None)</span><br><span class="line">#transfer predictions back</span><br><span class="line">cuda.memcpy_dtoh_async(output, d_output, stream)</span><br></pre></td></tr></table></figure>
 <p><strong>11、结果的保存和使用</strong></p>
 <p>运行 ArgMax 得到 prediction</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">print (&quot;Prediction: &quot; + str(np.argmax(output)))</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print (&quot;Prediction: &quot; + str(np.argmax(output)))</span><br></pre></td></tr></table></figure>
 <p>保存 engine 到文件，以后使用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">trt.utils.write_engine_to_file(&quot;/data/mnist/new_mnist.engine&quot;, engine.serialize())</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">trt.utils.write_engine_to_file(&quot;/data/mnist/new_mnist.engine&quot;, engine.serialize())</span><br></pre></td></tr></table></figure>
 <p>加载 engine 文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">new_engine = trt.utils.load_engine(G_LOGGER, &quot;/data/mnist/new_mnist.engine&quot;)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">new_engine = trt.utils.load_engine(G_LOGGER, &quot;/data/mnist/new_mnist.engine&quot;)</span><br></pre></td></tr></table></figure>
 <p><strong>12、清理 context、engine 和 runtime</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">context.destroy()</div><div class="line">engine.destroy()</div><div class="line">new_engine.destroy()</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">context.destroy()</span><br><span class="line">engine.destroy()</span><br><span class="line">new_engine.destroy()</span><br></pre></td></tr></table></figure>
 <h2 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h2><p><strong>问题1</strong>、导入tensorrt的时候出现如下错误</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; import tensorrt as trt</div><div class="line">RuntimeError: module compiled against API version 0xb but this version of numpy is 0xa</div><div class="line">Traceback (most recent call last):</div><div class="line">  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</div><div class="line">  File &quot;/usr/lib/python2.7/dist-packages/tensorrt/__init__.py&quot;, line 77, in &lt;module&gt;</div><div class="line">    from tensorrt import infer, parsers, utils, lite, plugins</div><div class="line">  File &quot;/usr/lib/python2.7/dist-packages/tensorrt/infer/__init__.py&quot;, line 54, in &lt;module&gt;</div><div class="line">    from ._infer_enums import *</div><div class="line">  File &quot;/usr/lib/python2.7/dist-packages/tensorrt/infer/_infer_enums.py&quot;, line 54, in &lt;module&gt;</div><div class="line">    from tensorrt.infer import _nv_infer_bindings as nvinfer</div><div class="line">ImportError: numpy.core.multiarray failed to import</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; import tensorrt as trt</span><br><span class="line">RuntimeError: module compiled against API version 0xb but this version of numpy is 0xa</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span><br><span class="line">  File &quot;/usr/lib/python2.7/dist-packages/tensorrt/__init__.py&quot;, line 77, in &lt;module&gt;</span><br><span class="line">    from tensorrt import infer, parsers, utils, lite, plugins</span><br><span class="line">  File &quot;/usr/lib/python2.7/dist-packages/tensorrt/infer/__init__.py&quot;, line 54, in &lt;module&gt;</span><br><span class="line">    from ._infer_enums import *</span><br><span class="line">  File &quot;/usr/lib/python2.7/dist-packages/tensorrt/infer/_infer_enums.py&quot;, line 54, in &lt;module&gt;</span><br><span class="line">    from tensorrt.infer import _nv_infer_bindings as nvinfer</span><br><span class="line">ImportError: numpy.core.multiarray failed to import</span><br></pre></td></tr></table></figure>
 <p>解决方法：</p>
 <p>更新NumPy到 &gt;= 1.13.0 版本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># pip install -U numpy==1.13.0</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># pip install -U numpy==1.13.0</span><br></pre></td></tr></table></figure>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -348,11 +350,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2018/05/29/tensorrt/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2018/05/29/tensorrt/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -400,7 +403,7 @@ var _hmt = _hmt || [];
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#关于TensorRT"><span class="toc-number">1.</span> <span class="toc-text">关于TensorRT</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TensorRT-3"><span class="toc-number">1.1.</span> <span class="toc-text">TensorRT 3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关键特性"><span class="toc-number">1.2.</span> <span class="toc-text">关键特性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TensorRT-3的安装"><span class="toc-number">2.</span> <span class="toc-text">TensorRT 3的安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NVCaffe-Python"><span class="toc-number">3.</span> <span class="toc-text">NVCaffe Python</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Q-amp-A"><span class="toc-number">4.</span> <span class="toc-text">Q&A</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#关于TensorRT"><span class="toc-number">1.</span> <span class="toc-text">关于TensorRT</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TensorRT-3"><span class="toc-number">1.1.</span> <span class="toc-text">TensorRT 3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关键特性"><span class="toc-number">1.2.</span> <span class="toc-text">关键特性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TensorRT-3的安装"><span class="toc-number">2.</span> <span class="toc-text">TensorRT 3的安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NVCaffe-Python"><span class="toc-number">3.</span> <span class="toc-text">NVCaffe Python</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Q-amp-A"><span class="toc-number">4.</span> <span class="toc-text">Q&amp;A</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -457,6 +460,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -558,10 +563,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -574,15 +575,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -602,19 +603,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -626,6 +623,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -634,19 +635,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -658,6 +651,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -666,15 +663,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -686,15 +687,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>nginx使用和配置 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="简单介绍nginx，特别是反向代理和负载均衡部分，并用通过实战加深理解。">
+<meta name="keywords" content="nginx">
 <meta property="og:type" content="article">
 <meta property="og:title" content="nginx使用和配置">
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/05/03/nginx使用和配置/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="简单介绍nginx，特别是反向代理和负载均衡部分，并用通过实战加深理解。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/nginx-welcome.png">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/nginx-httpd-ceph0.png">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/nginx-httpd-ceph1.png">
@@ -53,7 +55,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -81,9 +83,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -163,7 +162,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-nginx使用和配置" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-nginx使用和配置" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -198,54 +198,54 @@ var _hmt = _hmt || [];
 </blockquote>
 <h2 id="安装与启动"><a href="#安装与启动" class="headerlink" title="安装与启动"></a>安装与启动</h2><p>OS: CentOS 7.3</p>
 <p>安装</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install nginx -y</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install nginx -y</span><br></pre></td></tr></table></figure>
 <p>关闭防火墙和selinux</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># systemctl stop firewalld</div><div class="line"># systemctl disable firewalld</div><div class="line"></div><div class="line"># setenforce 0</div><div class="line">setenforce: SELinux is disabled</div><div class="line"># getenforce</div><div class="line">Disabled</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># systemctl stop firewalld</span><br><span class="line"># systemctl disable firewalld</span><br><span class="line"></span><br><span class="line"># setenforce 0</span><br><span class="line">setenforce: SELinux is disabled</span><br><span class="line"># getenforce</span><br><span class="line">Disabled</span><br></pre></td></tr></table></figure>
 <p>添加至服务列表，开机自动启动</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># chkconfig --add nginx</div><div class="line"># chkconfig nginx on </div><div class="line"># chkconfig nginx --list</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># chkconfig --add nginx</span><br><span class="line"># chkconfig nginx on </span><br><span class="line"># chkconfig nginx --list</span><br></pre></td></tr></table></figure>
 <p>启动nginx</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># service nginx start</div><div class="line">Redirecting to /bin/systemctl start  nginx.service</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># service nginx start</span><br><span class="line">Redirecting to /bin/systemctl start  nginx.service</span><br></pre></td></tr></table></figure>
 <p>查看端口</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># netstat -ntlp | grep :80</div><div class="line">tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      16858/nginx: master</div><div class="line">tcp6       0      0 :::80                   :::*                    LISTEN      16858/nginx: master</div></pre></td></tr></table></figure>
-<p>访问：<a href="http://localhost" target="_blank" rel="external">http://localhost</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># netstat -ntlp | grep :80</span><br><span class="line">tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      16858/nginx: master</span><br><span class="line">tcp6       0      0 :::80                   :::*                    LISTEN      16858/nginx: master</span><br></pre></td></tr></table></figure>
+<p>访问：<a href="http://localhost" target="_blank" rel="noopener">http://localhost</a></p>
 <p><img src="http://oow6unnib.bkt.clouddn.com/nginx-welcome.png" alt="nginx-welcome"></p>
 <p>重启nginx</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">nginx -s reload</div><div class="line">或者</div><div class="line">service nginx restart</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nginx -s reload</span><br><span class="line">或者</span><br><span class="line">service nginx restart</span><br></pre></td></tr></table></figure>
 <h2 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a>反向代理</h2><h3 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h3><p>1、代理</p>
 <p>所谓代理，就是在客户端和服务端之间强行添加了一层，用来实现流量转发的功能。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">+----------------+         +---------------+        +--------------+</div><div class="line">|                |         |               |        |              |</div><div class="line">|                |         |               |        |              |</div><div class="line">|                |  http   |               | http   |              |</div><div class="line">|    client      &lt;---------&gt;    proxy      &lt;--------&gt;   server     |</div><div class="line">|                |  https  |               | https  |              |</div><div class="line">|                |         |               |        |              |</div><div class="line">|                |         |               |        |              |</div><div class="line">+----------------+         +---------------+        +--------------+</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+----------------+         +---------------+        +--------------+</span><br><span class="line">|                |         |               |        |              |</span><br><span class="line">|                |         |               |        |              |</span><br><span class="line">|                |  http   |               | http   |              |</span><br><span class="line">|    client      &lt;---------&gt;    proxy      &lt;--------&gt;   server     |</span><br><span class="line">|                |  https  |               | https  |              |</span><br><span class="line">|                |         |               |        |              |</span><br><span class="line">|                |         |               |        |              |</span><br><span class="line">+----------------+         +---------------+        +--------------+</span><br></pre></td></tr></table></figure>
 <p>2、正向代理</p>
 <p>用于代理客户端。</p>
 <p>比如：我是一个用户，我访问不了某网站（例如google），但是我能访问一个代理服务器，这个代理服务器能访问google，于是我先连上代理服务器，告诉他我需要访问google的内容，代理服务器去取回来，然后返回给我。自此，一次正向代理顺利完成。</p>
 <p>3、反向代理</p>
 <p>用来代理服务端。</p>
 <p>依然拿google举例，网站每秒钟要处理很多请求，如果仅仅让一台单一的服务器处理，肯定应付不过来。所以采用多台服务器来处理这些请求，减少每台服务器的压力。但是多个服务器那就产生了多个Server，我的一个<code>google.com</code>就不能解析到这些服务器上，而且用多个二级域名比如<code>server1.google.com</code>，<code>server2.google.com</code>等等也给用户造成了使用上的不便，通过反向代理可以很好的解决这个问题。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">+-------------+                                             |      |                   |</div><div class="line">|             +----------+                                  |      |                   |</div><div class="line">|  client 1   |          |                                  |      +-------------------+</div><div class="line">|             |          |                                  |</div><div class="line">+-------------+          |                                  |</div><div class="line">                         |         +------------------+     |      +-------------------+</div><div class="line">                         |         |                  |     |      |                   |</div><div class="line">+-------------+          |         |                  |     |      |   server 2        |</div><div class="line">|             |          |         |                  +------------&gt;                   |</div><div class="line">|  clent 2    +--------------------&gt;  reverse proxy   |     |      |                   |</div><div class="line">|             |          |         |                  |     |      +-------------------+</div><div class="line">+-------------+          |         |                  |     |</div><div class="line">                         |         |                  |     |               .</div><div class="line">      .                  |         |                  |     |               .</div><div class="line">      .                  |         +------------------+     |               .</div><div class="line">      .                  |                                  |</div><div class="line">                         |                                  |      +--------------------+</div><div class="line">+-------------+          |                                  |      |                    |</div><div class="line">|             |          |                                  |      |   server m         |</div><div class="line">|  client n   +----------+                                  +------&gt;                    |</div><div class="line">|             |                                                    |                    |</div><div class="line">+-------------+                                                    +--------------------+</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">+-------------+                                             |      |                   |</span><br><span class="line">|             +----------+                                  |      |                   |</span><br><span class="line">|  client 1   |          |                                  |      +-------------------+</span><br><span class="line">|             |          |                                  |</span><br><span class="line">+-------------+          |                                  |</span><br><span class="line">                         |         +------------------+     |      +-------------------+</span><br><span class="line">                         |         |                  |     |      |                   |</span><br><span class="line">+-------------+          |         |                  |     |      |   server 2        |</span><br><span class="line">|             |          |         |                  +------------&gt;                   |</span><br><span class="line">|  clent 2    +--------------------&gt;  reverse proxy   |     |      |                   |</span><br><span class="line">|             |          |         |                  |     |      +-------------------+</span><br><span class="line">+-------------+          |         |                  |     |</span><br><span class="line">                         |         |                  |     |               .</span><br><span class="line">      .                  |         |                  |     |               .</span><br><span class="line">      .                  |         +------------------+     |               .</span><br><span class="line">      .                  |                                  |</span><br><span class="line">                         |                                  |      +--------------------+</span><br><span class="line">+-------------+          |                                  |      |                    |</span><br><span class="line">|             |          |                                  |      |   server m         |</span><br><span class="line">|  client n   +----------+                                  +------&gt;                    |</span><br><span class="line">|             |                                                    |                    |</span><br><span class="line">+-------------+                                                    +--------------------+</span><br></pre></td></tr></table></figure>
 <p> 结论就是，客户端向反向代理的命名空间(name-space)中的内容发送普通请求，接着反向代理将判断向何处(原始服务器)转交请求，并将获得的内容返回给客户端，就像这些内容原本就是它自己的一样。</p>
 <p>正向代理允许客户端通过它访问任意网站并且隐藏客户端自身，因此你必须采取安全措施以确保仅为经过授权的客户端提供服务。反向代理对外都是透明的，访问者并不知道自己访问的是一个代理。</p>
 <p>代理模块的指令有很多我这里只讲解重要的proxy_pass，这个模块可以转发请求到其他的服务器。</p>
 <h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h3><p>一台机器装有Nginx，两台测试机装httpd</p>
 <h4 id="测试机httpd配置"><a href="#测试机httpd配置" class="headerlink" title="测试机httpd配置"></a>测试机httpd配置</h4><p>1、安装httpd</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install httpd -y</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install httpd -y</span><br></pre></td></tr></table></figure>
 <p>2、提供页面测试</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># ceph0机器</div><div class="line">echo &quot;&lt;h1&gt;ceph0.test.com&lt;/h1&gt;&quot; &gt; /var/www/html/index.html</div><div class="line"># ceph1机器</div><div class="line">echo &quot;&lt;h1&gt;ceph1.test.com&lt;/h1&gt;&quot; &gt; /var/www/html/index.html</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># ceph0机器</span><br><span class="line">echo &quot;&lt;h1&gt;ceph0.test.com&lt;/h1&gt;&quot; &gt; /var/www/html/index.html</span><br><span class="line"># ceph1机器</span><br><span class="line">echo &quot;&lt;h1&gt;ceph1.test.com&lt;/h1&gt;&quot; &gt; /var/www/html/index.html</span><br></pre></td></tr></table></figure>
 <p>3、启动</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service httpd start</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service httpd start</span><br></pre></td></tr></table></figure>
 <p>如果启动失败的话注意查看是否80端口被占用</p>
 <p>4、web上登录ceph0和ceph1机器IP查看</p>
 <p><img src="http://oow6unnib.bkt.clouddn.com/nginx-httpd-ceph0.png" alt="ceph0"></p>
 <p><img src="http://oow6unnib.bkt.clouddn.com/nginx-httpd-ceph1.png" alt="ceph1"></p>
 <p>注意：Nginx和httpd都监听在80端口，https监听在443端口</p>
 <p>如果要修改httpd的监听端口的话</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">vim /etc/httpd/conf/httpd.conf</div><div class="line">...</div><div class="line">Listen 80		# 修改这一行</div><div class="line">...</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/httpd/conf/httpd.conf</span><br><span class="line">...</span><br><span class="line">Listen 80		# 修改这一行</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <h4 id="nginx配置和测试"><a href="#nginx配置和测试" class="headerlink" title="nginx配置和测试"></a>nginx配置和测试</h4><p>设置配置文件，设置完后如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># cat /etc/nginx/conf.d/test.conf</div><div class="line">server &#123;</div><div class="line">    listen 8000;</div><div class="line">    location / &#123;</div><div class="line">        proxy_pass http://123.59.204.185:80;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># cat /etc/nginx/conf.d/test.conf</span><br><span class="line">server &#123;</span><br><span class="line">    listen 8000;</span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://123.59.204.185:80;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>重启nginx</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">nginx -t</div><div class="line">nginx -s reload</div><div class="line">service nginx restart</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nginx -t</span><br><span class="line">nginx -s reload</span><br><span class="line">service nginx restart</span><br></pre></td></tr></table></figure>
 <p>测试</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># curl 127.0.0.1:8000</div><div class="line">&lt;h1&gt;ceph0.test.com&lt;/h1&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># curl 127.0.0.1:8000</span><br><span class="line">&lt;h1&gt;ceph0.test.com&lt;/h1&gt;</span><br></pre></td></tr></table></figure>
 <p>去ceph0机器上查看日志</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@ceph0 ~]# tail /var/log/httpd/access_log</div><div class="line">180.168.57.238 - - [03/May/2017:10:27:17 +0800] &quot;GET / HTTP/1.1&quot; 200 24 &quot;-&quot; &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36&quot;</div><div class="line">180.168.57.238 - - [03/May/2017:10:28:24 +0800] &quot;-&quot; 408 - &quot;-&quot; &quot;-&quot;</div><div class="line">180.168.57.238 - - [03/May/2017:10:28:24 +0800] &quot;-&quot; 408 - &quot;-&quot; &quot;-&quot;</div><div class="line">180.168.57.238 - - [03/May/2017:10:28:24 +0800] &quot;-&quot; 408 - &quot;-&quot; &quot;-&quot;</div><div class="line">123.59.185.23 - - [03/May/2017:11:25:30 +0800] &quot;GET / HTTP/1.1&quot; 200 24 &quot;-&quot; &quot;curl/7.29.0&quot;</div><div class="line">123.59.185.23 - - [03/May/2017:11:29:40 +0800] &quot;GET / HTTP/1.0&quot; 200 24 &quot;-&quot; &quot;curl/7.29.0&quot;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@ceph0 ~]# tail /var/log/httpd/access_log</span><br><span class="line">180.168.57.238 - - [03/May/2017:10:27:17 +0800] &quot;GET / HTTP/1.1&quot; 200 24 &quot;-&quot; &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36&quot;</span><br><span class="line">180.168.57.238 - - [03/May/2017:10:28:24 +0800] &quot;-&quot; 408 - &quot;-&quot; &quot;-&quot;</span><br><span class="line">180.168.57.238 - - [03/May/2017:10:28:24 +0800] &quot;-&quot; 408 - &quot;-&quot; &quot;-&quot;</span><br><span class="line">180.168.57.238 - - [03/May/2017:10:28:24 +0800] &quot;-&quot; 408 - &quot;-&quot; &quot;-&quot;</span><br><span class="line">123.59.185.23 - - [03/May/2017:11:25:30 +0800] &quot;GET / HTTP/1.1&quot; 200 24 &quot;-&quot; &quot;curl/7.29.0&quot;</span><br><span class="line">123.59.185.23 - - [03/May/2017:11:29:40 +0800] &quot;GET / HTTP/1.0&quot; 200 24 &quot;-&quot; &quot;curl/7.29.0&quot;</span><br></pre></td></tr></table></figure>
 <p>注意这里 HTTP/1.1和HTTP/1.0的区别</p>
 <p>proxy_pass模块可以转发请求到其他的服务器。nginx为浏览器发送HTTP/1.1，为后端服务器发送HTTP/1.0。</p>
 <p>HTTP/1.0无法使用keepalive（后端服务器将为每个请求创建并且删除连接），这样浏览器就可以为浏览器处理keepalive。</p>
@@ -274,26 +274,29 @@ var _hmt = _hmt || [];
 <p>weight和 ip_hash是不同的策略。</p>
 </blockquote>
 <p>一个例子：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">upstream itest &#123;</div><div class="line">    server 123.59.204.185:80 weight=1 max_fails=2 fial_timeout=2;</div><div class="line">    server 123.59.204.193:80 down;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">upstream itest &#123;</span><br><span class="line">    server 123.59.204.185:80 weight=1 max_fails=2 fial_timeout=2;</span><br><span class="line">    server 123.59.204.193:80 down;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>server 185的权重为1，当请求失败的次数为2时，返回错误，并暂停服务2秒。</p>
 <p>Server 193 down了，不会被访问到。</p>
-<h3 id="配置负载均衡服务器"><a href="#配置负载均衡服务器" class="headerlink" title="配置负载均衡服务器"></a>配置负载均衡服务器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"># cat conf.d/test.conf</div><div class="line">upstream itest &#123;</div><div class="line">    server 123.59.204.185:80;</div><div class="line">    server 123.59.204.193:80;</div><div class="line">&#125;</div><div class="line"></div><div class="line">server &#123;</div><div class="line">    listen 8000;</div><div class="line">    server_name itest.com;</div><div class="line">    location / &#123;</div><div class="line">        proxy_pass http://itest;</div><div class="line">#        proxy_set_header  X-Real-IP  $remote_addr;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="配置负载均衡服务器"><a href="#配置负载均衡服务器" class="headerlink" title="配置负载均衡服务器"></a>配置负载均衡服务器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># cat conf.d/test.conf</span><br><span class="line">upstream itest &#123;</span><br><span class="line">    server 123.59.204.185:80;</span><br><span class="line">    server 123.59.204.193:80;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen 8000;</span><br><span class="line">    server_name itest.com;</span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://itest;</span><br><span class="line">#        proxy_set_header  X-Real-IP  $remote_addr;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>测试</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@nginx]# curl 127.0.0.1:8000</div><div class="line">&lt;h1&gt;ceph0.test.com&lt;/h1&gt;</div><div class="line">[root@nginx]# curl 127.0.0.1:8000</div><div class="line">&lt;h1&gt;ceph1.test.com&lt;/h1&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@nginx]# curl 127.0.0.1:8000</span><br><span class="line">&lt;h1&gt;ceph0.test.com&lt;/h1&gt;</span><br><span class="line">[root@nginx]# curl 127.0.0.1:8000</span><br><span class="line">&lt;h1&gt;ceph1.test.com&lt;/h1&gt;</span><br></pre></td></tr></table></figure>
 <p>百分之50的概率读取到一台机器</p>
 <p>注，upstream是定义在server{ }之外的，不能定义在server{ }内部。定义好upstream之后，用proxy_pass引用一下即可。</p>
 <h2 id="备份服务器"><a href="#备份服务器" class="headerlink" title="备份服务器"></a>备份服务器</h2><p>配置nginx文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"># cat /etc/nginx/conf.d/test.conf</div><div class="line">upstream itest &#123;</div><div class="line">    server 123.59.204.185:80;</div><div class="line">    server 123.59.204.193:80;</div><div class="line">    server 127.0.0.1:8000 backup;</div><div class="line">&#125;</div><div class="line"></div><div class="line">server &#123;</div><div class="line">    listen 8000;</div><div class="line">    server_name itest.com;</div><div class="line">    root /root/errorpage;</div><div class="line">    index index.html;</div><div class="line">    location / &#123;</div><div class="line">        proxy_pass http://itest;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># cat /etc/nginx/conf.d/test.conf</span><br><span class="line">upstream itest &#123;</span><br><span class="line">    server 123.59.204.185:80;</span><br><span class="line">    server 123.59.204.193:80;</span><br><span class="line">    server 127.0.0.1:8000 backup;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen 8000;</span><br><span class="line">    server_name itest.com;</span><br><span class="line">    root /root/errorpage;</span><br><span class="line">    index index.html;</span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://itest;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>文件夹和index文件的建立</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># mkdir /root/errorpage</div><div class="line"># cat index.html</div><div class="line">&lt;h1&gt;Sorry, all ceph node is down! Please try again later!&lt;/h1&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># mkdir /root/errorpage</span><br><span class="line"># cat index.html</span><br><span class="line">&lt;h1&gt;Sorry, all ceph node is down! Please try again later!&lt;/h1&gt;</span><br></pre></td></tr></table></figure>
 <p>另外两台机器上执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service httpd stop</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service httpd stop</span><br></pre></td></tr></table></figure>
 <p>然后再访问的话就会访问到备份服务器，输出index.html的内容。</p>
-<p>附一个关于nginx的好系列文章：<a href="http://blog.csdn.net/poechant/article/details/7213546" target="_blank" rel="external">高性能Web服务器Nginx的配置与部署研究</a></p>
+<p>附一个关于nginx的好系列文章：<a href="http://blog.csdn.net/poechant/article/details/7213546" target="_blank" rel="noopener">高性能Web服务器Nginx的配置与部署研究</a></p>
 <p>有空学习，mark之。</p>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -402,11 +405,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/05/03/nginx使用和配置/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2017/05/03/nginx使用和配置/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -511,6 +515,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -612,10 +618,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -628,15 +630,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -656,19 +658,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -680,6 +678,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -688,19 +690,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -712,6 +706,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -720,15 +718,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -740,15 +742,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

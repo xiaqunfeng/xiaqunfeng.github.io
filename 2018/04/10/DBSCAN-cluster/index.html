@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>DBSCAN聚类算法 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="一种基于密度的聚类算法，可用于非凸样本集。">
+<meta name="keywords" content="cluster">
 <meta property="og:type" content="article">
 <meta property="og:title" content="DBSCAN聚类算法">
 <meta property="og:url" content="http://xiaqunfeng.cc/2018/04/10/DBSCAN-cluster/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="一种基于密度的聚类算法，可用于非凸样本集。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/dbscan.jpg">
 <meta property="og:updated_time" content="2018-04-12T01:56:19.000Z">
 <meta name="twitter:card" content="summary">
@@ -51,7 +53,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -79,9 +81,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -161,7 +160,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-DBSCAN-cluster" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-DBSCAN-cluster" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -224,7 +224,7 @@ var _hmt = _hmt || [];
 <li>不同于Mean-shift算法，当数据点非常不同时，会将它们单纯地引入簇中，DBSCAN能将异常值识别为噪声（对噪声不敏感）</li>
 <li>与k-means算法相比，DBSCAN可以发现任意形状的簇类</li>
 <li>DBSCAN 只需两个参数，且对数据库内的点的次序几乎不敏感</li>
-<li>DBSCAN 被设计成能配合可加速范围访问的数据库结构，例如 <a href="https://zh.wikipedia.org/wiki/R*%E6%A0%91" target="_blank" rel="external">R*树</a>。</li>
+<li>DBSCAN 被设计成能配合可加速范围访问的数据库结构，例如 <a href="https://zh.wikipedia.org/wiki/R*%E6%A0%91" target="_blank" rel="noopener">R*树</a>。</li>
 <li>如果对资料有足够的了解，可以选择适当的参数以获得最佳的分类。</li>
 <li>DBSCAN只需扫描一遍数据集即可完成聚类，而不用迭代执行</li>
 </ul>
@@ -244,11 +244,14 @@ var _hmt = _hmt || [];
 <li>计算所述正确人脸子类与所述第二照片类之间的距离；</li>
 <li>若所述距离大于阈值，则将所述第一照片类和所述第二照片类分别聚类至不同的照片类。</li>
 </ul>
-<p>算法链接如下：<br><a href="https://patents.google.com/patent/CN105426878A/zh" target="_blank" rel="external">https://patents.google.com/patent/CN105426878A/zh</a></p>
-<p><strong>参考资料：</strong><br>1、<a href="http://www.10tiao.com/html/368/201802/2650784228/1.html" target="_blank" rel="external">http://www.10tiao.com/html/368/201802/2650784228/1.html</a><br>2、<a href="https://www.cnblogs.com/pinard/p/6208966.html" target="_blank" rel="external">https://www.cnblogs.com/pinard/p/6208966.html</a><br>3、<a href="https://zh.wikipedia.org/wiki/DBSCAN" target="_blank" rel="external">https://zh.wikipedia.org/wiki/DBSCAN</a></p>
+<p>算法链接如下：<br><a href="https://patents.google.com/patent/CN105426878A/zh" target="_blank" rel="noopener">https://patents.google.com/patent/CN105426878A/zh</a></p>
+<p><strong>参考资料：</strong><br>1、<a href="http://www.10tiao.com/html/368/201802/2650784228/1.html" target="_blank" rel="noopener">http://www.10tiao.com/html/368/201802/2650784228/1.html</a><br>2、<a href="https://www.cnblogs.com/pinard/p/6208966.html" target="_blank" rel="noopener">https://www.cnblogs.com/pinard/p/6208966.html</a><br>3、<a href="https://zh.wikipedia.org/wiki/DBSCAN" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/DBSCAN</a></p>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -357,11 +360,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2018/04/10/DBSCAN-cluster/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2018/04/10/DBSCAN-cluster/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -466,6 +470,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -567,10 +573,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -583,15 +585,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -611,19 +613,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -635,6 +633,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -643,19 +645,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -667,6 +661,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -675,15 +673,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -695,15 +697,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

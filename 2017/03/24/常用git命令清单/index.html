@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>常用git命令清单 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="转载的文章，里面git命令应有尽有，包含所有常用命令，mark之。">
+<meta name="keywords" content="git">
 <meta property="og:type" content="article">
 <meta property="og:title" content="常用git命令清单">
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/03/24/常用git命令清单/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="转载的文章，里面git命令应有尽有，包含所有常用命令，mark之。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.ruanyifeng.com/blogimg/asset/2015/bg2015120901.png">
 <meta property="og:updated_time" content="2018-07-30T00:18:35.000Z">
 <meta name="twitter:card" content="summary">
@@ -51,7 +53,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -79,9 +81,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -161,7 +160,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-常用git命令清单" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-常用git命令清单" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -194,42 +194,45 @@ var _hmt = _hmt || [];
 </ul>
 </blockquote>
 <h2 id="一、新建代码库"><a href="#一、新建代码库" class="headerlink" title="一、新建代码库"></a>一、新建代码库</h2><blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&gt; # 在当前目录新建一个Git代码库</div><div class="line">&gt; $ git init</div><div class="line">&gt;</div><div class="line">&gt; # 新建一个目录，将其初始化为Git代码库</div><div class="line">&gt; $ git init [project-name]</div><div class="line">&gt;</div><div class="line">&gt; # 下载一个项目和它的整个代码历史</div><div class="line">&gt; $ git clone [url]</div><div class="line">&gt;</div><div class="line">&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt; # 在当前目录新建一个Git代码库</span><br><span class="line">&gt; $ git init</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 新建一个目录，将其初始化为Git代码库</span><br><span class="line">&gt; $ git init [project-name]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 下载一个项目和它的整个代码历史</span><br><span class="line">&gt; $ git clone [url]</span><br><span class="line">&gt;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
 </blockquote>
 <h2 id="二、配置"><a href="#二、配置" class="headerlink" title="二、配置"></a>二、配置</h2><p>Git的设置文件为<code>.gitconfig</code>，它可以在用户主目录下（全局配置），也可以在项目目录下（项目配置）。</p>
 <blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&gt; # 显示当前的Git配置</div><div class="line">&gt; $ git config --list</div><div class="line">&gt;</div><div class="line">&gt; # 编辑Git配置文件</div><div class="line">&gt; $ git config -e [--global]</div><div class="line">&gt;</div><div class="line">&gt; # 设置提交代码时的用户信息</div><div class="line">&gt; $ git config [--global] user.name &quot;[name]&quot;</div><div class="line">&gt; $ git config [--global] user.email &quot;[email address]&quot;</div><div class="line">&gt;</div><div class="line">&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt; # 显示当前的Git配置</span><br><span class="line">&gt; $ git config --list</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 编辑Git配置文件</span><br><span class="line">&gt; $ git config -e [--global]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 设置提交代码时的用户信息</span><br><span class="line">&gt; $ git config [--global] user.name &quot;[name]&quot;</span><br><span class="line">&gt; $ git config [--global] user.email &quot;[email address]&quot;</span><br><span class="line">&gt;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
 </blockquote>
 <h2 id="三、增加-删除文件"><a href="#三、增加-删除文件" class="headerlink" title="三、增加/删除文件"></a>三、增加/删除文件</h2><blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">&gt; # 添加指定文件到暂存区</div><div class="line">&gt; $ git add [file1] [file2] ...</div><div class="line">&gt;</div><div class="line">&gt; # 添加指定目录到暂存区，包括子目录</div><div class="line">&gt; $ git add [dir]</div><div class="line">&gt;</div><div class="line">&gt; # 添加当前目录的所有文件到暂存区</div><div class="line">&gt; $ git add .</div><div class="line">&gt;</div><div class="line">&gt; # 添加每个变化前，都会要求确认</div><div class="line">&gt; # 对于同一个文件的多处变化，可以实现分次提交</div><div class="line">&gt; $ git add -p</div><div class="line">&gt;</div><div class="line">&gt; # 删除工作区文件，并且将这次删除放入暂存区</div><div class="line">&gt; $ git rm [file1] [file2] ...</div><div class="line">&gt;</div><div class="line">&gt; # 停止追踪指定文件，但该文件会保留在工作区</div><div class="line">&gt; $ git rm --cached [file]</div><div class="line">&gt;</div><div class="line">&gt; # 改名文件，并且将这个改名放入暂存区</div><div class="line">&gt; $ git mv [file-original] [file-renamed]</div><div class="line">&gt;</div><div class="line">&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&gt; # 添加指定文件到暂存区</span><br><span class="line">&gt; $ git add [file1] [file2] ...</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 添加指定目录到暂存区，包括子目录</span><br><span class="line">&gt; $ git add [dir]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 添加当前目录的所有文件到暂存区</span><br><span class="line">&gt; $ git add .</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 添加每个变化前，都会要求确认</span><br><span class="line">&gt; # 对于同一个文件的多处变化，可以实现分次提交</span><br><span class="line">&gt; $ git add -p</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 删除工作区文件，并且将这次删除放入暂存区</span><br><span class="line">&gt; $ git rm [file1] [file2] ...</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 停止追踪指定文件，但该文件会保留在工作区</span><br><span class="line">&gt; $ git rm --cached [file]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 改名文件，并且将这个改名放入暂存区</span><br><span class="line">&gt; $ git mv [file-original] [file-renamed]</span><br><span class="line">&gt;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
 </blockquote>
 <h2 id="四、代码提交"><a href="#四、代码提交" class="headerlink" title="四、代码提交"></a>四、代码提交</h2><blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">&gt; # 提交暂存区到仓库区</div><div class="line">&gt; $ git commit -m [message]</div><div class="line">&gt;</div><div class="line">&gt; # 提交暂存区的指定文件到仓库区</div><div class="line">&gt; $ git commit [file1] [file2] ... -m [message]</div><div class="line">&gt;</div><div class="line">&gt; # 提交工作区自上次commit之后的变化，直接到仓库区</div><div class="line">&gt; $ git commit -a</div><div class="line">&gt;</div><div class="line">&gt; # 提交时显示所有diff信息</div><div class="line">&gt; $ git commit -v</div><div class="line">&gt;</div><div class="line">&gt; # 使用一次新的commit，替代上一次提交</div><div class="line">&gt; # 如果代码没有任何新变化，则用来改写上一次commit的提交信息</div><div class="line">&gt; $ git commit --amend -m [message]</div><div class="line">&gt;</div><div class="line">&gt; # 重做上一次commit，并包括指定文件的新变化</div><div class="line">&gt; $ git commit --amend [file1] [file2] ...</div><div class="line">&gt;</div><div class="line">&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&gt; # 提交暂存区到仓库区</span><br><span class="line">&gt; $ git commit -m [message]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 提交暂存区的指定文件到仓库区</span><br><span class="line">&gt; $ git commit [file1] [file2] ... -m [message]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 提交工作区自上次commit之后的变化，直接到仓库区</span><br><span class="line">&gt; $ git commit -a</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 提交时显示所有diff信息</span><br><span class="line">&gt; $ git commit -v</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 使用一次新的commit，替代上一次提交</span><br><span class="line">&gt; # 如果代码没有任何新变化，则用来改写上一次commit的提交信息</span><br><span class="line">&gt; $ git commit --amend -m [message]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 重做上一次commit，并包括指定文件的新变化</span><br><span class="line">&gt; $ git commit --amend [file1] [file2] ...</span><br><span class="line">&gt;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
 </blockquote>
 <h2 id="五、分支"><a href="#五、分支" class="headerlink" title="五、分支"></a>五、分支</h2><blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">&gt; # 列出所有本地分支</div><div class="line">&gt; $ git branch</div><div class="line">&gt;</div><div class="line">&gt; # 列出所有远程分支</div><div class="line">&gt; $ git branch -r</div><div class="line">&gt;</div><div class="line">&gt; # 列出所有本地分支和远程分支</div><div class="line">&gt; $ git branch -a</div><div class="line">&gt;</div><div class="line">&gt; # 新建一个分支，但依然停留在当前分支</div><div class="line">&gt; $ git branch [branch-name]</div><div class="line">&gt;</div><div class="line">&gt; # 新建一个分支，并切换到该分支</div><div class="line">&gt; $ git checkout -b [branch]</div><div class="line">&gt;</div><div class="line">&gt; # 新建一个分支，指向指定commit</div><div class="line">&gt; $ git branch [branch] [commit]</div><div class="line">&gt;</div><div class="line">&gt; # 新建一个分支，与指定的远程分支建立追踪关系</div><div class="line">&gt; $ git branch --track [branch] [remote-branch]</div><div class="line">&gt;</div><div class="line">&gt; # 切换到指定分支，并更新工作区</div><div class="line">&gt; $ git checkout [branch-name]</div><div class="line">&gt;</div><div class="line">&gt; # 切换到上一个分支</div><div class="line">&gt; $ git checkout -</div><div class="line">&gt;</div><div class="line">&gt; # 建立追踪关系，在现有分支与指定的远程分支之间</div><div class="line">&gt; $ git branch --set-upstream [branch] [remote-branch]</div><div class="line">&gt;</div><div class="line">&gt; # 合并指定分支到当前分支</div><div class="line">&gt; $ git merge [branch]</div><div class="line">&gt;</div><div class="line">&gt; # 选择一个commit，合并进当前分支</div><div class="line">&gt; $ git cherry-pick [commit]</div><div class="line">&gt;</div><div class="line">&gt; # 删除分支</div><div class="line">&gt; $ git branch -d [branch-name]</div><div class="line">&gt;</div><div class="line">&gt; # 删除远程分支</div><div class="line">&gt; $ git push origin --delete [branch-name]</div><div class="line">&gt; $ git branch -dr [remote/branch]</div><div class="line">&gt;</div><div class="line">&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">&gt; # 列出所有本地分支</span><br><span class="line">&gt; $ git branch</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 列出所有远程分支</span><br><span class="line">&gt; $ git branch -r</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 列出所有本地分支和远程分支</span><br><span class="line">&gt; $ git branch -a</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 新建一个分支，但依然停留在当前分支</span><br><span class="line">&gt; $ git branch [branch-name]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 新建一个分支，并切换到该分支</span><br><span class="line">&gt; $ git checkout -b [branch]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 新建一个分支，指向指定commit</span><br><span class="line">&gt; $ git branch [branch] [commit]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 新建一个分支，与指定的远程分支建立追踪关系</span><br><span class="line">&gt; $ git branch --track [branch] [remote-branch]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 切换到指定分支，并更新工作区</span><br><span class="line">&gt; $ git checkout [branch-name]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 切换到上一个分支</span><br><span class="line">&gt; $ git checkout -</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 建立追踪关系，在现有分支与指定的远程分支之间</span><br><span class="line">&gt; $ git branch --set-upstream [branch] [remote-branch]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 合并指定分支到当前分支</span><br><span class="line">&gt; $ git merge [branch]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 选择一个commit，合并进当前分支</span><br><span class="line">&gt; $ git cherry-pick [commit]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 删除分支</span><br><span class="line">&gt; $ git branch -d [branch-name]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 删除远程分支</span><br><span class="line">&gt; $ git push origin --delete [branch-name]</span><br><span class="line">&gt; $ git branch -dr [remote/branch]</span><br><span class="line">&gt;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
 </blockquote>
 <h2 id="六、标签"><a href="#六、标签" class="headerlink" title="六、标签"></a>六、标签</h2><blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">&gt; # 列出所有tag</div><div class="line">&gt; $ git tag</div><div class="line">&gt;</div><div class="line">&gt; # 新建一个tag在当前commit</div><div class="line">&gt; $ git tag [tag]</div><div class="line">&gt;</div><div class="line">&gt; # 新建一个tag在指定commit</div><div class="line">&gt; $ git tag [tag] [commit]</div><div class="line">&gt;</div><div class="line">&gt; # 删除本地tag</div><div class="line">&gt; $ git tag -d [tag]</div><div class="line">&gt;</div><div class="line">&gt; # 删除远程tag</div><div class="line">&gt; $ git push origin :refs/tags/[tagName]</div><div class="line">&gt;</div><div class="line">&gt; # 查看tag信息</div><div class="line">&gt; $ git show [tag]</div><div class="line">&gt;</div><div class="line">&gt; # 提交指定tag</div><div class="line">&gt; $ git push [remote] [tag]</div><div class="line">&gt;</div><div class="line">&gt; # 提交所有tag</div><div class="line">&gt; $ git push [remote] --tags</div><div class="line">&gt;</div><div class="line">&gt; # 新建一个分支，指向某个tag</div><div class="line">&gt; $ git checkout -b [branch] [tag]</div><div class="line">&gt;</div><div class="line">&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&gt; # 列出所有tag</span><br><span class="line">&gt; $ git tag</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 新建一个tag在当前commit</span><br><span class="line">&gt; $ git tag [tag]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 新建一个tag在指定commit</span><br><span class="line">&gt; $ git tag [tag] [commit]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 删除本地tag</span><br><span class="line">&gt; $ git tag -d [tag]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 删除远程tag</span><br><span class="line">&gt; $ git push origin :refs/tags/[tagName]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 查看tag信息</span><br><span class="line">&gt; $ git show [tag]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 提交指定tag</span><br><span class="line">&gt; $ git push [remote] [tag]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 提交所有tag</span><br><span class="line">&gt; $ git push [remote] --tags</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 新建一个分支，指向某个tag</span><br><span class="line">&gt; $ git checkout -b [branch] [tag]</span><br><span class="line">&gt;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
 </blockquote>
 <h2 id="七、查看信息"><a href="#七、查看信息" class="headerlink" title="七、查看信息"></a>七、查看信息</h2><blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line">&gt; # 显示有变更的文件</div><div class="line">&gt; $ git status</div><div class="line">&gt;</div><div class="line">&gt; # 显示当前分支的版本历史</div><div class="line">&gt; $ git log</div><div class="line">&gt;</div><div class="line">&gt; # 显示commit历史，以及每次commit发生变更的文件</div><div class="line">&gt; $ git log --stat</div><div class="line">&gt;</div><div class="line">&gt; # 搜索提交历史，根据关键词</div><div class="line">&gt; $ git log -S [keyword]</div><div class="line">&gt;</div><div class="line">&gt; # 显示某个commit之后的所有变动，每个commit占据一行</div><div class="line">&gt; $ git log [tag] HEAD --pretty=format:%s</div><div class="line">&gt;</div><div class="line">&gt; # 显示某个commit之后的所有变动，其&quot;提交说明&quot;必须符合搜索条件</div><div class="line">&gt; $ git log [tag] HEAD --grep feature</div><div class="line">&gt;</div><div class="line">&gt; # 显示某个文件的版本历史，包括文件改名</div><div class="line">&gt; $ git log --follow [file]</div><div class="line">&gt; $ git whatchanged [file]</div><div class="line">&gt;</div><div class="line">&gt; # 显示指定文件相关的每一次diff</div><div class="line">&gt; $ git log -p [file]</div><div class="line">&gt;</div><div class="line">&gt; # 显示过去5次提交</div><div class="line">&gt; $ git log -5 --pretty --oneline</div><div class="line">&gt;</div><div class="line">&gt; # 显示所有提交过的用户，按提交次数排序</div><div class="line">&gt; $ git shortlog -sn</div><div class="line">&gt;</div><div class="line">&gt; # 显示指定文件是什么人在什么时间修改过</div><div class="line">&gt; $ git blame [file]</div><div class="line">&gt;</div><div class="line">&gt; # 显示暂存区和工作区的差异</div><div class="line">&gt; $ git diff</div><div class="line">&gt;</div><div class="line">&gt; # 显示暂存区和上一个commit的差异</div><div class="line">&gt; $ git diff --cached [file]</div><div class="line">&gt;</div><div class="line">&gt; # 显示工作区与当前分支最新commit之间的差异</div><div class="line">&gt; $ git diff HEAD</div><div class="line">&gt;</div><div class="line">&gt; # 显示两次提交之间的差异</div><div class="line">&gt; $ git diff [first-branch]...[second-branch]</div><div class="line">&gt;</div><div class="line">&gt; # 显示今天你写了多少行代码</div><div class="line">&gt; $ git diff --shortstat &quot;@&#123;0 day ago&#125;&quot;</div><div class="line">&gt;</div><div class="line">&gt; # 显示某次提交的元数据和内容变化</div><div class="line">&gt; $ git show [commit]</div><div class="line">&gt;</div><div class="line">&gt; # 显示某次提交发生变化的文件</div><div class="line">&gt; $ git show --name-only [commit]</div><div class="line">&gt;</div><div class="line">&gt; # 显示某次提交时，某个文件的内容</div><div class="line">&gt; $ git show [commit]:[filename]</div><div class="line">&gt;</div><div class="line">&gt; # 显示当前分支的最近几次提交</div><div class="line">&gt; $ git reflog</div><div class="line">&gt;</div><div class="line">&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">&gt; # 显示有变更的文件</span><br><span class="line">&gt; $ git status</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示当前分支的版本历史</span><br><span class="line">&gt; $ git log</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示commit历史，以及每次commit发生变更的文件</span><br><span class="line">&gt; $ git log --stat</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 搜索提交历史，根据关键词</span><br><span class="line">&gt; $ git log -S [keyword]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示某个commit之后的所有变动，每个commit占据一行</span><br><span class="line">&gt; $ git log [tag] HEAD --pretty=format:%s</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示某个commit之后的所有变动，其&quot;提交说明&quot;必须符合搜索条件</span><br><span class="line">&gt; $ git log [tag] HEAD --grep feature</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示某个文件的版本历史，包括文件改名</span><br><span class="line">&gt; $ git log --follow [file]</span><br><span class="line">&gt; $ git whatchanged [file]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示指定文件相关的每一次diff</span><br><span class="line">&gt; $ git log -p [file]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示过去5次提交</span><br><span class="line">&gt; $ git log -5 --pretty --oneline</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示所有提交过的用户，按提交次数排序</span><br><span class="line">&gt; $ git shortlog -sn</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示指定文件是什么人在什么时间修改过</span><br><span class="line">&gt; $ git blame [file]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示暂存区和工作区的差异</span><br><span class="line">&gt; $ git diff</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示暂存区和上一个commit的差异</span><br><span class="line">&gt; $ git diff --cached [file]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示工作区与当前分支最新commit之间的差异</span><br><span class="line">&gt; $ git diff HEAD</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示两次提交之间的差异</span><br><span class="line">&gt; $ git diff [first-branch]...[second-branch]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示今天你写了多少行代码</span><br><span class="line">&gt; $ git diff --shortstat &quot;@&#123;0 day ago&#125;&quot;</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示某次提交的元数据和内容变化</span><br><span class="line">&gt; $ git show [commit]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示某次提交发生变化的文件</span><br><span class="line">&gt; $ git show --name-only [commit]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示某次提交时，某个文件的内容</span><br><span class="line">&gt; $ git show [commit]:[filename]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示当前分支的最近几次提交</span><br><span class="line">&gt; $ git reflog</span><br><span class="line">&gt;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
 </blockquote>
 <h2 id="八、远程同步"><a href="#八、远程同步" class="headerlink" title="八、远程同步"></a>八、远程同步</h2><blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">&gt; # 下载远程仓库的所有变动</div><div class="line">&gt; $ git fetch [remote]</div><div class="line">&gt;</div><div class="line">&gt; # 显示所有远程仓库</div><div class="line">&gt; $ git remote -v</div><div class="line">&gt;</div><div class="line">&gt; # 显示某个远程仓库的信息</div><div class="line">&gt; $ git remote show [remote]</div><div class="line">&gt;</div><div class="line">&gt; # 增加一个新的远程仓库，并命名</div><div class="line">&gt; $ git remote add [shortname] [url]</div><div class="line">&gt;</div><div class="line">&gt; # 取回远程仓库的变化，并与本地分支合并</div><div class="line">&gt; $ git pull [remote] [branch]</div><div class="line">&gt;</div><div class="line">&gt; # 上传本地指定分支到远程仓库</div><div class="line">&gt; $ git push [remote] [branch]</div><div class="line">&gt;</div><div class="line">&gt; # 强行推送当前分支到远程仓库，即使有冲突</div><div class="line">&gt; $ git push [remote] --force</div><div class="line">&gt;</div><div class="line">&gt; # 推送所有分支到远程仓库</div><div class="line">&gt; $ git push [remote] --all</div><div class="line">&gt;</div><div class="line">&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&gt; # 下载远程仓库的所有变动</span><br><span class="line">&gt; $ git fetch [remote]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示所有远程仓库</span><br><span class="line">&gt; $ git remote -v</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示某个远程仓库的信息</span><br><span class="line">&gt; $ git remote show [remote]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 增加一个新的远程仓库，并命名</span><br><span class="line">&gt; $ git remote add [shortname] [url]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 取回远程仓库的变化，并与本地分支合并</span><br><span class="line">&gt; $ git pull [remote] [branch]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 上传本地指定分支到远程仓库</span><br><span class="line">&gt; $ git push [remote] [branch]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 强行推送当前分支到远程仓库，即使有冲突</span><br><span class="line">&gt; $ git push [remote] --force</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 推送所有分支到远程仓库</span><br><span class="line">&gt; $ git push [remote] --all</span><br><span class="line">&gt;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
 </blockquote>
-<h2 id="九、保持fork分支更新"><a href="#九、保持fork分支更新" class="headerlink" title="九、保持fork分支更新"></a>九、保持fork分支更新</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">1. Clone your fork</div><div class="line">git clone git@github.com:YOUR-USERNAME/YOUR-FORKED-REPO.git</div><div class="line"></div><div class="line">2. Add remote from original repository in your forked repository</div><div class="line">cd into/cloned/fork-repo</div><div class="line">git remote add upstream git://github.com/ORIGINAL-DEV-USERNAME/REPO-YOU-FORKED-FROM.git</div><div class="line">git fetch upstream</div><div class="line"></div><div class="line">3. Updating your fork from original repo to keep up with their changes</div><div class="line">git pull upstream master</div></pre></td></tr></table></figure>
+<h2 id="九、保持fork分支更新"><a href="#九、保持fork分支更新" class="headerlink" title="九、保持fork分支更新"></a>九、保持fork分支更新</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">1. Clone your fork</span><br><span class="line">git clone git@github.com:YOUR-USERNAME/YOUR-FORKED-REPO.git</span><br><span class="line"></span><br><span class="line">2. Add remote from original repository in your forked repository</span><br><span class="line">cd into/cloned/fork-repo</span><br><span class="line">git remote add upstream git://github.com/ORIGINAL-DEV-USERNAME/REPO-YOU-FORKED-FROM.git</span><br><span class="line">git fetch upstream</span><br><span class="line"></span><br><span class="line">3. Updating your fork from original repo to keep up with their changes</span><br><span class="line">git pull upstream master</span><br></pre></td></tr></table></figure>
 <h2 id="十、撤销"><a href="#十、撤销" class="headerlink" title="十、撤销"></a>十、撤销</h2><blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">&gt; # 恢复暂存区的指定文件到工作区</div><div class="line">&gt; $ git checkout [file]</div><div class="line">&gt;</div><div class="line">&gt; # 恢复某个commit的指定文件到暂存区和工作区</div><div class="line">&gt; $ git checkout [commit] [file]</div><div class="line">&gt;</div><div class="line">&gt; # 恢复暂存区的所有文件到工作区</div><div class="line">&gt; $ git checkout .</div><div class="line">&gt;</div><div class="line">&gt; # 重置暂存区的指定文件，与上一次commit保持一致，但工作区不变</div><div class="line">&gt; $ git reset [file]</div><div class="line">&gt;</div><div class="line">&gt; # 重置暂存区与工作区，与上一次commit保持一致</div><div class="line">&gt; $ git reset --hard</div><div class="line">&gt;</div><div class="line">&gt; # 重置当前分支的指针为指定commit，同时重置暂存区，但工作区不变</div><div class="line">&gt; $ git reset [commit]</div><div class="line">&gt;</div><div class="line">&gt; # 重置当前分支的HEAD为指定commit，同时重置暂存区和工作区，与指定commit一致</div><div class="line">&gt; $ git reset --hard [commit]</div><div class="line">&gt;</div><div class="line">&gt; # 重置当前HEAD为指定commit，但保持暂存区和工作区不变</div><div class="line">&gt; $ git reset --keep [commit]</div><div class="line">&gt;</div><div class="line">&gt; # 新建一个commit，用来撤销指定commit</div><div class="line">&gt; # 后者的所有变化都将被前者抵消，并且应用到当前分支</div><div class="line">&gt; $ git revert [commit]</div><div class="line">&gt;</div><div class="line">&gt; # 暂时将未提交的变化移除，稍后再移入</div><div class="line">&gt; $ git stash</div><div class="line">&gt; $ git stash pop</div><div class="line">&gt;</div><div class="line">&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&gt; # 恢复暂存区的指定文件到工作区</span><br><span class="line">&gt; $ git checkout [file]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 恢复某个commit的指定文件到暂存区和工作区</span><br><span class="line">&gt; $ git checkout [commit] [file]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 恢复暂存区的所有文件到工作区</span><br><span class="line">&gt; $ git checkout .</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 重置暂存区的指定文件，与上一次commit保持一致，但工作区不变</span><br><span class="line">&gt; $ git reset [file]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 重置暂存区与工作区，与上一次commit保持一致</span><br><span class="line">&gt; $ git reset --hard</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 重置当前分支的指针为指定commit，同时重置暂存区，但工作区不变</span><br><span class="line">&gt; $ git reset [commit]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 重置当前分支的HEAD为指定commit，同时重置暂存区和工作区，与指定commit一致</span><br><span class="line">&gt; $ git reset --hard [commit]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 重置当前HEAD为指定commit，但保持暂存区和工作区不变</span><br><span class="line">&gt; $ git reset --keep [commit]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 新建一个commit，用来撤销指定commit</span><br><span class="line">&gt; # 后者的所有变化都将被前者抵消，并且应用到当前分支</span><br><span class="line">&gt; $ git revert [commit]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 暂时将未提交的变化移除，稍后再移入</span><br><span class="line">&gt; $ git stash</span><br><span class="line">&gt; $ git stash pop</span><br><span class="line">&gt;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
 </blockquote>
 <h2 id="十一、其他"><a href="#十一、其他" class="headerlink" title="十一、其他"></a>十一、其他</h2><blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt; # 生成一个可供发布的压缩包</div><div class="line">&gt; $ git archive</div><div class="line">&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; # 生成一个可供发布的压缩包</span><br><span class="line">&gt; $ git archive</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
 </blockquote>
 <p>（完）</p>
-<p>原文链接：<a href="http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html" target="_blank" rel="external">常用 Git 命令清单</a></p>
+<p>原文链接：<a href="http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html" target="_blank" rel="noopener">常用 Git 命令清单</a></p>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -327,11 +330,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/03/24/常用git命令清单/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2017/03/24/常用git命令清单/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -436,6 +440,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -537,10 +543,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -553,15 +555,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -581,19 +583,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -605,6 +603,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -613,19 +615,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -637,6 +631,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -645,15 +643,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -665,15 +667,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>

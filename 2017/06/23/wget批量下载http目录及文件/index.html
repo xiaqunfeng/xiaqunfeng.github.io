@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>wget批量下载http目录及文件 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -14,6 +14,7 @@
 <meta property="og:url" content="http://xiaqunfeng.cc/2017/06/23/wget批量下载http目录及文件/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="有时候看到好的镜像，想保存下来，不可能一个个通过url手动来下载，这时候就需要批量下载了。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/wget-http.jpg">
 <meta property="og:updated_time" content="2018-03-27T01:11:13.000Z">
 <meta name="twitter:card" content="summary">
@@ -51,7 +52,7 @@ var _hmt = _hmt || [];
 <!-- 加载gitment的css和js文件 -->
 <link rel="stylesheet" href="/gitment.css"> 
 <script src="/gitment.js"></script>
-
+</html>
 <body>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -79,9 +80,6 @@ var _hmt = _hmt || [];
 	        
 			</ul>
 		</nav>
-        <nav>
-            总文章数 112
-        </nav>
 		<nav class="header-smart-menu">
     		
     			
@@ -161,7 +159,8 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-wget批量下载http目录及文件" class="article article-type-post " itemscope itemprop="blogPost">
+            
+<article id="post-wget批量下载http目录及文件" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -184,11 +183,11 @@ var _hmt = _hmt || [];
         <p>有时候看到好的镜像，想保存下来，不可能一个个通过url手动来下载，这时候就需要批量下载了。<br><a id="more"></a></p>
 <p>举个例子，我要下载的地址和内容如下：<br><img src="http://oow6unnib.bkt.clouddn.com/wget-http.jpg" alt="wget-http"></p>
 <h2 id="得到页面的index-html"><a href="#得到页面的index-html" class="headerlink" title="得到页面的index.html"></a>得到页面的index.html</h2><p>我就在 <code>/root</code> 目录下操作</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget -m http://mirrors.163.com/ceph/rpm-jewel/el7/SRPMS/</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -m http://mirrors.163.com/ceph/rpm-jewel/el7/SRPMS/</span><br></pre></td></tr></table></figure>
 <p>得到<code>index.html</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"># cat /root/mirrors.163.com/ceph/rpm-jewel/el7/SRPMS/index.html</div><div class="line">&lt;html&gt;</div><div class="line">&lt;head&gt;&lt;title&gt;Index of /ceph/rpm-jewel/el7/SRPMS/&lt;/title&gt;&lt;/head&gt;</div><div class="line">&lt;body bgcolor=&quot;white&quot;&gt;</div><div class="line">&lt;h1&gt;Index of /ceph/rpm-jewel/el7/SRPMS/&lt;/h1&gt;&lt;hr&gt;&lt;pre&gt;&lt;a href=&quot;../&quot;&gt;../&lt;/a&gt;</div><div class="line">&lt;a href=&quot;repodata/&quot;&gt;repodata/&lt;/a&gt;                                          11-Apr-2017 03:06       -</div><div class="line">&lt;a href=&quot;ceph-10.1.0-0.el7.src.rpm&quot;&gt;ceph-10.1.0-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      8M</div><div class="line">&lt;a href=&quot;ceph-10.1.1-0.el7.src.rpm&quot;&gt;ceph-10.1.1-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      9M</div><div class="line">&lt;a href=&quot;ceph-10.1.2-0.el7.src.rpm&quot;&gt;ceph-10.1.2-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      9M</div><div class="line">&lt;a href=&quot;ceph-10.2.0-0.el7.src.rpm&quot;&gt;ceph-10.2.0-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      9M</div><div class="line">&lt;a href=&quot;ceph-10.2.1-0.el7.src.rpm&quot;&gt;ceph-10.2.1-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      9M</div><div class="line">&lt;a href=&quot;ceph-10.2.2-0.el7.src.rpm&quot;&gt;ceph-10.2.2-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      8M</div><div class="line">&lt;a href=&quot;ceph-10.2.3-0.el7.src.rpm&quot;&gt;ceph-10.2.3-0.el7.src.rpm&lt;/a&gt;                          17-Oct-2016 20:29      9M</div><div class="line">&lt;a href=&quot;ceph-10.2.4-0.el7.src.rpm&quot;&gt;ceph-10.2.4-0.el7.src.rpm&lt;/a&gt;                          07-Dec-2016 05:39     10M</div><div class="line">&lt;a href=&quot;ceph-10.2.5-0.el7.src.rpm&quot;&gt;ceph-10.2.5-0.el7.src.rpm&lt;/a&gt;                          05-Jan-2017 02:49     10M</div><div class="line">&lt;a href=&quot;ceph-10.2.6-0.el7.src.rpm&quot;&gt;ceph-10.2.6-0.el7.src.rpm&lt;/a&gt;                          08-Mar-2017 21:55     11M</div><div class="line">&lt;a href=&quot;ceph-10.2.7-0.el7.src.rpm&quot;&gt;ceph-10.2.7-0.el7.src.rpm&lt;/a&gt;                          11-Apr-2017 02:53     11M</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.29-0.src.rpm&quot;&gt;ceph-deploy-1.5.29-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     91K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.30-0.src.rpm&quot;&gt;ceph-deploy-1.5.30-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     91K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.31-0.src.rpm&quot;&gt;ceph-deploy-1.5.31-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     91K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.32-0.src.rpm&quot;&gt;ceph-deploy-1.5.32-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     91K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.33-0.src.rpm&quot;&gt;ceph-deploy-1.5.33-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     91K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.34-0.src.rpm&quot;&gt;ceph-deploy-1.5.34-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     94K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.35-0.src.rpm&quot;&gt;ceph-deploy-1.5.35-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     95K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.36-0.src.rpm&quot;&gt;ceph-deploy-1.5.36-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     95K</div><div class="line">&lt;a href=&quot;ceph-deploy-1.5.37-0.src.rpm&quot;&gt;ceph-deploy-1.5.37-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     95K</div><div class="line">&lt;a href=&quot;ceph-release-1-1.el7.src.rpm&quot;&gt;ceph-release-1-1.el7.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53    4186</div><div class="line">&lt;a href=&quot;radosgw-agent-1.2.5-0.el7.src.rpm&quot;&gt;radosgw-agent-1.2.5-0.el7.src.rpm&lt;/a&gt;                  11-Apr-2017 02:53     29K</div><div class="line">&lt;a href=&quot;radosgw-agent-1.2.6-0.el7.src.rpm&quot;&gt;radosgw-agent-1.2.6-0.el7.src.rpm&lt;/a&gt;                  11-Apr-2017 02:53     29K</div><div class="line">&lt;a href=&quot;radosgw-agent-1.2.7-0.el7.src.rpm&quot;&gt;radosgw-agent-1.2.7-0.el7.src.rpm&lt;/a&gt;                  11-Apr-2017 02:53     29K</div><div class="line">&lt;/pre&gt;&lt;hr&gt;&lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"># cat /root/mirrors.163.com/ceph/rpm-jewel/el7/SRPMS/index.html</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;&lt;title&gt;Index of /ceph/rpm-jewel/el7/SRPMS/&lt;/title&gt;&lt;/head&gt;</span><br><span class="line">&lt;body bgcolor=&quot;white&quot;&gt;</span><br><span class="line">&lt;h1&gt;Index of /ceph/rpm-jewel/el7/SRPMS/&lt;/h1&gt;&lt;hr&gt;&lt;pre&gt;&lt;a href=&quot;../&quot;&gt;../&lt;/a&gt;</span><br><span class="line">&lt;a href=&quot;repodata/&quot;&gt;repodata/&lt;/a&gt;                                          11-Apr-2017 03:06       -</span><br><span class="line">&lt;a href=&quot;ceph-10.1.0-0.el7.src.rpm&quot;&gt;ceph-10.1.0-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      8M</span><br><span class="line">&lt;a href=&quot;ceph-10.1.1-0.el7.src.rpm&quot;&gt;ceph-10.1.1-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      9M</span><br><span class="line">&lt;a href=&quot;ceph-10.1.2-0.el7.src.rpm&quot;&gt;ceph-10.1.2-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      9M</span><br><span class="line">&lt;a href=&quot;ceph-10.2.0-0.el7.src.rpm&quot;&gt;ceph-10.2.0-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      9M</span><br><span class="line">&lt;a href=&quot;ceph-10.2.1-0.el7.src.rpm&quot;&gt;ceph-10.2.1-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      9M</span><br><span class="line">&lt;a href=&quot;ceph-10.2.2-0.el7.src.rpm&quot;&gt;ceph-10.2.2-0.el7.src.rpm&lt;/a&gt;                          15-Jun-2016 08:47      8M</span><br><span class="line">&lt;a href=&quot;ceph-10.2.3-0.el7.src.rpm&quot;&gt;ceph-10.2.3-0.el7.src.rpm&lt;/a&gt;                          17-Oct-2016 20:29      9M</span><br><span class="line">&lt;a href=&quot;ceph-10.2.4-0.el7.src.rpm&quot;&gt;ceph-10.2.4-0.el7.src.rpm&lt;/a&gt;                          07-Dec-2016 05:39     10M</span><br><span class="line">&lt;a href=&quot;ceph-10.2.5-0.el7.src.rpm&quot;&gt;ceph-10.2.5-0.el7.src.rpm&lt;/a&gt;                          05-Jan-2017 02:49     10M</span><br><span class="line">&lt;a href=&quot;ceph-10.2.6-0.el7.src.rpm&quot;&gt;ceph-10.2.6-0.el7.src.rpm&lt;/a&gt;                          08-Mar-2017 21:55     11M</span><br><span class="line">&lt;a href=&quot;ceph-10.2.7-0.el7.src.rpm&quot;&gt;ceph-10.2.7-0.el7.src.rpm&lt;/a&gt;                          11-Apr-2017 02:53     11M</span><br><span class="line">&lt;a href=&quot;ceph-deploy-1.5.29-0.src.rpm&quot;&gt;ceph-deploy-1.5.29-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     91K</span><br><span class="line">&lt;a href=&quot;ceph-deploy-1.5.30-0.src.rpm&quot;&gt;ceph-deploy-1.5.30-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     91K</span><br><span class="line">&lt;a href=&quot;ceph-deploy-1.5.31-0.src.rpm&quot;&gt;ceph-deploy-1.5.31-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     91K</span><br><span class="line">&lt;a href=&quot;ceph-deploy-1.5.32-0.src.rpm&quot;&gt;ceph-deploy-1.5.32-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     91K</span><br><span class="line">&lt;a href=&quot;ceph-deploy-1.5.33-0.src.rpm&quot;&gt;ceph-deploy-1.5.33-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     91K</span><br><span class="line">&lt;a href=&quot;ceph-deploy-1.5.34-0.src.rpm&quot;&gt;ceph-deploy-1.5.34-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     94K</span><br><span class="line">&lt;a href=&quot;ceph-deploy-1.5.35-0.src.rpm&quot;&gt;ceph-deploy-1.5.35-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     95K</span><br><span class="line">&lt;a href=&quot;ceph-deploy-1.5.36-0.src.rpm&quot;&gt;ceph-deploy-1.5.36-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     95K</span><br><span class="line">&lt;a href=&quot;ceph-deploy-1.5.37-0.src.rpm&quot;&gt;ceph-deploy-1.5.37-0.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53     95K</span><br><span class="line">&lt;a href=&quot;ceph-release-1-1.el7.src.rpm&quot;&gt;ceph-release-1-1.el7.src.rpm&lt;/a&gt;                       11-Apr-2017 02:53    4186</span><br><span class="line">&lt;a href=&quot;radosgw-agent-1.2.5-0.el7.src.rpm&quot;&gt;radosgw-agent-1.2.5-0.el7.src.rpm&lt;/a&gt;                  11-Apr-2017 02:53     29K</span><br><span class="line">&lt;a href=&quot;radosgw-agent-1.2.6-0.el7.src.rpm&quot;&gt;radosgw-agent-1.2.6-0.el7.src.rpm&lt;/a&gt;                  11-Apr-2017 02:53     29K</span><br><span class="line">&lt;a href=&quot;radosgw-agent-1.2.7-0.el7.src.rpm&quot;&gt;radosgw-agent-1.2.7-0.el7.src.rpm&lt;/a&gt;                  11-Apr-2017 02:53     29K</span><br><span class="line">&lt;/pre&gt;&lt;hr&gt;&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
 <h2 id="开始下载"><a href="#开始下载" class="headerlink" title="开始下载"></a>开始下载</h2><p>命令如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget -nc -B http://mirrors.163.com/ceph/rpm-jewel/el7/SRPMS/ -F -nH --cut-dirs=3 -i index.html</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -nc -B http://mirrors.163.com/ceph/rpm-jewel/el7/SRPMS/ -F -nH --cut-dirs=3 -i index.html</span><br></pre></td></tr></table></figure>
 <table>
 <thead>
 <tr>
@@ -239,13 +238,16 @@ var _hmt = _hmt || [];
 </tr>
 </tbody>
 </table>
-<p>更多关于参数的问题详见：<a href="http://jiaxl.blog.51cto.com/3064605/1191196" target="_blank" rel="external">wget参数介绍</a></p>
-<p>然后就开始下载，直至完成<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">FINISHED --2017-06-23 18:11:54--</div><div class="line">Total wall clock time: 7m 31s</div><div class="line">Downloaded: 24 files, 103M in 7m 29s (234 KB/s)</div></pre></td></tr></table></figure></p>
-<p>下载完成后列表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"># ll</div><div class="line">总用量 105264</div><div class="line">-rw-r--r--. 1 root root  8894228 6月  15 2016 ceph-10.1.0-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  8942739 6月  15 2016 ceph-10.1.1-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  8961123 6月  15 2016 ceph-10.1.2-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  8967492 6月  15 2016 ceph-10.2.0-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  8996472 6月  15 2016 ceph-10.2.1-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  8876099 6月  15 2016 ceph-10.2.2-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root  9044336 10月 17 2016 ceph-10.2.3-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root 10849625 12月  7 2016 ceph-10.2.4-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root 10795514 1月   5 02:49 ceph-10.2.5-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root 11215646 3月   8 21:55 ceph-10.2.6-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root 11245006 4月  11 02:53 ceph-10.2.7-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root    92710 4月  11 02:53 ceph-deploy-1.5.29-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    92915 4月  11 02:53 ceph-deploy-1.5.30-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    92953 4月  11 02:53 ceph-deploy-1.5.31-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    93493 4月  11 02:53 ceph-deploy-1.5.32-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    93323 4月  11 02:53 ceph-deploy-1.5.33-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    96664 4月  11 02:53 ceph-deploy-1.5.34-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    97010 4月  11 02:53 ceph-deploy-1.5.35-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    96998 4月  11 02:53 ceph-deploy-1.5.36-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root    97146 4月  11 02:53 ceph-deploy-1.5.37-0.src.rpm</div><div class="line">-rw-r--r--. 1 root root     4186 4月  11 02:53 ceph-release-1-1.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root     3189 6月  23 18:01 index.html</div><div class="line">-rw-r--r--. 1 root root    30175 4月  11 02:53 radosgw-agent-1.2.5-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root    29980 4月  11 02:53 radosgw-agent-1.2.6-0.el7.src.rpm</div><div class="line">-rw-r--r--. 1 root root    30044 4月  11 02:53 radosgw-agent-1.2.7-0.el7.src.rpm</div></pre></td></tr></table></figure></p>
+<p>更多关于参数的问题详见：<a href="http://jiaxl.blog.51cto.com/3064605/1191196" target="_blank" rel="noopener">wget参数介绍</a></p>
+<p>然后就开始下载，直至完成<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">FINISHED --2017-06-23 18:11:54--</span><br><span class="line">Total wall clock time: 7m 31s</span><br><span class="line">Downloaded: 24 files, 103M in 7m 29s (234 KB/s)</span><br></pre></td></tr></table></figure></p>
+<p>下载完成后列表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"># ll</span><br><span class="line">总用量 105264</span><br><span class="line">-rw-r--r--. 1 root root  8894228 6月  15 2016 ceph-10.1.0-0.el7.src.rpm</span><br><span class="line">-rw-r--r--. 1 root root  8942739 6月  15 2016 ceph-10.1.1-0.el7.src.rpm</span><br><span class="line">-rw-r--r--. 1 root root  8961123 6月  15 2016 ceph-10.1.2-0.el7.src.rpm</span><br><span class="line">-rw-r--r--. 1 root root  8967492 6月  15 2016 ceph-10.2.0-0.el7.src.rpm</span><br><span class="line">-rw-r--r--. 1 root root  8996472 6月  15 2016 ceph-10.2.1-0.el7.src.rpm</span><br><span class="line">-rw-r--r--. 1 root root  8876099 6月  15 2016 ceph-10.2.2-0.el7.src.rpm</span><br><span class="line">-rw-r--r--. 1 root root  9044336 10月 17 2016 ceph-10.2.3-0.el7.src.rpm</span><br><span class="line">-rw-r--r--. 1 root root 10849625 12月  7 2016 ceph-10.2.4-0.el7.src.rpm</span><br><span class="line">-rw-r--r--. 1 root root 10795514 1月   5 02:49 ceph-10.2.5-0.el7.src.rpm</span><br><span class="line">-rw-r--r--. 1 root root 11215646 3月   8 21:55 ceph-10.2.6-0.el7.src.rpm</span><br><span class="line">-rw-r--r--. 1 root root 11245006 4月  11 02:53 ceph-10.2.7-0.el7.src.rpm</span><br><span class="line">-rw-r--r--. 1 root root    92710 4月  11 02:53 ceph-deploy-1.5.29-0.src.rpm</span><br><span class="line">-rw-r--r--. 1 root root    92915 4月  11 02:53 ceph-deploy-1.5.30-0.src.rpm</span><br><span class="line">-rw-r--r--. 1 root root    92953 4月  11 02:53 ceph-deploy-1.5.31-0.src.rpm</span><br><span class="line">-rw-r--r--. 1 root root    93493 4月  11 02:53 ceph-deploy-1.5.32-0.src.rpm</span><br><span class="line">-rw-r--r--. 1 root root    93323 4月  11 02:53 ceph-deploy-1.5.33-0.src.rpm</span><br><span class="line">-rw-r--r--. 1 root root    96664 4月  11 02:53 ceph-deploy-1.5.34-0.src.rpm</span><br><span class="line">-rw-r--r--. 1 root root    97010 4月  11 02:53 ceph-deploy-1.5.35-0.src.rpm</span><br><span class="line">-rw-r--r--. 1 root root    96998 4月  11 02:53 ceph-deploy-1.5.36-0.src.rpm</span><br><span class="line">-rw-r--r--. 1 root root    97146 4月  11 02:53 ceph-deploy-1.5.37-0.src.rpm</span><br><span class="line">-rw-r--r--. 1 root root     4186 4月  11 02:53 ceph-release-1-1.el7.src.rpm</span><br><span class="line">-rw-r--r--. 1 root root     3189 6月  23 18:01 index.html</span><br><span class="line">-rw-r--r--. 1 root root    30175 4月  11 02:53 radosgw-agent-1.2.5-0.el7.src.rpm</span><br><span class="line">-rw-r--r--. 1 root root    29980 4月  11 02:53 radosgw-agent-1.2.6-0.el7.src.rpm</span><br><span class="line">-rw-r--r--. 1 root root    30044 4月  11 02:53 radosgw-agent-1.2.7-0.el7.src.rpm</span><br></pre></td></tr></table></figure></p>
 <p>以上</p>
 
       
-
+    
+    
+      <div class="declare" hidden="hidden"></div>
+    
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -343,11 +345,12 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://xiaqunfeng.cc/2017/06/23/wget批量下载http目录及文件/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2017/06/23/wget批量下载http目录及文件/" alt="微信分享二维码">
     </div>
 </div>
 
 <div class="mask js-mask"></div>
+
       
       <div class="clearfix"></div>
     </div>
@@ -452,6 +455,8 @@ gitment.render('gitment-ctn')
 </footer>
 
 <script type="text/javascript" id="clustrmaps" src="//cdn.clustrmaps.com/map_v2.js?d=qsWNShFHsOamJvwSEq7i1Ga2zfaKBjrsK939rO8hUEA&cl=ffffff&w=a"></script>
+<!--页面点击小红心-->
+<script type="text/javascript" src="/love.js"></script>
 
     </div>
     <script>
@@ -553,10 +558,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">cluster</a>
               </li>
              
@@ -569,15 +570,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">luminous</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">centos</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -597,19 +598,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">monitor</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">code</a>
+                <a href="javascript:void(0)" class="js-tag color1">filesystem</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+                <a href="javascript:void(0)" class="js-tag color5">code</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -621,6 +618,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ansible</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">mon</a>
               </li>
              
@@ -629,19 +630,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">install</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">kraken</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+                <a href="javascript:void(0)" class="js-tag color3">install</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -653,6 +646,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">iterm</a>
               </li>
              
@@ -661,15 +658,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vim</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">ubuntu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -681,15 +682,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">cloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">ganesha</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">network</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">architecture</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">cpu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
             
             <div class="clearfix"></div>
