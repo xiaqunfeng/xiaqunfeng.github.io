@@ -95,7 +95,8 @@
     <entry>
       <title><![CDATA[文章导航]]></title>
       <url>http://xiaqunfeng.cc/2019/10/01/navigation/</url>
-      <content type="html"><![CDATA[<p>将文章进行归类总结 <a id="more"></a></p>
+      <content type="html"><![CDATA[<p>深度学习 ：<a href="http://xiaqunfeng.cc/categories/DeepLearning/">DeepLearning</a><br>机器学习：<a href="http://xiaqunfeng.cc/categories/MachineLearning/">MachineLearning</a><br>分布式相关：<a href="http://xiaqunfeng.cc/categories/Distribute/">Distribute</a><br>Ceph分布式存储：<a href="http://xiaqunfeng.cc/categories/Ceph/">Ceph</a><br>工具：<a href="http://xiaqunfeng.cc/categories/Tools/">Tools</a> </p>
+<a id="more"></a>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>虽然点击“所有文章”可以根据tag筛选文章，但文章之前打的tag较多，多有不便。文章分类展示的也不是很明显，所以，这里梳理一下。</p>
 <ul>
 <li>tag和分类使用详见“导航”。</li>
@@ -114,26 +115,13 @@
 <li>云计算</li>
 <li>工具</li>
 </ul>
-<p>可在主页直接点击本置顶文章的类别标签即可跳转。</p>
+<p>1、可在主页直接点击本置顶文章的类别标签即可跳转。</p>
 <p><img src="http://oow6unnib.bkt.clouddn.com/hexo-cls.png" alt="cls"></p>
 <p>如点击 <code>MachineLearning</code> 类别，展示如下：</p>
 <p><img src="http://oow6unnib.bkt.clouddn.com/hexo-cls-show.png" alt="cls-1"></p>
+<p>2、也可在文章下面的分类标签点击进入</p>
 ]]></content>
       
-        <categories>
-            
-            <category> DeepLearning </category>
-            
-            <category> MachineLearning </category>
-            
-            <category> Tools </category>
-            
-            <category> Distribute </category>
-            
-            <category> Ceph </category>
-            
-        </categories>
-        
         
     </entry>
     
@@ -1640,6 +1628,8 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         <tags>
             
             <tag> tool </tag>
+            
+            <tag> python </tag>
             
         </tags>
         

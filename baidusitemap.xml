@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://xiaqunfeng.cc/2019/10/01/navigation/</loc>
-    <lastmod>2019-10-06T11:48:05.090Z</lastmod>
+    <lastmod>2019-10-06T12:36:04.364Z</lastmod>
     <data>
         <display>
         <title>文章导航</title>
@@ -13,17 +13,28 @@
         
          
            
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2018/04/13/jupyter-conda/</loc>
+    <lastmod>2019-10-06T12:34:47.960Z</lastmod>
+    <data>
+        <display>
+        <title>在jupyter中添加conda环境</title>
+        <pubTime>2018-04-13T01:50:39.000Z</pubTime>
+        
+        <tag>tool</tag>
+         
+        <tag>python</tag>
+         
+         
+           
              
-              <breadCrumb title="DeepLearning" url="http://xiaqunfeng.cc/categories/DeepLearning/"/>
+              <breadCrumb title="Tools" url="http://xiaqunfeng.cc/categories/Tools/"/>
           
-             
-              <breadCrumb title="MachineLearning" url="http://xiaqunfeng.cc/categories/DeepLearning/MachineLearning/"/>
-          
-             
-              <breadCrumb title="Tools" url="http://xiaqunfeng.cc/categories/DeepLearning/MachineLearning/Tools/"/>
-          
-             
-             
         </display>
     </data>
     </url>
@@ -812,26 +823,6 @@
            
              
               <breadCrumb title="Deeplearning" url="http://xiaqunfeng.cc/categories/Deeplearning/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2018/04/13/jupyter-conda/</loc>
-    <lastmod>2019-10-06T09:06:46.564Z</lastmod>
-    <data>
-        <display>
-        <title>在jupyter中添加conda环境</title>
-        <pubTime>2018-04-13T01:50:39.000Z</pubTime>
-        
-        <tag>tool</tag>
-         
-         
-           
-             
-              <breadCrumb title="Tools" url="http://xiaqunfeng.cc/categories/Tools/"/>
           
         </display>
     </data>
