@@ -4,12 +4,29 @@
 
     
   <url>
-    <loc>http://xiaqunfeng.cc/2019/04/10/my-2018/</loc>
-    <lastmod>2019-10-06T06:11:20.572Z</lastmod>
+    <loc>http://xiaqunfeng.cc/2019/10/01/hexo-update/</loc>
+    <lastmod>2019-10-06T07:09:59.959Z</lastmod>
     <data>
         <display>
-        <title>我的2018</title>
-        <pubTime>2019-04-10T06:03:07.000Z</pubTime>
+        <title>hexo博客更新</title>
+        <pubTime>2019-10-01T05:11:44.000Z</pubTime>
+        
+        <tag>hexo</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2019/10/01/navigation/</loc>
+    <lastmod>2019-10-06T06:43:03.182Z</lastmod>
+    <data>
+        <display>
+        <title>文章导航</title>
+        <pubTime>2019-10-01T04:59:24.000Z</pubTime>
         
          
            
@@ -19,15 +36,13 @@
 
     
   <url>
-    <loc>http://xiaqunfeng.cc/2019/10/01/hexo-update/</loc>
-    <lastmod>2019-10-06T06:07:40.968Z</lastmod>
+    <loc>http://xiaqunfeng.cc/2019/04/10/my-2018/</loc>
+    <lastmod>2019-10-06T06:11:20.572Z</lastmod>
     <data>
         <display>
-        <title>hexo博客更新</title>
-        <pubTime>2019-10-01T05:11:44.000Z</pubTime>
+        <title>我的2018</title>
+        <pubTime>2019-04-10T06:03:07.000Z</pubTime>
         
-        <tag>hexo</tag>
-         
          
            
         </display>
@@ -45,21 +60,6 @@
         
         <tag>python</tag>
          
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2019/10/01/navigation/</loc>
-    <lastmod>2019-10-06T06:01:22.190Z</lastmod>
-    <data>
-        <display>
-        <title>文章导航</title>
-        <pubTime>2019-10-01T04:59:24.000Z</pubTime>
-        
          
            
         </display>

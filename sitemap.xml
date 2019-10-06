@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://xiaqunfeng.cc/2019/10/01/hexo-update/</loc>
+    
+    <lastmod>2019-10-06T07:09:59.959Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2019/10/01/navigation/</loc>
+    
+    <lastmod>2019-10-06T06:43:03.182Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://xiaqunfeng.cc/2019/04/10/my-2018/</loc>
     
     <lastmod>2019-10-06T06:11:20.572Z</lastmod>
@@ -9,23 +23,9 @@
   </url>
   
   <url>
-    <loc>http://xiaqunfeng.cc/2019/10/01/hexo-update/</loc>
-    
-    <lastmod>2019-10-06T06:07:40.968Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://xiaqunfeng.cc/2019/01/15/python-skill-of-if-else/</loc>
     
     <lastmod>2019-10-06T06:06:47.509Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2019/10/01/navigation/</loc>
-    
-    <lastmod>2019-10-06T06:01:22.190Z</lastmod>
     
   </url>
   

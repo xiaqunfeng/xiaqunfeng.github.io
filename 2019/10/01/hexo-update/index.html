@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="记录我的hexo博客的功能升级和bug修复。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-10-06T06:07:40.968Z">
+<meta property="og:updated_time" content="2019-10-06T07:09:59.959Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="hexo博客更新">
 <meta name="twitter:description" content="记录我的hexo博客的功能升级和bug修复。">
@@ -179,19 +179,28 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>记录我的hexo博客的功能升级和bug修复。</p>
-<a id="more"></a>
-<p>这半年有点忙，好久没维护博客了，后续还是要花点时间过来。</p>
+        <p>记录我的hexo博客的功能升级和bug修复。 <a id="more"></a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这半年有点忙，好久没维护博客了，后续还是要花点时间过来。</p>
 <p>本次做了一些小功能升级，其实之前在yilia主题的基础上做过一些改动，不过没记录下来，后续有变化的话，尽量都总结在这。</p>
 <h2 id="功能升级"><a href="#功能升级" class="headerlink" title="功能升级"></a>功能升级</h2><h3 id="文章置顶"><a href="#文章置顶" class="headerlink" title="文章置顶"></a>文章置顶</h3><p>1、插件安装</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo npm uninstall hexo-generator-index --save</span><br><span class="line">sudo npm install hexo-generator-index-pin-top --save</span><br></pre></td></tr></table></figure>
-<p>2、标准配置</p>
+<p>2、添加置顶式样</p>
 <p>文件：<code>themes/yilia/layout/post.ejs</code></p>
 <p>在前面添加：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;% if (page.top) &#123; %&gt;</span><br><span class="line">  &lt;i class=&quot;fa fa-thumb-tack&quot;&gt;&lt;/i&gt;</span><br><span class="line">  &lt;font color=7D26CD&gt;置顶&lt;/font&gt;</span><br><span class="line">  &lt;span class=&quot;post-meta-divider&quot;&gt;|&lt;/span&gt;</span><br><span class="line">&lt;% &#125; %&gt;</span><br></pre></td></tr></table></figure>
-<p>3、文章中置顶的使用</p>
+<p>3、新增配置</p>
+<p>在博客根目录下的配置文件 <code>_config.yml</code> 中新增如下配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">index_generator:</span><br><span class="line">  path: &apos;&apos;</span><br><span class="line">  per_page: 10</span><br><span class="line">  order_by:</span><br><span class="line">    top: 1</span><br><span class="line">    date: -1</span><br></pre></td></tr></table></figure>
+<ul>
+<li>date：-1，表示按时间倒序</li>
+<li>tpo: 1，表示按top值正序排序，top值越大，置顶越靠前</li>
+</ul>
+<p>4、文章中置顶的使用</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: python学习</span><br><span class="line">date: 2019-01-15 15:41:04</span><br><span class="line">categories:</span><br><span class="line">tags: python</span><br><span class="line">top: 1</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
 <p>top数字越大，置顶优先级越高</p>
+<blockquote>
+<p>还有一种置顶方法，详见commit：<a href="https://github.com/litten/hexo-theme-yilia/commit/9a5c162d3bab7a9713a424ec46608ce6fdeded05" target="_blank" rel="noopener">https://github.com/litten/hexo-theme-yilia/commit/9a5c162d3bab7a9713a424ec46608ce6fdeded05</a></p>
+</blockquote>
 <h3 id="版权声明"><a href="#版权声明" class="headerlink" title="版权声明"></a>版权声明</h3><p>1、添加版权声明代码</p>
 <p>文件：<code>themes/yilia/layout/_partial/article.ejs</code></p>
 <p>添加位置：</p>
@@ -235,6 +244,10 @@ var _hmt = _hmt || [];
 <li>abstract: 主页上显示的摘要（注意，会覆盖之前 more 的摘要）</li>
 <li>message: 点击查看博客时，密码输入框上的提示性文字</li>
 </ul>
+<h3 id="隐藏more"><a href="#隐藏more" class="headerlink" title="隐藏more"></a>隐藏more</h3><p>在文章中会插入 <code>&lt;!-- more --&gt;</code>  来截断文章，在展开全文前只显示阶段前的部分，但是，总是会显示  <code>more&gt;&gt;</code> 式样，和主题已有的 <code>展开全文&gt;&gt;</code> 重复了，这里需要把这个 more&gt;&gt; 隐藏起来。</p>
+<p>文件：<code>themes/yilia/_config.yml</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># excerpt_link: more</span><br></pre></td></tr></table></figure>
+<p>如上，将 excerpt_link 注释掉即可。</p>
 <h2 id="bug修复"><a href="#bug修复" class="headerlink" title="bug修复"></a>bug修复</h2><p>1、<code>fs.SyncWriteStream is deprecated</code></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">▶ hexo s</span><br><span class="line">(node:17098) [DEP0061] DeprecationWarning: fs.SyncWriteStream is deprecated.</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <p>解决方法：</p>
@@ -245,7 +258,24 @@ var _hmt = _hmt || [];
       
     
     
-      <div class="declare" hidden="hidden"></div>
+      <div class="declare">
+        <strong>本文作者：</strong>
+        
+          夏天的风
+        
+        <br>
+        <strong>本文链接：</strong>
+        <a rel="license" href="http://xiaqunfeng.cc/2019/10/01/hexo-update/">http://xiaqunfeng.cc/2019/10/01/hexo-update/</a>
+        <br>
+        <strong>版权声明：</strong>
+        本作品采用
+        <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+        进行许可。转载请注明出处！
+        
+          <br>
+          <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"/></a>
+        
+      </div>
     
       
         <div class="page-reward">
@@ -388,7 +418,7 @@ var _hmt = _hmt || [];
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#功能升级"><span class="toc-number">1.</span> <span class="toc-text">功能升级</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#文章置顶"><span class="toc-number">1.1.</span> <span class="toc-text">文章置顶</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#版权声明"><span class="toc-number">1.2.</span> <span class="toc-text">版权声明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#鼠标点击小红心"><span class="toc-number">1.3.</span> <span class="toc-text">鼠标点击小红心</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文章加密"><span class="toc-number">1.4.</span> <span class="toc-text">文章加密</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bug修复"><span class="toc-number">2.</span> <span class="toc-text">bug修复</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#功能升级"><span class="toc-number">2.</span> <span class="toc-text">功能升级</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#文章置顶"><span class="toc-number">2.1.</span> <span class="toc-text">文章置顶</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#版权声明"><span class="toc-number">2.2.</span> <span class="toc-text">版权声明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#鼠标点击小红心"><span class="toc-number">2.3.</span> <span class="toc-text">鼠标点击小红心</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文章加密"><span class="toc-number">2.4.</span> <span class="toc-text">文章加密</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#隐藏more"><span class="toc-number">2.5.</span> <span class="toc-text">隐藏more</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bug修复"><span class="toc-number">3.</span> <span class="toc-text">bug修复</span></a></li></ol>
                     </div>
                 </span>
             </div>
