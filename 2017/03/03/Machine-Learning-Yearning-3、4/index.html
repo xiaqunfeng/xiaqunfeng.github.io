@@ -19,7 +19,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20161209001935676?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 <meta property="og:image" content="http://img.blog.csdn.net/20161209002633511?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 <meta property="og:image" content="http://img.blog.csdn.net/20161209003804359?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:updated_time" content="2018-03-27T00:59:25.000Z">
+<meta property="og:updated_time" content="2019-11-06T03:55:59.715Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Machine Learning Yearning(3、4)">
 <meta name="twitter:description" content="NG的机器学习教程，第三章：预备知识和注释；第四章：规模驱使机器学习前进。">
@@ -184,7 +184,8 @@ var _hmt = _hmt || [];
     <div class="article-entry" itemprop="articleBody">
       
         <p>NG的机器学习教程，第三章：预备知识和注释；第四章：规模驱使机器学习前进。<br><a id="more"></a></p>
-<p>共14篇完整手稿已翻译完毕，详见：<a href="https://github.com/xiaqunfeng/machine-learning-yearning，博客上就不再更新" target="_blank" rel="noopener">https://github.com/xiaqunfeng/machine-learning-yearning，博客上就不再更新</a></p>
+<p><strong>update 2019:</strong></p>
+<p>所有56篇完整手稿已翻译完毕，详见：<a href="https://github.com/xiaqunfeng/machine-learning-yearning" target="_blank" rel="noopener">https://github.com/xiaqunfeng/machine-learning-yearning</a></p>
 <h2 id="Chapter-3、Prerequisites-and-Notation"><a href="#Chapter-3、Prerequisites-and-Notation" class="headerlink" title="Chapter 3、Prerequisites and Notation"></a>Chapter 3、Prerequisites and Notation</h2><p><strong>预备知识和注释</strong><br>​    如果你有学习过机器学习课程，比如我在Coursera上的的机器学习MOOC，或者如果你有应用监督学习的经验，你也将能够理解这段文字。<br>​    我假设你熟悉监督学习（supervised learning）：使用标记的训练样本（x，y）去学习一个从x映射到y的函数。 监督学习算法包括线性回归（linear regression），逻辑回归（logistic regression）和神经网络（neural networks）。 机器学习的形式有很多，但是现如今大部分机器学习的实用价值来自于监督学习。<br>​    我将经常提到神经网络（也称为“deep learning”）。你只需要遵循本问对它是什么有一个基本的理解就可以了。<br>​    如果您不熟悉这里提到的概念，请观看在Coursera上前三周 机器学习视频课程<a href="http://ml-class.org" target="_blank" rel="noopener">http://ml-class.org</a></p>
 <p><img src="http://img.blog.csdn.net/20161208234928384?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
 <h2 id="Chapter-4、Scale-drives-machine-learning-progress"><a href="#Chapter-4、Scale-drives-machine-learning-progress" class="headerlink" title="Chapter 4、Scale drives machine learning progress"></a>Chapter 4、Scale drives machine learning progress</h2><p><strong>规模驱使机器学习前进</strong></p>
@@ -377,22 +378,30 @@ var _hmt = _hmt || [];
   
 
   
-  <div id="gitment-ctn"></div> 
-<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
-<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
+
+  
+    <section id="comments" style="margin:10px;padding:10px;background:#fff;">
+      <div id="vcomment" class="comment"></div> 
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
 <script>
-var gitment = new Gitment({
-  id: "Fri Mar 03 2017 09:14:50 GMT+0800",
-  owner: 'xiaqunfeng',
-  repo: 'xiaqunfeng.github.io',
-  oauth: {
-    client_id: '21c3a01653d904d670a4',
-    client_secret: 'cf0e1ef08aa2e2fdfa0654901492f1738382c5d3',
-  },
-})
-gitment.render('gitment-ctn')
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+    window.onload = function() {
+        new Valine({
+            el: '.comment',
+            notify: notify,
+            verify: verify,
+            app_id: "2AgYNp3s7S4ddNLjt7diG8gj-9Nh9j0Va",
+            app_key: "6WNBmQrMcjfQG4XYo8VA54hb",
+            placeholder: "Just go go",
+            avatar:"mp",
+            avatar_cdn:'{{ theme.valine.avatar_cdn }}',
+        });
+    }
 </script>
 
+    </section>
   
 
 
@@ -517,10 +526,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">linuxs</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">linux</a>
               </li>
              
@@ -529,11 +534,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">tool</a>
+                <a href="javascript:void(0)" class="js-tag color5">ceph</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">ceph</a>
+                <a href="javascript:void(0)" class="js-tag color5">tool</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -562,10 +567,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">os</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">

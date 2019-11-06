@@ -17,7 +17,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.blog.csdn.net/20161208213001211?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 <meta property="og:image" content="http://img.blog.csdn.net/20161208232515575?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvTk5OTk5OTk5OTk5OWQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:updated_time" content="2018-03-27T00:59:49.000Z">
+<meta property="og:updated_time" content="2019-11-06T03:54:46.872Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Machine Learning Yearning(开篇、1、2)">
 <meta name="twitter:description" content="NG的机器学习教程，翻译过来，这里是开篇、第一章和第二章的内容。">
@@ -185,7 +185,8 @@ var _hmt = _hmt || [];
 <h2 id="开篇"><a href="#开篇" class="headerlink" title="开篇"></a>开篇</h2><p>网上搜了一下，发现已经有一些翻译后的资料了，我这里就是边学习边翻译记录，主要作为给自己的学习笔记吧，并不冲突。</p>
 <p>官网：<a href="http://www.mlyearning.org/" target="_blank" rel="noopener">http://www.mlyearning.org/</a></p>
 <p>这里可以留下你的邮箱，当有更新的时候会发到你的邮箱（好像我关注后就没发过）。</p>
-<p>共14篇完整手稿已翻译完毕，详见：<a href="https://github.com/xiaqunfeng/machine-learning-yearning，博客上就不再更新" target="_blank" rel="noopener">https://github.com/xiaqunfeng/machine-learning-yearning，博客上就不再更新</a></p>
+<p><strong>update 2019:</strong></p>
+<p>所有56篇完整手稿已翻译完毕，详见：<a href="https://github.com/xiaqunfeng/machine-learning-yearning" target="_blank" rel="noopener">https://github.com/xiaqunfeng/machine-learning-yearning</a></p>
 <h3 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h3><p>这本书的目的是教你如何做组织一个机器学习项目所需的大量的决定。 你将学习：</p>
 <ul>
 <li>如何建立你的开发和测试集</li>
@@ -398,22 +399,30 @@ var _hmt = _hmt || [];
   
 
   
-  <div id="gitment-ctn"></div> 
-<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
-<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
+
+  
+    <section id="comments" style="margin:10px;padding:10px;background:#fff;">
+      <div id="vcomment" class="comment"></div> 
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
 <script>
-var gitment = new Gitment({
-  id: "Thu Mar 02 2017 10:00:29 GMT+0800",
-  owner: 'xiaqunfeng',
-  repo: 'xiaqunfeng.github.io',
-  oauth: {
-    client_id: '21c3a01653d904d670a4',
-    client_secret: 'cf0e1ef08aa2e2fdfa0654901492f1738382c5d3',
-  },
-})
-gitment.render('gitment-ctn')
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+    window.onload = function() {
+        new Valine({
+            el: '.comment',
+            notify: notify,
+            verify: verify,
+            app_id: "2AgYNp3s7S4ddNLjt7diG8gj-9Nh9j0Va",
+            app_key: "6WNBmQrMcjfQG4XYo8VA54hb",
+            placeholder: "Just go go",
+            avatar:"mp",
+            avatar_cdn:'{{ theme.valine.avatar_cdn }}',
+        });
+    }
 </script>
 
+    </section>
   
 
 
@@ -538,10 +547,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">linuxs</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">linux</a>
               </li>
              
@@ -550,11 +555,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">tool</a>
+                <a href="javascript:void(0)" class="js-tag color5">ceph</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">ceph</a>
+                <a href="javascript:void(0)" class="js-tag color5">tool</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -583,10 +588,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">os</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">

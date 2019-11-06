@@ -4,6 +4,129 @@
 
     
   <url>
+    <loc>http://xiaqunfeng.cc/2019/11/06/hexo-valine/</loc>
+    <lastmod>2019-11-06T15:14:06.811Z</lastmod>
+    <data>
+        <display>
+        <title>Valine评论系统</title>
+        <pubTime>2019-11-06T09:44:29.000Z</pubTime>
+        
+        <tag>hexo</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/03/09/Machine-Learning-Yearning-5%E3%80%816/</loc>
+    <lastmod>2019-11-06T03:56:15.323Z</lastmod>
+    <data>
+        <display>
+        <title>Machine Learning Yearning(5、6、7)</title>
+        <pubTime>2017-03-09T02:38:35.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="MachineLearning" url="http://xiaqunfeng.cc/categories/MachineLearning/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/03/03/Machine-Learning-Yearning-3%E3%80%814/</loc>
+    <lastmod>2019-11-06T03:55:59.715Z</lastmod>
+    <data>
+        <display>
+        <title>Machine Learning Yearning(3、4)</title>
+        <pubTime>2017-03-03T01:14:50.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="MachineLearning" url="http://xiaqunfeng.cc/categories/MachineLearning/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/03/02/Machine-Learning-Yearning-%E5%BC%80%E7%AF%87%E3%80%811%E3%80%812/</loc>
+    <lastmod>2019-11-06T03:54:46.872Z</lastmod>
+    <data>
+        <display>
+        <title>Machine Learning Yearning(开篇、1、2)</title>
+        <pubTime>2017-03-02T02:00:29.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="MachineLearning" url="http://xiaqunfeng.cc/categories/MachineLearning/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/05/26/GPG-key-retrieval-failure/</loc>
+    <lastmod>2019-10-18T11:23:05.230Z</lastmod>
+    <data>
+        <display>
+        <title>GPG key retrieval failure</title>
+        <pubTime>2017-05-26T01:13:24.000Z</pubTime>
+        
+        <tag>linux</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2019/04/10/my-2018/</loc>
+    <lastmod>2019-10-12T07:06:20.443Z</lastmod>
+    <data>
+        <display>
+        <title>我的2018</title>
+        <pubTime>2019-04-10T06:03:07.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2018/03/08/ceph-osd-reweight/</loc>
+    <lastmod>2019-10-06T13:03:20.224Z</lastmod>
+    <data>
+        <display>
+        <title>ceph osd权重调整</title>
+        <pubTime>2018-03-08T12:22:36.000Z</pubTime>
+        
+        <tag>ceph</tag>
+         
+         
+           
+             
+              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://xiaqunfeng.cc/2019/10/01/navigation/</loc>
     <lastmod>2019-10-06T12:36:04.364Z</lastmod>
     <data>
@@ -961,23 +1084,6 @@
 
     
   <url>
-    <loc>http://xiaqunfeng.cc/2017/05/26/GPG-key-retrieval-failure/</loc>
-    <lastmod>2019-10-06T09:02:02.232Z</lastmod>
-    <data>
-        <display>
-        <title>GPG key retrieval failure</title>
-        <pubTime>2017-05-26T01:13:24.000Z</pubTime>
-        
-        <tag>linuxs</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://xiaqunfeng.cc/2018/07/11/git-rebase/</loc>
     <lastmod>2019-10-06T09:01:21.990Z</lastmod>
     <data>
@@ -1025,9 +1131,9 @@
         <title>fio测试ceph</title>
         <pubTime>2017-07-12T03:17:04.000Z</pubTime>
         
-        <tag>tool</tag>
-         
         <tag>ceph</tag>
+         
+        <tag>tool</tag>
          
          
            
@@ -1468,26 +1574,6 @@
         <display>
         <title>ceph osd相关操作</title>
         <pubTime>2017-08-17T08:07:13.000Z</pubTime>
-        
-        <tag>ceph</tag>
-         
-         
-           
-             
-              <breadCrumb title="Ceph" url="http://xiaqunfeng.cc/categories/Ceph/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2018/03/08/ceph-osd-reweight/</loc>
-    <lastmod>2019-10-06T08:40:36.564Z</lastmod>
-    <data>
-        <display>
-        <title>ceph osd权重调整</title>
-        <pubTime>2018-03-08T12:22:36.000Z</pubTime>
         
         <tag>ceph</tag>
          
@@ -2036,21 +2122,6 @@
 
     
   <url>
-    <loc>http://xiaqunfeng.cc/2019/04/10/my-2018/</loc>
-    <lastmod>2019-10-06T06:11:20.572Z</lastmod>
-    <data>
-        <display>
-        <title>我的2018</title>
-        <pubTime>2019-04-10T06:03:07.000Z</pubTime>
-        
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://xiaqunfeng.cc/2019/01/15/python-skill-of-if-else/</loc>
     <lastmod>2019-10-06T06:06:47.509Z</lastmod>
     <data>
@@ -2067,60 +2138,6 @@
     </url>
 
     
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/03/02/Machine-Learning-Yearning-%E5%BC%80%E7%AF%87%E3%80%811%E3%80%812/</loc>
-    <lastmod>2018-03-27T00:59:49.000Z</lastmod>
-    <data>
-        <display>
-        <title>Machine Learning Yearning(开篇、1、2)</title>
-        <pubTime>2017-03-02T02:00:29.000Z</pubTime>
-        
-         
-           
-             
-              <breadCrumb title="MachineLearning" url="http://xiaqunfeng.cc/categories/MachineLearning/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/03/09/Machine-Learning-Yearning-5%E3%80%816/</loc>
-    <lastmod>2018-03-27T00:59:39.000Z</lastmod>
-    <data>
-        <display>
-        <title>Machine Learning Yearning(5、6、7)</title>
-        <pubTime>2017-03-09T02:38:35.000Z</pubTime>
-        
-         
-           
-             
-              <breadCrumb title="MachineLearning" url="http://xiaqunfeng.cc/categories/MachineLearning/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/03/03/Machine-Learning-Yearning-3%E3%80%814/</loc>
-    <lastmod>2018-03-27T00:59:25.000Z</lastmod>
-    <data>
-        <display>
-        <title>Machine Learning Yearning(3、4)</title>
-        <pubTime>2017-03-03T01:14:50.000Z</pubTime>
-        
-         
-           
-             
-              <breadCrumb title="MachineLearning" url="http://xiaqunfeng.cc/categories/MachineLearning/"/>
-          
-        </display>
-    </data>
-    </url>
-
     
   <url>
     <loc>http://xiaqunfeng.cc/2017/02/03/Flashcache-vs-Cache-tier/</loc>

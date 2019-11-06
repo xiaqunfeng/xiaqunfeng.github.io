@@ -333,22 +333,30 @@ var _hmt = _hmt || [];
   
 
   
-  <div id="gitment-ctn"></div> 
-<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
-<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
+
+  
+    <section id="comments" style="margin:10px;padding:10px;background:#fff;">
+      <div id="vcomment" class="comment"></div> 
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
 <script>
-var gitment = new Gitment({
-  id: "Mon Jan 01 2018 15:32:06 GMT+0800",
-  owner: 'xiaqunfeng',
-  repo: 'xiaqunfeng.github.io',
-  oauth: {
-    client_id: '21c3a01653d904d670a4',
-    client_secret: 'cf0e1ef08aa2e2fdfa0654901492f1738382c5d3',
-  },
-})
-gitment.render('gitment-ctn')
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+    window.onload = function() {
+        new Valine({
+            el: '.comment',
+            notify: notify,
+            verify: verify,
+            app_id: "2AgYNp3s7S4ddNLjt7diG8gj-9Nh9j0Va",
+            app_key: "6WNBmQrMcjfQG4XYo8VA54hb",
+            placeholder: "Just go go",
+            avatar:"mp",
+            avatar_cdn:'{{ theme.valine.avatar_cdn }}',
+        });
+    }
 </script>
 
+    </section>
   
 
 
@@ -472,10 +480,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">linuxs</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">linux</a>
               </li>
              
@@ -484,11 +488,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">tool</a>
+                <a href="javascript:void(0)" class="js-tag color5">ceph</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">ceph</a>
+                <a href="javascript:void(0)" class="js-tag color5">tool</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -517,10 +521,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">os</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -2,6 +2,55 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://xiaqunfeng.cc/2019/11/06/hexo-valine/</loc>
+    
+    <lastmod>2019-11-06T15:14:06.811Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/03/09/Machine-Learning-Yearning-5%E3%80%816/</loc>
+    
+    <lastmod>2019-11-06T03:56:15.323Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/03/03/Machine-Learning-Yearning-3%E3%80%814/</loc>
+    
+    <lastmod>2019-11-06T03:55:59.715Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/03/02/Machine-Learning-Yearning-%E5%BC%80%E7%AF%87%E3%80%811%E3%80%812/</loc>
+    
+    <lastmod>2019-11-06T03:54:46.872Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2017/05/26/GPG-key-retrieval-failure/</loc>
+    
+    <lastmod>2019-10-18T11:23:05.230Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2019/04/10/my-2018/</loc>
+    
+    <lastmod>2019-10-12T07:06:20.443Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://xiaqunfeng.cc/2018/03/08/ceph-osd-reweight/</loc>
+    
+    <lastmod>2019-10-06T13:03:20.224Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://xiaqunfeng.cc/2019/10/01/navigation/</loc>
     
     <lastmod>2019-10-06T12:36:04.364Z</lastmod>
@@ -359,13 +408,6 @@
   </url>
   
   <url>
-    <loc>http://xiaqunfeng.cc/2017/05/26/GPG-key-retrieval-failure/</loc>
-    
-    <lastmod>2019-10-06T09:02:02.232Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://xiaqunfeng.cc/2018/07/11/git-rebase/</loc>
     
     <lastmod>2019-10-06T09:01:21.990Z</lastmod>
@@ -537,13 +579,6 @@
     <loc>http://xiaqunfeng.cc/2017/08/17/ceph-osd-operate/</loc>
     
     <lastmod>2019-10-06T08:40:56.039Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2018/03/08/ceph-osd-reweight/</loc>
-    
-    <lastmod>2019-10-06T08:40:36.564Z</lastmod>
     
   </url>
   
@@ -744,13 +779,6 @@
   </url>
   
   <url>
-    <loc>http://xiaqunfeng.cc/2019/04/10/my-2018/</loc>
-    
-    <lastmod>2019-10-06T06:11:20.572Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://xiaqunfeng.cc/2019/01/15/python-skill-of-if-else/</loc>
     
     <lastmod>2019-10-06T06:06:47.509Z</lastmod>
@@ -761,27 +789,6 @@
     <loc>http://xiaqunfeng.cc/about/index.html</loc>
     
     <lastmod>2019-02-17T14:42:18.749Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/03/02/Machine-Learning-Yearning-%E5%BC%80%E7%AF%87%E3%80%811%E3%80%812/</loc>
-    
-    <lastmod>2018-03-27T00:59:49.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/03/09/Machine-Learning-Yearning-5%E3%80%816/</loc>
-    
-    <lastmod>2018-03-27T00:59:39.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://xiaqunfeng.cc/2017/03/03/Machine-Learning-Yearning-3%E3%80%814/</loc>
-    
-    <lastmod>2018-03-27T00:59:25.000Z</lastmod>
     
   </url>
   
