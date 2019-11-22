@@ -16,20 +16,20 @@
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="RT，增加对Valine评论系统的支持。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/gitment-show.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/gitment.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/valine-create.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/valine-app.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/valine-security.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/valine-test.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/valine-comment-detail.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/valine-gravatar.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/valine-gravatars-test.png">
-<meta property="og:updated_time" content="2019-11-06T15:14:06.811Z">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/gitment-show.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/gitment.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/valine-create.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/valine-app.png-logo">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/valine-security.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/valine-test.png-logo">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/valine-comment-detail.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/valine-gravatar.png-logo">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/valine-gravatars-test.png-xtdf">
+<meta property="og:updated_time" content="2019-11-22T08:48:29.235Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Valine评论系统">
 <meta name="twitter:description" content="RT，增加对Valine评论系统的支持。">
-<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/gitment-show.png">
+<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/gitment-show.png-xtdf">
   
     <link rel="alternative" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
   
@@ -193,21 +193,21 @@ var _hmt = _hmt || [];
 <a id="more"></a>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前配置系统一直用的gitment，用github账号登录即可评论。详见之前的文章：<a href="http://xiaqunfeng.cc/2018/03/26/hexo-gitment/">添加gitment评论系统</a></p>
 <p>展示效果也很好：</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/gitment-show.png" alt="show"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/gitment-show.png-xtdf" alt="show"></p>
 <p>但是，现在已经凉凉了，一直登录不上去，其他人也有类似的反馈：</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/gitment.png" alt="1"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/gitment.png-xtdf" alt="1"></p>
 <p>一直转圈圈，几分钟后就失败。</p>
 <p>本来不想再折腾评论系统了，初衷就是自己总结写给自己看的。想想万一能帮到他人，就像之前的评论一样，同时能有更多交流，也是一件很开心的事情。</p>
 <h2 id="Valine配置"><a href="#Valine配置" class="headerlink" title="Valine配置"></a>Valine配置</h2><p>官方文档：<a href="https://valine.js.org/quickstart.html" target="_blank" rel="noopener">https://valine.js.org/quickstart.html</a></p>
 <h3 id="获取APP-ID-和-APP-Key"><a href="#获取APP-ID-和-APP-Key" class="headerlink" title="获取APP ID 和 APP Key"></a>获取APP ID 和 APP Key</h3><p>1、先注册leancloud，然后实名认证</p>
 <p><a href="https://leancloud.cn/dashboard/login.html#/signup" target="_blank" rel="noopener">https://leancloud.cn/dashboard/login.html#/signup</a></p>
 <p>2、创建应用</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/valine-create.png" alt="create"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/valine-create.png-xtdf" alt="create"></p>
 <p>3、设置应用key</p>
 <p>进入应用，设置-&gt; 应用keys</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/valine-app.png" alt="set"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/valine-app.png-logo" alt="set"></p>
 <h3 id="配置安全域名"><a href="#配置安全域名" class="headerlink" title="配置安全域名"></a>配置安全域名</h3><p>设置成博客的域名地址和本地地址即可。不设置也可以 ，主要还是为了安全。</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/valine-security.png" alt="security"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/valine-security.png-xtdf" alt="security"></p>
 <h2 id="yilia主题配置"><a href="#yilia主题配置" class="headerlink" title="yilia主题配置"></a>yilia主题配置</h2><p>所有hexo主题配置可在这里找：<a href="https://valine.js.org/hexo.html" target="_blank" rel="noopener">https://valine.js.org/hexo.html</a></p>
 <p>1、<code>_config.yml</code></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#6、Valine https://valine.js.org</span><br><span class="line">valine: </span><br><span class="line"> appid:  #Leancloud应用的appId</span><br><span class="line"> appkey:  #Leancloud应用的appKey</span><br><span class="line"> verify: false #验证码</span><br><span class="line"> notify: false #评论回复提醒</span><br><span class="line"> avatar: mp #评论列表头像样式：&apos;&apos;/mp/identicon/monsterid/wavatar/retro/hide</span><br><span class="line"> placeholder: Just go go #评论框占位符</span><br></pre></td></tr></table></figure>
@@ -217,14 +217,14 @@ var _hmt = _hmt || [];
 <p>3、<code>layout/_partial/post/valine.ejs</code></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;vcomment&quot; class=&quot;comment&quot;&gt;&lt;/div&gt; </span><br><span class="line">&lt;script src=&quot;//cdn1.lncld.net/static/js/3.0.4/av-min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script src=&quot;//unpkg.com/valine/dist/Valine.min.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">   var notify = &apos;&lt;%= theme.valine.notify %&gt;&apos; == true ? true : false;</span><br><span class="line">   var verify = &apos;&lt;%= theme.valine.verify %&gt;&apos; == true ? true : false;</span><br><span class="line">    window.onload = function() &#123;</span><br><span class="line">        new Valine(&#123;</span><br><span class="line">            el: &apos;.comment&apos;,</span><br><span class="line">            notify: notify,</span><br><span class="line">            verify: verify,</span><br><span class="line">            app_id: &quot;&lt;%= theme.valine.appid %&gt;&quot;,</span><br><span class="line">            app_key: &quot;&lt;%= theme.valine.appkey %&gt;&quot;,</span><br><span class="line">            placeholder: &quot;&lt;%= theme.valine.placeholder %&gt;&quot;,</span><br><span class="line">            avatar:&quot;&lt;%= theme.valine.avatar %&gt;&quot;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
 <h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>1、评论测试</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/valine-test.png" alt="test"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/valine-test.png-logo" alt="test"></p>
 <p>2、查看leancloud数据仓库</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/valine-comment-detail.png" alt="detail"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/valine-comment-detail.png-xtdf" alt="detail"></p>
 <p>可以看到，评论的详细信息都被记录到这里。</p>
 <h2 id="gravatar头像"><a href="#gravatar头像" class="headerlink" title="gravatar头像"></a>gravatar头像</h2><p>详见头像配置：<a href="https://valine.js.org/avatar.html" target="_blank" rel="noopener">https://valine.js.org/avatar.html</a></p>
 <p>之前使用的是默认的 mp 匿名头像。</p>
 <p>1、登录 <a href="https://cn.gravatar.com/" target="_blank" rel="noopener">gravatar</a>，注册账号并设置头像，我的头像如下，和博客头像一致。</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/valine-gravatar.png" alt="gravatar"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/valine-gravatar.png-logo" alt="gravatar"></p>
 <p>2、主题配置文件增加 avatar_cdn 参数：</p>
 <p>在上面<code>_config.yml</code>配置中增加：（和参数avatar同级）</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">avatar_cdn: https://www.gravatar.com/avatar/</span><br></pre></td></tr></table></figure>
@@ -233,7 +233,7 @@ var _hmt = _hmt || [];
 <p>在上面的配置文件<code>layout/_partial/post/valine.ejs</code>中新增：（和参数avatar同级）</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">avatar_cdn:&apos;&#123;&#123; theme.valine.avatar_cdn &#125;&#125;&apos;,</span><br></pre></td></tr></table></figure>
 <p>4、评论，输入邮箱，发现头像已可正确显示</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/valine-gravatars-test.png" alt="11"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/valine-gravatars-test.png-xtdf" alt="11"></p>
 <p>以上！</p>
 
       
@@ -369,6 +369,15 @@ var _hmt = _hmt || [];
 
   
 <nav id="article-nav">
+  
+    <a href="/2019/11/12/SpringBoot-2-study/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          SpringBoot 2 study
+        
+      </div>
+    </a>
   
   
     <a href="/2019/10/01/hexo-update/" id="article-nav-older" class="article-nav-link-wrap">
@@ -587,6 +596,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">caffe</a>
               </li>
              
@@ -611,15 +624,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">bigdata</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">k8s</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">gpu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">bigdata</a>
               </li>
             
             <div class="clearfix"></div>
