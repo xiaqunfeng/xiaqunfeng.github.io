@@ -16,15 +16,15 @@
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="SpringBoot实践第十八篇，rabbitmq topic模式">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-topic-1.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-topic-2.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-topic-3.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-topic-4.png">
-<meta property="og:updated_time" content="2020-02-15T08:29:39.009Z">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-topic-1.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-topic-2.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-topic-3.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-topic-4.png-xtdf">
+<meta property="og:updated_time" content="2020-05-24T12:54:22.897Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot实践十八：redis topic">
 <meta name="twitter:description" content="SpringBoot实践第十八篇，rabbitmq topic模式">
-<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-topic-1.png">
+<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-topic-1.png-xtdf">
   
     <link rel="alternative" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
   
@@ -212,16 +212,16 @@ var _hmt = _hmt || [];
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@Test</span><br><span class="line">public void testTopicSend() &#123;</span><br><span class="line">    producer.topic1Send();</span><br><span class="line">    producer.topic2Send();</span><br><span class="line">    producer.topic3Send();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>生产三种不同routingKey的消息</p>
 <p>运行：</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/rabbitmq-topic-1.png" alt="1"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/rabbitmq-topic-1.png-xtdf" alt="1"></p>
 <p>三条消息发送成功。</p>
 <p>2、查看mq</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/rabbitmq-topic-2.png" alt="2"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/rabbitmq-topic-2.png-xtdf" alt="2"></p>
 <p>可以看到，队列A和C中，都只有一条消息，队列B中有三条消息，符合预期。</p>
 <p>3、运行消费者</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/rabbitmq-topic-3.png" alt="3"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/rabbitmq-topic-3.png-xtdf" alt="3"></p>
 <p>可以看到，五条消息都已被消费，其中B消费了三条，A和C分别消费了一条。</p>
 <p>4、查看mq</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/rabbitmq-topic-4.png" alt="4"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/rabbitmq-topic-4.png-xtdf" alt="4"></p>
 <p>队列里已没有消息。</p>
 <p>以上！</p>
 

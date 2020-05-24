@@ -16,15 +16,15 @@
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="SpringBoot实践第二十一篇，security登录认证。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/security-1.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/security-2.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/security-3.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/security-4.png">
-<meta property="og:updated_time" content="2020-02-15T08:39:31.626Z">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/security-1.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/security-2.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/security-3.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/security-4.png-xtdf">
+<meta property="og:updated_time" content="2020-05-24T12:54:22.898Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot实践二十一：security">
 <meta name="twitter:description" content="SpringBoot实践第二十一篇，security登录认证。">
-<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/security-1.png">
+<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/security-1.png-xtdf">
   
     <link rel="alternative" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
   
@@ -195,9 +195,9 @@ var _hmt = _hmt || [];
 <li>“授权”（Authorization） ：授权，即权限验证，验证某个已认证的用户是否拥有某个权限；即判断用户是否能做事情，常见的如：验证某个用户是否拥有某个角色。</li>
 </ul>
 <h2 id="maven依赖"><a href="#maven依赖" class="headerlink" title="maven依赖"></a>maven依赖</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;spring-boot-starter-security&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="直接启动"><a href="#直接启动" class="headerlink" title="直接启动"></a>直接启动</h2><p><img src="http://oow6unnib.bkt.clouddn.com/security-1.png" alt="1"></p>
+<h2 id="直接启动"><a href="#直接启动" class="headerlink" title="直接启动"></a>直接启动</h2><p><img src="http://oow6unnib.bkt.clouddn.com/security-1.png-xtdf" alt="1"></p>
 <p>访问之前已经实现的接口：<code>http://localhost:8080/user/all</code>，发现需要登录</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/security-2.png" alt="2"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/security-2.png-xtdf" alt="2"></p>
 <p>输入用户 user，密码为上面控制台输出的密码，登录后才能执行访问的接口。</p>
 <p>所以，可以看到，只需要引入了<code>Spring-Security</code>的依赖，它就开始生效，并且保护我们的接口。</p>
 <p>问题就是，它的用户名只能是user，并且密码是通过日志打印在控制台。</p>
@@ -229,9 +229,9 @@ var _hmt = _hmt || [];
 <h2 id="新增用户信息"><a href="#新增用户信息" class="headerlink" title="新增用户信息"></a>新增用户信息</h2><p>新增一个测试用例，通过调用DAO接口，向数据库里插入两条记录</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">package com.example.demo;</span><br><span class="line"></span><br><span class="line">import com.example.demo.dao.UserDAO;</span><br><span class="line">import com.example.demo.model.User;</span><br><span class="line">import org.junit.Test;</span><br><span class="line">import org.junit.runner.RunWith;</span><br><span class="line">import org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line">import org.springframework.boot.test.context.SpringBootTest;</span><br><span class="line">import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;</span><br><span class="line">import org.springframework.security.crypto.password.PasswordEncoder;</span><br><span class="line">import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @ProjectName: XqfSpringBoot</span><br><span class="line"> * @Package: com.example.demo</span><br><span class="line"> * @ClassName: UserTest</span><br><span class="line"> * @Description: User类的测试</span><br><span class="line"> * @Author: Qunfeng Xia</span><br><span class="line"> * @CreateTime: 2019-12-08 December</span><br><span class="line"> */</span><br><span class="line">@RunWith(SpringJUnit4ClassRunner.class)</span><br><span class="line">@SpringBootTest</span><br><span class="line">public class UserTest &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    private UserDAO userDAO;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private PasswordEncoder passwordEncoder;</span><br><span class="line"></span><br><span class="line">    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void insert() &#123;</span><br><span class="line">        User user = new User();</span><br><span class="line">        user.setUsername(&quot;的风&quot;);</span><br><span class="line">        user.setSex(&quot;男&quot;);</span><br><span class="line">        user.setAge(16);</span><br><span class="line"></span><br><span class="line">        //user.setPassword(bCryptPasswordEncoder.encode(&quot;abc123&quot;));</span><br><span class="line">        user.setPassword(passwordEncoder.encode(&quot;456&quot;));</span><br><span class="line">        System.out.println(user);</span><br><span class="line"></span><br><span class="line">        userDAO.add(user);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>密码分别用 PasswordEncoder 和 BCryptPasswordEncoder 来进行加密。</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/security-3.png" alt="3"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/security-3.png-xtdf" alt="3"></p>
 <p>插入完如下</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/security-4.png" alt="4"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/security-4.png-xtdf" alt="4"></p>
 <h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>启动工程，输入<code>http://localhost:8080/user/all</code> 或者任意其他已实现的接口，都会跳到登录界面，如之前的截图。</p>
 <p>然后输入如下两组用户名密码：<code>夏天 abc123</code> 或 <code>的风 456</code>，即可成功登录，并执行接口指令。</p>
 

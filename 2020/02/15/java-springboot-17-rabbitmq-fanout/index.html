@@ -16,15 +16,15 @@
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="SpringBoot实践第十七篇，rabbitmq fanout模式。 前一篇写的是rabbitmq的简单模式，只有一个生产者和消费者。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-fanout-1.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-fanout-2.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-fanout-3.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-fanout-4.png">
-<meta property="og:updated_time" content="2020-02-15T08:27:39.000Z">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-fanout-1.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-fanout-2.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-fanout-3.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-fanout-4.png-xtdf">
+<meta property="og:updated_time" content="2020-05-24T12:54:22.896Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot实践十七：redis fanout">
 <meta name="twitter:description" content="SpringBoot实践第十七篇，rabbitmq fanout模式。 前一篇写的是rabbitmq的简单模式，只有一个生产者和消费者。">
-<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-fanout-1.png">
+<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-fanout-1.png-xtdf">
   
     <link rel="alternative" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
   
@@ -200,16 +200,16 @@ var _hmt = _hmt || [];
 <h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>1、在生产者工程中添加添加测试用例</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@Test</span><br><span class="line">public void testFonoutSend() &#123;</span><br><span class="line">    producer.fanoutSend();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>运行：</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/rabbitmq-fanout-1.png" alt="1"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/rabbitmq-fanout-1.png-xtdf" alt="1"></p>
 <p>向交换机发送了一条消息。</p>
 <p>2、查看mq</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/rabbitmq-fanout-2.png" alt="2"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/rabbitmq-fanout-2.png-xtdf" alt="2"></p>
 <p>可以看到，在和交换机连接的三个队列里，都已经有一条消息在里面。</p>
 <p>3、运行消费者</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/rabbitmq-fanout-3.png" alt="3"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/rabbitmq-fanout-3.png-xtdf" alt="3"></p>
 <p>看到三个消费者分别消费了队列里的数据</p>
 <p>4、查看队列</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/rabbitmq-fanout-4.png" alt="4"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/rabbitmq-fanout-4.png-xtdf" alt="4"></p>
 <p>可以看到，队列里原先有的一条数据被消费了。</p>
 <p>以上！</p>
 

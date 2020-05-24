@@ -16,18 +16,18 @@
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="SpringBoot实践第五篇，通过swagger2生成在线文档。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/swagger-1.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/swagger-2.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/swagger-3.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/swagger-4.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/swagger-6.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/swagger-5.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/swagger-7.png">
-<meta property="og:updated_time" content="2020-02-05T05:07:34.775Z">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/swagger-1.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/swagger-2.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/swagger-3.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/swagger-4.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/swagger-6.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/swagger-5.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/swagger-7.png-xtdf">
+<meta property="og:updated_time" content="2020-05-24T12:54:22.900Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot实践五：swagger2">
 <meta name="twitter:description" content="SpringBoot实践第五篇，通过swagger2生成在线文档。">
-<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/swagger-1.png">
+<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/swagger-1.png-xtdf">
   
     <link rel="alternative" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
   
@@ -210,11 +210,11 @@ var _hmt = _hmt || [];
 <h2 id="添加API注解"><a href="#添加API注解" class="headerlink" title="添加API注解"></a>添加API注解</h2><p>修改Controller，添加api注解</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">package com.example.demo.controller;</span><br><span class="line"></span><br><span class="line">import com.example.demo.core.ret.RetResponse;</span><br><span class="line">import com.example.demo.core.ret.RetResult;</span><br><span class="line">import com.example.demo.model.UserInfo;</span><br><span class="line">import com.example.demo.service.UserInfoService;</span><br><span class="line">import io.swagger.annotations.Api;</span><br><span class="line">import io.swagger.annotations.ApiImplicitParam;</span><br><span class="line">import io.swagger.annotations.ApiImplicitParams;</span><br><span class="line">import io.swagger.annotations.ApiOperation;</span><br><span class="line">import org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line">import org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line">import org.springframework.web.bind.annotation.RequestParam;</span><br><span class="line">import org.springframework.web.bind.annotation.RestController;</span><br><span class="line"></span><br><span class="line">import javax.annotation.Resource;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @ProjectName: XqfSpringBoot</span><br><span class="line"> * @Package: com.example.demo.controller</span><br><span class="line"> * @ClassName: UserInfoController</span><br><span class="line"> * @Description:</span><br><span class="line"> * @Author: Qunfeng Xia</span><br><span class="line"> * @CreateTime: 2019-10-31</span><br><span class="line"> */</span><br><span class="line">@RestController</span><br><span class="line">@Api(tags = &#123;&quot;用户操作接口&quot;&#125;, description = &quot;user info controller&quot;)</span><br><span class="line">public class UserInfoController &#123;</span><br><span class="line">    //@Resource</span><br><span class="line">    @Autowired</span><br><span class="line">    private UserInfoService userInfoService;</span><br><span class="line"></span><br><span class="line">    @RequestMapping(&quot;/hello&quot;)</span><br><span class="line">    public String hello() &#123;</span><br><span class="line">        return &quot;Hello XqfSpringBoot&quot;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @ApiOperation(value = &quot;查询用户&quot;, notes = &quot;根据用户ID查询用户&quot;)</span><br><span class="line">    @ApiImplicitParams(&#123;</span><br><span class="line">            @ApiImplicitParam(name = &quot;id&quot;, value = &quot;用户ID&quot;, required = true, dataType = &quot;Intger&quot;, paramType = &quot;query&quot;)</span><br><span class="line">    &#125;)</span><br><span class="line">    @RequestMapping(&quot;/selectById&quot;)</span><br><span class="line">    public RetResult&lt;UserInfo&gt; selectById(@RequestParam(value = &quot;id&quot;) Integer id) &#123;</span><br><span class="line">        UserInfo userInfo = userInfoService.selectById(id);</span><br><span class="line">        return RetResponse.makeOKRsp(userInfo);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>1、浏览器输入：<a href="http://localhost:8080/swagger-ui.html" target="_blank" rel="noopener">http://localhost:8080/swagger-ui.html</a></p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/swagger-1.png" alt="1"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/swagger-1.png-xtdf" alt="1"></p>
 <p>2、查看 selectById GET 方法接口</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/swagger-2.png" alt="2"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/swagger-2.png-xtdf" alt="2"></p>
 <p>3、输入参数进行RESTful API测试</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/swagger-3.png" alt="3"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/swagger-3.png-xtdf" alt="3"></p>
 <h2 id="更美观的UI界面"><a href="#更美观的UI界面" class="headerlink" title="更美观的UI界面"></a>更美观的UI界面</h2><ul>
 <li><a href="https://github.com/xiaoymin/Swagger-Bootstrap-UI" target="_blank" rel="noopener">https://github.com/xiaoymin/Swagger-Bootstrap-UI</a></li>
 <li><a href="https://github.com/caspar-chen/swagger-ui-layer" target="_blank" rel="noopener">https://github.com/caspar-chen/swagger-ui-layer</a></li>
@@ -228,16 +228,16 @@ var _hmt = _hmt || [];
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">  @Override</span><br><span class="line">  protected void addResourceHandlers(ResourceHandlerRegistry registry) &#123;</span><br><span class="line">...</span><br><span class="line">      registry.addResourceHandler(&quot;doc.html&quot;)</span><br><span class="line">              .addResourceLocations(&quot;classpath:/META-INF/resources/&quot;);</span><br><span class="line">...</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
 <h3 id="测试-1"><a href="#测试-1" class="headerlink" title="测试"></a>测试</h3><p>输入链接：<a href="http://localhost:8080/doc.html" target="_blank" rel="noopener">http://localhost:8080/doc.html</a></p>
 <p>1、主页</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/swagger-4.png" alt="4"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/swagger-4.png-xtdf" alt="4"></p>
 <p>2、接口文档</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/swagger-6.png" alt="6"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/swagger-6.png-xtdf" alt="6"></p>
 <p>3、API测试</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/swagger-5.png" alt="5"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/swagger-5.png-xtdf" alt="5"></p>
 <p>界面确实比原生的好看，默默点头，哈哈。</p>
 <h2 id="用户接口"><a href="#用户接口" class="headerlink" title="用户接口"></a>用户接口</h2><p>其实我只写了hello和查询用户两个接口，但是从文档里看到，每个接口名都有七种不同的method。</p>
 <p>因为我在controller中，接口上使用的是 @RequestMapping 注解，默认可接收所有的method。</p>
 <p>我把 @RequestMapping 都改为 @GetMapping 后：</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/swagger-7.png" alt="7"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/swagger-7.png-xtdf" alt="7"></p>
 <p>接口就只剩两个了。</p>
 
       

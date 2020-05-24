@@ -6,24 +6,18 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
-  <title>SpringBoot实践三：exception | 夏天的风的博客</title>
+  <title>Archives: 2020/5 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="SpringBoot实践第三篇，全局异常处理。">
-<meta name="keywords" content="java">
-<meta property="og:type" content="article">
-<meta property="og:title" content="SpringBoot实践三：exception">
-<meta property="og:url" content="http://xiaqunfeng.cc/2020/02/05/java-springboot-3-exception/index.html">
+  <meta name="description" content="关注深度学习、分布式存储、云计算">
+<meta property="og:type" content="website">
+<meta property="og:title" content="夏天的风的博客">
+<meta property="og:url" content="http://xiaqunfeng.cc/archives/2020/05/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="SpringBoot实践第三篇，全局异常处理。">
+<meta property="og:description" content="关注深度学习、分布式存储、云计算">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/exception-1.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/exception-2.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/exception-3.png">
-<meta property="og:updated_time" content="2020-02-05T04:27:08.254Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SpringBoot实践三：exception">
-<meta name="twitter:description" content="SpringBoot实践第三篇，全局异常处理。">
-<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/exception-1.png">
+<meta name="twitter:title" content="夏天的风的博客">
+<meta name="twitter:description" content="关注深度学习、分布式存储、云计算">
   
     <link rel="alternative" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
   
@@ -163,87 +157,35 @@ var _hmt = _hmt || [];
           </div>
           <div id="js-content" class="content-ll">
             
-<article id="post-java-springboot-3-exception" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 class="article-title" itemprop="name">
-      SpringBoot实践三：exception
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2020" class="archive-year">2020</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2020/05/24/java-springboot-3-exception/" class="archive-article-date">
+  	<time datetime="2020-05-24T12:54:22.899Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-24</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2020/05/24/java-springboot-3-exception/">SpringBoot实践三：exception</a>
     </h1>
   
 
-        
-        <a href="/2020/02/05/java-springboot-3-exception/" class="archive-article-date">
-  	<time datetime="2020-02-05T04:26:56.911Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-05</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>SpringBoot实践第三篇，全局异常处理。</p>
-<a id="more"></a>
-<h2 id="全局异常处理"><a href="#全局异常处理" class="headerlink" title="全局异常处理"></a>全局异常处理</h2><p>使用@ControllerAdvice + @ExceptionHandler进行全局的Controller层异常处理，减少模板代码，减少编码量。</p>
-<h2 id="代码结构"><a href="#代码结构" class="headerlink" title="代码结构"></a>代码结构</h2><p>代码结构如下：</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/exception-1.png" alt="1"></p>
-<h3 id="先添加两个异常处理类"><a href="#先添加两个异常处理类" class="headerlink" title="先添加两个异常处理类"></a>先添加两个异常处理类</h3><p>1、常规异常处理类：BadRequestException</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">package com.example.demo.core.exception;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @ProjectName: XqfSpringBoot</span><br><span class="line"> * @Package: com.example.demo.core.exception</span><br><span class="line"> * @ClassName: BadRequestException</span><br><span class="line"> * @Description: 异常处理</span><br><span class="line"> * @Author: Qunfeng Xia</span><br><span class="line"> * @CreateTime: 2019-11-03</span><br><span class="line"> */</span><br><span class="line">public class BadRequestException extends RuntimeException &#123;</span><br><span class="line">    public BadRequestException(String message) &#123;</span><br><span class="line">        super(message);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public BadRequestException(String message, Throwable cause) &#123;</span><br><span class="line">        super(message, cause);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>2、未找到异常处理类：NotFoundException</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">package com.example.demo.core.exception;</span><br><span class="line"></span><br><span class="line">import org.aspectj.weaver.ast.Not;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @ProjectName: XqfSpringBoot</span><br><span class="line"> * @Package: com.example.demo.core.exception</span><br><span class="line"> * @ClassName: NotFoundException</span><br><span class="line"> * @Description: 未找到的异常处理</span><br><span class="line"> * @Author: Qunfeng Xia</span><br><span class="line"> * @CreateTime: 2019-11-03</span><br><span class="line"> */</span><br><span class="line">public class NotFoundException extends RuntimeException &#123;</span><br><span class="line">    public NotFoundException(String message) &#123;</span><br><span class="line">        super(message);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public NotFoundException(String message, Throwable cause) &#123;</span><br><span class="line">        super(message, cause);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="Advice控制类"><a href="#Advice控制类" class="headerlink" title="Advice控制类"></a>Advice控制类</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">package com.example.demo.core.advice;</span><br><span class="line"></span><br><span class="line">import com.example.demo.core.exception.BadRequestException;</span><br><span class="line">import com.example.demo.core.exception.NotFoundException;</span><br><span class="line">import com.example.demo.core.ret.RetCode;</span><br><span class="line">import com.example.demo.core.ret.RetResponse;</span><br><span class="line">import com.example.demo.core.ret.RetResult;</span><br><span class="line">import com.example.demo.model.UserInfo;</span><br><span class="line">import org.apache.logging.log4j.LogManager;</span><br><span class="line">import org.apache.logging.log4j.Logger;</span><br><span class="line">import org.springframework.web.bind.annotation.ControllerAdvice;</span><br><span class="line">import org.springframework.web.bind.annotation.ExceptionHandler;</span><br><span class="line">import org.springframework.web.bind.annotation.ResponseBody;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @ProjectName: XqfSpringBoot</span><br><span class="line"> * @Package: com.example.demo.core.advice</span><br><span class="line"> * @ClassName: AppControllerAdvice</span><br><span class="line"> * @Description:</span><br><span class="line"> * @Author: Qunfeng Xia</span><br><span class="line"> * @CreateTime: 2019-11-03</span><br><span class="line"> */</span><br><span class="line">@ControllerAdvice</span><br><span class="line">public class AppControllerAdvice &#123;</span><br><span class="line">    private static Logger logger = LogManager.getLogger(AppControllerAdvice.class);</span><br><span class="line"></span><br><span class="line">    @ExceptionHandler(BadRequestException.class)</span><br><span class="line">    @ResponseBody</span><br><span class="line">    public RetResult&lt;UserInfo&gt; handleBadRequestException(BadRequestException ex) &#123;</span><br><span class="line">        logger.error(ex.getMessage(), ex);</span><br><span class="line">        return RetResponse.makeErrRsp(ex.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @ExceptionHandler(NotFoundException.class)</span><br><span class="line">    @ResponseBody</span><br><span class="line">    public RetResult&lt;UserInfo&gt; handleNotFoundException(NotFoundException ex) &#123;</span><br><span class="line">        logger.error(ex.getMessage(), ex);</span><br><span class="line">        return RetResponse.makeRsp(RetCode.NOT_FOUND.getCode(), ex.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>@ExceptionHandler 表示异常拦截，修饰的方法用于处理括号后面的异常类</li>
-<li>@ControllerAdvice 是controller的一个辅助类，最常用的就是全局处理。不用任何的配置，只要把这个类放在项目中，Spring能扫描到的地方。就可以实现全局异常的回调。</li>
-<li>@ResponseBody 和@RequestBody一样，json自动绑定</li>
-</ul>
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>1、notfound</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/exception-2.png" alt="2"></p>
-<p>2、其他错误</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/exception-3.png" alt="3"></p>
-
-      
-    
-    
-      <div class="declare" hidden="hidden"></div>
-    
-      
-        <div class="page-reward">
-          <a href="javascript:;" class="page-reward-btn tooltip-top">
-            <div class="tooltip tooltip-east">
-            <span class="tooltip-item">
-              赏
-            </span>
-            <span class="tooltip-content">
-              <span class="tooltip-text">
-                <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>O(∩_∩)O谢谢!<i class="icon icon-quo-right"></i></p>
-                  <div class="reward-box">
-                    
-                    <div class="reward-box-item">
-                      <img class="reward-img" src="/assets/img/alipay.jpg">
-                      <span class="reward-type">支付宝</span>
-                    </div>
-                    
-                    
-                    <div class="reward-box-item">
-                      <img class="reward-img" src="/assets/img/weixin.jpg">
-                      <span class="reward-type">微信</span>
-                    </div>
-                    
-                  </div>
-                </span>
-              </span>
-            </span>
-          </div>
-          </a>
-        </div>
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -255,7 +197,7 @@ var _hmt = _hmt || [];
 		</ul>
 	</div>
 
-      
+          
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -268,153 +210,17 @@ var _hmt = _hmt || [];
 	</div>
 
 
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2020/02/05/java-springboot-3-exception/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2020/02/05/java-springboot-4-druid/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          SpringBoot实践四：druid
-        
-      </div>
-    </a>
   
   
-    <a href="/2020/02/05/java-springboot-2-result-package/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">SpringBoot实践二：result package</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-        <div class="toc-container tooltip-left">
-            <i class="icon-font icon-category"></i>
-            <div class="tooltip tooltip-east">
-                <span class="tooltip-item">
-                </span>
-                <span class="tooltip-content">
-                    <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#全局异常处理"><span class="toc-number">1.</span> <span class="toc-text">全局异常处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码结构"><span class="toc-number">2.</span> <span class="toc-text">代码结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#先添加两个异常处理类"><span class="toc-number">2.1.</span> <span class="toc-text">先添加两个异常处理类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Advice控制类"><span class="toc-number">2.2.</span> <span class="toc-text">Advice控制类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#测试"><span class="toc-number">3.</span> <span class="toc-text">测试</span></a></li></ol>
-                    </div>
-                </span>
-            </div>
-        </div>
-        
-    </div>
-</aside>
-
-
-
-  
-  
+    </div></section>
   
 
-  
-
-  
-
-  
-
-  
-    <section id="comments" style="margin:10px;padding:10px;background:#fff;">
-      <div id="vcomment" class="comment"></div> 
-<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
-<script>
-   var notify = 'false' == true ? true : false;
-   var verify = 'false' == true ? true : false;
-    window.onload = function() {
-        new Valine({
-            el: '.comment',
-            notify: notify,
-            verify: verify,
-            app_id: "2AgYNp3s7S4ddNLjt7diG8gj-9Nh9j0Va",
-            app_key: "6WNBmQrMcjfQG4XYo8VA54hb",
-            placeholder: "无需输入昵称、邮箱和网址信息即可快速评论。（建议输入昵称和邮箱，方便沟通）",
-            avatar:"mp",
-            avatar_cdn:'{{ theme.valine.avatar_cdn }}',
-        });
-    }
-</script>
-
-    </section>
-  
-
+    
 
 
           </div>
@@ -442,8 +248,8 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: true,
-		isArchive: false,
+		isPost: false,
+		isArchive: true,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

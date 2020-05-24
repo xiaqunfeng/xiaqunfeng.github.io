@@ -16,16 +16,16 @@
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="SpringBoot实践第十五篇，rabbitmq。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-1.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-2.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-3.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-4.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-5.png">
-<meta property="og:updated_time" content="2020-02-15T08:25:12.143Z">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-1.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-2.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-3.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-4.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-5.png-xtdf">
+<meta property="og:updated_time" content="2020-05-24T12:54:22.896Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot实践十六：RabbitMq">
 <meta name="twitter:description" content="SpringBoot实践第十五篇，rabbitmq。">
-<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-1.png">
+<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/rabbitmq-1.png-xtdf">
   
     <link rel="alternative" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
   
@@ -191,7 +191,7 @@ var _hmt = _hmt || [];
 <p>AMQP协议中的核心思想就是生产者和消费者隔离，生产者从不直接将消息发送给队列。生产者通常不知道是否一个消息会被发送到队列中，只是将消息发送到一个交换机。先由Exchange来接收，然后Exchange按照特定的策略转发到Queue进行存储。同理，消费者也是如此。Exchange 就类似于一个交换机，转发各个消息分发到相应的队列中。s</p>
 <p>在spring中使用rabbitmq非常简单，利用提供的AmqpTemplete或者RabbitTemplete就能够很好的完成任务。springboot中类似，配置一下即可使用。</p>
 <h2 id="生产者"><a href="#生产者" class="headerlink" title="生产者"></a>生产者</h2><h3 id="创建生产者工程"><a href="#创建生产者工程" class="headerlink" title="创建生产者工程"></a>创建生产者工程</h3><p>创建springboot工程，选择spring for rabbitmq依赖</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/rabbitmq-1.png" alt="1"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/rabbitmq-1.png-xtdf" alt="1"></p>
 <p>创建完工程，可以查看pom.xml，发现依赖以及添加</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-amqp&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.amqp&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-rabbit-test&lt;/artifactId&gt;</span><br><span class="line">    &lt;scope&gt;test&lt;/scope&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
 <p>在 application.yml 中添加rabbitmq配置（都是默认值）</p>
@@ -215,15 +215,15 @@ var _hmt = _hmt || [];
 <p>假如我们想让某个监听手动ack，可以配置此参数containerFactory，为该监听配置独立的容器工厂，虽然我们可以通过spring.rabbitmq.listener.simple.acknowledge-mode或者spring.rabbitmq.listener.direct.acknowledge-mode配置手动ack，但它是全局共享的。</p>
 </blockquote>
 <h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>1、运行生产者工程的测试类</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/rabbitmq-2.png" alt="2"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/rabbitmq-2.png-xtdf" alt="2"></p>
 <p>2、查看rabbitmq</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/rabbitmq-3.png" alt="3"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/rabbitmq-3.png-xtdf" alt="3"></p>
 <p>可以看到，string队列里已经有20条数据ready</p>
 <p>3、启动消费者工程</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/rabbitmq-4.png" alt="4"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/rabbitmq-4.png-xtdf" alt="4"></p>
 <p>启动后就开始消费队列 string 里的消息</p>
 <p>4、查看rabbitmq</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/rabbitmq-5.png" alt="5"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/rabbitmq-5.png-xtdf" alt="5"></p>
 <p>可以看到，string队列已经为空了，队列里的数据全部消耗完毕。</p>
 <p>以上！</p>
 

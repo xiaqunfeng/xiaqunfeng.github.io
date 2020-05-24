@@ -16,21 +16,21 @@
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="SpringBoot实践第十四篇，redis缓存mysql数据。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/redis-cache-1.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/redis-cache-2.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/redis-cache-3.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/redis-cache-4.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/redis-cache-5.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/redis-cache-6.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/redis-cache-7.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/redis-cache-8.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/redis-cache-9.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/redis-cache-10.png">
-<meta property="og:updated_time" content="2020-02-15T08:14:57.954Z">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/redis-cache-1.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/redis-cache-2.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/redis-cache-3.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/redis-cache-4.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/redis-cache-5.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/redis-cache-6.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/redis-cache-7.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/redis-cache-8.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/redis-cache-9.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/redis-cache-10.png-xtdf">
+<meta property="og:updated_time" content="2020-05-24T12:54:22.895Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot实践十四：redis缓存mysql">
 <meta name="twitter:description" content="SpringBoot实践第十四篇，redis缓存mysql数据。">
-<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/redis-cache-1.png">
+<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/redis-cache-1.png-xtdf">
   
     <link rel="alternative" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
   
@@ -221,15 +221,15 @@ var _hmt = _hmt || [];
 <p>五个Rest接口如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">@RequestMapping(&quot;/user&quot;)</span><br><span class="line">@RestController</span><br><span class="line">public class UserController &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    private UserService userService;</span><br><span class="line"></span><br><span class="line">    @PostMapping(&quot;/add&quot;)</span><br><span class="line">    public User addUser(@RequestBody User user) &#123;</span><br><span class="line">        return userService.addUser(user);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @PutMapping(&quot;/update&quot;)</span><br><span class="line">    public User updateUser(@RequestBody User user) &#123;</span><br><span class="line">        return userService.updateUser(user);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @DeleteMapping(value = &quot;/id/&#123;id&#125;&quot;)</span><br><span class="line">    public Boolean deleteUser(@PathVariable long id) &#123;</span><br><span class="line">        return userService.removeUser(id);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @GetMapping(value = &quot;/id/&#123;id&#125;&quot;)</span><br><span class="line">    public User getUser(@PathVariable long id) &#123;</span><br><span class="line">        return userService.getUser(id);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @GetMapping(&quot;/all&quot;)</span><br><span class="line">    public List&lt;User&gt; getAll() &#123;</span><br><span class="line">        return userService.getAllUser();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="接口测试"><a href="#接口测试" class="headerlink" title="接口测试"></a>接口测试</h3><p>1、获取所有用户</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/redis-cache-1.png" alt="1"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/redis-cache-1.png-xtdf" alt="1"></p>
 <p>2、获取用户1的信息</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/redis-cache-2.png" alt="2"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/redis-cache-2.png-xtdf" alt="2"></p>
 <p>3、新增用户</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/redis-cache-3.png" alt="3"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/redis-cache-3.png-xtdf" alt="3"></p>
 <p>4、更新用户信息</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/redis-cache-4.png" alt="4"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/redis-cache-4.png-xtdf" alt="4"></p>
 <p>5、删除用户</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/redis-cache-5.png" alt="5"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/redis-cache-5.png-xtdf" alt="5"></p>
 <p>所有接口都测试成功。可以接下来的操作了。</p>
 <h2 id="使用caching"><a href="#使用caching" class="headerlink" title="使用caching"></a>使用caching</h2><h3 id="设置缓存"><a href="#设置缓存" class="headerlink" title="设置缓存"></a>设置缓存</h3><p>常用的缓存注解</p>
 <ul>
@@ -317,22 +317,22 @@ var _hmt = _hmt || [];
 <h3 id="cache测试"><a href="#cache测试" class="headerlink" title="cache测试"></a>cache测试</h3><p>1、get</p>
 <p>请求：<code>http://localhost:8080/user/id/1</code></p>
 <p>日志：</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/redis-cache-6.png" alt="6"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/redis-cache-6.png-xtdf" alt="6"></p>
 <p>看到了 selectById 的 DEBUG 日志。再次执行该请求，没有日志产生，说明直接从redis读取了。</p>
 <p>查看redis：</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/redis-cache-7.png" alt="7"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/redis-cache-7.png-xtdf" alt="7"></p>
 <p>可以看到，user 1 已被缓存在redis中。</p>
 <blockquote>
 <p>注：长时间不对缓存数据进行操作，缓存会自动被淘汰</p>
 </blockquote>
 <p>2、update</p>
 <p>执行update操作，发现缓存也更新了</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/redis-cache-8.png" alt="8"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/redis-cache-8.png-xtdf" alt="8"></p>
 <p>3、delete</p>
 <p>删除 id=9 的user，数据也随之从redis中删除</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/redis-cache-9.png" alt="9"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/redis-cache-9.png-xtdf" alt="9"></p>
 <p>4、Sql日志如下</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/redis-cache-10.png" alt="10"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/redis-cache-10.png-xtdf" alt="10"></p>
 <p>以上！</p>
 
       

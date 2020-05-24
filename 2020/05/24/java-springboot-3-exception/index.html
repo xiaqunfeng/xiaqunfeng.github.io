@@ -6,23 +6,24 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
-  <title>SpringBoot实践十一：model attribute | 夏天的风的博客</title>
+  <title>SpringBoot实践三：exception | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="SpringBoot实践第十一篇，ModelAttribute全局数据绑定。">
+  <meta name="description" content="SpringBoot实践第三篇，全局异常处理。">
 <meta name="keywords" content="java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SpringBoot实践十一：model attribute">
-<meta property="og:url" content="http://xiaqunfeng.cc/2020/02/05/java-springboot-11-model-attribute/index.html">
+<meta property="og:title" content="SpringBoot实践三：exception">
+<meta property="og:url" content="http://xiaqunfeng.cc/2020/05/24/java-springboot-3-exception/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="SpringBoot实践第十一篇，ModelAttribute全局数据绑定。">
+<meta property="og:description" content="SpringBoot实践第三篇，全局异常处理。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/model-attribute-1.png-xtdf">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/model-attribute-2.png-xtdf">
-<meta property="og:updated_time" content="2020-05-24T12:54:22.893Z">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/exception-1.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/exception-2.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/exception-3.png-xtdf">
+<meta property="og:updated_time" content="2020-05-24T12:54:22.899Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SpringBoot实践十一：model attribute">
-<meta name="twitter:description" content="SpringBoot实践第十一篇，ModelAttribute全局数据绑定。">
-<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/model-attribute-1.png-xtdf">
+<meta name="twitter:title" content="SpringBoot实践三：exception">
+<meta name="twitter:description" content="SpringBoot实践第三篇，全局异常处理。">
+<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/exception-1.png-xtdf">
   
     <link rel="alternative" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
   
@@ -162,56 +163,45 @@ var _hmt = _hmt || [];
           </div>
           <div id="js-content" class="content-ll">
             
-<article id="post-java-springboot-11-model-attribute" class="article article-type-post " itemscope itemprop="blogPost">
+<article id="post-java-springboot-3-exception" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      SpringBoot实践十一：model attribute
+      SpringBoot实践三：exception
     </h1>
   
 
         
-        <a href="/2020/02/05/java-springboot-11-model-attribute/" class="archive-article-date">
-  	<time datetime="2020-02-05T07:26:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-05</time>
+        <a href="/2020/05/24/java-springboot-3-exception/" class="archive-article-date">
+  	<time datetime="2020-05-24T12:54:22.899Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-05-24</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>SpringBoot实践第十一篇，ModelAttribute全局数据绑定。</p>
+        <p>SpringBoot实践第三篇，全局异常处理。</p>
 <a id="more"></a>
-<h2 id="全局数据绑定"><a href="#全局数据绑定" class="headerlink" title="全局数据绑定"></a>全局数据绑定</h2><p>前面说过利用 @ControllerAdvice 注解实现全局错误处理，该注解还可以用来配合实现全局数据绑定和全局数据预处理。</p>
-<p>很多时候前端页面需要数据回显或者查询条件来自同一个类，需要从后台获取数据，@ModelAttribute注解用在类上面时，当加载所在controller时，将数据放入到Model中，视图直接可以访问</p>
-<p>@ModelAttribute</p>
+<h2 id="全局异常处理"><a href="#全局异常处理" class="headerlink" title="全局异常处理"></a>全局异常处理</h2><p>使用@ControllerAdvice + @ExceptionHandler进行全局的Controller层异常处理，减少模板代码，减少编码量。</p>
+<h2 id="代码结构"><a href="#代码结构" class="headerlink" title="代码结构"></a>代码结构</h2><p>代码结构如下：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/exception-1.png-xtdf" alt="1"></p>
+<h3 id="先添加两个异常处理类"><a href="#先添加两个异常处理类" class="headerlink" title="先添加两个异常处理类"></a>先添加两个异常处理类</h3><p>1、常规异常处理类：BadRequestException</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">package com.example.demo.core.exception;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @ProjectName: XqfSpringBoot</span><br><span class="line"> * @Package: com.example.demo.core.exception</span><br><span class="line"> * @ClassName: BadRequestException</span><br><span class="line"> * @Description: 异常处理</span><br><span class="line"> * @Author: Qunfeng Xia</span><br><span class="line"> * @CreateTime: 2019-11-03</span><br><span class="line"> */</span><br><span class="line">public class BadRequestException extends RuntimeException &#123;</span><br><span class="line">    public BadRequestException(String message) &#123;</span><br><span class="line">        super(message);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public BadRequestException(String message, Throwable cause) &#123;</span><br><span class="line">        super(message, cause);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2、未找到异常处理类：NotFoundException</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">package com.example.demo.core.exception;</span><br><span class="line"></span><br><span class="line">import org.aspectj.weaver.ast.Not;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @ProjectName: XqfSpringBoot</span><br><span class="line"> * @Package: com.example.demo.core.exception</span><br><span class="line"> * @ClassName: NotFoundException</span><br><span class="line"> * @Description: 未找到的异常处理</span><br><span class="line"> * @Author: Qunfeng Xia</span><br><span class="line"> * @CreateTime: 2019-11-03</span><br><span class="line"> */</span><br><span class="line">public class NotFoundException extends RuntimeException &#123;</span><br><span class="line">    public NotFoundException(String message) &#123;</span><br><span class="line">        super(message);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public NotFoundException(String message, Throwable cause) &#123;</span><br><span class="line">        super(message, cause);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Advice控制类"><a href="#Advice控制类" class="headerlink" title="Advice控制类"></a>Advice控制类</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">package com.example.demo.core.advice;</span><br><span class="line"></span><br><span class="line">import com.example.demo.core.exception.BadRequestException;</span><br><span class="line">import com.example.demo.core.exception.NotFoundException;</span><br><span class="line">import com.example.demo.core.ret.RetCode;</span><br><span class="line">import com.example.demo.core.ret.RetResponse;</span><br><span class="line">import com.example.demo.core.ret.RetResult;</span><br><span class="line">import com.example.demo.model.UserInfo;</span><br><span class="line">import org.apache.logging.log4j.LogManager;</span><br><span class="line">import org.apache.logging.log4j.Logger;</span><br><span class="line">import org.springframework.web.bind.annotation.ControllerAdvice;</span><br><span class="line">import org.springframework.web.bind.annotation.ExceptionHandler;</span><br><span class="line">import org.springframework.web.bind.annotation.ResponseBody;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @ProjectName: XqfSpringBoot</span><br><span class="line"> * @Package: com.example.demo.core.advice</span><br><span class="line"> * @ClassName: AppControllerAdvice</span><br><span class="line"> * @Description:</span><br><span class="line"> * @Author: Qunfeng Xia</span><br><span class="line"> * @CreateTime: 2019-11-03</span><br><span class="line"> */</span><br><span class="line">@ControllerAdvice</span><br><span class="line">public class AppControllerAdvice &#123;</span><br><span class="line">    private static Logger logger = LogManager.getLogger(AppControllerAdvice.class);</span><br><span class="line"></span><br><span class="line">    @ExceptionHandler(BadRequestException.class)</span><br><span class="line">    @ResponseBody</span><br><span class="line">    public RetResult&lt;UserInfo&gt; handleBadRequestException(BadRequestException ex) &#123;</span><br><span class="line">        logger.error(ex.getMessage(), ex);</span><br><span class="line">        return RetResponse.makeErrRsp(ex.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @ExceptionHandler(NotFoundException.class)</span><br><span class="line">    @ResponseBody</span><br><span class="line">    public RetResult&lt;UserInfo&gt; handleNotFoundException(NotFoundException ex) &#123;</span><br><span class="line">        logger.error(ex.getMessage(), ex);</span><br><span class="line">        return RetResponse.makeRsp(RetCode.NOT_FOUND.getCode(), ex.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
-<li>该Controller类所有方法执行前，先调用此@ModelAttribute方法，可用于注解和方法参数中。</li>
-<li>@ModelAttribute注解用于将请求参数绑定到Model对象</li>
+<li>@ExceptionHandler 表示异常拦截，修饰的方法用于处理括号后面的异常类</li>
+<li>@ControllerAdvice 是controller的一个辅助类，最常用的就是全局处理。不用任何的配置，只要把这个类放在项目中，Spring能扫描到的地方。就可以实现全局异常的回调。</li>
+<li>@ResponseBody 和@RequestBody一样，json自动绑定</li>
 </ul>
-<h2 id="ModelAttribute-“xxx”-注释返回具体类的方法"><a href="#ModelAttribute-“xxx”-注释返回具体类的方法" class="headerlink" title="@ModelAttribute(“xxx”)注释返回具体类的方法"></a>@ModelAttribute(“xxx”)注释返回具体类的方法</h2><p>1、定义全局数据</p>
-<p>在 AppControllerAdvice.java 类中</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@ModelAttribute(&quot;user&quot;)</span><br><span class="line">private UserInfo getUser() &#123;</span><br><span class="line">    UserInfo userInfo = new UserInfo();</span><br><span class="line">    userInfo.setId(&quot;888&quot;);</span><br><span class="line">    userInfo.setUserName(&quot;summer_wind&quot;);</span><br><span class="line">    return userInfo;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>@ModelAttribute 注解标记该方法的返回数据是一个全局数据。</p>
-<p>2、controller中获取全局数据</p>
-<p>在 UserInfoController.java 中，新增 /user 接口</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@RequestMapping(&quot;/user&quot;)</span><br><span class="line">public RetResult&lt;UserInfo&gt; getUser(@ModelAttribute(&quot;user&quot;) UserInfo userInfo) &#123;</span><br><span class="line">    return RetResponse.makeOKRsp(userInfo);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里通过 <code>@ModelAttribute(&quot;user&quot;)</code> 来获取全局的 UserInfo 数据。</p>
-<p>3、测试</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/model-attribute-1.png-xtdf" alt="1"></p>
-<p>可以看到，已获取全局定义的 UserInfo 数据。</p>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="ModelAttribute注释-void-返回值的方法"><a href="#ModelAttribute注释-void-返回值的方法" class="headerlink" title="@ModelAttribute注释 void 返回值的方法"></a>@ModelAttribute注释 void 返回值的方法</h3><p>此方法在<code>@RequestMapping</code>注解的方法之前执行，通过方法 <code>model.addAttribute(key,value)</code>绑定数据。</p>
-<p>1、定义</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@ModelAttribute</span><br><span class="line">private void getUser(@RequestParam(&quot;userName&quot;) String userName, @RequestParam(&quot;pwd&quot;) String pwd, Model model) &#123;</span><br><span class="line">    model.addAttribute(&quot;userName&quot;, userName);</span><br><span class="line">    model.addAttribute(&quot;pwd&quot;, pwd);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>2、controller</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@RequestMapping(&quot;/login&quot;)</span><br><span class="line">public String login(Model model) &#123;</span><br><span class="line">    System.out.println(model.containsAttribute(&quot;userName&quot;));</span><br><span class="line">    System.out.println(model.containsAttribute(&quot;pwd&quot;));</span><br><span class="line"></span><br><span class="line">    return &quot;login success&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>3、测试</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/model-attribute-2.png-xtdf" alt="2"></p>
-<p>控制台输出：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">true</span><br><span class="line">true</span><br></pre></td></tr></table></figure>
-<p>还有 @ModelAttribute注释返回具体类的方法，以及 @ModelAttribute(“xxx”)和@RequestMapping(“/yyy’)同时注释的有返回值的方法，这里暂时不深究，有空再看。</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>1、notfound</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/exception-2.png-xtdf" alt="2"></p>
+<p>2、其他错误</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/exception-3.png-xtdf" alt="3"></p>
 
       
     
@@ -326,7 +316,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2020/02/05/java-springboot-11-model-attribute/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2020/05/24/java-springboot-3-exception/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -341,18 +331,9 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2020/02/15/java-springboot-12-init-binder/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          SpringBoot实践十二：init binder
-        
-      </div>
-    </a>
   
-  
-    <a href="/2020/02/05/java-springboot-10-profile/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">SpringBoot实践十：profile</div>
+    <a href="/2020/04/25/goodbye-shanghai/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Goodbye Shanghai</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -379,7 +360,7 @@ var _hmt = _hmt || [];
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#全局数据绑定"><span class="toc-number">1.</span> <span class="toc-text">全局数据绑定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ModelAttribute-“xxx”-注释返回具体类的方法"><span class="toc-number">2.</span> <span class="toc-text">@ModelAttribute(“xxx”)注释返回具体类的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-number">3.</span> <span class="toc-text">其他</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ModelAttribute注释-void-返回值的方法"><span class="toc-number">3.1.</span> <span class="toc-text">@ModelAttribute注释 void 返回值的方法</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#全局异常处理"><span class="toc-number">1.</span> <span class="toc-text">全局异常处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码结构"><span class="toc-number">2.</span> <span class="toc-text">代码结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#先添加两个异常处理类"><span class="toc-number">2.1.</span> <span class="toc-text">先添加两个异常处理类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Advice控制类"><span class="toc-number">2.2.</span> <span class="toc-text">Advice控制类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#测试"><span class="toc-number">3.</span> <span class="toc-text">测试</span></a></li></ol>
                     </div>
                 </span>
             </div>

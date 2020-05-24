@@ -16,15 +16,15 @@
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="SpringBoot实践第二十二篇，JWT认证。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/jwt-test-1.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/jwt-test-2.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/jwt-test-3.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/jwt-test-4.png">
-<meta property="og:updated_time" content="2020-02-15T08:42:08.125Z">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/jwt-test-1.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/jwt-test-2.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/jwt-test-3.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/jwt-test-4.png-xtdf">
+<meta property="og:updated_time" content="2020-05-24T12:54:22.899Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot实践二十二：jwt">
 <meta name="twitter:description" content="SpringBoot实践第二十二篇，JWT认证。">
-<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/jwt-test-1.png">
+<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/jwt-test-1.png-xtdf">
   
     <link rel="alternative" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
   
@@ -269,22 +269,22 @@ var _hmt = _hmt || [];
 <h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>1、校验前</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X GET &apos;http://localhost:8080/auth/jwt&apos;</span><br></pre></td></tr></table></figure>
 <p>返回403错误，提示未授权</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/jwt-test-1.png" alt="1"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/jwt-test-1.png-xtdf" alt="1"></p>
 <p>2、获取授权的token</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST &apos;http://127.0.0.1:8080/auth/login&apos; --header &apos;Content-Type: application/json&apos; -d &apos;&#123;&quot;username&quot;: &quot;夏天&quot;, &quot;password&quot;: &quot;abc123&quot;&#125;&apos;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>这里的用户名和密码来自mysql数据库</p>
 </blockquote>
 <p>返回token信息</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/jwt-test-2.png" alt="2"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/jwt-test-2.png-xtdf" alt="2"></p>
 <p>3、使用返回的token访问第一步的接口</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X GET &apos;http://localhost:8080/auth/jwt&apos; --header &apos;Authorization:eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiLlpI_lpKkiLCJleHAiOjE1NzY0ODYwODl9.JKQmDkCmY2_qK249slOqbC1p7WCz0oLKgSf8djN-vYPu1D00Jlrg031vqLZQqACgvCJRRzCcQqTrQEn41mZLkg&apos;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>注：token前有字段Authorization</p>
 </blockquote>
-<p><img src="http://oow6unnib.bkt.clouddn.com/jwt-test-3.png" alt="3"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/jwt-test-3.png-xtdf" alt="3"></p>
 <p>4、如果超时了，会报错，需要重新申请token</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/jwt-test-4.png" alt="4"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/jwt-test-4.png-xtdf" alt="4"></p>
 <p>我这里设置的超时时间为一分钟，一分钟后再次执行，会报错。</p>
 <p>以上！</p>
 

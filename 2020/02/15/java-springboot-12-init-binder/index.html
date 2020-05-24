@@ -16,13 +16,13 @@
 <meta property="og:site_name" content="夏天的风的博客">
 <meta property="og:description" content="SpringBoot实践第十二篇，init binder全局数据预处理。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/init-binder-1.png">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/init-binder-2.png">
-<meta property="og:updated_time" content="2020-02-15T07:46:55.428Z">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/init-binder-1.png-xtdf">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/init-binder-2.png-xtdf">
+<meta property="og:updated_time" content="2020-05-24T12:54:22.894Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot实践十二：init binder">
 <meta name="twitter:description" content="SpringBoot实践第十二篇，init binder全局数据预处理。">
-<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/init-binder-1.png">
+<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/init-binder-1.png-xtdf">
   
     <link rel="alternative" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
   
@@ -192,7 +192,7 @@ var _hmt = _hmt || [];
 <h2 id="正常调用"><a href="#正常调用" class="headerlink" title="正常调用"></a>正常调用</h2><p>定义controller</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@RequestMapping(&quot;/book&quot;)</span><br><span class="line">public String addBook(Book book, Author author) &#123;</span><br><span class="line">    return book.toString() + &quot;\n&quot; + author.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>前端测试：</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/init-binder-1.png" alt="1"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/init-binder-1.png-xtdf" alt="1"></p>
 <p>发现，前端只识别第一个 name，Author的name没有被对应上。</p>
 <p>通过 @ControllerAdvice 的全局数据预处理可以解决这个问题</p>
 <h2 id="InitBinder"><a href="#InitBinder" class="headerlink" title="@InitBinder"></a>@InitBinder</h2><p>1、给接口中的变量取别名</p>
@@ -205,7 +205,7 @@ var _hmt = _hmt || [];
 <li>在方法中，给参数添加一个<code>b.</code> 前缀，即请求参数要有<code>b.</code>前缀</li>
 </ul>
 <p>3、测试</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/init-binder-2.png" alt="2"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/init-binder-2.png-xtdf" alt="2"></p>
 <p>通过给不同对象添加不同前缀，已可正确识别参数。</p>
 
       
