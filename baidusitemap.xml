@@ -4,6 +4,47 @@
 
     
   <url>
+    <loc>http://xiaqunfeng.cc/2022/05/26/centos-confluence-install/</loc>
+    <lastmod>2022-05-27T03:18:33.681Z</lastmod>
+    <data>
+        <display>
+        <title>centos 7.9上安装confluence 7</title>
+        <pubTime>2022-05-26T09:29:56.000Z</pubTime>
+        
+        <tag>wiki</tag>
+         
+         
+           
+             
+              <breadCrumb title="Tools" url="http://xiaqunfeng.cc/categories/Tools/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2022/05/26/arm-mysql8/</loc>
+    <lastmod>2022-05-26T09:04:34.169Z</lastmod>
+    <data>
+        <display>
+        <title>arm架构的centos上安装mysql 8.0</title>
+        <pubTime>2022-05-26T02:53:32.000Z</pubTime>
+        
+        <tag>mysql</tag>
+         
+         
+           
+             
+              <breadCrumb title="Database" url="http://xiaqunfeng.cc/categories/Database/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://xiaqunfeng.cc/2022/02/07/my-2022/</loc>
     <lastmod>2022-02-07T04:31:20.920Z</lastmod>
     <data>
@@ -32,7 +73,6 @@
     </data>
     </url>
 
-    
     
   <url>
     <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-3-exception/</loc>
@@ -425,12 +465,12 @@
 
     
   <url>
-    <loc>http://xiaqunfeng.cc/2020/02/15/java-springboot-12-init-binder/</loc>
+    <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-11-model-attribute/</loc>
     <lastmod>2020-05-25T01:47:54.682Z</lastmod>
     <data>
         <display>
-        <title>SpringBoot实践十二：init binder</title>
-        <pubTime>2020-02-15T07:44:50.000Z</pubTime>
+        <title>SpringBoot实践十一：model attribute</title>
+        <pubTime>2020-02-05T07:26:13.000Z</pubTime>
         
         <tag>java</tag>
          
@@ -445,12 +485,12 @@
 
     
   <url>
-    <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-11-model-attribute/</loc>
+    <loc>http://xiaqunfeng.cc/2020/02/15/java-springboot-12-init-binder/</loc>
     <lastmod>2020-05-25T01:47:54.682Z</lastmod>
     <data>
         <display>
-        <title>SpringBoot实践十一：model attribute</title>
-        <pubTime>2020-02-05T07:26:13.000Z</pubTime>
+        <title>SpringBoot实践十二：init binder</title>
+        <pubTime>2020-02-15T07:44:50.000Z</pubTime>
         
         <tag>java</tag>
          
@@ -1702,9 +1742,9 @@
         <title>fio测试ceph</title>
         <pubTime>2017-07-12T03:17:04.000Z</pubTime>
         
-        <tag>ceph</tag>
-         
         <tag>tool</tag>
+         
+        <tag>ceph</tag>
          
          
            

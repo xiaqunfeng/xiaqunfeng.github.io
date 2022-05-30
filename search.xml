@@ -4,6 +4,203 @@
   
     
     <entry>
+      <title><![CDATA[centos 7.9上安装confluence 7]]></title>
+      <url>http://xiaqunfeng.cc/2022/05/26/centos-confluence-install/</url>
+      <content type="html"><![CDATA[<p>记录在centos上安装confluence的过程</p>
+<a id="more"></a>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>博客可以放一些随笔和总结，但对于一些知识树，还是wiki比较方便管理，所以准备搭一个。</p>
+<h1 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h1><h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@centos ~]# cat /etc/redhat-release</span><br><span class="line">CentOS Linux release 7.9.2009 (AltArch)</span><br><span class="line"></span><br><span class="line">[root@centos ~]# java -version</span><br><span class="line">openjdk version &quot;1.8.0_332&quot;</span><br><span class="line">OpenJDK Runtime Environment (build 1.8.0_332-b09)</span><br><span class="line">OpenJDK 64-Bit Server VM (build 25.332-b09, mixed mode)</span><br></pre></td></tr></table></figure>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>官方链接：<a href="https://www.atlassian.com/zh/software/confluence/download-archives" target="_blank" rel="noopener">https://www.atlassian.com/zh/software/confluence/download-archives</a></p>
+<p>我这里选择了 7.5.1 的安装包，解压即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos wiki]# ll</span><br><span class="line">drwxr-xr-x 12 root root       4096 Jun 14  2020 atlassian-confluence-7.5.1</span><br><span class="line">-rw-r--r--  1 root root  659503860 Jun 14  2020 atlassian-confluence-7.5.1.tar.gz</span><br></pre></td></tr></table></figure>
+<p>新建数据目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos wiki]# mkdir confluence</span><br></pre></td></tr></table></figure>
+<p>设置数据目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos wiki]# cat atlassian-confluence-7.5.1/confluence/WEB-INF/classes/confluence-init.properties</span><br><span class="line">...</span><br><span class="line">confluence.home=/data/wiki/confluence</span><br></pre></td></tr></table></figure>
+<h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos wiki]# cd atlassian-confluence-7.5.1/bin/</span><br><span class="line">[root@centos wiki]# ./start-confluence.sh</span><br></pre></td></tr></table></figure>
+<p>查看8090端口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@centos bin]# netstat -nltp | grep 809</span><br><span class="line">tcp6       0      0 :::8090                 :::*                    LISTEN      22197/java</span><br><span class="line">tcp6       0      0 :::8091                 :::*                    LISTEN      25081/java</span><br><span class="line"></span><br><span class="line">[root@centos bin]# lsof -i:8090</span><br><span class="line">COMMAND   PID USER   FD   TYPE  DEVICE SIZE/OFF NODE NAME</span><br><span class="line">java    22197 root   47u  IPv6 2718983      0t0  TCP *:8090 (LISTEN)</span><br></pre></td></tr></table></figure>
+<h1 id="mysql配置"><a href="#mysql配置" class="headerlink" title="mysql配置"></a>mysql配置</h1><p>安装详见：<a href="http://xiaqunfeng.cc/2022/05/26/arm-mysql8/">arm架构的centos上安装mysql 8.0</a></p>
+<h2 id="驱动"><a href="#驱动" class="headerlink" title="驱动"></a>驱动</h2><p>驱动选择详见官方建议：<a href="https://confluence.atlassian.com/doc/database-jdbc-drivers-171742.html" target="_blank" rel="noopener">https://confluence.atlassian.com/doc/database-jdbc-drivers-171742.html</a></p>
+<p>驱动下载：<a href="https://jar-download.com/artifacts/mysql/mysql-connector-java" target="_blank" rel="noopener">https://jar-download.com/artifacts/mysql/mysql-connector-java</a> </p>
+<blockquote>
+<p>我这里mysql是8.0.28版本，所以驱动也是选的8.0.28</p>
+</blockquote>
+<p>将驱动放到lib目录下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos atlassian-confluence-7.5.1]# ll confluence/WEB-INF/lib/*mysql*</span><br><span class="line">-rw-rw-rw- 1 root root 2476480 Jan 18 05:53 confluence/WEB-INF/lib/mysql-connector-java-8.0.28.jar</span><br></pre></td></tr></table></figure>
+<h2 id="数据库设置"><a href="#数据库设置" class="headerlink" title="数据库设置"></a>数据库设置</h2><p>官方链接：<a href="https://confluence.atlassian.com/doc/database-setup-for-mysql-128747.html" target="_blank" rel="noopener">https://confluence.atlassian.com/doc/database-setup-for-mysql-128747.html</a></p>
+<p>1、/etc/my.cnf 设置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">[client]</span><br><span class="line">port = 3306</span><br><span class="line">socket = /var/lib/mysql/mysql.sock</span><br><span class="line">default-character-set = utf8mb4</span><br><span class="line"></span><br><span class="line">[mysql]</span><br><span class="line">default-character-set = utf8mb4</span><br><span class="line"></span><br><span class="line">[mysqld]</span><br><span class="line">datadir=/var/lib/mysql/data</span><br><span class="line">socket=/var/lib/mysql/mysql.sock</span><br><span class="line"></span><br><span class="line">log-error=/var/log/mysqld.log</span><br><span class="line">pid-file=/var/run/mysqld/mysqld.pid</span><br><span class="line"></span><br><span class="line">init-connect =&apos;SET NAMES utf8&apos;</span><br><span class="line">bind-address = 127.0.0.1</span><br><span class="line">port = 3306</span><br><span class="line">innodb_file_per_table=1</span><br><span class="line"></span><br><span class="line">#confluence</span><br><span class="line">character-set-server=utf8mb4</span><br><span class="line">collation-server=utf8mb4_bin</span><br><span class="line">default-storage-engine=INNODB</span><br><span class="line">max_allowed_packet=256M</span><br><span class="line">innodb_log_file_size=2GB</span><br><span class="line">transaction-isolation=READ-COMMITTED</span><br><span class="line">binlog_format=row</span><br><span class="line"></span><br><span class="line">[mysqld_safe]</span><br><span class="line">timezone = &apos;+0:00&apos;</span><br></pre></td></tr></table></figure>
+<p>2、重启mysql</p>
+<p>3、创建confluence数据库、创建对应账户并授权</p>
+<p>创建空的数据库—— confluence</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE DATABASE confluence CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;</span><br></pre></td></tr></table></figure>
+<p>创建用户 —— confluenceuser</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create user &apos;confluenceuser&apos;@&apos;localhost&apos; IDENTIFIED BY &apos;xxx&apos;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中username为自定义的用户名；host为登录域名，host为’%’时表示为 任意IP，为localhost时表示本机，或者填写指定的IP地址；paasword为密码</p>
+</blockquote>
+<p>授权</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grant all privileges on confluence.* TO &apos;confluenceuser&apos;@&apos;localhost&apos; with grant option;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中<em>.</em>第一个<em>表示所有数据库，第二个</em>表示所有数据表，如果不想授权全部那就把对应的*写成相应数据库或者数据表；username为指定的用户；%为该用户登录的域名</p>
+</blockquote>
+<p>刷新</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+<h1 id="web配置"><a href="#web配置" class="headerlink" title="web配置"></a>web配置</h1><p>1、打开页面 <a href="http://localhost:8090" target="_blank" rel="noopener">http://localhost:8090</a> ，进入系统安装页面。 </p>
+<p>2、选择语言：中文</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/cf1.png" alt="chinese"></p>
+<p>3、选择设置：生产环境</p>
+<p>4、获取应用：直接下一步</p>
+<p>5、授权码界面</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/cf2.png" alt="code"></p>
+<p>复制上面的服务器ID</p>
+<h1 id="授权码破解"><a href="#授权码破解" class="headerlink" title="授权码破解"></a>授权码破解</h1><p>1、先停止confluence</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos bin]# ./stop-confluence.sh</span><br></pre></td></tr></table></figure>
+<p>注意：破解是一种不好的行为！破解是一种不好的行为！</p>
+<p>2、将 confluence/WEB-INF/lib/atlassian-extras-decoder-v2-3.4.1.jar 保存至本地，并修改文件名为 <strong>atlassian-extras-2.4.jar</strong>，因为破解工具只认这个命名</p>
+<p>3、下载破解工具 <a href="https://pan.baidu.com/s/1e5CsmRUEeMUOzJd5a2KyiQ" target="_blank" rel="noopener">confluence_keygen.jar</a> （提取码：3a37）</p>
+<p>此时有如下两个文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">▶ ll</span><br><span class="line">total 600K</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 6.6K Feb 18  2019 atlassian-extras-2.4.jar</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 566K May 10  2010 confluence_keygen.jar</span><br></pre></td></tr></table></figure>
+<p>4、将文件拷贝到 windows 机器上</p>
+<blockquote>
+<p>需要windows上安装java环境</p>
+</blockquote>
+<p>运行jar包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar confluence_keygen.jar</span><br></pre></td></tr></table></figure>
+<p>填入上面的的服务器ID，然后点 .patch 加载 atlassian-extras-2.4.jar 包进行修补。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/cf3.png" alt="pojie"></p>
+<p>破解成功后，会修改原来的包，并将原包备份成 .bak 文件</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/cf4.png" alt="patch"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 6.6K Feb 18  2019 atlassian-extras-2.4.bak</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 6.6K Feb 18  2019 atlassian-extras-2.4.jar</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 566K May 10  2010 confluence_keygen.jar</span><br></pre></td></tr></table></figure>
+<p>5、将修补完成的 atlassian-extras-2.4.jar 上传至服务器 lib 目录下，并还原之前的文件名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mv atlassian-extras-2.4.jar atlassian-extras-decoder-v2-3.4.1.jar</span><br></pre></td></tr></table></figure>
+<p>6、点击 .gen 生成key</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/cf5.png" alt="key"></p>
+<p>7、重启confluence</p>
+<h1 id="继续web配置"><a href="#继续web配置" class="headerlink" title="继续web配置"></a>继续web配置</h1><p>1、将生成的key贴进来</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/cf6.png" alt="keypaste"></p>
+<p>2、设置数据库，选择自己的</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/cf7.png" alt="sql"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/cf8.png" alt="mysql"></p>
+<p>3、设置空白站点</p>
+<p>4、配置管理员</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/cf9.png" alt="admin"></p>
+<p>5、成功</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/cf10.png" alt="success"></p>
+<h1 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h1><h2 id="破解问题"><a href="#破解问题" class="headerlink" title="破解问题"></a>破解问题</h2><p>结论：破解的jar包和生成的key不是绑定的。</p>
+<p>不是每次安装都顺利，很多时候都需要重新安装。重新安装，启动confluence后的服务器ID不一样。</p>
+<p>不需要每次都到windows上破解一遍，只需要破解一次。</p>
+<p>除了在windows上生成key，还有在mac和linux机器上生成key的脚本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">▶ ll</span><br><span class="line">total 600K</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 6.6K Feb 18  2019 atlassian-extras-2.4.bak</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 6.6K Feb 18  2019 atlassian-extras-2.4.jar</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 566K May 10  2010 confluence_keygen.jar</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff  485 May 22 11:07 key.txt</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 1.9K Sep 21  2010 keygen.bat</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff  299 Sep 21  2010 keygen.sh</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff  309 Sep 21  2010 keygen_MacOSX.sh</span><br></pre></td></tr></table></figure>
+<h2 id="表找不到"><a href="#表找不到" class="headerlink" title="表找不到"></a>表找不到</h2><p>错误：MySQLSyntaxErrorException: Table ‘confluence.cwd_application_attribute’ doesn’t exist</p>
+<p>问题：表版本或者驱动问题。我之前用 mysql5.6 的，换驱动都不行</p>
+<p>解决方案：看下自己数据库和驱动是否对的上。用mysql5.7或者8.0版本的</p>
+<h2 id="特殊字符或表情插入报错"><a href="#特殊字符或表情插入报错" class="headerlink" title="特殊字符或表情插入报错"></a>特殊字符或表情插入报错</h2><p>原因：</p>
+<p>MySQL的utf8编码最多3个字节，Emoji表情或者某些特殊字符是4个字节，所以数据插入不了，需要修改编码。</p>
+<blockquote>
+<p>在MySQL 的”utf8”实际上不是真正的 UTF-8。 “utf8”只支持每个字符最多三个字节，而真正的 UTF-8 是每个字符最多四个字节。MySQL 一直没有修复这个 bug，他们在 2010 年发布了一个叫作”utf8mb4”的字符集，绕过了这个问题。</p>
+</blockquote>
+<p>解决方法：</p>
+<p>1、查看现在字符集</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show variables like &apos;char%&apos;;</span><br></pre></td></tr></table></figure>
+<p>2、修改服务端字符集</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[client]</span><br><span class="line">default-character-set = utf8mb4</span><br><span class="line">[mysql]</span><br><span class="line">default-character-set = utf8mb4</span><br><span class="line">[mysqld]</span><br><span class="line">character-set-client-handshake = FALSE #关键设置</span><br><span class="line">character-set-server = utf8mb4</span><br><span class="line">collation-server = utf8mb4_unicode_ci</span><br><span class="line">init_connect=&apos;SET NAMES utf8mb4&apos;</span><br></pre></td></tr></table></figure>
+<p>3、重启mysql</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service mysqld restart</span><br></pre></td></tr></table></figure>
+<p>其他修改字符集命令：</p>
+<p>修改数据库中表字符集和字段字符集</p>
+<ul>
+<li>修改数据库表字符集</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">convert</span> <span class="keyword">to</span> <span class="built_in">character</span> <span class="keyword">set</span> utf8mb4 <span class="keyword">collate</span> utf8mb4_bin;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改数据库字段字符集</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">modify</span> <span class="keyword">column</span> 字段  字段类型 <span class="built_in">character</span> <span class="keyword">set</span> utf8mb4 <span class="keyword">collate</span> utf8mb4_bin</span><br></pre></td></tr></table></figure>
+<ul>
+<li>批量修改制定表字符集</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line"><span class="keyword">CONCAT</span>(<span class="string">"ALTER TABLE `"</span>, TABLE_NAME,<span class="string">"` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_Unicode_ci;"</span>) </span><br><span class="line"><span class="keyword">AS</span> target_tables</span><br><span class="line"><span class="keyword">FROM</span> INFORMATION_SCHEMA.TABLES</span><br><span class="line"><span class="keyword">WHERE</span> TABLE_SCHEMA=<span class="string">"confluence"</span></span><br><span class="line"><span class="keyword">AND</span> TABLE_TYPE=<span class="string">"BASE TABLE"</span>;</span><br></pre></td></tr></table></figure>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> wiki </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[arm架构的centos上安装mysql 8.0]]></title>
+      <url>http://xiaqunfeng.cc/2022/05/26/arm-mysql8/</url>
+      <content type="html"><![CDATA[<p>最近整了一个低功耗的个人服务器，arm架构的，自带mysql是5.6的，太低了，有些应用的安装不适配，所以准备装个8.0的。</p>
+<a id="more"></a>
+<h1 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h1><p>1、安装环境确认</p>
+<p>看下服务器架构</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos ~]# uname -a</span><br><span class="line">Linux centos 4.4.194.pdnas.rk3328.258 #1 SMP Sat Sep 18 10:50:43 CST 2021 aarch64 aarch64 aarch64 GNU/Linux</span><br></pre></td></tr></table></figure>
+<p>发行版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos ~]# cat /etc/redhat-release</span><br><span class="line">CentOS Linux release 7.9.2009 (AltArch)</span><br></pre></td></tr></table></figure>
+<p>2、rpm包下载</p>
+<p>下载地址：<a href="https://dev.mysql.com/downloads/mysql/" target="_blank" rel="noopener">https://dev.mysql.com/downloads/mysql/</a></p>
+<blockquote>
+<p>找到对应的mysql安装包，注意，一定要是arm版本的</p>
+</blockquote>
+<p>我这里选择的是：mysql-8.0.28-1.el7.aarch64.rpm-bundle.tar</p>
+<p>3、一些依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1. 卸载系统自带mariadb-libs</span><br><span class="line">    yum -y remove mariadb-libs</span><br><span class="line">    或者 </span><br><span class="line">    yum remove mysql-libs 全卸载了</span><br><span class="line"></span><br><span class="line">2. 安装依赖包</span><br><span class="line">    yum -y install net-tools libaio</span><br><span class="line"></span><br><span class="line">3. 创建mysql用户组及用户(这里也可以不用创建，安装的时候会自动创)</span><br><span class="line">    groupadd mysql</span><br><span class="line">    useradd -g mysql mysql</span><br></pre></td></tr></table></figure>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>1、解压</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@centos mysql]# tar xvf mysql-8.0.28-1.el7.aarch64.rpm-bundle.tar</span><br><span class="line">mysql-community-client-8.0.28-1.el7.aarch64.rpm</span><br><span class="line">mysql-community-client-plugins-8.0.28-1.el7.aarch64.rpm</span><br><span class="line">mysql-community-common-8.0.28-1.el7.aarch64.rpm</span><br><span class="line">mysql-community-devel-8.0.28-1.el7.aarch64.rpm</span><br><span class="line">mysql-community-embedded-compat-8.0.28-1.el7.aarch64.rpm</span><br><span class="line">mysql-community-icu-data-files-8.0.28-1.el7.aarch64.rpm</span><br><span class="line">mysql-community-libs-8.0.28-1.el7.aarch64.rpm</span><br><span class="line">mysql-community-libs-compat-8.0.28-1.el7.aarch64.rpm</span><br><span class="line">mysql-community-server-8.0.28-1.el7.aarch64.rpm</span><br><span class="line">mysql-community-test-8.0.28-1.el7.aarch64.rpm</span><br></pre></td></tr></table></figure>
+<p>2、rpm安装（注意先后顺序）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh mysql-community-common-8.0.28-1.el7.aarch64.rpm</span><br><span class="line">rpm -ivh mysql-community-client-plugins-8.0.28-1.el7.aarch64.rpm</span><br><span class="line">rpm -ivh mysql-community-libs-8.0.28-1.el7.aarch64.rpm</span><br><span class="line">rpm -ivh mysql-community-client-8.0.28-1.el7.aarch64.rpm</span><br><span class="line">rpm -ivh mysql-community-icu-data-files-8.0.28-1.el7.aarch64.rpm</span><br><span class="line">rpm -ivh mysql-community-server-8.0.28-1.el7.aarch64.rpm</span><br></pre></td></tr></table></figure>
+<p>3、初始化数据库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysqld --initialize --user=mysql</span><br><span class="line">mysqld --initialize-insecure --user=mysql</span><br></pre></td></tr></table></figure>
+<p>4、新增数据目录（可选）</p>
+<blockquote>
+<p>默认目录是 /var/lib/mysql，文件夹下文件较多，不方便做数据管理，所以在该目录下新增data目录</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">[root@centos mysql]# ll</span><br><span class="line"># For advice on how to change settings please see</span><br><span class="line">total 176576</span><br><span class="line">-rw-r----- 1 mysql mysql       56 May 25 10:24 auto.cnf</span><br><span class="line">-rw------- 1 mysql mysql     1680 May 25 10:25 ca-key.pem</span><br><span class="line">-rw-r--r-- 1 mysql mysql     1112 May 25 10:25 ca.pem</span><br><span class="line">-rw-r--r-- 1 mysql mysql     1112 May 25 10:25 client-cert.pem</span><br><span class="line">-rw------- 1 mysql mysql     1680 May 25 10:25 client-key.pem</span><br><span class="line">-rw-r----- 1 mysql mysql   196608 May 25 10:26 #ib_16384_0.dblwr</span><br><span class="line">-rw-r----- 1 mysql mysql  8585216 May 25 10:24 #ib_16384_1.dblwr</span><br><span class="line">-rw-r----- 1 mysql mysql     5515 May 25 10:26 ib_buffer_pool</span><br><span class="line">-rw-r----- 1 mysql mysql 12582912 May 25 10:26 ibdata1</span><br><span class="line">-rw-r----- 1 mysql mysql 50331648 May 25 10:26 ib_logfile0</span><br><span class="line">-rw-r----- 1 mysql mysql 50331648 May 25 10:24 ib_logfile1</span><br><span class="line">drwxr-x--- 2 mysql mysql     4096 May 25 10:26 #innodb_temp</span><br><span class="line">drwxr-x--- 2 mysql mysql     4096 May 25 10:25 mysql</span><br><span class="line">-rw-r----- 1 mysql mysql 25165824 May 25 10:26 mysql.ibd</span><br><span class="line">drwxr-x--- 2 mysql mysql     4096 May 25 10:25 performance_schema</span><br><span class="line">-rw------- 1 mysql mysql     1680 May 25 10:25 private_key.pem</span><br><span class="line">-rw-r--r-- 1 mysql mysql      452 May 25 10:25 public_key.pem</span><br><span class="line">-rw-r--r-- 1 mysql mysql     1112 May 25 10:25 server-cert.pem</span><br><span class="line">-rw------- 1 mysql mysql     1676 May 25 10:25 server-key.pem</span><br><span class="line">drwxr-x--- 2 mysql mysql     4096 May 25 10:26 sys</span><br><span class="line">-rw-r----- 1 mysql mysql 16777216 May 25 10:26 undo_001</span><br><span class="line">-rw-r----- 1 mysql mysql 16777216 May 25 10:26 undo_002</span><br><span class="line"></span><br><span class="line">[root@centos mysql]# mkdir data</span><br><span class="line">[root@centos mysql]# chgrp -R mysql data</span><br><span class="line">[root@centos mysql]# chown -R mysql data</span><br><span class="line">[root@centos mysql]# ll | grep data</span><br><span class="line">drwxr-xr-x 2 mysql mysql     4096 May 25 10:36 data</span><br></pre></td></tr></table></figure>
+<p>5、更改配置文件中数据目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@centos mysql]# cat /etc/my.conf</span><br><span class="line">[mysqld]</span><br><span class="line">...</span><br><span class="line">datadir=/var/lib/mysql/data</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h1 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h1><p>1、启动mysql</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos mysql]# service mysqld start</span><br><span class="line">Redirecting to /bin/systemctl start mysqld.service</span><br></pre></td></tr></table></figure>
+<p>2、查看版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos mysql]# mysql --version</span><br><span class="line">mysql  Ver 8.0.28 for Linux on aarch64 (MySQL Community Server - GPL)</span><br></pre></td></tr></table></figure>
+<p>3、查看运行状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@centos mysql]# service mysqld status</span><br><span class="line">Redirecting to /bin/systemctl status mysqld.service</span><br><span class="line">● mysqld.service - MySQL Server</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/mysqld.service; enabled; vendor preset: disabled)</span><br><span class="line">   Active: active (running) since Wed 2022-05-25 11:08:02 CST; 1min 39s ago</span><br><span class="line">     Docs: man:mysqld(8)</span><br><span class="line">           http://dev.mysql.com/doc/refman/en/using-systemd.html</span><br><span class="line">  Process: 31509 ExecStartPre=/usr/bin/mysqld_pre_systemd (code=exited, status=0/SUCCESS)</span><br><span class="line"> Main PID: 31625 (mysqld)</span><br><span class="line">   Status: &quot;Server is operational&quot;</span><br><span class="line">   CGroup: /system.slice/mysqld.service</span><br><span class="line">           └─31625 /usr/sbin/mysqld</span><br></pre></td></tr></table></figure>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>1、忘记密码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">1、vim /etc/my.cnf文件；</span><br><span class="line">[mysqld]</span><br><span class="line">skip-grant-tables（登录时跳过权限检查）</span><br><span class="line"></span><br><span class="line">2、重启mysql</span><br><span class="line">3、输入mysql命令，直接回车登录</span><br><span class="line">4、刷新一下权限表：</span><br><span class="line">mysql&gt; flush privileges;</span><br><span class="line"></span><br><span class="line">5、修改密码</span><br><span class="line">    5.6和5.7版本</span><br><span class="line">        mysql&gt; set password for root @localhost = password(&apos;xxx&apos;);</span><br><span class="line">    8.0 版本</span><br><span class="line">        mysql&gt; ALTER USER &apos;root&apos;@&apos;localhost&apos; IDENTIFIED BY &apos;xxx&apos;;</span><br><span class="line"></span><br><span class="line">6、退出 exit</span><br><span class="line">7、去掉配置文件里的跳过权限检查，重启服务后用密码登录(mysql -u root -p)</span><br></pre></td></tr></table></figure>
+<p>2、注意mysql8.0密码的要求</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SHOW VARIABLES LIKE &apos;validate_password%&apos;;</span><br><span class="line">+--------------------------------------+--------+</span><br><span class="line">| Variable_name                        | Value  |</span><br><span class="line">+--------------------------------------+--------+</span><br><span class="line">| validate_password.check_user_name    | ON     |</span><br><span class="line">| validate_password.dictionary_file    |        |</span><br><span class="line">| validate_password.length             | 8      |</span><br><span class="line">| validate_password.mixed_case_count   | 1      |</span><br><span class="line">| validate_password.number_count       | 1      |</span><br><span class="line">| validate_password.policy             | MEDIUM |</span><br><span class="line">| validate_password.special_char_count | 1      |</span><br><span class="line">+--------------------------------------+--------+</span><br><span class="line">7 rows in set (0.03 sec)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>也可以修改一下密码规则，按需修改即可</p>
+</blockquote>
+]]></content>
+      
+        <categories>
+            
+            <category> Database </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> mysql </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[我的2022]]></title>
       <url>http://xiaqunfeng.cc/2022/02/07/my-2022/</url>
       <content type="html"><![CDATA[<div id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
@@ -7164,9 +7361,9 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> ceph </tag>
-            
             <tag> tool </tag>
+            
+            <tag> ceph </tag>
             
         </tags>
         
