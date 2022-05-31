@@ -122,6 +122,11 @@
 <li>批量修改制定表字符集</li>
 </ul>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line"><span class="keyword">CONCAT</span>(<span class="string">"ALTER TABLE `"</span>, TABLE_NAME,<span class="string">"` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_Unicode_ci;"</span>) </span><br><span class="line"><span class="keyword">AS</span> target_tables</span><br><span class="line"><span class="keyword">FROM</span> INFORMATION_SCHEMA.TABLES</span><br><span class="line"><span class="keyword">WHERE</span> TABLE_SCHEMA=<span class="string">"confluence"</span></span><br><span class="line"><span class="keyword">AND</span> TABLE_TYPE=<span class="string">"BASE TABLE"</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="无法连接服务器"><a href="#无法连接服务器" class="headerlink" title="无法连接服务器"></a>无法连接服务器</h2><p>新建文章的时候，无法保存，提示“无法连接服务器”</p>
+<p>原因详见：<a href="https://confluence.atlassian.com/doc/troubleshooting-collaborative-editing-858772087.html" target="_blank" rel="noopener">https://confluence.atlassian.com/doc/troubleshooting-collaborative-editing-858772087.html</a></p>
+<p>解决方法：</p>
+<p>关闭同步功能即可</p>
+<h2 id="您的-URL-不匹配"><a href="#您的-URL-不匹配" class="headerlink" title="您的 URL 不匹配"></a>您的 URL 不匹配</h2><p>按要求设置即可</p>
 ]]></content>
       
         <categories>
