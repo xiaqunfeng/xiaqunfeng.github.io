@@ -4,6 +4,66 @@
 
     
   <url>
+    <loc>http://xiaqunfeng.cc/2022/06/02/bazel-advance/</loc>
+    <lastmod>2022-07-07T03:02:12.584Z</lastmod>
+    <data>
+        <display>
+        <title>bazel进阶</title>
+        <pubTime>2022-06-02T07:48:50.000Z</pubTime>
+        
+        <tag>bazel</tag>
+         
+         
+           
+             
+              <breadCrumb title="Tools" url="http://xiaqunfeng.cc/categories/Tools/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2022/07/05/bazel-rule/</loc>
+    <lastmod>2022-07-05T08:50:23.195Z</lastmod>
+    <data>
+        <display>
+        <title>bazel宏和规则</title>
+        <pubTime>2022-07-05T08:27:20.000Z</pubTime>
+        
+        <tag>bazel</tag>
+         
+         
+           
+             
+              <breadCrumb title="Tools" url="http://xiaqunfeng.cc/categories/Tools/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2022/06/01/bazel-basic/</loc>
+    <lastmod>2022-06-02T10:44:29.705Z</lastmod>
+    <data>
+        <display>
+        <title>bazel基础</title>
+        <pubTime>2022-06-01T07:17:23.000Z</pubTime>
+        
+        <tag>bazel</tag>
+         
+         
+           
+             
+              <breadCrumb title="Tools" url="http://xiaqunfeng.cc/categories/Tools/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://xiaqunfeng.cc/2022/05/26/centos-confluence-install/</loc>
     <lastmod>2022-05-31T08:00:43.945Z</lastmod>
     <data>
@@ -215,12 +275,12 @@
 
     
   <url>
-    <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-4-druid/</loc>
+    <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-5-swagger2/</loc>
     <lastmod>2020-05-25T01:47:54.692Z</lastmod>
     <data>
         <display>
-        <title>SpringBoot实践四：druid</title>
-        <pubTime>2020-02-05T04:29:13.000Z</pubTime>
+        <title>SpringBoot实践五：swagger2</title>
+        <pubTime>2020-02-05T05:04:13.000Z</pubTime>
         
         <tag>java</tag>
          
@@ -235,12 +295,12 @@
 
     
   <url>
-    <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-5-swagger2/</loc>
+    <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-4-druid/</loc>
     <lastmod>2020-05-25T01:47:54.692Z</lastmod>
     <data>
         <display>
-        <title>SpringBoot实践五：swagger2</title>
-        <pubTime>2020-02-05T05:04:13.000Z</pubTime>
+        <title>SpringBoot实践四：druid</title>
+        <pubTime>2020-02-05T04:29:13.000Z</pubTime>
         
         <tag>java</tag>
          
