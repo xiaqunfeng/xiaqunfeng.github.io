@@ -620,6 +620,1046 @@
     </entry>
     
     <entry>
+      <title><![CDATA[并发编程五：atomic]]></title>
+      <url>http://xiaqunfeng.cc/2022/02/05/cpp11-concurrency-5/</url>
+      <content type="html"><![CDATA[<p>原子类型<br><a id="more"></a></p>
+<p> <code>&lt;atomic&gt;</code>头文件中主要包含两个类 atomic 和 atomic_flag</p>
+<h2 id="std-atomic-flag"><a href="#std-atomic-flag" class="headerlink" title="std::atomic_flag"></a>std::atomic_flag</h2><p>只有默认构造函数，拷贝构造被禁用，也不能move赋值。</p>
+<ul>
+<li>如果在初始化时没有明确使用 ATOMIC_FLAG_INIT初始化，那么新创建的 std::atomic_flag 对象的状态是未指定的（<em>unspecified</em>）（既没有被 set 也没有被 clear。）</li>
+<li>如果某个 std::atomic_flag 对象使用 ATOMIC_FLAG_INIT 该宏初始化，那么可以保证该 std::atomic_flag 对象在创建时处于 clear 状态。</li>
+</ul>
+<h3 id="std-atomic-flag-test-and-set"><a href="#std-atomic-flag-test-and-set" class="headerlink" title="std::atomic_flag::test_and_set()"></a>std::atomic_flag::test_and_set()</h3><p>作用：函数检查 std::atomic_flag 标志。是原子操作</p>
+<p>如果 std::atomic_flag 之前没有被设置过，则设置 std::atomic_flag 的标志，并返回先前该 std::atomic_flag 对象是否被设置过。如果之前 std::atomic_flag 对象已被设置，则返回 true，否则返回 false。</p>
+<h3 id="std-atomic-flag-clear"><a href="#std-atomic-flag-clear" class="headerlink" title="std::atomic_flag::clear()"></a>std::atomic_flag::clear()</h3><p>作用：清除 std::atomic_flag 对象的标志位，即设置 atomic_flag 的值为 false。也就是下一次调用 std::atomic_flag::test_and_set 返回 false。</p>
+<p><strong>关于Memory order</strong></p>
+<p>clear() 和 tes_and_set() 一样，括号内不填时，默认的 memory order 是 memory_order_seq_cst，也可以指定Memory Order。</p>
+<table>
+<thead>
+<tr>
+<th>Memory Order 值</th>
+<th>Memory Order 类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>memory_order_relaxed</td>
+<td>Relaxed</td>
+</tr>
+<tr>
+<td>memory_order_consume</td>
+<td>Consume</td>
+</tr>
+<tr>
+<td>memory_order_acquire</td>
+<td>Acquire</td>
+</tr>
+<tr>
+<td>memory_order_release</td>
+<td>Release</td>
+</tr>
+<tr>
+<td>memory_order_acq_rel</td>
+<td>Acquire/Release</td>
+</tr>
+<tr>
+<td>memory_order_seq_cst</td>
+<td>Sequentially consistent</td>
+</tr>
+</tbody>
+</table>
+<h3 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h3><p>参考<a href="https://cplusplus.com/reference/atomic/atomic_flag/" target="_blank" rel="noopener">automic_flag</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// using atomic_flag as a lock</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span>       <span class="comment">// std::cout</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;atomic&gt;</span>         <span class="comment">// std::atomic_flag</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span>         <span class="comment">// std::thread</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span>         <span class="comment">// std::vector</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sstream&gt;</span>        <span class="comment">// std::stringstream</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::atomic_flag lock_stream = ATOMIC_FLAG_INIT;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">stringstream</span> stream;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">append_number</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">bool</span> flag = lock_stream.test_and_set();</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"x: %d, lock_stream: %d\n"</span>, x, flag);</span><br><span class="line">  <span class="keyword">while</span> (flag) &#123;</span><br><span class="line">    <span class="built_in">std</span>::this_thread::yield();</span><br><span class="line">  &#125;</span><br><span class="line">  stream &lt;&lt; <span class="string">"thread #"</span> &lt;&lt; x &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line"><span class="comment">//   lock_stream.clear();</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="comment">//   std::cout &lt;&lt; "init: " &lt;&lt; lock_stream.test_and_set() &lt;&lt; std::endl;</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::thread&gt; threads;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=<span class="number">10</span>; ++i) </span><br><span class="line">    threads.push_back(<span class="built_in">std</span>::thread(append_number,i));</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; th : threads) </span><br><span class="line">    th.join();</span><br><span class="line"></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; stream.str();</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">▶ ../bazel-bin/concurrency/6-atomic_flag</span><br><span class="line">x: 1, lock_stream: 0</span><br><span class="line">x: 2, lock_stream: 1</span><br><span class="line">x: 4, lock_stream: 1</span><br><span class="line">x: 3, lock_stream: 1</span><br><span class="line">x: 6, lock_stream: 1</span><br><span class="line">x: 7, lock_stream: 1</span><br><span class="line">x: 5, lock_stream: 1</span><br><span class="line">x: 8, lock_stream: 1</span><br><span class="line">x: 9, lock_stream: 1</span><br><span class="line">x: 10, lock_stream: 1</span><br></pre></td></tr></table></figure>
+<p>可以看到，第一次 test_and_set() 返回0，同时设置为ture，如果不clear()，后面线程拿到的就都是1.</p>
+<h2 id="std-atomic"><a href="#std-atomic" class="headerlink" title="std::atomic"></a>std::atomic</h2><p>std::atomic 是模板类，一个模板类型为 T 的原子对象中封装了一个类型为 T 的值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">template &lt;class T&gt; struct atomic;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>原子类型对象的主要特点就是从不同线程访问不会导致数据竞争(data race)。因此从不同线程访问某个原子对象是良性 (<em>well-defined</em>) 行为。</li>
+<li>对于非原子类型而言，并发访问某个对象（如果不做任何同步操作）会导致未定义 (<em>undifined</em>) 行为发生。</li>
+</ul>
+<h3 id="构造和赋值"><a href="#构造和赋值" class="headerlink" title="构造和赋值"></a>构造和赋值</h3><p>1、构造函数</p>
+<table>
+<thead>
+<tr>
+<th>构造方式</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default (1)</td>
+<td><code>atomic() noexcept = default;</code></td>
+</tr>
+<tr>
+<td>initialization (2)</td>
+<td><code>constexpr atomic (T val) noexcept;</code></td>
+</tr>
+<tr>
+<td>copy [deleted] (3)</td>
+<td><code>atomic (const atomic&amp;) = delete;</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>默认构造函数，由默认构造函数创建的 std::atomic 对象处于未初始化(uninitialized)状态，对处于未初始化(uninitialized)状态 std::atomic对象可以由 atomic_init 函数进行初始化。</li>
+<li>初始化构造函数，由类型 T初始化一个 std::atomic对象。</li>
+<li>拷贝构造函数被禁用。</li>
+</ul>
+<p>代码，<a href="https://cplusplus.com/reference/atomic/atomic/atomic/" target="_blank" rel="noopener">参考cplusplus: atomic</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// constructing atomics</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;atomic&gt;</span>    <span class="comment">// std::atomic, std::atomic_flag, ATOMIC_FLAG_INIT</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span>  <span class="comment">// std::cout</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span>    <span class="comment">// std::thread, std::this_thread::yield</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span>    <span class="comment">// std::vector</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::atomic&lt;<span class="keyword">bool</span>&gt; ready(<span class="literal">false</span>);</span><br><span class="line"><span class="built_in">std</span>::atomic_flag winner = ATOMIC_FLAG_INIT;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">count1m</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (!ready) &#123;</span><br><span class="line">        <span class="built_in">std</span>::this_thread::yield();</span><br><span class="line">    &#125;  <span class="comment">// wait for the ready signal</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">volatile</span> <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1000000</span>; ++i) &#123;</span><br><span class="line">    &#125;  <span class="comment">// go!, count to 1 million</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!winner.test_and_set()) &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"thread #"</span> &lt;&lt; id &lt;&lt; <span class="string">" won!\n"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::thread&gt; threads;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"spawning 10 threads that count to 1 million...\n"</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">10</span>; ++i) </span><br><span class="line">        threads.push_back(<span class="built_in">std</span>::thread(count1m, i));</span><br><span class="line">    ready = <span class="literal">true</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp;th : threads) </span><br><span class="line">        th.join();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">▶ ../bazel-bin/concurrency/6-atomic1    </span><br><span class="line">spawning 10 threads that count to 1 million...</span><br><span class="line">thread #7 won!</span><br></pre></td></tr></table></figure>
+<p>启10个线程，线程在while处等待，然后将标志ready设置为true，第一个运行到winner的返回false，然后输出日志，其他线程返回true结束线程。</p>
+<p>2、赋值操作</p>
+<table>
+<thead>
+<tr>
+<th>std::atomic::operator=()</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>set value (1)</td>
+<td><code>T operator= (T val) noexcept; T operator= (T val) volatile noexcept;</code></td>
+</tr>
+<tr>
+<td>copy [deleted] (2)</td>
+<td><code>atomic&amp; operator= (const atomic&amp;) = delete; atomic&amp; operator= (const atomic&amp;) volatile = delete;</code></td>
+</tr>
+</tbody>
+</table>
+<p>普通的赋值拷贝操作已经被禁用。但是一个类型为 T 的变量可以赋值给相应的原子类型变量（相当与隐式转换），该操作是原子的，内存序(Memory Order) 默认为顺序一致性(<code>std::memory_order_seq_cst</code>)，如果需要指定其他的内存序，需使用 <code>std::atomic::store()</code>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::atomic &lt;<span class="keyword">int</span>&gt; foo = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">set_foo</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    foo = x; <span class="comment">// 调用 std::atomic::operator=().</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="成员函数"><a href="#成员函数" class="headerlink" title="成员函数"></a>成员函数</h3><h4 id="1、is-lock-free"><a href="#1、is-lock-free" class="headerlink" title="1、is_lock_free"></a>1、is_lock_free</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`<span class="keyword">bool</span>` `is_lock_free() ``<span class="keyword">const</span>` `<span class="keyword">volatile</span>` `<span class="keyword">noexcept</span>``;``<span class="keyword">bool</span>` `is_lock_free() ``<span class="keyword">const</span>` `<span class="keyword">noexcept</span>``;`</span><br></pre></td></tr></table></figure>
+<p>判断该 std::atomic 对象是否具备 lock-free 的特性。如果某个对象满足 <em>lock-free</em> 特性，在多个线程访问该对象时不会导致线程阻塞。</p>
+<h4 id="2、store"><a href="#2、store" class="headerlink" title="2、store"></a>2、store</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">store</span> <span class="params">(T val, memory_order sync = memory_order_seq_cst)</span> <span class="keyword">volatile</span> <span class="keyword">noexcept</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">store</span> <span class="params">(T val, memory_order sync = memory_order_seq_cst)</span> <span class="keyword">noexcept</span></span>;</span><br></pre></td></tr></table></figure>
+<p>修改被封装的值，std::atomic::store 函数将类型为 T 的参数 val 复制给原子对象所封装的值。</p>
+<p>T 是 std::atomic 类模板参数。另外参数 sync 指定内存序(Memory Order)，可能的取值如下： </p>
+<table>
+<thead>
+<tr>
+<th>Memory Order 值</th>
+<th>Memory Order 类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>memory_order_relaxed</td>
+<td>Relaxed</td>
+</tr>
+<tr>
+<td>memory_order_release</td>
+<td>Release</td>
+</tr>
+<tr>
+<td>memory_order_seq_cst</td>
+<td>Sequentially consistent</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3、load"><a href="#3、load" class="headerlink" title="3、load"></a>3、load</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">T <span class="title">load</span> <span class="params">(memory_order sync = memory_order_seq_cst)</span> <span class="keyword">const</span> <span class="keyword">volatile</span> <span class="keyword">noexcept</span></span>;</span><br><span class="line"><span class="function">T <span class="title">load</span> <span class="params">(memory_order sync = memory_order_seq_cst)</span> <span class="keyword">const</span> <span class="keyword">noexcept</span></span>;</span><br></pre></td></tr></table></figure>
+<p>读取被封装的值，参数 sync 设置内存序(Memory Order)，可能的取值如下：</p>
+<table>
+<thead>
+<tr>
+<th>Memory Order 值</th>
+<th>Memory Order 类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>memory_order_relaxed</td>
+<td>Relaxed</td>
+</tr>
+<tr>
+<td>memory_order_consume</td>
+<td>Consume</td>
+</tr>
+<tr>
+<td>memory_order_acquire</td>
+<td>Acquire</td>
+</tr>
+<tr>
+<td>memory_order_seq_cst</td>
+<td>Sequentially consistent</td>
+</tr>
+</tbody>
+</table>
+<p>代码示例：参考 <a href="https://cplusplus.com/reference/atomic/atomic/load/" target="_blank" rel="noopener">cplusplus: load</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// atomic::load/store example</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;atomic&gt;</span>    <span class="comment">// std::atomic, std::memory_order_relaxed</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span>  <span class="comment">// std::cout</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span>    <span class="comment">// std::thread</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::atomic&lt;<span class="keyword">int</span>&gt; foo(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">set_foo</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    foo.store(x, <span class="built_in">std</span>::memory_order_relaxed);  <span class="comment">// set value atomically</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x;</span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        x = foo.load(<span class="built_in">std</span>::memory_order_relaxed);  <span class="comment">// get value atomically</span></span><br><span class="line">    &#125; <span class="keyword">while</span> (x == <span class="number">0</span>);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"foo: "</span> &lt;&lt; x &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="function">thread <span class="title">first</span><span class="params">(print_foo)</span></span>;</span><br><span class="line">    <span class="built_in">std</span>::this_thread::sleep_for(<span class="built_in">std</span>::chrono::seconds(<span class="number">1</span>));</span><br><span class="line">    <span class="built_in">std</span>::<span class="function">thread <span class="title">second</span><span class="params">(set_foo, <span class="number">10</span>)</span></span>;</span><br><span class="line">    first.join();</span><br><span class="line">    second.join();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">▶ ../bazel-bin/concurrency/6-atomic-sotre-load</span><br><span class="line">foo: 10</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>print_foo线程里一直循环等待foo被赋值，然后退出循环</p>
+</blockquote>
+<h4 id="4、exchange"><a href="#4、exchange" class="headerlink" title="4、exchange"></a>4、exchange</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">T <span class="title">exchange</span> <span class="params">(T val, memory_order sync = memory_order_seq_cst)</span> <span class="keyword">volatile</span> <span class="keyword">noexcept</span></span>;</span><br><span class="line"><span class="function">T <span class="title">exchange</span> <span class="params">(T val, memory_order sync = memory_order_seq_cst)</span> <span class="keyword">noexcept</span></span>;</span><br></pre></td></tr></table></figure>
+<p>读取并修改被封装的值，exchange 会<strong>将 val 指定的值替换掉之前该原子对象封装的值，并返回之前该原子对象封装的值</strong>，整个过程是原子的(因此exchange 操作也称为 <em>read-modify-write</em> 操作)。</p>
+<p>代码示例，参考 <a href="https://cplusplus.com/reference/atomic/atomic/exchange/" target="_blank" rel="noopener">cplusplus: exchange</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// atomic::exchange example</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;atomic&gt;</span>    <span class="comment">// std::atomic</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span>  <span class="comment">// std::cout</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span>    <span class="comment">// std::thread</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span>    <span class="comment">// std::vector</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::atomic&lt;<span class="keyword">bool</span>&gt; ready(<span class="literal">false</span>);</span><br><span class="line"><span class="built_in">std</span>::atomic&lt;<span class="keyword">bool</span>&gt; winner(<span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">count1m</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (!ready) &#123;</span><br><span class="line">    &#125;  <span class="comment">// wait for the ready signal</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1000000</span>; ++i) &#123;</span><br><span class="line">    &#125;  <span class="comment">// go!, count to 1 million</span></span><br><span class="line">    <span class="keyword">if</span> (!winner.exchange(<span class="literal">true</span>)) &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"thread #"</span> &lt;&lt; id &lt;&lt; <span class="string">" won!\n"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::thread&gt; threads;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"spawning 10 threads that count to 1 million...\n"</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">10</span>; ++i) </span><br><span class="line">        threads.push_back(<span class="built_in">std</span>::thread(count1m, i));</span><br><span class="line">    ready = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; th : threads) </span><br><span class="line">        th.join();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">▶ ../bazel-bin/concurrency/6-atomic-exchange  </span><br><span class="line">spawning 10 threads that count to 1 million...</span><br><span class="line">thread #3 won!</span><br></pre></td></tr></table></figure>
+<h4 id="5、compare-exchange-weak"><a href="#5、compare-exchange-weak" class="headerlink" title="5、compare_exchange_weak"></a>5、compare_exchange_weak</h4><table>
+<thead>
+<tr>
+<th>(1)</th>
+<th><code>bool compare_exchange_weak (T&amp; expected, T val,            memory_order sync = memory_order_seq_cst) volatile noexcept; bool compare_exchange_weak (T&amp; expected, T val,            memory_order sync = memory_order_seq_cst) noexcept;</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(2)</td>
+<td><code>bool compare_exchange_weak (T&amp; expected, T val,            memory_order success, memory_order failure) volatile noexcept; bool compare_exchange_weak (T&amp; expected, T val,            memory_order success, memory_order failure) noexcept;</code></td>
+</tr>
+</tbody>
+</table>
+<p>比较并交换被封装的值与参数 expected 所指定的值是否相等，如果：</p>
+<ul>
+<li>相等，则用 val 替换原子对象的旧值。</li>
+<li>不相等，则用原子对象的旧值替换 <em>expected</em> ，因此调用该函数之后，如果被该原子对象封装的值与参数 expected 所指定的值不相等，<em>expected</em> 中的内容就是原子对象的旧值。</li>
+</ul>
+<p>整个操作是原子的，在某个线程读取和修改该原子对象时，另外的线程不能对读取和修改该原子对象。</p>
+<h4 id="6、compare-exchange-strong"><a href="#6、compare-exchange-strong" class="headerlink" title="6、compare_exchange_strong"></a>6、compare_exchange_strong</h4><p>定义和用法上面的weak一样。</p>
+<p>注意，该函数直接比较原子对象所封装的值与参数 <em>expected</em> 的物理内容，所以某些情况下，对象的比较操作在使用 operator==() 判断时相等，但 compare_exchange_weak 判断时却可能失败，因为对象底层的物理内容中可能存在位对齐或其他逻辑表示相同但是物理表示不同的值(比如 true 和 2 或 3，它们在逻辑上都表示”真”，但在物理上两者的表示并不相同)。</p>
+<p>weak和strong对比：</p>
+<p>与compare_exchange_weak 不同, strong版本的 compare-and-exchange 操作不允许(<em>spuriously 地</em>)返回 false，即原子对象所封装的值与参数 <em>expected</em> 的物理内容相同，比较操作一定会为 true。</p>
+<p>不过在某些平台下，如果算法本身需要循环操作来做检查， compare_exchange_weak 的性能会更好。因此对于某些不需要采用循环操作的算法而言, 通常采用compare_exchange_strong 更好。</p>
+<h4 id="7、特化版本的成员函数"><a href="#7、特化版本的成员函数" class="headerlink" title="7、特化版本的成员函数"></a>7、特化版本的成员函数</h4><p>以下操作整个过程都是原子的。</p>
+<ul>
+<li>fetch_add：将原子对象的封装值加 val，并返回原子对象的旧值（适用于整形和指针类型的 std::atomic 特化版本）。</li>
+<li>fetch_sub：将原子对象的封装值减 val，并返回原子对象的旧值（适用于整形和指针类型的 std::atomic 特化版本）。</li>
+<li>fetch_and：将原子对象的封装值按位与 val，并返回原子对象的旧值（只适用于整型的 std::atomic 特化版本）。</li>
+<li>fetch_or：将原子对象的封装值按位或 val，并返回原子对象的旧值（只适用于整型的 std::atomic 特化版本）。</li>
+<li>fetch_xor：将原子对象的封装值按位异或 val，并返回原子对象的旧值（只适用于整型的 std::atomic 特化版本）。</li>
+</ul>
+<p>各个 operator 有对应的 <strong>fetch_*</strong> 操作，详细见下表：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>成员函数</th>
+<th>等价于</th>
+<th>支持指针类型</th>
+<th>支持指针类型</th>
+<th>支持其他类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>+</code></td>
+<td><code>atomic::operator+=</code></td>
+<td>atomic::fetch_add</td>
+<td>是</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>-</code></td>
+<td><code>atomic::operator-=</code></td>
+<td>atomic::fetch_sub</td>
+<td>是</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>&amp;</code></td>
+<td><code>atomic::operator&amp;=</code></td>
+<td>atomic::fetch_and</td>
+<td>是</td>
+<td>否</td>
+<td>否</td>
+</tr>
+<tr>
+<td>`</td>
+<td>`</td>
+<td>`atomic::operator</td>
+<td>=`</td>
+<td><code>atomic::fetch_or</code></td>
+<td>是</td>
+<td>否</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>^</code></td>
+<td><code>atomic::operator^=</code></td>
+<td>atomic::fetch_xor</td>
+<td>是</td>
+<td>否</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<p>参考资料：<a href="https://www.cnblogs.com/haippy/p/3301408.html" target="_blank" rel="noopener">C++11 并发指南六(  类型详解二 std::atomic ) </a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> c++ </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> c++11 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[并发编程四：future]]></title>
+      <url>http://xiaqunfeng.cc/2022/02/04/cpp11-concurrency-4/</url>
+      <content type="html"><![CDATA[<p>future 封装了一种访问异步操作的机制<br><a id="more"></a></p>
+<p>官方文档解释future：</p>
+<blockquote>
+<p>The class template std::future provides a mechanism to access the result of asynchronous operations: An asynchronous operation (created via std::async, std::packaged_task, or std::promise) can provide a std::future object to the creator of that asynchronous operation…</p>
+</blockquote>
+<p>也就是说，当在一个线程（creator）中创建（通过<code>std::async</code>，<code>std::packaged_task</code> 或者 <code>std::promise</code>）了一个异步操作（asynchronous operations，通常就是创建了一个新的线程，执行操作）的时候，这个异步操作会返回一个 <code>future</code> 对象给当前的线程，供其访问异步操作的状态，结果等等。</p>
+<p> C++11 标准中<code>&lt;future&gt;</code>头文件中包含了以下几个类和函数：</p>
+<ul>
+<li>Providers 类：<code>std::promise, std::package_task</code></li>
+<li>Futures 类：<code>std::future, shared_future.</code></li>
+<li>Providers 函数：<code>std::async()</code></li>
+<li>其他类型：<code>std::future_error, std::future_errc, std::future_status, std::launch.</code></li>
+</ul>
+<h2 id="关于future"><a href="#关于future" class="headerlink" title="关于future"></a>关于future</h2><h3 id="future"><a href="#future" class="headerlink" title="future"></a>future</h3><p>1、构造函数</p>
+<table>
+<thead>
+<tr>
+<th>构造方式</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default (1)</td>
+<td><code>future() noexcept;</code></td>
+</tr>
+<tr>
+<td>copy [deleted] (2)</td>
+<td><code>future (const future&amp;) = delete;</code></td>
+</tr>
+<tr>
+<td>move (3)</td>
+<td><code>future (future&amp;&amp; x) noexcept;</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>拷贝构造函数是被禁用的，只提供了默认的构造函数和 move 构造函数</li>
+<li>std::future 的普通赋值操作也被禁用，只提供了 move 赋值操作</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::future&lt;<span class="keyword">int</span>&gt; fut;           <span class="comment">// 默认构造函数</span></span><br><span class="line">fut = <span class="built_in">std</span>::async(do_some_task);   <span class="comment">// move-赋值操作。</span></span><br></pre></td></tr></table></figure>
+<p>2、异步操作函数</p>
+<p><code>future</code> 某种意义上表示的是一个异步操作，通过其成员函数我们能够获悉异步操作处于什么样的情况。</p>
+<ul>
+<li>通过 <code>get</code> 来等待异步操作结束并返回结果，是一个阻塞过程。</li>
+<li>通过<code>wait</code> 等待异步操作结束结束，也是一个阻塞过程。</li>
+<li><code>wait_for</code> 是超时等待返回结果，<code>wait_util</code> 类似。</li>
+</ul>
+<p><code>future</code> 作为线程间一种同步手段，还有一个作用就是其共享状态。所谓<strong>共享状态就是这个 future 对象所表示的异步操作是否能够在其他线程中被访问</strong>。</p>
+<p>一般来说，通过异步操作创建的 <code>future</code> 会被这些异步操作设置共享状态 。<code>future</code> 对象可以通过 <code>valid()</code> 函数查询其共享状态是否有效 ，一般来说，只有当 <code>valid()</code> 返回 <code>true</code>的时候才调用 <code>get()</code> 去获取结果，这也是 C++ 文档推荐的操作。</p>
+<p>3、注意点</p>
+<ul>
+<li>一个 std::future 对象只有在有效的情况下才有用</li>
+<li>一个有效的 <code>std::future</code> 对象只能通过 <code>std::async()</code>, <code>std::promise::get_future</code> 或者 <code>std::packaged_task::get_future</code> 来初始化。</li>
+<li>由 <code>std::future</code> 默认构造函数创建的 <code>std::future</code> 对象是无效（invalid）的</li>
+<li>通过 <code>std::future</code> 的 <code>move</code> 赋值后该 <code>std::future</code> 对象也可以变为 valid。</li>
+<li>get() 调用会改变其共享状态，不再可用，也就是说 get() 只能被调用一次，多次调用会触发异常。如果想要在多个线程中多次获取产出值需要使用 shared_future。</li>
+</ul>
+<p>4、示例</p>
+<p>在一个有效的 future 对象上调用 get 会阻塞当前的调用者，直到 Provider 设置了共享状态的值或异常（此时共享状态的标志变为 ready），std::future::get 将返回异步任务的值或异常（如果发生了异常）。</p>
+<p><a href="http://www.cplusplus.com/reference/future/future/" target="_blank" rel="noopener">代码示例</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// future example</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span>             <span class="comment">// std::cout</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;future&gt;</span>               <span class="comment">// std::async, std::future</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;chrono&gt;</span>               <span class="comment">// std::chrono::milliseconds</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// a non-optimized way of checking for prime numbers:</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">is_prime</span><span class="params">(<span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt; x; ++i)</span><br><span class="line">        <span class="keyword">if</span> (x % i == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// call function asynchronously:</span></span><br><span class="line">    <span class="built_in">std</span>::future &lt; <span class="keyword">bool</span> &gt; fut = <span class="built_in">std</span>::async(is_prime, <span class="number">444444443</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// do something while waiting for function to set future:</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"checking, please wait"</span>;</span><br><span class="line">    <span class="built_in">std</span>::chrono::<span class="function">milliseconds <span class="title">span</span><span class="params">(<span class="number">100</span>)</span></span>;</span><br><span class="line">    <span class="keyword">while</span> (fut.wait_for(span) == <span class="built_in">std</span>::future_status::timeout)</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">'.'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">bool</span> x = fut.get();         <span class="comment">// retrieve return value</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"\n444444443 "</span> &lt;&lt; (x ? <span class="string">"is"</span> : <span class="string">"is not"</span>) &lt;&lt; <span class="string">" prime.\n"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">▶ ./test</span><br><span class="line">checking, please wait..........</span><br><span class="line">444444443 is prime.</span><br></pre></td></tr></table></figure>
+<p>5、future_status</p>
+<table>
+<thead>
+<tr>
+<th>返回值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="http://www.cplusplus.com/future_status" target="_blank" rel="noopener">future_status::ready</a></td>
+<td>共享状态的标志已经变为 ready，即 Provider 在共享状态上设置了值或者异常。</td>
+</tr>
+<tr>
+<td><a href="http://www.cplusplus.com/future_status" target="_blank" rel="noopener">future_status::timeout</a></td>
+<td>超时，即在规定的时间内共享状态的标志没有变为 ready。</td>
+</tr>
+<tr>
+<td><a href="http://www.cplusplus.com/future_status" target="_blank" rel="noopener">future_status::deferred</a></td>
+<td>共享状态包含一个 <em>deferred</em> 函数。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="shared-future"><a href="#shared-future" class="headerlink" title="shared_future"></a>shared_future</h3><p><code>std::shared_future</code> 与 <code>std::future</code> 类似。成员函数和 <code>std::future</code> 大部分相同。</p>
+<p>不同点：</p>
+<ul>
+<li><code>std::shared_future</code> 可以拷贝</li>
+<li>多个 <code>std::shared_future</code> 可以共享某个共享状态的最终结果(即共享状态的某个值或者异常)</li>
+<li>shared_future 可以通过某个 std::future 对象隐式转换（参见 std::shared_future 的构造函数），或者通过 std::future::share() 显示转换，无论哪种转换，被转换的那个 std::future 对象都会变为 not-valid</li>
+</ul>
+<h2 id="关于promise"><a href="#关于promise" class="headerlink" title="关于promise"></a>关于promise</h2><p>1、promise</p>
+<p>promise 对象可以保存某一类型 T 的值，该值可被 future 对象读取（可能在另外一个线程中），因此 promise 也提供了一种线程同步的手段。在 promise 对象构造时可以和一个共享状态（通常是std::future）相关联，并可以在相关联的共享状态(std::future)上保存一个类型为 T 的值。</p>
+<p>可以通过 get_future 来获取与该 promise 对象相关联的 future 对象，调用该函数之后，两个对象共享相同的共享状态(shared state)</p>
+<p><strong>promise 本质是一个类似我们打印输出中占位符的东西，你可以理解它就是一个等待数据装填的坑，它是一个“承诺”，承诺未来会有相应的数据</strong>。</p>
+<p>所以 <code>promise</code> 可以通过调用 <code>get_future()</code> 返回一个 <code>future</code> 对象，让你去了解这个承诺是否完成了。因此，<code>promise</code> 是存放异步操作产出值的坑，而 <code>future</code> 是从其中获取异步操作结果，二者都是模板类型。</p>
+<p>2、构造函数</p>
+<table>
+<thead>
+<tr>
+<th>构造方式</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default (1)</td>
+<td><code>promise();</code></td>
+</tr>
+<tr>
+<td>with allocator (2)</td>
+<td><code>template &lt;class Alloc&gt; promise (allocator_arg_t aa, const Alloc&amp; alloc);</code></td>
+</tr>
+<tr>
+<td>copy [deleted] (3)</td>
+<td><code>promise (const promise&amp;) = delete;</code></td>
+</tr>
+<tr>
+<td>move (4)</td>
+<td><code>promise (promise&amp;&amp; x) noexcept;</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>默认构造函数，初始化一个空的共享状态。</li>
+<li>带自定义内存分配器的构造函数，与默认构造函数类似，但是使用自定义分配器来分配共享状态。</li>
+<li>拷贝构造函数，被禁用。</li>
+<li>移动构造函数。</li>
+</ul>
+<p>3、代码示例</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span>       <span class="comment">// std::cout</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;functional&gt;</span>     <span class="comment">// std::ref</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span>         <span class="comment">// std::thread</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;future&gt;</span>         <span class="comment">// std::promise, std::future</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span>       <span class="comment">// sleep</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_int</span><span class="params">(<span class="built_in">std</span>::future&lt;<span class="keyword">int</span>&gt;&amp; fut)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x = fut.get(); <span class="comment">// 获取共享状态的值.</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"value: "</span> &lt;&lt; x &lt;&lt; <span class="string">'\n'</span>; <span class="comment">// 打印 value: 10.</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::promise&lt;<span class="keyword">int</span>&gt; prom; <span class="comment">// 生成一个 std::promise&lt;int&gt; 对象.</span></span><br><span class="line">    <span class="built_in">std</span>::future&lt;<span class="keyword">int</span>&gt; fut = prom.get_future(); <span class="comment">// 和 future 关联.</span></span><br><span class="line">    std::thread t(print_int, std::ref(fut)); // 将 future 交给另外一个线程t.</span><br><span class="line">    sleep(<span class="number">3</span>);</span><br><span class="line">    prom.set_value(<span class="number">10</span>); <span class="comment">// 设置共享状态的值, 此处和线程t保持同步.</span></span><br><span class="line">    t.join();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">▶ ./test                                     </span><br><span class="line">value: 10</span><br></pre></td></tr></table></figure>
+<p>4、一些成员函数</p>
+<ul>
+<li><p>std::promise::get_future：该函数返回一个与 promise 共享状态相关联的 future <em>。</em></p>
+<p>返回的 future 对象可以访问由 promise 对象设置在共享状态上的值或者某个异常对象。只能从 promise 共享状态获取一个 future 对象。</p>
+<p>在调用该函数之后，promise 对象通常会在某个时间点准备好(设置一个值或者一个异常对象)，如果不设置值或者异常，promise 对象在析构时会自动地设置一个 future_error 异常(broken_promise)来设置其自身的准备状态。</p>
+</li>
+<li><p>std::promise::set_value</p>
+<p>设置共享状态的值，此后 promise 的共享状态标志变为 ready.</p>
+</li>
+<li><p>std::promise::set_exception</p>
+<p>为 promise 设置异常，此后 promise 的共享状态变标志变为 ready。</p>
+</li>
+<li><p>std::promise::set_value_at_thread_exit</p>
+<p>设置共享状态的值，但是不将共享状态的标志设置为 ready，当线程退出时该 promise 对象会自动设置为 ready。如果某个 std::future 对象与该 promise 对象的共享状态相关联，并且该 future 正在调用 get，则调用 get 的线程会被阻塞，当线程退出时，调用 future::get 的线程解除阻塞，同时 get 返回 set_value_at_thread_exit 所设置的值。注意，该函数已经设置了 promise 共享状态的值，如果在线程结束之前有其他设置或者修改共享状态的值的操作，则会抛出 future_error( promise_already_satisfied )。</p>
+</li>
+<li><p>std::promise::set_exception_at_thread_exit</p>
+<p>和上面类似</p>
+</li>
+<li><p>std::promise::swap</p>
+<p>交换 promise 的共享状态。</p>
+</li>
+</ul>
+<h2 id="packaged-task"><a href="#packaged-task" class="headerlink" title="packaged_task"></a>packaged_task</h2><p>std::packaged_task 包装一个可调用的对象，并且允许异步获取该可调用对象产生的结果，从包装可调用对象意义上来讲，std::packaged_task 与 std::function 类似，只不过 std::packaged_task 将其包装的可调用对象的执行结果传递给一个 std::future 对象（该对象通常在另外一个线程中获取 std::packaged_task 任务的执行结果）。</p>
+<p>通过 std::packged_task::get_future 来获取与共享状态相关联的 std::future 对象。在调用该函数之后，两个对象共享相同的共享状态，具体解释如下：</p>
+<ul>
+<li>std::packaged_task 对象是异步 Provider，它在某一时刻通过调用被包装的任务来设置共享状态的值。</li>
+<li>std::future 对象是一个异步返回对象，通过它可以获得共享状态的值，当然在必要的时候需要等待共享状态标志变为 ready.</li>
+</ul>
+<p>std::packaged_task 的共享状态的生命周期一直持续到最后一个与之相关联的对象被释放或者销毁为止。</p>
+<p>用法示例：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span>     <span class="comment">// std::cout</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;future&gt;</span>       <span class="comment">// std::packaged_task, std::future</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;chrono&gt;</span>       <span class="comment">// std::chrono::seconds</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span>       <span class="comment">// std::thread, std::this_thread::sleep_for</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// count down taking a second for each value:</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">countdown</span> <span class="params">(<span class="keyword">int</span> from, <span class="keyword">int</span> to)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=from; i!=to; --i) &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">        <span class="built_in">std</span>::this_thread::sleep_for(<span class="built_in">std</span>::chrono::seconds(<span class="number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Finished!\n"</span>;</span><br><span class="line">    <span class="keyword">return</span> from - to;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::packaged_task&lt;<span class="keyword">int</span>(<span class="keyword">int</span>,<span class="keyword">int</span>)&gt; task(countdown); <span class="comment">// 设置 packaged_task</span></span><br><span class="line">    <span class="built_in">std</span>::future&lt;<span class="keyword">int</span>&gt; ret = task.get_future(); <span class="comment">// 获得与 packaged_task 共享状态相关联的 future 对象.</span></span><br><span class="line"></span><br><span class="line">    std::thread th(std::move(task), 10, 0);   //创建一个新线程完成计数任务.</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> value = ret.get();                    <span class="comment">// 等待任务完成并获取结果.</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"The countdown lasted for "</span> &lt;&lt; value &lt;&lt; <span class="string">" seconds.\n"</span>;</span><br><span class="line"></span><br><span class="line">    th.join();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">▶ ./test </span><br><span class="line">10</span><br><span class="line">9</span><br><span class="line">8</span><br><span class="line">7</span><br><span class="line">6</span><br><span class="line">5</span><br><span class="line">4</span><br><span class="line">3</span><br><span class="line">2</span><br><span class="line">1</span><br><span class="line">Finished!</span><br><span class="line">The countdown lasted for 10 seconds.</span><br></pre></td></tr></table></figure>
+<p>其他成员函数的用法比如 valid、get_future 等等同future</p>
+<h2 id="关于async"><a href="#关于async" class="headerlink" title="关于async"></a>关于async</h2><p>与 std::future 相关的函数主要是 std::async()</p>
+<p><strong>std::launch 类型</strong></p>
+<p>该枚举类型主要是在调用 std::async 设置异步任务的启动策略的。</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="http://www.cplusplus.com/launch" target="_blank" rel="noopener">launch::async</a></td>
+<td><strong>Asynchronous:</strong> 异步任务会在另外一个线程中调用，并通过共享状态返回异步任务的结果（一般是调用 std::future::get() 获取异步任务的结果）。</td>
+</tr>
+<tr>
+<td><a href="http://www.cplusplus.com/launch" target="_blank" rel="noopener">launch::deferred</a></td>
+<td><strong>Deferred:</strong> 异步任务将会在共享状态被访问时调用，相当与按需调用（即延迟(deferred)调用）。</td>
+</tr>
+</tbody>
+</table>
+<p>std::async()是一个接受回调(函数或函数对象)作为参数的函数模板，并有可能异步执行它们</p>
+<p>std::async返回一个 <code>std::future&lt;T&gt;</code>，它存储由 std::async()执行的函数对象返回的值。<br>函数期望的参数可以作为函数指针参数后面的参数传递给std::async()。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> Fn, <span class="keyword">class</span>... Args&gt;</span><br><span class="line">  future&lt;<span class="keyword">typename</span> result_of&lt;Fn(Args...)&gt;::type&gt;</span><br><span class="line">    async(launch policy, Fn&amp;&amp; fn, Args&amp;&amp;... args);</span><br></pre></td></tr></table></figure>
+<p>第一个参数是启动策略，它控制std::async的异步行为，就是上面launch中列的两种。如果不指定，默认的启动策略，它可以异步运行或不运行，这取决于系统的负载，但我们无法控制它。</p>
+<p>第二个和第三个参数： fn 和 args 参数用来指定异步任务及其参数</p>
+<h3 id="async"><a href="#async" class="headerlink" title="async"></a>async</h3><p>示例：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;chrono&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;future&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">ThreadTask</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::this_thread::get_id()</span><br><span class="line">        &lt;&lt; <span class="string">" start computing..."</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">double</span> ret = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        ret += <span class="built_in">std</span>::<span class="built_in">sin</span>(i);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::this_thread::get_id()</span><br><span class="line">        &lt;&lt; <span class="string">" finished computing..."</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::future&lt;<span class="keyword">double</span>&gt; f(<span class="built_in">std</span>::async(<span class="built_in">std</span>::launch::async, ThreadTask, <span class="number">100000000</span>));</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> 0</span></span><br><span class="line">    <span class="keyword">while</span>(f.wait_until(<span class="built_in">std</span>::chrono::system_clock::now() + <span class="built_in">std</span>::chrono::seconds(<span class="number">1</span>))</span><br><span class="line">            != <span class="built_in">std</span>::future_status::ready) &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"task is running...\n"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">    <span class="keyword">while</span>(f.wait_for(<span class="built_in">std</span>::chrono::seconds(<span class="number">1</span>))</span><br><span class="line">            != <span class="built_in">std</span>::future_status::ready) &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"task is running...\n"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; f.get() &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> EXIT_SUCCESS;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">▶ ./test </span><br><span class="line">0x70000cab7000 start computing...</span><br><span class="line">task is running...</span><br><span class="line">task is running...</span><br><span class="line">task is running...</span><br><span class="line">0x70000cab7000 finished computing...</span><br><span class="line">1.71365</span><br></pre></td></tr></table></figure>
+<h3 id="deffered"><a href="#deffered" class="headerlink" title="deffered"></a>deffered</h3><p>示例：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span>                <span class="comment">// std::cout</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;future&gt;</span>                <span class="comment">// std::async, std::future, std::launch</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;chrono&gt;</span>                <span class="comment">// std::chrono::milliseconds</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span>                <span class="comment">// std::this_thread::sleep_for</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span></span><br><span class="line">do_print_ten(<span class="keyword">char</span> c, <span class="keyword">int</span> ms)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; ++i) &#123;</span><br><span class="line">        <span class="built_in">std</span>::this_thread::sleep_for(<span class="built_in">std</span>::chrono::milliseconds(ms));</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; c;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span></span><br><span class="line">main()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"with launch::async:\n"</span>;</span><br><span class="line">    <span class="built_in">std</span>::future &lt; <span class="keyword">void</span> &gt;foo =</span><br><span class="line">        <span class="built_in">std</span>::async(<span class="built_in">std</span>::launch::async, do_print_ten, <span class="string">'*'</span>, <span class="number">100</span>);</span><br><span class="line">    <span class="built_in">std</span>::future &lt; <span class="keyword">void</span> &gt;bar =</span><br><span class="line">        <span class="built_in">std</span>::async(<span class="built_in">std</span>::launch::async, do_print_ten, <span class="string">'@'</span>, <span class="number">200</span>);</span><br><span class="line">    <span class="comment">// async "get" (wait for foo and bar to be ready):</span></span><br><span class="line">    foo.get();</span><br><span class="line">    bar.get();</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"\n\n"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"with launch::deferred:\n"</span>;</span><br><span class="line">    foo = <span class="built_in">std</span>::async(<span class="built_in">std</span>::launch::deferred, do_print_ten, <span class="string">'*'</span>, <span class="number">100</span>);</span><br><span class="line">    bar = <span class="built_in">std</span>::async(<span class="built_in">std</span>::launch::deferred, do_print_ten, <span class="string">'@'</span>, <span class="number">200</span>);</span><br><span class="line">    <span class="comment">// deferred "get" (perform the actual calls):</span></span><br><span class="line">    foo.get();</span><br><span class="line">    bar.get();</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">▶ ./test </span><br><span class="line">with launch::async:</span><br><span class="line">*@**@**@**@**@*@@@@@</span><br><span class="line"></span><br><span class="line">with launch::deferred:</span><br><span class="line">**********@@@@@@@@@@</span><br></pre></td></tr></table></figure>
+<p>可以看到，deffered在get方法调用的时候才执行。</p>
+<p>本文参考了如下文章，进行一些整理消化和实践。</p>
+<p>参考链接：</p>
+<p><a href="https://cplusplus.com/reference/future/" target="_blank" rel="noopener">cplusplus: future</a></p>
+<p><a href="https://www.cnblogs.com/haippy/p/3239248.html" target="_blank" rel="noopener">C++11 并发指南四( 详解一 std::promise 介绍)</a></p>
+<p><a href="https://www.cnblogs.com/haippy/p/3280643.html" target="_blank" rel="noopener">C++11 并发指南四( 详解三 std::future &amp; std::shared_future)</a></p>
+<p><a href="https://www.cnblogs.com/haippy/p/3279565.html" target="_blank" rel="noopener">C++11 并发指南四( 详解二 std::packaged_task 介绍)</a></p>
+<p><a href="https://murphypei.github.io/blog/2019/04/cpp-concurrent-4.html" target="_blank" rel="noopener">C++11 并发编程系列(四)：异步操作(future)</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> c++ </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> c++11 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[并发编程三：condition_variable]]></title>
+      <url>http://xiaqunfeng.cc/2022/02/03/cpp11-concurrency-3/</url>
+      <content type="html"><![CDATA[<p>条件变量<br><a id="more"></a></p>
+<p><code>&lt;condition_variable &gt;</code> 头文件主要包含了与条件变量相关的类和函数。相关的类包括 <code>std::condition_variable</code> 和 <code>std::condition_variable_any</code>，还有枚举类型<code>std::cv_status</code>。另外还包括函数 <code>std::notify_all_at_thread_exit()</code> 。</p>
+<h2 id="std-condition-variable"><a href="#std-condition-variable" class="headerlink" title="std::condition_variable"></a>std::condition_variable</h2><p>std::condition_variable 是条件变量，当 std::condition_variable 对象的某个 <strong>wait 函数</strong>被调用的时候，它使用 std::unique_lock(通过 std::mutex) 来锁住当前线程。当前线程会一直被阻塞，直到另外一个线程在相同的 std::condition_variable 对象上调用了 <strong>notification 函数</strong>来唤醒当前线程。</p>
+<p>代码<a href="http://www.cplusplus.com/reference/condition_variable/condition_variable/" target="_blank" rel="noopener">示例</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span>                <span class="comment">// std::cout</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span>                <span class="comment">// std::thread</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mutex&gt;</span>                <span class="comment">// std::mutex, std::unique_lock</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;condition_variable&gt;</span>    <span class="comment">// std::condition_variable</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::mutex mtx; <span class="comment">// 全局互斥锁.</span></span><br><span class="line"><span class="built_in">std</span>::condition_variable cv; <span class="comment">// 全局条件变量.</span></span><br><span class="line"><span class="keyword">bool</span> ready = <span class="literal">false</span>; <span class="comment">// 全局标志位.</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">do_print_id</span><span class="params">(<span class="keyword">int</span> id)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::unique_lock &lt;<span class="built_in">std</span>::mutex&gt; lck(mtx);</span><br><span class="line">    <span class="keyword">while</span> (!ready) <span class="comment">// 如果标志位不为 true, 则等待...</span></span><br><span class="line">        cv.wait(lck); <span class="comment">// 当前线程被阻塞, 当全局标志位变为 true 之后,</span></span><br><span class="line">    <span class="comment">// 线程被唤醒, 继续往下执行打印线程编号id.</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"thread "</span> &lt;&lt; id &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">go</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::unique_lock &lt;<span class="built_in">std</span>::mutex&gt; lck(mtx);</span><br><span class="line">    ready = <span class="literal">true</span>; <span class="comment">// 设置全局标志位为 true.</span></span><br><span class="line">    cv.notify_all(); <span class="comment">// 唤醒所有线程.</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::thread threads[<span class="number">10</span>];</span><br><span class="line">    <span class="comment">// spawn 10 threads:</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; ++i)</span><br><span class="line">        threads[i] = <span class="built_in">std</span>::thread(do_print_id, i);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"10 threads ready to race...\n"</span>;</span><br><span class="line">    go(); <span class="comment">// go!</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> &amp; th:threads)</span><br><span class="line">        th.join();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>只有默认的构造函数：</p>
+<table>
+<thead>
+<tr>
+<th>构造方式</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default (1)</td>
+<td><code>condition_variable();</code></td>
+</tr>
+<tr>
+<td>copy [deleted] (2)</td>
+<td><code>condition_variable (const condition_variable&amp;) = delete;</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="wait"><a href="#wait" class="headerlink" title="wait"></a>wait</h3><p>1、有条件和无条件wait</p>
+<table>
+<thead>
+<tr>
+<th>wait方式</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>unconditional (1)</td>
+<td><code>void wait (unique_lock&lt;mutex&gt;&amp; lck);</code></td>
+</tr>
+<tr>
+<td>predicate (2)</td>
+<td><code>template &lt;class Predicate&gt;   void wait (unique_lock&lt;mutex&gt;&amp; lck, Predicate pred);</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>无条件等待<ul>
+<li>当前线程调用 <code>wait()</code> 后将被阻塞（此时当前线程应该获得了锁（mutex），不妨设获得锁 <code>lck</code>），直到另外某个线程调用 <code>notify_*</code> 唤醒了当前线程。在线程被阻塞时（也就是调用 <code>wait()</code> 的时候），该函数会自动调用 <code>lck.unlock()</code> 释放锁，使得其他被阻塞在锁竞争上的线程得以继续执行。另外，一旦当前线程获得通知（notified，通常是另外某个线程调用 <code>notify_*</code> 唤醒了当前线程），<code>wait()</code> 函数也是自动调用 <code>lck.lock()</code>，使得 <code>lck</code> 的状态和 <code>wait</code> 函数被调用时相同。</li>
+</ul>
+</li>
+<li>有条件等待<ul>
+<li>第二种情况设置了 <code>Predicate</code>，只有当 <code>pred</code> 条件为 <code>false</code> 时调用 <code>wait()</code> 才会阻塞当前线程，并且在收到其他线程的通知后只有当 <code>pred</code> 为 <code>true</code> 时才会被解除阻塞。</li>
+</ul>
+</li>
+</ul>
+<p>2、wait_for &amp;&amp; wait_until</p>
+<p>和 <code>mutex</code> 的 <code>lock</code> 类似，<code>std::condition_variable</code> 也提供了相应的两种（带 <code>Predicate</code> 和不带 <code>Predicate</code>） <code>wait_for()</code> 函数</p>
+<ul>
+<li><code>wait_for</code> 可以指定一个时间段，<strong>在当前线程收到通知或者指定的时间超时之前，该线程都会处于阻塞状态。而一旦超时或者收到了其他线程的通知，wait_for 返回</strong>。</li>
+<li><code>wait_util()</code>，用法类似。</li>
+</ul>
+<p>3、std::cv_status 枚举类型介绍</p>
+<table>
+<thead>
+<tr>
+<th>枚举类型</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cv_status::no_timeout</td>
+<td>wait_for 或者 wait_until 没有超时，即在规定的时间段内线程收到了通知。</td>
+</tr>
+<tr>
+<td>cv_status::timeout</td>
+<td>wait_for 或者 wait_until 超时。</td>
+</tr>
+</tbody>
+</table>
+<p>4、代码示例 <a href="https://cplusplus.com/reference/condition_variable/condition_variable/wait/" target="_blank" rel="noopener">cplusplus: wait</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// condition_variable::wait (with predicate)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span>           <span class="comment">// std::cout</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span>             <span class="comment">// std::thread, std::this_thread::yield</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mutex&gt;</span>              <span class="comment">// std::mutex, std::unique_lock</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;condition_variable&gt;</span> <span class="comment">// std::condition_variable</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::mutex mtx;</span><br><span class="line"><span class="built_in">std</span>::condition_variable cv;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> cargo = <span class="number">0</span>;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">shipment_available</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> cargo!=<span class="number">0</span>;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">consume</span> <span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;n; ++i) &#123;</span><br><span class="line">    <span class="built_in">std</span>::unique_lock&lt;<span class="built_in">std</span>::mutex&gt; lck(mtx);</span><br><span class="line">    cv.wait(lck,shipment_available);</span><br><span class="line">    <span class="comment">// consume:</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"i = "</span> &lt;&lt; i &lt;&lt; <span class="string">", cargo ="</span> &lt;&lt; cargo &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">    cargo=<span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::<span class="function">thread <span class="title">consumer_thread</span> <span class="params">(consume,<span class="number">10</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// produce 10 items when needed:</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; ++i) &#123;</span><br><span class="line">    <span class="keyword">while</span> (shipment_available()) <span class="built_in">std</span>::this_thread::yield();</span><br><span class="line">    <span class="built_in">std</span>::unique_lock&lt;<span class="built_in">std</span>::mutex&gt; lck(mtx);</span><br><span class="line">    cargo = i+<span class="number">1</span>;</span><br><span class="line">    cv.notify_one();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  consumer_thread.join();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">▶ ../bazel-bin/concurrency/5-condition-variable-wait</span><br><span class="line">i = 0, cargo =1</span><br><span class="line">i = 1, cargo =2</span><br><span class="line">i = 2, cargo =3</span><br><span class="line">i = 3, cargo =4</span><br><span class="line">i = 4, cargo =5</span><br><span class="line">i = 5, cargo =6</span><br><span class="line">i = 6, cargo =7</span><br><span class="line">i = 7, cargo =8</span><br><span class="line">i = 8, cargo =9</span><br><span class="line">i = 9, cargo =10</span><br></pre></td></tr></table></figure>
+<h3 id="notify"><a href="#notify" class="headerlink" title="notify"></a>notify</h3><p>1、notify_one和notify_all</p>
+<ul>
+<li><code>std::condition_variable::notify_one()</code></li>
+</ul>
+<p>唤醒某个等待（wait）线程。如果当前没有等待线程，则该函数什么也不做，如果同时存在多个等待线程，则唤醒某个线程是不确定的（unspecified）。</p>
+<p><a href="https://cplusplus.com/reference/condition_variable/condition_variable/notify_one/" target="_blank" rel="noopener">参考代码：notify_one</a> 这里做了一些改动，便于理解</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// condition_variable::notify_one</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span>           <span class="comment">// std::cout</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span>             <span class="comment">// std::thread</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mutex&gt;</span>              <span class="comment">// std::mutex, std::unique_lock</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;condition_variable&gt;</span> <span class="comment">// std::condition_variable</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::mutex mtx;</span><br><span class="line"><span class="built_in">std</span>::condition_variable produce,consume;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> cargo = <span class="number">0</span>;     <span class="comment">// shared value by producers and consumers</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">consumer</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::unique_lock&lt;<span class="built_in">std</span>::mutex&gt; lck(mtx);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">while</span> (cargo==<span class="number">0</span>) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"before wait: consumer, cargo = %d\n"</span>, cargo);</span><br><span class="line">    consume.wait(lck);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"after wait: consumer, cargo = %d\n"</span>, cargo);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; cargo &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">  cargo=<span class="number">0</span>;</span><br><span class="line">  produce.notify_one();</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"notify_one produce: consumer, cargo = %d\n"</span>, cargo);</span><br><span class="line">  <span class="built_in">std</span>::this_thread::sleep_for(<span class="built_in">std</span>::chrono::seconds(<span class="number">1</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">producer</span> <span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::unique_lock&lt;<span class="built_in">std</span>::mutex&gt; lck(mtx);</span><br><span class="line">  <span class="keyword">while</span> (cargo!=<span class="number">0</span>) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"before wait: producer id %d, cargo = %d\n"</span>, id, cargo);</span><br><span class="line">    produce.wait(lck);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"after wait: producer id %d, cargo = %d\n"</span>, id, cargo);</span><br><span class="line">  &#125;</span><br><span class="line">  cargo = id;</span><br><span class="line">  consume.notify_one();</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"notify_one consume: producer id %d, cargo = %d\n"</span>, id, cargo);</span><br><span class="line">  <span class="built_in">std</span>::this_thread::sleep_for(<span class="built_in">std</span>::chrono::seconds(<span class="number">1</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::thread consumers[<span class="number">3</span>],producers[<span class="number">3</span>];</span><br><span class="line">  <span class="comment">// spawn 10 consumers and 10 producers:</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">3</span>; ++i) &#123;</span><br><span class="line">    consumers[i] = <span class="built_in">std</span>::thread(consumer);</span><br><span class="line">    <span class="comment">// producers[i] = std::thread(producer,i+1);</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">std</span>::this_thread::sleep_for(<span class="built_in">std</span>::chrono::seconds(<span class="number">1</span>));</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">3</span>; ++i) &#123;</span><br><span class="line">    <span class="comment">// consumers[i] = std::thread(consumer);</span></span><br><span class="line">    producers[i] = <span class="built_in">std</span>::thread(producer,i+<span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// join them back:</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">3</span>; ++i) &#123;</span><br><span class="line">    producers[i].join();</span><br><span class="line">    consumers[i].join();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">▶ ../bazel-bin/concurrency/5-condition-variable-notify_one</span><br><span class="line">before wait: consumer, cargo = 0</span><br><span class="line">before wait: consumer, cargo = 0</span><br><span class="line">before wait: consumer, cargo = 0</span><br><span class="line"></span><br><span class="line">notify_one consume: producer id 1, cargo = 1</span><br><span class="line">before wait: producer id 2, cargo = 1</span><br><span class="line">before wait: producer id 3, cargo = 1</span><br><span class="line"></span><br><span class="line">after wait: consumer, cargo = 1</span><br><span class="line">1</span><br><span class="line">notify_one produce: consumer, cargo = 0</span><br><span class="line"></span><br><span class="line">after wait: producer id 2, cargo = 0</span><br><span class="line">notify_one consume: producer id 2, cargo = 2</span><br><span class="line"></span><br><span class="line">after wait: consumer, cargo = 2</span><br><span class="line">2</span><br><span class="line">notify_one produce: consumer, cargo = 0</span><br><span class="line"></span><br><span class="line">after wait: producer id 3, cargo = 0</span><br><span class="line">notify_one consume: producer id 3, cargo = 3</span><br><span class="line"></span><br><span class="line">after wait: consumer, cargo = 3</span><br><span class="line">3</span><br><span class="line">notify_one produce: consumer, cargo = 0</span><br></pre></td></tr></table></figure>
+<p>可以看到：先是消费者全部等待，然后第一个生产者唤醒一个消费者，其他两个生产者等待，每一个生产者唤醒后再随机唤醒一个生产者线程。</p>
+<ul>
+<li><code>std::condition_variable::notify_all()</code></li>
+</ul>
+<p>唤醒所有的等待（wait）线程。如果当前没有等待线程，则该函数什么也不做。</p>
+<p>2、<code>std::notify_all_at_thread_exit</code></p>
+<p>函数原型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void std::notify_all_at_thread_exit (condition_variable&amp; cond, unique_lock&lt;mutex&gt; lck);</span><br></pre></td></tr></table></figure>
+<p>当调用该函数的线程退出时，所有在 <code>cond</code> 条件变量上等待的线程都会收到通知，一般为了防止误唤醒，我们和之前一样，通过一个全局标志位进行判断操作。</p>
+<h2 id="condition-variable-any"><a href="#condition-variable-any" class="headerlink" title="condition_variable_any"></a>condition_variable_any</h2><p>与 <code>std::condition_variable</code> 类似，只不过 <code>std::condition_variable_any</code> 的 <code>wait</code> 函数可以接受任何 <code>lockable</code> 参数，而 <code>std::condition_variable</code> 只能接受 <code>std::unique_lock&lt;std::mutex&gt;</code> 类型的参数，除此以外，和 <code>std::condition_variable</code> 几乎完全一样。</p>
+<h2 id="生产者消费者模型"><a href="#生产者消费者模型" class="headerlink" title="生产者消费者模型"></a>生产者消费者模型</h2><p>通过 <code>queue</code>， <code>mutex</code> 和 <code>condition_variable</code> 实现的简单生产者消费者模型<a href="https://murphypei.github.io/blog/2019/04/cpp-concurrent-3.html" target="_blank" rel="noopener">代码示例</a>：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mutex&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;condition_variable&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;chrono&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;atomic&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">queue</span>&lt;<span class="keyword">int</span>&gt; production;</span><br><span class="line">  <span class="built_in">std</span>::mutex mtx;</span><br><span class="line">  <span class="built_in">std</span>::condition_variable cv;</span><br><span class="line">  <span class="keyword">bool</span> ready = <span class="literal">false</span>;  <span class="comment">// 是否有产品可供消费</span></span><br><span class="line">  <span class="keyword">bool</span> done = <span class="literal">false</span>;   <span class="comment">// 生产结束</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">std</span>::<span class="function">thread <span class="title">producer</span><span class="params">(</span></span></span><br><span class="line">    [&amp;] () -&gt; void &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; <span class="number">10</span>; ++i)</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="comment">// 模拟实际生产过程</span></span><br><span class="line">        <span class="built_in">std</span>::this_thread ::sleep_for(<span class="built_in">std</span>::chrono::milliseconds(<span class="number">10</span>));</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"producing "</span> &lt;&lt; i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">std</span>::unique_lock&lt;<span class="built_in">std</span>::mutex&gt; lock(mtx);</span><br><span class="line">        production.push(i);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 有产品可以消费了</span></span><br><span class="line">        ready = <span class="literal">true</span>;</span><br><span class="line">        cv.notify_one();</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// 生产结束了</span></span><br><span class="line">      done = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  <span class="built_in">std</span>::<span class="function">thread <span class="title">consumer</span><span class="params">(</span></span></span><br><span class="line">    [&amp;] () -&gt; void &#123;</span><br><span class="line">      <span class="built_in">std</span>::unique_lock&lt;<span class="built_in">std</span>::mutex&gt; lock(mtx);</span><br><span class="line">      <span class="comment">// 如果生成没有结束或者队列中还有产品没有消费，则继续消费，否则结束消费</span></span><br><span class="line">      <span class="keyword">while</span>(!done || !production.empty())</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="comment">// 防止误唤醒</span></span><br><span class="line">        <span class="keyword">while</span>(!ready)</span><br><span class="line">        &#123;</span><br><span class="line">          cv.wait(lock);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(!production.empty())</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="comment">// 模拟消费过程</span></span><br><span class="line">          <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"consuming "</span> &lt;&lt; production.front() &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">          production.pop();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 没有产品了</span></span><br><span class="line">        ready = <span class="literal">false</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  producer.join();</span><br><span class="line">  consumer.join();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">▶ ../bazel-bin/concurrency/5-producer-consumer            </span><br><span class="line">producing 1</span><br><span class="line">consuming 1</span><br><span class="line">producing 2</span><br><span class="line">consuming 2</span><br><span class="line">producing 3</span><br><span class="line">consuming 3</span><br><span class="line">producing 4</span><br><span class="line">consuming 4</span><br><span class="line">producing 5</span><br><span class="line">consuming 5</span><br><span class="line">producing 6</span><br><span class="line">consuming 6</span><br><span class="line">producing 7</span><br><span class="line">consuming 7</span><br><span class="line">producing 8</span><br><span class="line">consuming 8</span><br><span class="line">producing 9</span><br><span class="line">consuming 9</span><br></pre></td></tr></table></figure>
+]]></content>
+      
+        <categories>
+            
+            <category> c++ </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> c++11 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[并发编程二：mutex]]></title>
+      <url>http://xiaqunfeng.cc/2022/02/02/cpp11-concurrency-2/</url>
+      <content type="html"><![CDATA[<p>互斥量<br><a id="more"></a></p>
+<p>Mutex 又称互斥量，使用 <code>std::mutex</code>是 C++11 中最基本的互斥量，<code>std::mutex</code> 对象提供了独占所有权的特性，需要包含<code>&lt;mutex&gt;</code>头文件。</p>
+<h2 id="mutex-头文件介绍"><a href="#mutex-头文件介绍" class="headerlink" title="mutex 头文件介绍"></a>mutex 头文件介绍</h2><p><code>&lt;mutex&gt;</code>中包含了 mutex 相关的定义和操作，主要包含的内容包括：</p>
+<h4 id="mutex系列类-四种"><a href="#mutex系列类-四种" class="headerlink" title="mutex系列类(四种)"></a>mutex系列类(四种)</h4><ul>
+<li><code>std::mutex</code>：基本的 mutex 类。</li>
+<li><code>std::recursive_mutex</code>：递归 mutex 类。</li>
+<li><code>std::time_mutex</code>：定时 mutex 类。</li>
+<li><code>std::recursive_timed_mutex</code>：定时递归 mutex 类。</li>
+</ul>
+<h4 id="lock类（两种）"><a href="#lock类（两种）" class="headerlink" title="lock类（两种）"></a>lock类（两种）</h4><ul>
+<li><code>std::lock_guard</code>：与 mutex RAII 相关，方便线程对互斥量上锁。</li>
+<li><code>std::unique_lock</code>：与 mutex RAII 相关，方便线程对互斥量上锁，但提供了更好的上锁和解锁控制。</li>
+</ul>
+<h4 id="其他类型"><a href="#其他类型" class="headerlink" title="其他类型"></a>其他类型</h4><ul>
+<li><code>std::once_flag</code></li>
+<li><code>std::adopt_lock_t</code></li>
+<li><code>std::defer_lock_t</code></li>
+<li><code>std::try_to_lock_t</code></li>
+</ul>
+<h4 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h4><ul>
+<li><code>std::try_lock</code>：尝试同时对多个互斥量上锁。</li>
+<li><code>std::lock</code>：可以同时对多个互斥量上锁。</li>
+<li><code>std::call_once</code>：如果多个线程需要同时调用某个函数，<code>call_once</code> 可以保证多个线程对该函数只调用一次。</li>
+</ul>
+<h2 id="mutex系列类-四种-1"><a href="#mutex系列类-四种-1" class="headerlink" title="mutex系列类(四种)"></a>mutex系列类(四种)</h2><h3 id="mutex"><a href="#mutex" class="headerlink" title="mutex"></a>mutex</h3><h4 id="成员函数"><a href="#成员函数" class="headerlink" title="成员函数"></a>成员函数</h4><p>1、构造函数</p>
+<ul>
+<li><code>std::mutex</code> 不允许拷贝构造，也不允许 move 拷贝，<strong>最初产生的 mutex 对象是处于 unlocked 状态的</strong>。</li>
+</ul>
+<p>2、lock()</p>
+<p>调用线程将锁住该互斥量。线程调用该函数会发生下面3种情况：</p>
+<ul>
+<li>如果该互斥量当前没有被锁住，则调用线程将该互斥量锁住，直到调用 <code>unlock</code> 之前，该线程一直拥有该锁；</li>
+<li>如果当前互斥量被其他线程锁住，则当前的调用线程被阻塞住，直到 mutex 被释放；</li>
+<li>如果当前互斥量被当前调用线程锁住，则会产生死锁（deadlock）。</li>
+</ul>
+<p>3、unlock()</p>
+<p>释放对互斥量的所有权。</p>
+<p>4、try_lock()</p>
+<p>尝试锁住互斥量，如果互斥量被其他线程占有，则当前线程也不会被阻塞。线程调用该函数也会出现下面3种情况：</p>
+<ul>
+<li>如果当前互斥量没有被其他线程占有，则该线程锁住互斥量，直到该线程调用 <code>unlock</code> 释放互斥量。</li>
+<li>如果当前互斥量被其他线程锁住，则当前调用线程返回 <code>false</code>，而并不会被阻塞掉。</li>
+<li>如果当前互斥量被当前调用线程锁住，则会产生死锁（deadlock）。</li>
+</ul>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span>       <span class="comment">// std::cout</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span>         <span class="comment">// std::thread</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mutex&gt;</span>          <span class="comment">// std::mutex</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;chrono&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">volatile</span> <span class="keyword">int</span> <span class="title">counter</span><span class="params">(<span class="number">0</span>)</span></span>; <span class="comment">// non-atomic counter</span></span><br><span class="line"><span class="built_in">std</span>::mutex mtx;           <span class="comment">// locks access to counter</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">attempt_10k_increases</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; ++i) &#123;</span><br><span class="line">        <span class="keyword">if</span> (mtx.try_lock()) &#123;   <span class="comment">// only increase if currently not locked:</span></span><br><span class="line">            ++counter;</span><br><span class="line">            <span class="built_in">std</span>::this_thread::sleep_for(<span class="built_in">std</span>::chrono::microseconds(<span class="number">50</span>));</span><br><span class="line">            mtx.unlock();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// std::cout &lt;&lt; std::this_thread::get_id() &lt;&lt; " failed" &lt;&lt; std::endl; // cout 多线程输出会乱</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"%d failed\n"</span>, <span class="built_in">std</span>::this_thread::get_id());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span>* argv[])</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::thread threads[<span class="number">10</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; ++i)</span><br><span class="line">        threads[i] = <span class="built_in">std</span>::thread(attempt_10k_increases);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; th : threads) th.join();</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; counter &lt;&lt; <span class="string">" successful increases of the counter.\n"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">216264704 failed</span><br><span class="line">214118400 failed</span><br><span class="line">216264704 failed</span><br><span class="line">216264704 failed</span><br><span class="line">214118400 failed</span><br><span class="line">214118400 failed</span><br><span class="line">214118400 failed</span><br><span class="line">214118400 failed</span><br><span class="line">214118400 failed</span><br><span class="line">217337856 failed</span><br><span class="line">217337856 failed</span><br><span class="line">217337856 failed</span><br><span class="line">10 successful increases of the counter.</span><br></pre></td></tr></table></figure>
+<p>结论：一部分线程在 increase 的过程中，<code>try_lock()</code> 获取互斥量执行失败了，而且不会阻塞，直接返回。</p>
+<h3 id="recursive-mutex"><a href="#recursive-mutex" class="headerlink" title="recursive_mutex"></a>recursive_mutex</h3><p><code>std::recursive_mutex</code> 与 <code>std::mutex</code> 一样，也是一种可以被上锁的对象，但是和 <code>std::mutex</code> 不同的是，<code>std::recursive_mutex</code> 允许同一个线程对互斥量多次上锁（即递归上锁），来获得对互斥量对象的多层所有权，<strong>std::recursive_mutex 释放互斥量时需要调用与该锁层次深度相同次数的 unlock()</strong>，可理解为 <code>lock()</code> 次数和 <code>unlock()</code> 次数相同，除此之外，<code>std::recursive_mutex</code> 的特性和 <code>std::mutex</code> 大致相同。</p>
+<h3 id="time-mutex"><a href="#time-mutex" class="headerlink" title="time_mutex"></a>time_mutex</h3><p><code>std::time_mutex</code> 比 <code>std::mutex</code> 多了两个成员函数，<code>try_lock_for()</code>，<code>try_lock_until()</code>。</p>
+<ul>
+<li><code>try_lock_for</code>：函数接受一个时间范围，表示在这一段时间范围之内线程如果没有获得锁则被阻塞住（与 <code>std::mutex</code> 的 <code>try_lock()</code> 不同，<code>try_lock()</code> 如果被调用时没有获得锁则直接返回 <code>false</code>），如果在此期间其他线程释放了锁，则该线程可以获得对斥量的锁，如果超时（即在指定时间内还是没有获得锁），则返回 <code>false</code>。</li>
+<li><code>try_lock_until</code>：函数则接受一个时间点作为参数，在指定时间点未到来之前线程如果没有获得锁则被阻塞住，如果在此期间其他线程释放了锁，则该线程可以获得对互斥量的锁，如果超时（即在指定时间内还是没有获得锁），则返回 <code>false</code>。</li>
+</ul>
+<h4 id="示例-1"><a href="#示例-1" class="headerlink" title="示例"></a>示例</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span>       <span class="comment">// std::cout</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;chrono&gt;</span>         <span class="comment">// std::chrono::milliseconds</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span>         <span class="comment">// std::thread</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mutex&gt;</span>          <span class="comment">// std::timed_mutex</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::timed_mutex mtx;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fireworks</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="comment">// waiting to get a lock: each thread prints "-" every 200ms:</span></span><br><span class="line">  <span class="keyword">while</span> (!mtx.try_lock_for(<span class="built_in">std</span>::chrono::milliseconds(<span class="number">200</span>))) &#123;</span><br><span class="line">    <span class="comment">// std::cout &lt;&lt; "-";</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"-"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// got a lock! - wait for 1s, then this thread prints "*"</span></span><br><span class="line">  <span class="built_in">std</span>::this_thread::sleep_for(<span class="built_in">std</span>::chrono::milliseconds(<span class="number">1000</span>));</span><br><span class="line">  <span class="comment">// std::cout &lt;&lt; "*\n";</span></span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"*\n"</span>);</span><br><span class="line">  mtx.unlock();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::thread threads[<span class="number">10</span>];</span><br><span class="line">  <span class="comment">// spawn 10 threads:</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; ++i)</span><br><span class="line">    threads[i] = <span class="built_in">std</span>::thread(fireworks);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; th : threads) th.join();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">▶ ./test </span><br><span class="line">------------------------------------*</span><br><span class="line">----------------------------------------*</span><br><span class="line">-----------------------------------*</span><br><span class="line">------------------------------*</span><br><span class="line">-------------------------*</span><br><span class="line">--------------------*</span><br><span class="line">---------------*</span><br><span class="line">----------*</span><br><span class="line">-----*</span><br><span class="line">*</span><br></pre></td></tr></table></figure>
+<h3 id="recursive-timed-mutex"><a href="#recursive-timed-mutex" class="headerlink" title="recursive_timed_mutex"></a>recursive_timed_mutex</h3><p>和 <code>std:recursive_mutex</code> 与 <code>std::mutex</code> 的关系一样，<code>std::recursive_timed_mutex</code> 的特性也可以从 <code>std::timed_mutex</code> 推导出来</p>
+<h2 id="lock类（两种）-1"><a href="#lock类（两种）-1" class="headerlink" title="lock类（两种）"></a>lock类（两种）</h2><ul>
+<li><code>std::lock_guard</code>：与 mutex RAII 相关，方便线程对互斥量上锁。</li>
+<li><code>std::unique_lock</code>：与 mutex RAII 相关，方便线程对互斥量上锁，但提供了更好的上锁和解锁控制。</li>
+</ul>
+<p>这两种方式都是通过对lock和unlock进行一次薄的封装，实现自动unlock的功能。但是<code>std::unique_lock</code>要比<code>std::lock_guard</code>更灵活，但是更灵活的代价是占用空间相对更大一点且相对更慢一点。因为unique_lock内部持有mutex的状态：locked, unlocked，要维护mutex的状态。所以，通常是在有需要的时候才会使用<code>unique_lock</code>，否则用 <code>lock_guard</code>。</p>
+<h3 id="lock-guard"><a href="#lock-guard" class="headerlink" title="lock_guard"></a>lock_guard</h3><p>lock_guard 对象通常用于管理某个锁(Lock)对象，因此与 Mutex RAII 相关，方便线程对互斥量上锁，即在某个 lock_guard 对象的声明周期内，它所管理的锁对象会一直保持上锁状态；而 lock_guard 的生命周期结束之后，它所管理的锁对象会被解锁</p>
+<p><code>std::lock_guard</code> 构造函数</p>
+<table>
+<thead>
+<tr>
+<th>构造方式</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>locking</td>
+<td><code>explicit lock_guard (mutex_type&amp; m);</code></td>
+</tr>
+<tr>
+<td>adopting</td>
+<td><code>lock_guard (mutex_type&amp; m, adopt_lock_t tag);</code></td>
+</tr>
+<tr>
+<td>copy [deleted]</td>
+<td><code>lock_guard (const lock_guard&amp;) = delete;</code></td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li>locking 初始化<ul>
+<li>lock_guard 对象管理 Mutex 对象 m，并在构造时对 m 进行上锁（调用 m.lock()）。</li>
+</ul>
+</li>
+<li>adopting初始化<ul>
+<li>lock_guard 对象管理 Mutex 对象 m，与 locking 初始化不同的是， Mutex 对象 m 已被当前线程锁住。</li>
+</ul>
+</li>
+<li>拷贝构造<ul>
+<li>lock_guard 对象的拷贝构造和移动构造(move construction)均被禁用，因此 lock_guard 对象不可被拷贝构造或移动构造。</li>
+</ul>
+</li>
+</ol>
+<p>示例：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// constructing lock_guard with adopt_lock</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span>       <span class="comment">// std::cout</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span>         <span class="comment">// std::thread</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mutex&gt;</span>          <span class="comment">// std::mutex, std::lock_guard, std::adopt_lock</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::mutex mtx;           <span class="comment">// mutex for critical section</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_thread_id</span> <span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">  mtx.lock();</span><br><span class="line">  <span class="built_in">std</span>::lock_guard&lt;<span class="built_in">std</span>::mutex&gt; lck (mtx, <span class="built_in">std</span>::adopt_lock);</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"thread #"</span> &lt;&lt; id &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::thread threads[<span class="number">10</span>];</span><br><span class="line">  <span class="comment">// spawn 10 threads:</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">10</span>; ++i)</span><br><span class="line">    threads[i] = <span class="built_in">std</span>::thread(print_thread_id,i+<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; th : threads) th.join();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 print_thread_id 函数中：</p>
+<ul>
+<li>首先对 mtx 进行上锁操作 <code>mtx.lock();</code></li>
+<li>然后用 mtx 对象构造一个 lock_guard 对象 <code>std::lock_guard&lt;std::mutex&gt; lck(mtx, std::adopt_lock);</code> 。这里采用的adopting初始化，此时 Tag 参数为 std::adopt_lock，表明当前线程已经获得了锁，此后 mtx 对象的解锁操作交由 lock_guard 对象 lck 来管理。</li>
+<li>在 lck 的生命周期结束之后，mtx 对象会自动解锁</li>
+</ul>
+<p>lock_guard 最大的特点就是安全易于使用，请看下面例子(<a href="http://www.cplusplus.com/reference/mutex/lock_guard/" target="_blank" rel="noopener">参考</a>)，在异常抛出的时候通过 lock_guard 对象管理的 Mutex 可以得到正确地解锁。</p>
+<p>最大的缺点就是简单，没有足够的灵活度。</p>
+<h3 id="unique-lock"><a href="#unique-lock" class="headerlink" title="unique_lock"></a>unique_lock</h3><p>首先，两个关键点上和 lock_guard 一致：</p>
+<ul>
+<li>安全解锁：std::unique_lock 对象也能保证在其自身析构时它所管理的 Mutex 对象能够被正确地解锁（即使没有显式地调用 unlock 函数）。因此，和 lock_guard 一样，这也是一种简单而又安全的上锁和解锁方式，尤其是在程序抛出异常后先前已被上锁的 Mutex 对象可以正确进行解锁操作，极大地简化了程序员编写与 Mutex 相关的异常处理代码。</li>
+<li>不负责mutex对象生命周期：unique_lock 对象同样也不负责管理 Mutex 对象的生命周期，unique_lock 对象只是简化了 Mutex 对象的上锁和解锁操作，方便线程对互斥量上锁，即在某个 unique_lock 对象的声明周期内，它所管理的锁对象会一直保持上锁状态；而 unique_lock 的生命周期结束之后，它所管理的锁对象会被解锁，这一点和 lock_guard 类似，但 unique_lock 给程序员提供了更多的自由</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>构造方式</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default (1)</td>
+<td><code>unique_lock() noexcept;</code></td>
+</tr>
+<tr>
+<td>locking (2)</td>
+<td><code>explicit unique_lock(mutex_type&amp; m);</code></td>
+</tr>
+<tr>
+<td>try-locking (3)</td>
+<td><code>unique_lock(mutex_type&amp; m, try_to_lock_t tag);</code></td>
+</tr>
+<tr>
+<td>deferred (4)</td>
+<td><code>unique_lock(mutex_type&amp; m, defer_lock_t tag) noexcept;</code></td>
+</tr>
+<tr>
+<td>adopting (5)</td>
+<td><code>unique_lock(mutex_type&amp; m, adopt_lock_t tag);</code></td>
+</tr>
+<tr>
+<td>locking for (6)</td>
+<td><code>template &lt;class Rep, class Period&gt; unique_lock(mutex_type&amp; m, const chrono::duration&lt;Rep,Period&gt;&amp; rel_time);</code></td>
+</tr>
+<tr>
+<td>locking until (7)</td>
+<td><code>template &lt;class Clock, class Duration&gt; unique_lock(mutex_type&amp; m, const chrono::time_point&lt;Clock,Duration&gt;&amp; abs_time);</code></td>
+</tr>
+<tr>
+<td>copy [deleted] (8)</td>
+<td><code>unique_lock(const unique_lock&amp;) = delete;</code></td>
+</tr>
+<tr>
+<td>move (9)</td>
+<td><code>unique_lock(unique_lock&amp;&amp; x);</code></td>
+</tr>
+</tbody>
+</table>
+<p>(1) 默认构造函数</p>
+<p>新创建的 unique_lock 对象不管理任何 Mutex 对象。</p>
+<p>(2) locking 初始化</p>
+<p>新创建的 unique_lock 对象管理 Mutex 对象 m，并尝试调用 m.lock() 对 Mutex 对象进行上锁，如果此时另外某个 unique_lock 对象已经管理了该 Mutex 对象 m，则当前线程将会被阻塞。</p>
+<p>(3) try-locking 初始化</p>
+<p>新创建的 unique_lock 对象管理 Mutex 对象 m，并尝试调用 m.try_lock() 对 Mutex 对象进行上锁，但如果上锁不成功，并不会阻塞当前线程。</p>
+<p>(4) deferred 初始化</p>
+<p>新创建的 unique_lock 对象管理 Mutex 对象 m，但是在初始化的时候并不锁住 Mutex 对象。 m 应该是一个没有当前线程锁住的 Mutex 对象。</p>
+<p>(5) adopting 初始化</p>
+<p>新创建的 unique_lock 对象管理 Mutex 对象 m， m 应该是一个已经被当前线程锁住的 Mutex 对象。(并且当前新创建的 unique_lock 对象拥有对锁(Lock)的所有权)。</p>
+<p>(6) locking 一段时间(duration)</p>
+<p>新创建的 unique_lock 对象管理 Mutex 对象 m，并试图通过调用 m.try_lock_for(rel_time) 来锁住 Mutex 对象一段时间(rel_time)。</p>
+<p>(7) locking 直到某个时间点(time point)</p>
+<p>新创建的 unique_lock 对象管理 Mutex 对象m，并试图通过调用 m.try_lock_until(abs_time) 来在某个时间点(abs_time)之前锁住 Mutex 对象。</p>
+<p>(8) 拷贝构造 [被禁用]</p>
+<p>unique_lock 对象不能被拷贝构造。</p>
+<p>(9) 移动(move)构造</p>
+<p>新创建的 unique_lock 对象获得了由 x 所管理的 Mutex 对象的所有权(包括当前 Mutex 的状态)。调用 move 构造之后， x 对象如同通过默认构造函数所创建的，就不再管理任何 Mutex 对象了。</p>
+<p>总结：</p>
+<ul>
+<li>通过 (2) 和 (5) 创建的 unique_lock 对象通常拥有 Mutex 对象的锁</li>
+<li>通过 (1) 和 (4) 创建的则不会拥有锁</li>
+<li>通过 (3)，(6) 和 (7) 创建的 unique_lock 对象，则在 lock 成功时获得锁</li>
+</ul>
+<p>构造函数代码示例 <a href="http://www.cplusplus.com/reference/mutex/unique_lock/unique_lock/" target="_blank" rel="noopener">参考</a>)：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// unique_lock constructor example</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span>       <span class="comment">// std::cout</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span>         <span class="comment">// std::thread</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mutex&gt;</span>          <span class="comment">// std::mutex, std::lock, std::unique_lock</span></span></span><br><span class="line">                          <span class="comment">// std::adopt_lock, std::defer_lock</span></span><br><span class="line"><span class="built_in">std</span>::mutex foo,bar;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">task_a</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::lock (foo,bar);         <span class="comment">// simultaneous lock (prevents deadlock)</span></span><br><span class="line">  <span class="built_in">std</span>::unique_lock&lt;<span class="built_in">std</span>::mutex&gt; lck1 (foo,<span class="built_in">std</span>::adopt_lock);</span><br><span class="line">  <span class="built_in">std</span>::unique_lock&lt;<span class="built_in">std</span>::mutex&gt; lck2 (bar,<span class="built_in">std</span>::adopt_lock);</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"task a\n"</span>;</span><br><span class="line">  <span class="comment">// (unlocked automatically on destruction of lck1 and lck2)</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">task_b</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="comment">// foo.lock(); bar.lock(); // replaced by:</span></span><br><span class="line">  <span class="built_in">std</span>::unique_lock&lt;<span class="built_in">std</span>::mutex&gt; lck1, lck2;</span><br><span class="line">  lck1 = <span class="built_in">std</span>::unique_lock&lt;<span class="built_in">std</span>::mutex&gt;(bar,<span class="built_in">std</span>::defer_lock);</span><br><span class="line">  lck2 = <span class="built_in">std</span>::unique_lock&lt;<span class="built_in">std</span>::mutex&gt;(foo,<span class="built_in">std</span>::defer_lock);</span><br><span class="line">  <span class="built_in">std</span>::lock (lck1,lck2);       <span class="comment">// simultaneous lock (prevents deadlock)</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"task b\n"</span>;</span><br><span class="line">  <span class="comment">// (unlocked automatically on destruction of lck1 and lck2)</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::<span class="function">thread <span class="title">th1</span> <span class="params">(task_a)</span></span>;</span><br><span class="line">  <span class="built_in">std</span>::<span class="function">thread <span class="title">th2</span> <span class="params">(task_b)</span></span>;</span><br><span class="line"></span><br><span class="line">  th1.join();</span><br><span class="line">  th2.join();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>成员函数：</p>
+<p>由于 std::unique_lock 比 std::lock_guard 操作灵活，因此它提供了更多成员函数。具体分类如下：</p>
+<ol>
+<li>上锁/解锁操作：<strong>lock，try_lock，try_lock_for，try_lock_until</strong> 和 <strong>unlock</strong></li>
+<li>修改操作：移动赋值(move assignment)(前面已经介绍过了)，交换(swap)（与另一个 std::unique_lock 对象交换它们所管理的 Mutex 对象的所有权），释放(release)（返回指向它所管理的 Mutex 对象的指针，并释放所有权）</li>
+<li>获取属性操作：owns_lock（返回当前 std::unique_lock 对象是否获得了锁）、operator bool()（与 owns_lock 功能相同，返回当前 std::unique_lock 对象是否获得了锁）、mutex（返回当前 std::unique_lock 对象所管理的 Mutex 对象的指针）。</li>
+</ol>
+<blockquote>
+<p>参考资料：<a href="https://www.cnblogs.com/haippy/p/3346477.html" target="_blank" rel="noopener">C++11 并发指南三(Lock 详解)</a></p>
+</blockquote>
+<p>和 lock_guard 相比，unique_lock 主要的特色在于：</p>
+<ul>
+<li>​         unique_lock 不一定要拥有 mutex，所以可以透过 default constructor 建立出一个空的 unique_lock。</li>
+<li>​         unique_lock 虽然一样不可复制（non-copyable），但是它是可以转移的（movable）。所以，unique_lock 不但可以被函数回传，也可以放到 STL 的 container 里。</li>
+<li>​         另外，unique_lock 也有提供 lock()、unlock() 等函数，可以用来加锁解锁mutex，也算是功能比较完整的地方。</li>
+<li>​         unique_lock本身还可以用于std::lock参数，因为其具备lock、unlock、try_lock成员函数,这些函数不仅完成针对mutex的操作还要更新mutex的状态。</li>
+<li>增加了灵活性，比如可以对mutex的管理从一个scope通过move语义转到另一个scope，不像lock_guard只能在一个scope中生存。</li>
+</ul>
+<h3 id="defer-lock-和-adopt-lock用法区别"><a href="#defer-lock-和-adopt-lock用法区别" class="headerlink" title="defer_lock 和 adopt_lock用法区别"></a>defer_lock 和 adopt_lock用法区别</h3><p>以一个银行的例子作为示例：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mutex&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;chrono&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">struct</span> bank_account<span class="comment">//银行账户</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="function"><span class="keyword">explicit</span> <span class="title">bank_account</span><span class="params">(<span class="built_in">string</span> name, <span class="keyword">int</span> money)</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    sName = name;</span><br><span class="line">    iMoney = money;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">string</span> sName;</span><br><span class="line">  <span class="keyword">int</span> iMoney;</span><br><span class="line">  mutex mMutex;<span class="comment">//账户都有一个锁mutex</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">transfer</span><span class="params">( bank_account &amp;from, bank_account &amp;to, <span class="keyword">int</span> amount )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  unique_lock&lt;mutex&gt; lock1( from.mMutex, defer_lock );<span class="comment">//defer_lock表示延迟加锁，此处只管理mutex</span></span><br><span class="line">  unique_lock&lt;mutex&gt; lock2( to.mMutex, defer_lock );</span><br><span class="line">  lock( lock1, lock2 );<span class="comment">//lock一次性锁住多个mutex防止deadlock</span></span><br><span class="line">  from.iMoney -= amount;</span><br><span class="line">  to.iMoney += amount;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">"Transfer "</span> &lt;&lt; amount &lt;&lt; <span class="string">" from "</span>&lt;&lt; from.sName &lt;&lt; <span class="string">" to "</span> &lt;&lt; to.sName &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="function">bank_account <span class="title">Account1</span><span class="params">( <span class="string">"User1"</span>, <span class="number">100</span> )</span></span>;</span><br><span class="line">  <span class="function">bank_account <span class="title">Account2</span><span class="params">( <span class="string">"User2"</span>, <span class="number">50</span> )</span></span>;</span><br><span class="line">  <span class="function">thread <span class="title">t1</span><span class="params">( [&amp;]()</span></span>&#123; transfer( Account1, Account2, <span class="number">10</span> ); &#125; );<span class="comment">//lambda表达式</span></span><br><span class="line">  <span class="function">thread <span class="title">t2</span><span class="params">( [&amp;]()</span></span>&#123; transfer( Account2, Account1, <span class="number">5</span> ); &#125; );</span><br><span class="line">  t1.join();</span><br><span class="line">  t2.join();</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"name: %s money %d\n"</span>, Account1.sName.c_str(), Account1.iMoney);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"name: %s money %d\n"</span>, Account2.sName.c_str(), Account2.iMoney);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">▶ ./test </span><br><span class="line">Transfer 5 from User2 to User1</span><br><span class="line">Transfer 10 from User1 to User2</span><br><span class="line">name: User1 money 95</span><br><span class="line">name: User2 money 55</span><br></pre></td></tr></table></figure>
+<p><strong>defer_lock用法</strong></p>
+<p>这里的实现方式是用 defer_lock 加锁，先管理起来，通过 lock 的方式一次性把多个锁加上。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">unique_lock&lt;mutex&gt; lock1( from.mMutex, defer_lock );//defer_lock表示延迟加锁，此处只管理mutex</span><br><span class="line">unique_lock&lt;mutex&gt; lock2( to.mMutex, defer_lock );</span><br><span class="line">lock( lock1, lock2 );//lock一次性锁住多个mutex防止deadlock</span><br></pre></td></tr></table></figure>
+<p>如果不这么做，多个语句同时加锁可能会导致死锁。比如，我们举的这个例子，同一时刻A向B转账，B也向A转账，那么先持有自己的锁再相互请求对方的锁必然deadlock。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lock_guard&lt;mutex&gt; lock1( from.mMutex );</span><br><span class="line">lock_guard&lt;mutex&gt; lock2( to.mMutex );</span><br></pre></td></tr></table></figure>
+<p><strong>adopt_lock用法</strong></p>
+<p>采用lock_guard也可以如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lock( from.mMutex, to.mMutex );</span><br><span class="line">lock_guard&lt;mutex&gt; lock1( from.mMutex, adopt_lock );//adopt_lock表示mutex已经上锁，lock1将拥有from.mMutex</span><br><span class="line">lock_guard&lt;mutex&gt; lock2( to.mMutex, adopt_lock );</span><br></pre></td></tr></table></figure>
+<p>Adopt_lock 表示之前已经加锁，这里管理锁，拥有mutex的所有权</p>
+<blockquote>
+<p>参考资料：<a href="https://www.cnblogs.com/fnlingnzb-learner/p/9542183.html" target="_blank" rel="noopener">C++11 std::unique_lock与std::lock_guard区别及多线程应用实例</a></p>
+</blockquote>
+]]></content>
+      
+        <categories>
+            
+            <category> c++ </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> c++11 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[并发编程一：thread]]></title>
+      <url>http://xiaqunfeng.cc/2022/02/01/cpp11-concurrency-1/</url>
+      <content type="html"><![CDATA[<p>整理之前学习总结的c++11的一些并发编程相关知识碎片。第一篇先讲基础概念<br><a id="more"></a></p>
+<p>早期在Linux下写多线程的时候都是用的 pthread，但 C++11 从语言层面上支持 std::thread，编写多线程更加方便，同时多线程程序的可移植性得到了很大的提高。</p>
+<h2 id="多线程相关头文件"><a href="#多线程相关头文件" class="headerlink" title="多线程相关头文件"></a>多线程相关头文件</h2><p>C++11 新标准中引入了多个头文件来支持多线程编程，他们分别是 <code>&lt;atomic&gt;</code>，<code>&lt;thread&gt;</code>，<code>&lt;mutex&gt;</code>，<code>&lt;condition_variable&gt;</code> 和 <code>&lt;future&gt;</code>。</p>
+<ul>
+<li><code>&lt;atomic&gt;</code>：该头文件用于原子操作，主要声明了两个类，<code>std::atomic</code> 和 <code>std::atomic_flag</code>，另外还声明了一套 C 风格的原子类型和与 C 兼容的原子操作的函数。</li>
+<li><code>&lt;thread&gt;</code>：该头文件用于线程操作，主要声明了 <code>std::thread</code> 类，另外 <code>std::this_thread</code> 命名空间也在该头文件中，包含一些线程的操作函数。</li>
+<li><code>&lt;mutex&gt;</code>：该头文件用于互斥量操作，主要声明了与互斥量相关的类，包括 <code>std::mutex</code> 系列类，<code>std::lock_guard</code>，<code>std::unique_lock</code>，以及其他的类型和函数。</li>
+<li><code>&lt;condition_variable&gt;</code>：该头文件用于条件变量操作，主要声明了与条件变量相关的类，包括 <code>std::condition_variable</code> 和 <code>std::condition_variable_any</code>。</li>
+<li><code>&lt;future&gt;</code>：该头文件用于异步调用操作，主要声明了 <code>std::promise</code>，<code>std::package_task</code> 两个 <code>Provider</code> 类，以及 <code>std::future</code> 和 <code>std::shared_future</code> 两个 <code>Future</code> 类，另外还有一些与之相关的类型和函数，<code>std::async()</code> 函数就声明在此头文件中。</li>
+</ul>
+<h2 id="hello-world"><a href="#hello-world" class="headerlink" title="hello world"></a>hello world</h2><p>示例代码 <code>1-hello.cc</code>：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span> </span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">hello</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Hello Concurrent World\n"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::<span class="function">thread <span class="title">t</span><span class="params">(hello)</span></span>;  </span><br><span class="line">  t.join(); </span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>BUILD文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">cc_binary(</span><br><span class="line">    name = &quot;1-hello&quot;,</span><br><span class="line">    srcs = [</span><br><span class="line">        &quot;1-hello.cc&quot;,</span><br><span class="line">    ],</span><br><span class="line">    deps = [</span><br><span class="line"></span><br><span class="line">    ],</span><br><span class="line">    copts = [</span><br><span class="line">        &quot;-std=c++11&quot;,</span><br><span class="line">        &quot;-D_PTHREADS&quot;,</span><br><span class="line">    ],</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>编译运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">▶ bazel build :1-hello</span><br><span class="line"></span><br><span class="line">▶ bazel-bin/concurrency/1-hello</span><br><span class="line">Hello Concurrent World</span><br></pre></td></tr></table></figure>
+<p>启一个新线程来输出。新的线程启动之后，初始线程继续执行。这里调用<code>join()</code>的等待新线程结束。如果它不等待新线程结束，main()结束有可能发生在新线程运行之前。</p>
+<h2 id="thread"><a href="#thread" class="headerlink" title="thread"></a>thread</h2><p>std::thread 在<code>&lt;thread&gt;</code> 头文件中声明</p>
+<h3 id="构造"><a href="#构造" class="headerlink" title="构造"></a>构造</h3><table>
+<thead>
+<tr>
+<th>构造方式</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>thread() noexcept;</td>
+</tr>
+<tr>
+<td>initialization</td>
+<td>template explicit thread (Fn&amp;&amp; fn, Args&amp;&amp;… args);</td>
+</tr>
+<tr>
+<td>copy [deleted]</td>
+<td>thread (const thread&amp;) = delete;</td>
+</tr>
+<tr>
+<td>move</td>
+<td>thread (thread&amp;&amp; x) noexcept;</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>默认构造函数（default），创建一个空的 thread 执行对象。</li>
+<li>初始化构造函数（initialization），创建一个 thread 对象，该 thread 对象可被 joinable，新产生的线程会调用 <code>fn</code> 函数，该函数的参数由 <code>args</code> 给出。</li>
+<li>拷贝构造函数(被禁用)，意味着 thread 不可被拷贝构造。</li>
+<li>move 构造函数，调用成功之后 <code>x</code> 不代表任何 thread 执行对象。 </li>
+</ul>
+<blockquote>
+<p>注意：可被 joinable 的 thread 对象必须在他们销毁之前被主线程 join 或者将其设置为 detached.</p>
+</blockquote>
+<h3 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h3><p> <code>2-thread.cc</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;utility&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;chrono&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;functional&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;atomic&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f1</span><span class="params">(<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; ++i) &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Thread "</span> &lt;&lt; n &lt;&lt; <span class="string">" executing\n"</span>;</span><br><span class="line">        <span class="built_in">std</span>::this_thread::sleep_for(<span class="built_in">std</span>::chrono::milliseconds(<span class="number">10</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f2</span><span class="params">(<span class="keyword">int</span>&amp; n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; ++i) &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Thread 2 executing\n"</span>;</span><br><span class="line">        ++n;</span><br><span class="line">        <span class="built_in">std</span>::this_thread::sleep_for(<span class="built_in">std</span>::chrono::milliseconds(<span class="number">10</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">std</span>::thread t1; <span class="comment">// t1 is not a thread</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="function">thread <span class="title">t2</span><span class="params">(f1, n + <span class="number">1</span>)</span></span>; <span class="comment">// pass by value</span></span><br><span class="line">    std::thread t3(f2, std::ref(n)); // pass by reference</span><br><span class="line">    std::thread t4(std::move(t3)); // t4 is now running f2(). t3 is no longer a thread</span><br><span class="line">    t2.join();</span><br><span class="line">    t4.join();</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Final value of n is "</span> &lt;&lt; n &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">▶ ../bazel-bin/concurrency/2-thread</span><br><span class="line">Thread 1 executing</span><br><span class="line">Thread 2 executing</span><br><span class="line">Thread 1 executing</span><br><span class="line">Thread 2 executing</span><br><span class="line">Thread 1 executing</span><br><span class="line">Thread 2 executing</span><br><span class="line">Thread Thread 2 executing</span><br><span class="line">1 executing</span><br><span class="line">Thread 2 executing</span><br><span class="line">Thread 1 executing</span><br><span class="line">Final value of n is 5</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注：可以看到，这里多线程打印，会串行</p>
+<p>一般在打印多线程日志时，要么不同线程输出到不同文件，要输出到单个文件得加锁</p>
+</blockquote>
+<h3 id="成员函数"><a href="#成员函数" class="headerlink" title="成员函数"></a>成员函数</h3><table>
+<thead>
+<tr>
+<th>成员函数</th>
+<th>功 能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>get_id()</td>
+<td>获取当前 thread 对象的线程 ID。返回一个类型为 std::thread::id 的对象</td>
+</tr>
+<tr>
+<td>joinable()</td>
+<td>判断当前线程是否支持调用 join() 成员函数。</td>
+</tr>
+<tr>
+<td>join()</td>
+<td>阻塞当前 thread 对象所在的线程，直至 thread 对象表示的线程执行完毕后，所在线程才能继续执行。</td>
+</tr>
+<tr>
+<td>detach()</td>
+<td>将当前线程从调用该函数的线程中分离出去，它们彼此独立执行。</td>
+</tr>
+<tr>
+<td>swap()</td>
+<td>交换两个线程的状态。交换两个线程对象所代表的底层句柄(underlying handles)</td>
+</tr>
+<tr>
+<td>native_handle</td>
+<td>返回 native handle（由于 std::thread 的实现和操作系统相关，因此该函数返回与 std::thread 具体实现相关的线程句柄，例如在符合 Posix 标准的平台下(如 Unix/Linux)是 Pthread 库）</td>
+</tr>
+<tr>
+<td>hardware_concurrency [static]</td>
+<td>检测硬件并发特性，返回当前平台的线程实现所支持的线程并发数目，但返回值仅仅只作为系统提示(hint)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="joinable"><a href="#joinable" class="headerlink" title="joinable"></a>joinable</h4><p>检查线程是否可被 join。检查当前的线程对象是否表示了一个活动的执行线程。</p>
+<ul>
+<li>由默认构造函数创建的线程是不能被 join 的。</li>
+<li>如果某个线程 已经执行完任务，但是没有被 join 的话，该线程依然会被认为是一个活动的执行线程，因此也是可以被 join 的。</li>
+</ul>
+<h4 id="detach"><a href="#detach" class="headerlink" title="detach"></a>detach</h4><p>Detach 线程。 将当前线程对象所代表的执行实例与该线程对象分离，使得线程的执行可以单独进行。一旦线程执行完毕，它所分配的资源将会被释放。</p>
+<p>调用 detach 函数之后：</p>
+<ul>
+<li><code>*this</code> 不再代表任何的线程执行实例。</li>
+<li>joinable() == false</li>
+<li>get_id() == std::thread::id()</li>
+</ul>
+<p>另外，如果出错或者 joinable() == false，则会抛出 std::system_error。</p>
+<h4 id="辅助函数"><a href="#辅助函数" class="headerlink" title="辅助函数"></a>辅助函数</h4><p><code>std::this_thread</code> 命名空间下的一些辅助函数：</p>
+<ul>
+<li><code>get_id</code>：和成员函数功能一致，可以在线程里获取id</li>
+<li><code>yield</code>: 告知调度器运行其他线程，可用于当前处于繁忙的等待状态</li>
+<li><code>sleep_for</code>：给定时长，阻塞当前线程</li>
+<li><code>sleep_until</code>：阻塞当前线程至给定时间点</li>
+</ul>
+<p><code>std::this_thread::yield()</code> 的作用是当前线程“放弃”执行，让操作系统调度另一线程继续执行。</p>
+<p>适用场景：线程需要等待某个操作或状态完成</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span>(pool.try_get_work()) &#123;</span><br><span class="line">    <span class="comment">// do work</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">std</span>::this_thread::yield(); <span class="comment">// other threads can push work to the queue now</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为条件不满足，所以此线程很快就返回(然后立即与其他线程竞争CPU时间片)，结果就是此线程频繁的与其他线程争抢CPU时间片，从而影响程序性能。</p>
+<p>使用 <code>std::this_thread::yield()</code> 后，就相当于”当前线程”检查条件不成功后，将其未使用完的”CPU时间片”分享给其他线程使用，等到其他线程用完后，再和其他线程一起竞争。</p>
+<blockquote>
+<p>参考资料：<a href="https://stackoverflow.com/questions/11048946/stdthis-threadyield-vs-stdthis-threadsleep-for" target="_blank" rel="noopener">std::this_thread::yield() vs std::this_thread::sleep_for()</a></p>
+</blockquote>
+<h4 id="代码示例-1"><a href="#代码示例-1" class="headerlink" title="代码示例"></a>代码示例</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;chrono&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">independentThread</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Starting concurrent thread.\n"</span>;</span><br><span class="line">    <span class="built_in">std</span>::this_thread::sleep_for(<span class="built_in">std</span>::chrono::seconds(<span class="number">5</span>));</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Exiting concurrent thread.\n"</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">threadCaller</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Starting thread caller.\n"</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="function">thread <span class="title">t</span><span class="params">(independentThread)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"before detach, joinable: "</span> &lt;&lt; t.joinable() &lt;&lt; <span class="string">'\n'</span>;</span><br><span class="line">    t.detach();</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"after detach, joinable: "</span> &lt;&lt; t.joinable() &lt;&lt; <span class="string">'\n'</span>; <span class="comment">// detach后，不可以被join</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::this_thread::sleep_for(<span class="built_in">std</span>::chrono::seconds(<span class="number">1</span>));</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Exiting thread caller.\n"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">joinFunc</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::this_thread::sleep_for(<span class="built_in">std</span>::chrono::seconds(<span class="number">1</span>));</span><br><span class="line">    <span class="built_in">std</span>::thread::id this_id = <span class="built_in">std</span>::this_thread::get_id();</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"joinFunc thread: "</span> &lt;&lt; this_id &lt;&lt; <span class="string">"\n"</span>; <span class="comment">// 和 t_id 相等</span></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// join</span></span><br><span class="line">    <span class="built_in">std</span>::thread t;</span><br><span class="line">    <span class="built_in">std</span>::thread::id t_id = t.get_id();</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"thread id: "</span> &lt;&lt; t_id &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"default constructor, joinable: "</span> &lt;&lt; t.joinable() &lt;&lt; <span class="string">'\n'</span>; <span class="comment">// 默认构造函数创建，不能被join</span></span><br><span class="line"></span><br><span class="line">    t = <span class="built_in">std</span>::thread(joinFunc);</span><br><span class="line">    t_id = t.get_id();</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"thread id: "</span> &lt;&lt; t_id &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"initil constructor, joinable: "</span> &lt;&lt; t.joinable() &lt;&lt; <span class="string">'\n'</span>; <span class="comment">// 初始化构造函数创建，可以被join</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::this_thread::sleep_for(<span class="built_in">std</span>::chrono::seconds(<span class="number">2</span>));</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"after run, joinable: "</span> &lt;&lt; t.joinable() &lt;&lt; <span class="string">'\n'</span>; <span class="comment">// 已经运行完了，可以被join</span></span><br><span class="line"></span><br><span class="line">    t.join();</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"after join, joinable: "</span> &lt;&lt; t.joinable() &lt;&lt; <span class="string">'\n'</span>; <span class="comment">// 被join过了，不可以再次被join</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// detach</span></span><br><span class="line">    threadCaller();</span><br><span class="line">    <span class="built_in">std</span>::this_thread::sleep_for(<span class="built_in">std</span>::chrono::seconds(<span class="number">5</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// hardware_concurrency</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> n = <span class="built_in">std</span>::thread::hardware_concurrency();</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; n &lt;&lt; <span class="string">" concurrent threads are supported.\n"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"main end\n"</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">▶ ../bazel-bin/concurrency/2-thread-detach</span><br><span class="line">thread id: 0x0</span><br><span class="line">default constructor, joinable: 0</span><br><span class="line">thread id: 0x70000ba16000</span><br><span class="line">initil constructor, joinable: 1</span><br><span class="line">joinFunc thread: 0x70000ba16000</span><br><span class="line">after run, joinable: 1</span><br><span class="line">after join, joinable: 0</span><br><span class="line">Starting thread caller.</span><br><span class="line">before detach, joinable: 1</span><br><span class="line">after detach, joinable: 0</span><br><span class="line">Starting concurrent thread.</span><br><span class="line">Exiting thread caller.</span><br><span class="line">Exiting concurrent thread.</span><br><span class="line">12 concurrent threads are supported.</span><br><span class="line">main end</span><br></pre></td></tr></table></figure>
+]]></content>
+      
+        <categories>
+            
+            <category> c++ </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> c++11 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Goodbye Shanghai]]></title>
       <url>http://xiaqunfeng.cc/2020/04/25/goodbye-shanghai/</url>
       <content type="html"><![CDATA[<div id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
@@ -2795,6 +3835,24 @@
 <p>issue：<a href="https://github.com/hexojs/hexo/issues/2598" target="_blank" rel="noopener">https://github.com/hexojs/hexo/issues/2598</a></p>
 <p>将文件：<code>node_modules\hexo-deployer-git\node_modules\hexo-fs\lib\fs.js</code> 中的如下行注释掉即可：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//exports.SyncWriteStream = fs.SyncWriteStream;</span><br></pre></td></tr></table></figure>
+<p>2、<code>hexo d -g</code> 后主页空白</p>
+<p>问题：node版本较高，导致 hexo generate 产生的public文件夹下很多文件都是空的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">▶ ll public/index.html</span><br><span class="line">-rw-r--r-- 1 xiaqunfeng staff 0 Mar 19 12:35 public/index.html</span><br></pre></td></tr></table></figure>
+<p>查看当前版本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">▶ hexo --version</span><br><span class="line">INFO  [hexo-math] Using engine &apos;mathjax&apos;</span><br><span class="line">hexo: 3.9.0</span><br><span class="line">hexo-cli: 2.0.0</span><br><span class="line">os: Darwin 21.6.0 darwin x64</span><br><span class="line">node: 18.7.0</span><br><span class="line">v8: 10.2.154.13-node.9</span><br><span class="line">uv: 1.44.2</span><br><span class="line">zlib: 1.2.11</span><br><span class="line">brotli: 1.0.9</span><br><span class="line">ares: 1.18.1</span><br><span class="line">modules: 108</span><br><span class="line">nghttp2: 1.48.0</span><br><span class="line">napi: 8</span><br><span class="line">llhttp: 6.0.7</span><br><span class="line">openssl: 1.1.1q</span><br><span class="line">cldr: 40.0</span><br><span class="line">icu: 70.1</span><br><span class="line">tz: 2021a3</span><br><span class="line">unicode: 14.0</span><br><span class="line"></span><br><span class="line">▶ node -v</span><br><span class="line">v18.7.0</span><br></pre></td></tr></table></figure>
+<p>解决方法：降级node版本</p>
+<p>第一步：安装nvm</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">▶ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash</span><br><span class="line"></span><br><span class="line">▶ nvm --version</span><br><span class="line">0.39.1</span><br></pre></td></tr></table></figure>
+<p>第二步：nvm降级node到12.14.0</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">▶ nvm install 12.14.0</span><br><span class="line">▶ nvm use 12.14.0</span><br><span class="line">Now using node v12.14.0 (npm v6.13.4)</span><br><span class="line"></span><br><span class="line">▶ node -v</span><br><span class="line">v12.14.0</span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong>，<code>nvm use</code> 只是临时切换 node 版本，只适用于当前 terminal，如果打开新的 terminal，node 还是之前的旧版本。如果想要永久切换的话，可使用如下命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">▶ nvm alias default 12.14.0</span><br><span class="line">default -&gt; 12.14.0 (-&gt; v12.14.0)</span><br></pre></td></tr></table></figure>
+<p>第三步：重新生成html</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">▶ hexo clean</span><br><span class="line">INFO  [hexo-math] Using engine &apos;mathjax&apos;</span><br><span class="line">INFO  Deleted database.</span><br><span class="line">INFO  Deleted public folder.</span><br><span class="line"></span><br><span class="line">▶ hexo d -g</span><br></pre></td></tr></table></figure>
+<p>查看public文件夹，内容从空恢复正常</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">▶ ll source/_posts/hexo-update.md</span><br><span class="line">-rw-r--r-- 1 xiaqunfeng staff 7.0K Oct  6  2019 source/_posts/hexo-update.md</span><br></pre></td></tr></table></figure>
+<p>第四步：github.io 页面，恢复正常</p>
+<p>参考资料：<a href="https://zhuanlan.zhihu.com/p/491881992" target="_blank" rel="noopener">hexo博客网站空白</a></p>
 ]]></content>
       
         
@@ -2809,7 +3867,7 @@
     <entry>
       <title><![CDATA[文章导航]]></title>
       <url>http://xiaqunfeng.cc/2019/10/01/navigation/</url>
-      <content type="html"><![CDATA[<p>分布式相关：<br>&emsp;&emsp;分布式技术：<a href="http://xiaqunfeng.cc/categories/Distribute/">Distribute</a><br>&emsp;&emsp;存储：<a href="http://xiaqunfeng.cc/categories/Ceph/">Ceph</a><br>编程语言：<br>&emsp;&emsp;C++<br>&emsp;&emsp;Go<br>&emsp;&emsp;SpringBoot2：<a href="http://xiaqunfeng.cc/categories/SpringBoot">SpringBoot2</a><br>人工智能：<br>&emsp;&emsp;机器学习：<a href="http://xiaqunfeng.cc/categories/MachineLearning/">MachineLearning</a><br>&emsp;&emsp;深度学习 ：<a href="http://xiaqunfeng.cc/categories/DeepLearning/">DeepLearning</a><br>工具：<a href="http://xiaqunfeng.cc/categories/Tools/">Tools</a> </p>
+      <content type="html"><![CDATA[<p>分布式相关：<br>&emsp;&emsp;分布式技术：<a href="http://xiaqunfeng.cc/categories/Distribute/">Distribute</a><br>&emsp;&emsp;存储：<a href="http://xiaqunfeng.cc/categories/Ceph/">Ceph</a><br>编程语言：<br>&emsp;&emsp;C++：<a href="http://xiaqunfeng.cc/categories/c++/">c++11 concurrency</a><br>&emsp;&emsp;Go<br>&emsp;&emsp;SpringBoot2：<a href="http://xiaqunfeng.cc/categories/SpringBoot">SpringBoot2</a><br>人工智能：<br>&emsp;&emsp;机器学习：<a href="http://xiaqunfeng.cc/categories/MachineLearning/">MachineLearning</a><br>&emsp;&emsp;深度学习 ：<a href="http://xiaqunfeng.cc/categories/DeepLearning/">DeepLearning</a><br>工具：<a href="http://xiaqunfeng.cc/categories/Tools/">Tools</a> </p>
 <a id="more"></a>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>虽然点击“所有文章”可以根据tag筛选文章，但文章之前打的tag较多，多有不便。文章分类展示的也不是很明显，所以，这里梳理一下。</p>
 <ul>
