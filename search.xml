@@ -4,6 +4,101 @@
   
     
     <entry>
+      <title><![CDATA[NVMe SSD]]></title>
+      <url>http://xiaqunfeng.cc/2023/05/14/nvme-ssd/</url>
+      <content type="html"><![CDATA[<p>简单学习和整理了一下NVMe SSD基础知识，便于理解。</p>
+<a id="more"></a>
+<h2 id="SSD"><a href="#SSD" class="headerlink" title="SSD"></a>SSD</h2><p>SSD是Solid State Drives（固态硬盘）的缩写，是用固态电子存储芯片阵列制成的硬盘产品。</p>
+<p>SSD一般由硬件组件与<strong>固件</strong>两大部分组成，硬件组件包括<strong>主控芯片、存储芯片</strong>（DRAM、NAND Flash）。</p>
+<ul>
+<li>主控芯片：承担数据的读取、写入</li>
+<li>存储芯片：<ul>
+<li>NAND Flash即闪存颗粒，是数据存储的核心介质，也是数据存储的载体</li>
+<li>DRAM即动态随机存取存储器，主要作为缓存用以降低SSD的读写延迟，提升SSD的读写性能。</li>
+</ul>
+</li>
+</ul>
+<h3 id="技术简介"><a href="#技术简介" class="headerlink" title="技术简介"></a>技术简介</h3><p>主控、闪存和固件为SSD三大核心技术。</p>
+<p>1、主控</p>
+<p>主控/控制器（Controller）在硬盘工作时承担与主机通信、控制闪存的数据传输以及运行FTL算法等职责，在固态硬盘中的作用可类比于计算机CPU（主控内部也有自己的CPU芯片），对固态硬盘的性能、使用寿命及可靠性有重要影响。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/ssd-controler.png" alt="ssd-controler"></p>
+<p>2、闪存</p>
+<p>闪存是固态硬盘的存储介质，占固态硬盘总成本的比重较大，达到70%以上。</p>
+<p>3、固件</p>
+<p>固件是固态硬盘出厂自带的一类算法的合称。作为一种磁存储介质，NAND Flash修改数据时不能覆写，必须先擦除才能重写，其数据擦除不是以单个的字节而是以一定大小的区块为单位，且每次擦除都会对半导体材质产生磨损，因此闪存介质具备有限的理论寿命。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/ssd-gujian.png" alt="ssd-gujian"></p>
+<p>参考：<a href="https://hardywang.blog.csdn.net/article/details/125242334" target="_blank" rel="noopener">企业级SSD主控和主流玩家洞察</a></p>
+<h3 id="SSD的类别划分"><a href="#SSD的类别划分" class="headerlink" title="SSD的类别划分"></a>SSD的类别划分</h3><ul>
+<li>按照总线通道技术，SSD可以分为SATA、SAS、PCIe等接口类别</li>
+<li>按照传输层协议不同，又可以分为SCSI、ATA、NVMe</li>
+</ul>
+<h3 id="发展趋势"><a href="#发展趋势" class="headerlink" title="发展趋势"></a>发展趋势</h3><p>由于PCIe支持速率更高，NVMe协议针对NAND进行了优化，具备更高的效率，“PCle接口+NVMe协议” 逐渐成为企业级SSD的发展趋势。</p>
+<p>目前市面上最常见的SSD产品，几乎都是SATA的，都需要开启AHCI模式来提高读写性能，但实际上固态颗粒的性能受到了这种模式的限制，所以可以看到主流产品的读写通常都在550MB/s，而NVMe可以轻松打破这一限制，换句话说，其实NVMe就是为了取代AHCI而诞生的新技术。</p>
+<h2 id="NVMe"><a href="#NVMe" class="headerlink" title="NVMe"></a>NVMe</h2><p>NVMe(Non-Volatile Memory express)，即非易失性内存主机控制器接口规范。是一种建立在<a href="https://ssdzg.com/155520.html" target="_blank" rel="noopener">M.2接口</a>上的一种标准（或称协议），是专门为闪存类存储设计的<strong>协议</strong>（注意不是接口）。使我们能够充分利用SSD和存储类内存（SCM）的速度。</p>
+<p>NVMe是一种高性能、NUMA（非统一内存访问）优化的、高度可扩展的存储协议，用于连接主机和内存子系统。NVMe是专门为NAND、闪存等非易失性存储设计的，NVMe协议建立在高速PCIe通道上。</p>
+<p>NVMe通过PCIe接口将I/O命令和响应映射到主机的共享内存。NVMe接口支持多核处理器并行I/O，以促进高吞吐量，缓解CPU的压力。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/image-20230518155845398.png" alt="image-20230518155845398"></p>
+<p>NVMe接口协议的功能包括：</p>
+<ul>
+<li>支持64K命令队列；</li>
+<li>可以使用低CPU周期为每个队列发送64K命令；</li>
+<li>延迟约为2.8微秒；</li>
+<li>可以直接与系统CPU通信；</li>
+<li>NVMe可以实现超过一百万的IOP。</li>
+</ul>
+<h3 id="演变"><a href="#演变" class="headerlink" title="演变"></a>演变</h3><p>传统的SATA接口与AHCI标准其实是为了机械硬盘而设计的，早期的SSD性能不高，即使使用这些传统的接口和协议，也不觉得有什么问题，但是随着SSD的性能逐渐增强，传统的标准已经不再适用，进而成为了限制SSD的一大瓶颈。NVMe是第一个真正满足高速存储介质需求的协议。</p>
+<p>2009年下半年，NVM Express工作组（NVMHCI）开始制定NVMe规范，NVM Express工作组包含90多家公司成员，Intel是主要领头人，小组成员包括美光、戴尔、三星、Marvell、NetAPP、EMC、IDT等公司，目的就是为SSD建立新的存储规范标准，让它在老旧的SATA与AHCI中解放出来。</p>
+<p>2011年，NVMe 1.0标准正式出炉，该标准是根据闪存存储的特点量身定制的，新的标准解除了旧标准施放在SSD上的各种限制。2012、2014和2017相继推出了1.1、1.2和1.3版本，目前最新的NVMe 1.4标准已于2019年7月发布。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/nvme-development.png" alt="nvme-development"></p>
+<h3 id="优势对比"><a href="#优势对比" class="headerlink" title="优势对比"></a>优势对比</h3><p>NVMe的本质是上建立了多个计算机与存储设备的通路。NVMe在单个消息队列中支持64000个命令，最多支持65535个I/O队列。相比之下，SAS设备的队列深度通常在一个队列中最多支持256个命令，而SATA驱动器最多支持32个命令。</p>
+<p>打个比方，如果SATA是一条普通的小道，每次只能通过32辆车的话，那NVMe就是一条拥有65535条车道的高速公路，每条车道能通过65535辆车。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/sata-sas-nvme.png" alt="sata-sas-nvme"></p>
+<p>对比SATA SSD，NVMe优势总结如下：</p>
+<p><strong>①性能大增</strong></p>
+<p>现在SSD测试通常最多只会测试到队列深度为32的IOPS能力，其实终究原因这是AHCI的上限，其实许多闪存主控可以提供更好的队列深度。而NVMe则可以把最大队列深度从32提升到64000，SSD的IOPS能力也会得到大幅提升。</p>
+<p>NVMe还支持同一时间从多核处理器接受命令和优先处理请求，这个特性在企业级的重负载时优势就会显露出来。</p>
+<p><strong>②低延迟</strong></p>
+<p>NVMe标准是面向PCI-E SSD的，使用原生PCI-E通道与CPU直连可以免去SATA与SAS接口的外置控制器（PCH）与CPU通信所带来的延时。</p>
+<p>NVMe标准的延时只有AHCI的一半不到，NVMe精简了调用方式，执行命令时不需要读取寄存器；而AHCI每条命令则需要读取4次寄存器，一共会消耗8000次CPU循环，从而造成大概2.5μs的延迟。</p>
+<p><strong>③功耗更低</strong></p>
+<p>NVMe加入了自动功耗状态切换和动态能耗管理功能，在闲置时可以非常快速的控制在极低的水平，在功耗管理上NVMe标准的SSD会比现在主流的AHCI SSD拥有较大优势，这一点对移动设备来说尤其重要，可以显著增加笔记本和平板电脑的续航能力。</p>
+<p><strong>④兼容性高</strong></p>
+<p>驱动程序的兼容性也是所有PCI-E SSD的一个共有问题，每个产品都有对应不同系统的专用驱动，这方面有些厂商做的非常出色，而另一些则 不怎么样，然而许多PCI-E SSD需要加载驱动才能够正常引导。</p>
+<p>NVMe SSD可以很方便的匹配不同的平台、系统，无需厂家提供相应的驱动就可以正常工作，目前Windows、Linux、Solaris、Unix、VMware、UEFI等都加入了对NVMe SSD的支持。</p>
+<p>参考资料：</p>
+<p><a href="https://cloud.tencent.com/developer/article/1814060" target="_blank" rel="noopener">详解：什么是NVMe？</a></p>
+<p><a href="https://ssdzg.com/155946.html" target="_blank" rel="noopener">NVMEe SSD有什么特点</a></p>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><p>1、存储接口协议</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/storage-interface-protocal.png" alt="storage-interface-protocal"></p>
+<p>2、常用存储设备接口（设备和计算机通信）</p>
+<ul>
+<li>SATA（Serial ATA串行传输ATA）接口，通常用于2.5寸和3.5寸硬盘，有时候一些M.2设备也会使用</li>
+<li>PCI Express(PCIe)接口， 用于M.2和PCIe设备</li>
+<li>SAS（Serial Attached SCSI）和FC（Fibre Channel）接口，仅用于服务器领域和数据中心 PCIe接口要比SATA接口快的多，SATA3最大带宽是6Gb/s，而基于4X PCIe的M.2接口最大可以达到32Gb/s。</li>
+</ul>
+<p>3、SATA</p>
+<p>SATA（Serial Advanced Technology Attachment，串行高级技术附件）是一种基于行业标准的串行硬件驱动器接口，是由Intel、IBM、Dell、APT、Maxtor和Seagate公司共同提出的硬盘接口规范。现在主流为SATA3.0，速率可达到6.0Gbps.SATA Spec中定义了物理层、链路层、传输层的标准，以及传输协议、关键数据结构FIS等的定义，SATA下面有2中mode可以选择：AHCI和IDE</p>
+<p>4、IDE<br>IDE的英文全称为“IntegratedDrive Electronics”，即“电子集成驱动器”，它的本意是指把“硬盘控制器”与“盘体”集成在一起的硬盘驱动器。又称ATA接口，最大速率为133MB/s，现在已经完全被SATA所取代，但是为了兼容的原因，不管是BIOS还是OS下仍然保留IDE模式，该模式可以将SATA盘映射模拟成普通IDE硬盘，无需额外加载SATA驱动。但不支持任何SATA接口的新特性。</p>
+<p>5、AHCI<br>AHCI（Serial ATA AdvancedHost Controller Interface），又名串行ATA高级主控接口/高级主机控制器接口。AHCI通过包含一个PCI BAR（基址寄存器），来实现原生SATA功能，允许存储驱动程序启用高级串行 ATA 功能。<br>AHCI模式是专门为SATA接口而设计，支持SATA接口特性，诸如本机命令队列(NCQ)和热插拔。但是需要用户在BIOS中选择AHCI模式，方便操作系统自动加载AHCI驱动。AHCI 协议主要定义了Host端的寄存器、错误处理、电源管理等</p>
+<p>其他接口协议详见：<a href="https://zhuanlan.zhihu.com/p/415817808" target="_blank" rel="noopener">固态硬盘的接口与协议</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> Storage </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> SSD </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[bazel宏和规则]]></title>
       <url>http://xiaqunfeng.cc/2022/07/05/bazel-rule/</url>
       <content type="html"><![CDATA[<p>学习一些bazel的扩展性用法</p>
@@ -396,147 +491,6 @@
         <tags>
             
             <tag> bazel </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[centos 7.9上安装confluence 7]]></title>
-      <url>http://xiaqunfeng.cc/2022/05/26/centos-confluence-install/</url>
-      <content type="html"><![CDATA[<p>记录在centos上安装confluence的过程</p>
-<a id="more"></a>
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>博客可以放一些随笔和总结，但对于一些知识树，还是wiki比较方便管理，所以准备搭一个。</p>
-<h1 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h1><h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@centos ~]# cat /etc/redhat-release</span><br><span class="line">CentOS Linux release 7.9.2009 (AltArch)</span><br><span class="line"></span><br><span class="line">[root@centos ~]# java -version</span><br><span class="line">openjdk version &quot;1.8.0_332&quot;</span><br><span class="line">OpenJDK Runtime Environment (build 1.8.0_332-b09)</span><br><span class="line">OpenJDK 64-Bit Server VM (build 25.332-b09, mixed mode)</span><br></pre></td></tr></table></figure>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>官方链接：<a href="https://www.atlassian.com/zh/software/confluence/download-archives" target="_blank" rel="noopener">https://www.atlassian.com/zh/software/confluence/download-archives</a></p>
-<p>我这里选择了 7.5.1 的安装包，解压即可</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos wiki]# ll</span><br><span class="line">drwxr-xr-x 12 root root       4096 Jun 14  2020 atlassian-confluence-7.5.1</span><br><span class="line">-rw-r--r--  1 root root  659503860 Jun 14  2020 atlassian-confluence-7.5.1.tar.gz</span><br></pre></td></tr></table></figure>
-<p>新建数据目录</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos wiki]# mkdir confluence</span><br></pre></td></tr></table></figure>
-<p>设置数据目录</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos wiki]# cat atlassian-confluence-7.5.1/confluence/WEB-INF/classes/confluence-init.properties</span><br><span class="line">...</span><br><span class="line">confluence.home=/data/wiki/confluence</span><br></pre></td></tr></table></figure>
-<h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos wiki]# cd atlassian-confluence-7.5.1/bin/</span><br><span class="line">[root@centos wiki]# ./start-confluence.sh</span><br></pre></td></tr></table></figure>
-<p>查看8090端口</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@centos bin]# netstat -nltp | grep 809</span><br><span class="line">tcp6       0      0 :::8090                 :::*                    LISTEN      22197/java</span><br><span class="line">tcp6       0      0 :::8091                 :::*                    LISTEN      25081/java</span><br><span class="line"></span><br><span class="line">[root@centos bin]# lsof -i:8090</span><br><span class="line">COMMAND   PID USER   FD   TYPE  DEVICE SIZE/OFF NODE NAME</span><br><span class="line">java    22197 root   47u  IPv6 2718983      0t0  TCP *:8090 (LISTEN)</span><br></pre></td></tr></table></figure>
-<h1 id="mysql配置"><a href="#mysql配置" class="headerlink" title="mysql配置"></a>mysql配置</h1><p>安装详见：<a href="http://xiaqunfeng.cc/2022/05/26/arm-mysql8/">arm架构的centos上安装mysql 8.0</a></p>
-<h2 id="驱动"><a href="#驱动" class="headerlink" title="驱动"></a>驱动</h2><p>驱动选择详见官方建议：<a href="https://confluence.atlassian.com/doc/database-jdbc-drivers-171742.html" target="_blank" rel="noopener">https://confluence.atlassian.com/doc/database-jdbc-drivers-171742.html</a></p>
-<p>驱动下载：<a href="https://jar-download.com/artifacts/mysql/mysql-connector-java" target="_blank" rel="noopener">https://jar-download.com/artifacts/mysql/mysql-connector-java</a> </p>
-<blockquote>
-<p>我这里mysql是8.0.28版本，所以驱动也是选的8.0.28</p>
-</blockquote>
-<p>将驱动放到lib目录下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos atlassian-confluence-7.5.1]# ll confluence/WEB-INF/lib/*mysql*</span><br><span class="line">-rw-rw-rw- 1 root root 2476480 Jan 18 05:53 confluence/WEB-INF/lib/mysql-connector-java-8.0.28.jar</span><br></pre></td></tr></table></figure>
-<h2 id="数据库设置"><a href="#数据库设置" class="headerlink" title="数据库设置"></a>数据库设置</h2><p>官方链接：<a href="https://confluence.atlassian.com/doc/database-setup-for-mysql-128747.html" target="_blank" rel="noopener">https://confluence.atlassian.com/doc/database-setup-for-mysql-128747.html</a></p>
-<p>1、/etc/my.cnf 设置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">[client]</span><br><span class="line">port = 3306</span><br><span class="line">socket = /var/lib/mysql/mysql.sock</span><br><span class="line">default-character-set = utf8mb4</span><br><span class="line"></span><br><span class="line">[mysql]</span><br><span class="line">default-character-set = utf8mb4</span><br><span class="line"></span><br><span class="line">[mysqld]</span><br><span class="line">datadir=/var/lib/mysql/data</span><br><span class="line">socket=/var/lib/mysql/mysql.sock</span><br><span class="line"></span><br><span class="line">log-error=/var/log/mysqld.log</span><br><span class="line">pid-file=/var/run/mysqld/mysqld.pid</span><br><span class="line"></span><br><span class="line">init-connect =&apos;SET NAMES utf8&apos;</span><br><span class="line">bind-address = 127.0.0.1</span><br><span class="line">port = 3306</span><br><span class="line">innodb_file_per_table=1</span><br><span class="line"></span><br><span class="line">#confluence</span><br><span class="line">character-set-server=utf8mb4</span><br><span class="line">collation-server=utf8mb4_bin</span><br><span class="line">default-storage-engine=INNODB</span><br><span class="line">max_allowed_packet=256M</span><br><span class="line">innodb_log_file_size=2GB</span><br><span class="line">transaction-isolation=READ-COMMITTED</span><br><span class="line">binlog_format=row</span><br><span class="line"></span><br><span class="line">[mysqld_safe]</span><br><span class="line">timezone = &apos;+0:00&apos;</span><br></pre></td></tr></table></figure>
-<p>2、重启mysql</p>
-<p>3、创建confluence数据库、创建对应账户并授权</p>
-<p>创建空的数据库—— confluence</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE DATABASE confluence CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;</span><br></pre></td></tr></table></figure>
-<p>创建用户 —— confluenceuser</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create user &apos;confluenceuser&apos;@&apos;localhost&apos; IDENTIFIED BY &apos;xxx&apos;;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>其中username为自定义的用户名；host为登录域名，host为’%’时表示为 任意IP，为localhost时表示本机，或者填写指定的IP地址；paasword为密码</p>
-</blockquote>
-<p>授权</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grant all privileges on confluence.* TO &apos;confluenceuser&apos;@&apos;localhost&apos; with grant option;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>其中<em>.</em>第一个<em>表示所有数据库，第二个</em>表示所有数据表，如果不想授权全部那就把对应的*写成相应数据库或者数据表；username为指定的用户；%为该用户登录的域名</p>
-</blockquote>
-<p>刷新</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
-<h1 id="web配置"><a href="#web配置" class="headerlink" title="web配置"></a>web配置</h1><p>1、打开页面 <a href="http://localhost:8090" target="_blank" rel="noopener">http://localhost:8090</a> ，进入系统安装页面。 </p>
-<p>2、选择语言：中文</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/cf1.png" alt="chinese"></p>
-<p>3、选择设置：生产环境</p>
-<p>4、获取应用：直接下一步</p>
-<p>5、授权码界面</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/cf2.png" alt="code"></p>
-<p>复制上面的服务器ID</p>
-<h1 id="授权码破解"><a href="#授权码破解" class="headerlink" title="授权码破解"></a>授权码破解</h1><p>1、先停止confluence</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos bin]# ./stop-confluence.sh</span><br></pre></td></tr></table></figure>
-<p>注意：破解是一种不好的行为！破解是一种不好的行为！</p>
-<p>2、将 confluence/WEB-INF/lib/atlassian-extras-decoder-v2-3.4.1.jar 保存至本地，并修改文件名为 <strong>atlassian-extras-2.4.jar</strong>，因为破解工具只认这个命名</p>
-<p>3、下载破解工具 <a href="https://pan.baidu.com/s/1e5CsmRUEeMUOzJd5a2KyiQ" target="_blank" rel="noopener">confluence_keygen.jar</a> （提取码：3a37）</p>
-<p>此时有如下两个文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">▶ ll</span><br><span class="line">total 600K</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 6.6K Feb 18  2019 atlassian-extras-2.4.jar</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 566K May 10  2010 confluence_keygen.jar</span><br></pre></td></tr></table></figure>
-<p>4、将文件拷贝到 windows 机器上</p>
-<blockquote>
-<p>需要windows上安装java环境</p>
-</blockquote>
-<p>运行jar包</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar confluence_keygen.jar</span><br></pre></td></tr></table></figure>
-<p>填入上面的的服务器ID，然后点 .patch 加载 atlassian-extras-2.4.jar 包进行修补。</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/cf3.png" alt="pojie"></p>
-<p>破解成功后，会修改原来的包，并将原包备份成 .bak 文件</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/cf4.png" alt="patch"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 6.6K Feb 18  2019 atlassian-extras-2.4.bak</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 6.6K Feb 18  2019 atlassian-extras-2.4.jar</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 566K May 10  2010 confluence_keygen.jar</span><br></pre></td></tr></table></figure>
-<p>5、将修补完成的 atlassian-extras-2.4.jar 上传至服务器 lib 目录下，并还原之前的文件名</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mv atlassian-extras-2.4.jar atlassian-extras-decoder-v2-3.4.1.jar</span><br></pre></td></tr></table></figure>
-<p>6、点击 .gen 生成key</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/cf5.png" alt="key"></p>
-<p>7、重启confluence</p>
-<h1 id="继续web配置"><a href="#继续web配置" class="headerlink" title="继续web配置"></a>继续web配置</h1><p>1、将生成的key贴进来</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/cf6.png" alt="keypaste"></p>
-<p>2、设置数据库，选择自己的</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/cf7.png" alt="sql"></p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/cf8.png" alt="mysql"></p>
-<p>3、设置空白站点</p>
-<p>4、配置管理员</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/cf9.png" alt="admin"></p>
-<p>5、成功</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/cf10.png" alt="success"></p>
-<h1 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h1><h2 id="破解问题"><a href="#破解问题" class="headerlink" title="破解问题"></a>破解问题</h2><p>结论：破解的jar包和生成的key不是绑定的。</p>
-<p>不是每次安装都顺利，很多时候都需要重新安装。重新安装，启动confluence后的服务器ID不一样。</p>
-<p>不需要每次都到windows上破解一遍，只需要破解一次。</p>
-<p>除了在windows上生成key，还有在mac和linux机器上生成key的脚本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">▶ ll</span><br><span class="line">total 600K</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 6.6K Feb 18  2019 atlassian-extras-2.4.bak</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 6.6K Feb 18  2019 atlassian-extras-2.4.jar</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 566K May 10  2010 confluence_keygen.jar</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff  485 May 22 11:07 key.txt</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 1.9K Sep 21  2010 keygen.bat</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff  299 Sep 21  2010 keygen.sh</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff  309 Sep 21  2010 keygen_MacOSX.sh</span><br></pre></td></tr></table></figure>
-<h2 id="表找不到"><a href="#表找不到" class="headerlink" title="表找不到"></a>表找不到</h2><p>错误：MySQLSyntaxErrorException: Table ‘confluence.cwd_application_attribute’ doesn’t exist</p>
-<p>问题：表版本或者驱动问题。我之前用 mysql5.6 的，换驱动都不行</p>
-<p>解决方案：看下自己数据库和驱动是否对的上。用mysql5.7或者8.0版本的</p>
-<h2 id="特殊字符或表情插入报错"><a href="#特殊字符或表情插入报错" class="headerlink" title="特殊字符或表情插入报错"></a>特殊字符或表情插入报错</h2><p>原因：</p>
-<p>MySQL的utf8编码最多3个字节，Emoji表情或者某些特殊字符是4个字节，所以数据插入不了，需要修改编码。</p>
-<blockquote>
-<p>在MySQL 的”utf8”实际上不是真正的 UTF-8。 “utf8”只支持每个字符最多三个字节，而真正的 UTF-8 是每个字符最多四个字节。MySQL 一直没有修复这个 bug，他们在 2010 年发布了一个叫作”utf8mb4”的字符集，绕过了这个问题。</p>
-</blockquote>
-<p>解决方法：</p>
-<p>1、查看现在字符集</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show variables like &apos;char%&apos;;</span><br></pre></td></tr></table></figure>
-<p>2、修改服务端字符集</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[client]</span><br><span class="line">default-character-set = utf8mb4</span><br><span class="line">[mysql]</span><br><span class="line">default-character-set = utf8mb4</span><br><span class="line">[mysqld]</span><br><span class="line">character-set-client-handshake = FALSE #关键设置</span><br><span class="line">character-set-server = utf8mb4</span><br><span class="line">collation-server = utf8mb4_unicode_ci</span><br><span class="line">init_connect=&apos;SET NAMES utf8mb4&apos;</span><br></pre></td></tr></table></figure>
-<p>3、重启mysql</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service mysqld restart</span><br></pre></td></tr></table></figure>
-<p>其他修改字符集命令：</p>
-<p>修改数据库中表字符集和字段字符集</p>
-<ul>
-<li>修改数据库表字符集</li>
-</ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">convert</span> <span class="keyword">to</span> <span class="built_in">character</span> <span class="keyword">set</span> utf8mb4 <span class="keyword">collate</span> utf8mb4_bin;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>修改数据库字段字符集</li>
-</ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">modify</span> <span class="keyword">column</span> 字段  字段类型 <span class="built_in">character</span> <span class="keyword">set</span> utf8mb4 <span class="keyword">collate</span> utf8mb4_bin</span><br></pre></td></tr></table></figure>
-<ul>
-<li>批量修改制定表字符集</li>
-</ul>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line"><span class="keyword">CONCAT</span>(<span class="string">"ALTER TABLE `"</span>, TABLE_NAME,<span class="string">"` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_Unicode_ci;"</span>) </span><br><span class="line"><span class="keyword">AS</span> target_tables</span><br><span class="line"><span class="keyword">FROM</span> INFORMATION_SCHEMA.TABLES</span><br><span class="line"><span class="keyword">WHERE</span> TABLE_SCHEMA=<span class="string">"confluence"</span></span><br><span class="line"><span class="keyword">AND</span> TABLE_TYPE=<span class="string">"BASE TABLE"</span>;</span><br></pre></td></tr></table></figure>
-<h2 id="无法连接服务器"><a href="#无法连接服务器" class="headerlink" title="无法连接服务器"></a>无法连接服务器</h2><p>新建文章的时候，无法保存，提示“无法连接服务器”</p>
-<p>原因详见：<a href="https://confluence.atlassian.com/doc/troubleshooting-collaborative-editing-858772087.html" target="_blank" rel="noopener">https://confluence.atlassian.com/doc/troubleshooting-collaborative-editing-858772087.html</a></p>
-<p>解决方法：</p>
-<p>关闭同步功能即可</p>
-<h2 id="您的-URL-不匹配"><a href="#您的-URL-不匹配" class="headerlink" title="您的 URL 不匹配"></a>您的 URL 不匹配</h2><p>按要求设置即可</p>
-]]></content>
-      
-        <categories>
-            
-            <category> Tools </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> wiki </tag>
             
         </tags>
         
@@ -1654,6 +1608,147 @@
         <tags>
             
             <tag> c++11 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[centos 7.9上安装confluence 7]]></title>
+      <url>http://xiaqunfeng.cc/2020/05/26/centos-confluence-install/</url>
+      <content type="html"><![CDATA[<p>记录在centos上安装confluence的过程</p>
+<a id="more"></a>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>博客可以放一些随笔和总结，但对于一些知识树，还是wiki比较方便管理，所以准备搭一个。</p>
+<h1 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h1><h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@centos ~]# cat /etc/redhat-release</span><br><span class="line">CentOS Linux release 7.9.2009 (AltArch)</span><br><span class="line"></span><br><span class="line">[root@centos ~]# java -version</span><br><span class="line">openjdk version &quot;1.8.0_332&quot;</span><br><span class="line">OpenJDK Runtime Environment (build 1.8.0_332-b09)</span><br><span class="line">OpenJDK 64-Bit Server VM (build 25.332-b09, mixed mode)</span><br></pre></td></tr></table></figure>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>官方链接：<a href="https://www.atlassian.com/zh/software/confluence/download-archives" target="_blank" rel="noopener">https://www.atlassian.com/zh/software/confluence/download-archives</a></p>
+<p>我这里选择了 7.5.1 的安装包，解压即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos wiki]# ll</span><br><span class="line">drwxr-xr-x 12 root root       4096 Jun 14  2020 atlassian-confluence-7.5.1</span><br><span class="line">-rw-r--r--  1 root root  659503860 Jun 14  2020 atlassian-confluence-7.5.1.tar.gz</span><br></pre></td></tr></table></figure>
+<p>新建数据目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos wiki]# mkdir confluence</span><br></pre></td></tr></table></figure>
+<p>设置数据目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos wiki]# cat atlassian-confluence-7.5.1/confluence/WEB-INF/classes/confluence-init.properties</span><br><span class="line">...</span><br><span class="line">confluence.home=/data/wiki/confluence</span><br></pre></td></tr></table></figure>
+<h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos wiki]# cd atlassian-confluence-7.5.1/bin/</span><br><span class="line">[root@centos wiki]# ./start-confluence.sh</span><br></pre></td></tr></table></figure>
+<p>查看8090端口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@centos bin]# netstat -nltp | grep 809</span><br><span class="line">tcp6       0      0 :::8090                 :::*                    LISTEN      22197/java</span><br><span class="line">tcp6       0      0 :::8091                 :::*                    LISTEN      25081/java</span><br><span class="line"></span><br><span class="line">[root@centos bin]# lsof -i:8090</span><br><span class="line">COMMAND   PID USER   FD   TYPE  DEVICE SIZE/OFF NODE NAME</span><br><span class="line">java    22197 root   47u  IPv6 2718983      0t0  TCP *:8090 (LISTEN)</span><br></pre></td></tr></table></figure>
+<h1 id="mysql配置"><a href="#mysql配置" class="headerlink" title="mysql配置"></a>mysql配置</h1><p>安装详见：<a href="http://xiaqunfeng.cc/2022/05/26/arm-mysql8/">arm架构的centos上安装mysql 8.0</a></p>
+<h2 id="驱动"><a href="#驱动" class="headerlink" title="驱动"></a>驱动</h2><p>驱动选择详见官方建议：<a href="https://confluence.atlassian.com/doc/database-jdbc-drivers-171742.html" target="_blank" rel="noopener">https://confluence.atlassian.com/doc/database-jdbc-drivers-171742.html</a></p>
+<p>驱动下载：<a href="https://jar-download.com/artifacts/mysql/mysql-connector-java" target="_blank" rel="noopener">https://jar-download.com/artifacts/mysql/mysql-connector-java</a> </p>
+<blockquote>
+<p>我这里mysql是8.0.28版本，所以驱动也是选的8.0.28</p>
+</blockquote>
+<p>将驱动放到lib目录下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos atlassian-confluence-7.5.1]# ll confluence/WEB-INF/lib/*mysql*</span><br><span class="line">-rw-rw-rw- 1 root root 2476480 Jan 18 05:53 confluence/WEB-INF/lib/mysql-connector-java-8.0.28.jar</span><br></pre></td></tr></table></figure>
+<h2 id="数据库设置"><a href="#数据库设置" class="headerlink" title="数据库设置"></a>数据库设置</h2><p>官方链接：<a href="https://confluence.atlassian.com/doc/database-setup-for-mysql-128747.html" target="_blank" rel="noopener">https://confluence.atlassian.com/doc/database-setup-for-mysql-128747.html</a></p>
+<p>1、/etc/my.cnf 设置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">[client]</span><br><span class="line">port = 3306</span><br><span class="line">socket = /var/lib/mysql/mysql.sock</span><br><span class="line">default-character-set = utf8mb4</span><br><span class="line"></span><br><span class="line">[mysql]</span><br><span class="line">default-character-set = utf8mb4</span><br><span class="line"></span><br><span class="line">[mysqld]</span><br><span class="line">datadir=/var/lib/mysql/data</span><br><span class="line">socket=/var/lib/mysql/mysql.sock</span><br><span class="line"></span><br><span class="line">log-error=/var/log/mysqld.log</span><br><span class="line">pid-file=/var/run/mysqld/mysqld.pid</span><br><span class="line"></span><br><span class="line">init-connect =&apos;SET NAMES utf8&apos;</span><br><span class="line">bind-address = 127.0.0.1</span><br><span class="line">port = 3306</span><br><span class="line">innodb_file_per_table=1</span><br><span class="line"></span><br><span class="line">#confluence</span><br><span class="line">character-set-server=utf8mb4</span><br><span class="line">collation-server=utf8mb4_bin</span><br><span class="line">default-storage-engine=INNODB</span><br><span class="line">max_allowed_packet=256M</span><br><span class="line">innodb_log_file_size=2GB</span><br><span class="line">transaction-isolation=READ-COMMITTED</span><br><span class="line">binlog_format=row</span><br><span class="line"></span><br><span class="line">[mysqld_safe]</span><br><span class="line">timezone = &apos;+0:00&apos;</span><br></pre></td></tr></table></figure>
+<p>2、重启mysql</p>
+<p>3、创建confluence数据库、创建对应账户并授权</p>
+<p>创建空的数据库—— confluence</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE DATABASE confluence CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;</span><br></pre></td></tr></table></figure>
+<p>创建用户 —— confluenceuser</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create user &apos;confluenceuser&apos;@&apos;localhost&apos; IDENTIFIED BY &apos;xxx&apos;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中username为自定义的用户名；host为登录域名，host为’%’时表示为 任意IP，为localhost时表示本机，或者填写指定的IP地址；paasword为密码</p>
+</blockquote>
+<p>授权</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grant all privileges on confluence.* TO &apos;confluenceuser&apos;@&apos;localhost&apos; with grant option;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其中<em>.</em>第一个<em>表示所有数据库，第二个</em>表示所有数据表，如果不想授权全部那就把对应的*写成相应数据库或者数据表；username为指定的用户；%为该用户登录的域名</p>
+</blockquote>
+<p>刷新</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+<h1 id="web配置"><a href="#web配置" class="headerlink" title="web配置"></a>web配置</h1><p>1、打开页面 <a href="http://localhost:8090" target="_blank" rel="noopener">http://localhost:8090</a> ，进入系统安装页面。 </p>
+<p>2、选择语言：中文</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/cf1.png" alt="chinese"></p>
+<p>3、选择设置：生产环境</p>
+<p>4、获取应用：直接下一步</p>
+<p>5、授权码界面</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/cf2.png" alt="code"></p>
+<p>复制上面的服务器ID</p>
+<h1 id="授权码破解"><a href="#授权码破解" class="headerlink" title="授权码破解"></a>授权码破解</h1><p>1、先停止confluence</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos bin]# ./stop-confluence.sh</span><br></pre></td></tr></table></figure>
+<p>注意：破解是一种不好的行为！破解是一种不好的行为！</p>
+<p>2、将 confluence/WEB-INF/lib/atlassian-extras-decoder-v2-3.4.1.jar 保存至本地，并修改文件名为 <strong>atlassian-extras-2.4.jar</strong>，因为破解工具只认这个命名</p>
+<p>3、下载破解工具 <a href="https://pan.baidu.com/s/1e5CsmRUEeMUOzJd5a2KyiQ" target="_blank" rel="noopener">confluence_keygen.jar</a> （提取码：3a37）</p>
+<p>此时有如下两个文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">▶ ll</span><br><span class="line">total 600K</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 6.6K Feb 18  2019 atlassian-extras-2.4.jar</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 566K May 10  2010 confluence_keygen.jar</span><br></pre></td></tr></table></figure>
+<p>4、将文件拷贝到 windows 机器上</p>
+<blockquote>
+<p>需要windows上安装java环境</p>
+</blockquote>
+<p>运行jar包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar confluence_keygen.jar</span><br></pre></td></tr></table></figure>
+<p>填入上面的的服务器ID，然后点 .patch 加载 atlassian-extras-2.4.jar 包进行修补。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/cf3.png" alt="pojie"></p>
+<p>破解成功后，会修改原来的包，并将原包备份成 .bak 文件</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/cf4.png" alt="patch"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 6.6K Feb 18  2019 atlassian-extras-2.4.bak</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 6.6K Feb 18  2019 atlassian-extras-2.4.jar</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 566K May 10  2010 confluence_keygen.jar</span><br></pre></td></tr></table></figure>
+<p>5、将修补完成的 atlassian-extras-2.4.jar 上传至服务器 lib 目录下，并还原之前的文件名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mv atlassian-extras-2.4.jar atlassian-extras-decoder-v2-3.4.1.jar</span><br></pre></td></tr></table></figure>
+<p>6、点击 .gen 生成key</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/cf5.png" alt="key"></p>
+<p>7、重启confluence</p>
+<h1 id="继续web配置"><a href="#继续web配置" class="headerlink" title="继续web配置"></a>继续web配置</h1><p>1、将生成的key贴进来</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/cf6.png" alt="keypaste"></p>
+<p>2、设置数据库，选择自己的</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/cf7.png" alt="sql"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/cf8.png" alt="mysql"></p>
+<p>3、设置空白站点</p>
+<p>4、配置管理员</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/cf9.png" alt="admin"></p>
+<p>5、成功</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/cf10.png" alt="success"></p>
+<h1 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h1><h2 id="破解问题"><a href="#破解问题" class="headerlink" title="破解问题"></a>破解问题</h2><p>结论：破解的jar包和生成的key不是绑定的。</p>
+<p>不是每次安装都顺利，很多时候都需要重新安装。重新安装，启动confluence后的服务器ID不一样。</p>
+<p>不需要每次都到windows上破解一遍，只需要破解一次。</p>
+<p>除了在windows上生成key，还有在mac和linux机器上生成key的脚本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">▶ ll</span><br><span class="line">total 600K</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 6.6K Feb 18  2019 atlassian-extras-2.4.bak</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 6.6K Feb 18  2019 atlassian-extras-2.4.jar</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 566K May 10  2010 confluence_keygen.jar</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff  485 May 22 11:07 key.txt</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff 1.9K Sep 21  2010 keygen.bat</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff  299 Sep 21  2010 keygen.sh</span><br><span class="line">-rwxrwxrwx 1 xiaqunfeng staff  309 Sep 21  2010 keygen_MacOSX.sh</span><br></pre></td></tr></table></figure>
+<h2 id="表找不到"><a href="#表找不到" class="headerlink" title="表找不到"></a>表找不到</h2><p>错误：MySQLSyntaxErrorException: Table ‘confluence.cwd_application_attribute’ doesn’t exist</p>
+<p>问题：表版本或者驱动问题。我之前用 mysql5.6 的，换驱动都不行</p>
+<p>解决方案：看下自己数据库和驱动是否对的上。用mysql5.7或者8.0版本的</p>
+<h2 id="特殊字符或表情插入报错"><a href="#特殊字符或表情插入报错" class="headerlink" title="特殊字符或表情插入报错"></a>特殊字符或表情插入报错</h2><p>原因：</p>
+<p>MySQL的utf8编码最多3个字节，Emoji表情或者某些特殊字符是4个字节，所以数据插入不了，需要修改编码。</p>
+<blockquote>
+<p>在MySQL 的”utf8”实际上不是真正的 UTF-8。 “utf8”只支持每个字符最多三个字节，而真正的 UTF-8 是每个字符最多四个字节。MySQL 一直没有修复这个 bug，他们在 2010 年发布了一个叫作”utf8mb4”的字符集，绕过了这个问题。</p>
+</blockquote>
+<p>解决方法：</p>
+<p>1、查看现在字符集</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show variables like &apos;char%&apos;;</span><br></pre></td></tr></table></figure>
+<p>2、修改服务端字符集</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[client]</span><br><span class="line">default-character-set = utf8mb4</span><br><span class="line">[mysql]</span><br><span class="line">default-character-set = utf8mb4</span><br><span class="line">[mysqld]</span><br><span class="line">character-set-client-handshake = FALSE #关键设置</span><br><span class="line">character-set-server = utf8mb4</span><br><span class="line">collation-server = utf8mb4_unicode_ci</span><br><span class="line">init_connect=&apos;SET NAMES utf8mb4&apos;</span><br></pre></td></tr></table></figure>
+<p>3、重启mysql</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service mysqld restart</span><br></pre></td></tr></table></figure>
+<p>其他修改字符集命令：</p>
+<p>修改数据库中表字符集和字段字符集</p>
+<ul>
+<li>修改数据库表字符集</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">convert</span> <span class="keyword">to</span> <span class="built_in">character</span> <span class="keyword">set</span> utf8mb4 <span class="keyword">collate</span> utf8mb4_bin;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改数据库字段字符集</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">modify</span> <span class="keyword">column</span> 字段  字段类型 <span class="built_in">character</span> <span class="keyword">set</span> utf8mb4 <span class="keyword">collate</span> utf8mb4_bin</span><br></pre></td></tr></table></figure>
+<ul>
+<li>批量修改制定表字符集</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line"><span class="keyword">CONCAT</span>(<span class="string">"ALTER TABLE `"</span>, TABLE_NAME,<span class="string">"` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_Unicode_ci;"</span>) </span><br><span class="line"><span class="keyword">AS</span> target_tables</span><br><span class="line"><span class="keyword">FROM</span> INFORMATION_SCHEMA.TABLES</span><br><span class="line"><span class="keyword">WHERE</span> TABLE_SCHEMA=<span class="string">"confluence"</span></span><br><span class="line"><span class="keyword">AND</span> TABLE_TYPE=<span class="string">"BASE TABLE"</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="无法连接服务器"><a href="#无法连接服务器" class="headerlink" title="无法连接服务器"></a>无法连接服务器</h2><p>新建文章的时候，无法保存，提示“无法连接服务器”</p>
+<p>原因详见：<a href="https://confluence.atlassian.com/doc/troubleshooting-collaborative-editing-858772087.html" target="_blank" rel="noopener">https://confluence.atlassian.com/doc/troubleshooting-collaborative-editing-858772087.html</a></p>
+<p>解决方法：</p>
+<p>关闭同步功能即可</p>
+<h2 id="您的-URL-不匹配"><a href="#您的-URL-不匹配" class="headerlink" title="您的 URL 不匹配"></a>您的 URL 不匹配</h2><p>按要求设置即可</p>
+]]></content>
+      
+        <categories>
+            
+            <category> Tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> wiki </tag>
             
         </tags>
         
@@ -3867,7 +3962,7 @@
     <entry>
       <title><![CDATA[文章导航]]></title>
       <url>http://xiaqunfeng.cc/2019/10/01/navigation/</url>
-      <content type="html"><![CDATA[<p>分布式相关：<br>&emsp;&emsp;分布式技术：<a href="http://xiaqunfeng.cc/categories/Distribute/">Distribute</a><br>&emsp;&emsp;存储：<a href="http://xiaqunfeng.cc/categories/Ceph/">Ceph</a><br>编程语言：<br>&emsp;&emsp;C++：<a href="http://xiaqunfeng.cc/categories/c++/">c++11 concurrency</a><br>&emsp;&emsp;Go<br>&emsp;&emsp;SpringBoot2：<a href="http://xiaqunfeng.cc/categories/SpringBoot">SpringBoot2</a><br>人工智能：<br>&emsp;&emsp;机器学习：<a href="http://xiaqunfeng.cc/categories/MachineLearning/">MachineLearning</a><br>&emsp;&emsp;深度学习 ：<a href="http://xiaqunfeng.cc/categories/DeepLearning/">DeepLearning</a><br>工具：<a href="http://xiaqunfeng.cc/categories/Tools/">Tools</a> </p>
+      <content type="html"><![CDATA[<p>分布式相关：<br>&emsp;&emsp;分布式技术：<a href="http://xiaqunfeng.cc/categories/Distribute/">Distribute</a><br>&emsp;&emsp;存储：<a href="http://xiaqunfeng.cc/categories/Ceph/">Ceph</a><br>编程基础：<br>&emsp;&emsp;C++：<a href="http://xiaqunfeng.cc/categories/c++/">c++11 concurrency</a><br>&emsp;&emsp;SpringBoot2：<a href="http://xiaqunfeng.cc/categories/SpringBoot">SpringBoot2</a><br>人工智能：<br>&emsp;&emsp;机器学习：<a href="http://xiaqunfeng.cc/categories/MachineLearning/">MachineLearning</a><br>&emsp;&emsp;深度学习 ：<a href="http://xiaqunfeng.cc/categories/DeepLearning/">DeepLearning</a><br>工具：<a href="http://xiaqunfeng.cc/categories/Tools/">Tools</a> </p>
 <a id="more"></a>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>虽然点击“所有文章”可以根据tag筛选文章，但文章之前打的tag较多，多有不便。文章分类展示的也不是很明显，所以，这里梳理一下。</p>
 <ul>
