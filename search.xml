@@ -4,6 +4,251 @@
   
     
     <entry>
+      <title><![CDATA[闪存-初识]]></title>
+      <url>http://xiaqunfeng.cc/2023/06/11/ssd-all-flash-intro/</url>
+      <content type="html"><![CDATA[<p>简单整理闪存基本结构，便于后续理解闪存的一些特性。</p>
+<a id="more"></a>
+<h2 id="闪存物理结构"><a href="#闪存物理结构" class="headerlink" title="闪存物理结构"></a>闪存物理结构</h2><p>闪存是一种非易失性存储器，掉电了数据也不会丢失。</p>
+<h3 id="Cell结构"><a href="#Cell结构" class="headerlink" title="Cell结构"></a>Cell结构</h3><p>闪存基本存储单元（Cell）是一种类NMOS的双层浮动栅极（Floating Gate）MOS管。如下图所示：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/floating_gate_flash_mem.jpg" alt="floating_gate_flash_mem"></p>
+<p>在源极（Source）和漏极（Drain）之间电流单向传导的半导体上形成存储电子的浮栅，浮栅上下被绝缘层包围，存储在里面的电子不会因为掉电而消失。</p>
+<p>浮动栅极层是一块氮氧化物，被二氧化硅绝缘层包裹住而浮动在空中，Floating Gate的名称就是由此而来。闪存通过向浮动栅极添加（充电）或移除（放电）电子来工作。位的 0 或 1 状态取决于浮栅是带电还是不带电。当浮栅上存在电子时，电流无法流过晶体管，位状态为 0。当电子从浮栅中移出时，允许电流流动并且位状态为1。</p>
+<p>控制栅极是FG上方的一片金属，也称为控制门CG（Control Gate）。</p>
+<p>电流从Source极进入，从Drain极流出，浮动门一头与S极接触，一头与D极接触，由于被包裹有绝缘层，当电路电压达到一定阈值后，可以被击穿导电，从而被充电或者放电。被充电到一定电势阈值的Cell的状态被表示为“0”，如果是MLC，可以保存4个电势状态，分别对应00、01、10、11，要存哪个数值，就要充电到哪个电势档位。MLC电压分布示意图：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/mlc-voltage.png" alt="mlc-voltage"></p>
+<blockquote>
+<p>通俗来说就是把浮栅极里面电子个数进行一个划分，比如：低于10个电子判为0、11~20个电子判为 1、21~30个电子判为2，多于30个电子判为3.</p>
+</blockquote>
+<h3 id="充电"><a href="#充电" class="headerlink" title="充电"></a>充电</h3><p>有两种方式用于在浮栅中添加或捕获电子：Fowler-Nordheim 隧道效应和通道热电子注入 (CHE)。</p>
+<p>1、Fowler-Nordheim 隧道效应</p>
+<p>隧穿需要带负电的源和带正电的控制栅极之间存在强电场，以将电子吸引到浮动栅极中。电子从源极通过薄氧化层移动到浮栅，在那里它们被困在氧化绝缘层之间。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/fowler-nordheim_tunneling.jpg" alt="fowler-nordheim_tunneling"></p>
+<p>2、通道热电子注入 (CHE)</p>
+<p>通道热电子注入，也称为热载流子注入，利用通道中的大电流，给予电子足够的能量，使电子“沸腾”出沟道，冲破隧道氧化层，改变浮栅的阈值电压。控制栅极上的正电荷将电子从通道吸引到浮动栅极，在那里它们被捕获。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/hot-electron_injection.jpg" alt="hot-electron_injection"></p>
+<p>无论闪存设备是否通电，浮栅周围的氧化层都会捕获电子，从而实现数据位的持久存储。</p>
+<h3 id="放电"><a href="#放电" class="headerlink" title="放电"></a>放电</h3><p>从浮栅中去除电子也有两种机制：</p>
+<ul>
+<li>使用 EPROM 技术，将存储单元暴露在紫外线下会导致电子从浮栅中泄漏出来。在 EEPROM 和闪存设备中，Fowler-Nordheim 隧穿从浮栅中移除电子。</li>
+<li>在控制栅极上加强负电荷，迫使电子通过隧道氧化物层进入通道，在那里电子被吸引到源极和漏极处的强正电荷。</li>
+</ul>
+<p><img src="http://oow6unnib.bkt.clouddn.com/fowler-nordheim_tunneling_erasing.png" alt="fowler-nordheim_tunneling_erasing"></p>
+<h3 id="CT（Charge-Trap）"><a href="#CT（Charge-Trap）" class="headerlink" title="CT（Charge Trap）"></a>CT（Charge Trap）</h3><p>上面介绍的闪存都是基于Floating Gate技术，Charge Trap是闪存的另一种技术，中文翻译成电荷陷阱，CT像个陷阱一样，把电荷困在里面存起来。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/charge_trap_memory_cell.png" alt="charge_trap_memory_cell"></p>
+<p>FG和CT是能够在闪存设备中保存电荷的半导体技术类型，但是它们存储层化学成分不同，所以添加和擦除电子的方式也不同。</p>
+<ul>
+<li>FG像水，电子可以自由移动：在存储单元中使用FG晶体管的闪存设备将电子存储在隔离的多晶硅导电层中，当电子被编程到FG中以在晶体管中产生电压偏移，FG的电荷会发生变化。</li>
+<li>CT像奶酪，电子移动困难：使用CT技术的设备通常将电子存储在不到点的氮化硅绝缘层中，迫使电子进入氮化物层也会产生阈值电压偏移，并且电子保存在非导电材料中。</li>
+</ul>
+<p><img src="http://oow6unnib.bkt.clouddn.com/fg-vs-ct.png" alt="fg-vs-ct"></p>
+<p>优势：</p>
+<ul>
+<li>CT对隧道氧化层不敏感：当厚度变薄或者擦除导致老化时，存储在里面的电子也不容易出来。而FG里面的电子因为可以自由移动，随着隧道氧化层变薄或老化，进出变得容易。</li>
+<li>CT存储单元间距对存储电荷影响不大：FG材料是导体，任何两个彼此绝缘且相隔很近的导体间都会构成一个电容器。因此，任何两个存储单元的FG都构成一个电容器，一个FG里面电荷的变化都会引起别的存储单元FG电荷的变化。而且，电容大小和距离成反比，距离越短，电容越大。随着闪存制程减小，彼此间影响就越来越大。</li>
+<li>CT擦写电压更小：CT比FG晶体管更矮（可以参考上面那个示意图），CG（控制栅极）到substrate（衬底）的距离更短，所以，要产生相同的隧道电场，加在CG端的电压可以更小（E=U/d）。更小的写电压，使得隧道氧化层压力更小，绝缘氧化层损耗也慢。同时，更省电。</li>
+</ul>
+<p>劣势：</p>
+<ul>
+<li>在Read Disturb和Data Retention方面，CT不如FG。</li>
+</ul>
+<p>应用：</p>
+<ul>
+<li>CT技术目前主要应用在3D闪存上，当前处理美光使用FG以外，其他主流闪存商家都是用CT技术来制造3D闪存。</li>
+</ul>
+<h2 id="SLC、MLC、TLC、QLC"><a href="#SLC、MLC、TLC、QLC" class="headerlink" title="SLC、MLC、TLC、QLC"></a>SLC、MLC、TLC、QLC</h2><p>概念：</p>
+<ul>
+<li>SLC（Sigle Leve Cell）：每个Cell单元存储1bit信息，也就是只有0、1两种电压变化，结构简单，电压控制也快速，反映出来的特点就是寿命长，性能强，P/E寿命在1万到10万次之间，但缺点就是容量低而成本高，毕竟一个Cell单元只能存储1bit信息。</li>
+<li>MLC（Multiple Level Cell）：每个cell单元存储2bit信息，需要更复杂的电压控制，有00,01,10,11四种变化，这也意味着写入性能、可靠性能降低了。其P/E寿命根据不同制程在3000-5000次不等。</li>
+<li>TLC（Triple Level Cell）：每个cell单元存储3bit信息，电压从000到001有8种变化，容量比MLC再次增加1/3，成本更低，但是架构更复杂，P/E编程时间长，写入速度慢，P/E寿命也降至1000-3000次，部分情况会更低。寿命短只是相对而言的，通常来讲，经过重度测试的TLC颗粒正常使用5年以上是没有问题的。</li>
+<li>QLC（Quadra Level Cell）或者可以叫4bit MLC，电压有16种变化，但是容量能增加33%，就是写入性能、P/E寿命与TLC相比会进一步降低。具体的性能测试上，美光有做过实验。读取速度方面，SATA接口中的二者都可以达到540MB/S，QLC表现差在写入速度上，因为其P/E编程时间就比MLC、TLC更长，速度更慢，连续写入速度从520MB/s降至360MB/s，随机性能更是从9500 IOPS降至5000 IOPS，损失将近一半。</li>
+</ul>
+<p>Cell不同类型存储二进制单元值表格：</p>
+<table>
+<thead>
+<tr>
+<th><strong>Cell type</strong></th>
+<th><strong># of data bits</strong></th>
+<th><strong># of charge states</strong></th>
+<th><strong>Possible binary values per cell</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Single-level cell (SLC)</td>
+<td>1</td>
+<td>2</td>
+<td>0, 1</td>
+</tr>
+<tr>
+<td>Multi-level cell (MLC)</td>
+<td>2</td>
+<td>4</td>
+<td>00, 01, 10, 11</td>
+</tr>
+<tr>
+<td>Triple-level cell (TLC)</td>
+<td>3</td>
+<td>8</td>
+<td>000, 001, 010, 011, 100, 101, 110, 111</td>
+</tr>
+<tr>
+<td>Quad-level cell (QLC)</td>
+<td>4</td>
+<td>16</td>
+<td>0000, 0001, 0010, 0011, 0100, 0101, 0110, 0111, 1000, 1001, 1010, 1011, 1100, 1101, 1110, 1111</td>
+</tr>
+</tbody>
+</table>
+<p>SLC/MLC/TLC使用参数对比：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/slc-mlc-tlc-para.png" alt="slc-mlc-tlc-para"></p>
+<h2 id="闪存芯片架构"><a href="#闪存芯片架构" class="headerlink" title="闪存芯片架构"></a>闪存芯片架构</h2><p>闪存芯片就是由成千上万这样的存储单元按照约定的组织结构组成的。</p>
+<h3 id="Block"><a href="#Block" class="headerlink" title="Block"></a>Block</h3><p>下图是一个闪存快（Block）的组织架构：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/flash-block-arch.png" alt="flash-block-arch"></p>
+<ul>
+<li>对于SLC/MLC/TLC/QLC，一个Wordline（字线，对应图中WL的缩写）对应1、2、3、4个Page。</li>
+<li>一个Page有多大，Wordline上就有多少个Cell，就有多少个Bitline（位线，对应图中BL的缩写）。</li>
+<li>Wordline是将多个并联的Cell串中相同位置Cell的CG（Control Gate）金属片贯穿起来的导线。</li>
+<li>Bitline是将每个Cell串上Cell串联起来的导线，每个Cell串每次只能读写其中一个Cell。</li>
+<li>Wordline和Bitline组成了一个二维Cell矩阵。</li>
+<li>一个Block中所有Cell共用一个Substrate（衬底）。</li>
+</ul>
+<blockquote>
+<p>注：这里没有考虑奇偶Bitline，否则一个Wordline上的Page数量在此基础上要翻倍。</p>
+</blockquote>
+<p>将多个这样的Cell排列在一起形成阵列，就可以同时操作多个bit。NAND就是利用大量这种Cell有序排列而成的一种Flash芯片。</p>
+<h3 id="3D-NAND-Flash"><a href="#3D-NAND-Flash" class="headerlink" title="3D NAND Flash"></a>3D NAND Flash</h3><p>随着闪存技术制造工艺的发展，二维平面单元尺寸逐渐减小，Cell间的相互干扰逐渐增加。基于二维平面单元结构的尺寸缩小已经无法进一步降低比特成本，技术上达到瓶颈。所以，3D Nand Flash技术应运而生。</p>
+<p>三维闪存结构是以提高堆叠栅极结构（WL）的数目来提高芯片的集成密度，从而降低每比特的成本。</p>
+<p>下图是某一类3D闪存的结构示意图，在这种三维闪存中，沟道是竖起来的，一层层盖楼的是连接到栅极的Wordline.</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/flash-3d.png" alt="flash-3d"></p>
+<p>金属栅极三维闪存技术（Terabit Cell Array Transistor, TCAT）于2009年被提出来，与二维平面闪存相比，TCAT更加稳定、可靠而且性能水平更加优越。性能对比如下图所示：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/2dnand-vs-3dnand.png" alt="2dnand-vs-3dnand"></p>
+<ul>
+<li>单元间相互干扰降低了84%</li>
+<li>擦写寿命提高了10倍以上</li>
+<li>编程时间（tPROGG）减少了一半</li>
+<li>阈值电压Vth随着擦写增多带来的便宜也减小了67%</li>
+</ul>
+<p>两个挑战：</p>
+<ul>
+<li>堆叠栅极层数目增加带来的问题——比如串电流的减小，高层与低层单元特性的差异性增大。</li>
+<li>单元模具厚度减小带来的问题——单元间干扰增强。</li>
+</ul>
+<h2 id="闪存内部组织架构"><a href="#闪存内部组织架构" class="headerlink" title="闪存内部组织架构"></a>闪存内部组织架构</h2><p>闪存内部的存储组织架构如下图所示：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/flash-inner-organ-structure.png" alt="flash-inner-organ-structure"></p>
+<p>对应关系整理成如下表格：</p>
+<table>
+<thead>
+<tr>
+<th>组织结构名称</th>
+<th>对应关系</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>一个闪存芯片（Chip/Device）</td>
+<td>多个卷（LUN/DIE）</td>
+</tr>
+<tr>
+<td>一个卷（LUN/DIE）：<br>卷是接收和执行闪存命令的基本单元</td>
+<td>多个Plane（区域）：市面上常见1个、2个或4个Plane</td>
+</tr>
+<tr>
+<td>一个Plane：<br>每个Plane有自己独立的register（Cache Register和Page Register），其大小等于一个Page的大小<br>这两个缓存的主要目的是优化闪存的访问速度</td>
+<td>上千个Block</td>
+</tr>
+<tr>
+<td>一个Block：<br>Block是擦除的基本单位<br>单片容量32/64/128/512KB（不含ECC）不等</td>
+<td>上百个Page</td>
+</tr>
+<tr>
+<td>一个Page：<br>一般是4KB/8KB，以及一些隐藏空间（几百个Byte）<br>Flash芯片IO的最小单位</td>
+<td>一个Wordline</td>
+</tr>
+<tr>
+<td>一个Wordline</td>
+<td>成千上万个Cell（存储单元）</td>
+</tr>
+<tr>
+<td>一个Cell：<br>flash存储信息的基本单位</td>
+<td>SLC/MLC/TLC/QLC分别可以保存1bit、2bit、3bit、4bit</td>
+</tr>
+</tbody>
+</table>
+<p>一个16GB容量（<strong>图上应该没算对，实际是2GB</strong>）的Flash芯片逻辑方框图如下所示：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/flash-chip-logic.png" alt="flash-chip-logic"></p>
+<ul>
+<li>每4314*8=34512个Cell逻辑上形成一个Page</li>
+<li>每个Page中可以存放4KB的内容和218B的ECC校验数据（4096+218=4314）</li>
+<li>每128个Page组成一个Block——512KB</li>
+<li>每2048个Block组成一个Plane——1GB</li>
+<li>一整片Flash芯片由两个plane组成——2GB</li>
+</ul>
+<p><strong>参考资料：</strong></p>
+<ul>
+<li><a href="https://www.techtarget.com/searchstorage/definition/floating-gate" target="_blank" rel="noopener">floating gate transistor(FGT)</a></li>
+<li><a href="https://www.red-gate.com/simple-talk/databases/sql-server/database-administration-sql-server/storage-101-understanding-the-nand-flash-solid-state-drive/" target="_blank" rel="noopener">Storage 101: Understanding the NAND Flash Solid State Drive</a></li>
+<li>《深入浅出SSD》</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Storage </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> SSD </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[闪存-特性]]></title>
+      <url>http://xiaqunfeng.cc/2023/06/11/ssd-all-flash-feature/</url>
+      <content type="html"><![CDATA[<a id="more"></a>
+]]></content>
+      
+        <categories>
+            
+            <category> Storage </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> SSD </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[闪存-读、写、擦除]]></title>
+      <url>http://xiaqunfeng.cc/2023/06/11/ssd-all-flash-read-write/</url>
+      <content type="html"><![CDATA[<a id="more"></a>
+]]></content>
+      
+        <categories>
+            
+            <category> Storage </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> SSD </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[NVMe SSD]]></title>
       <url>http://xiaqunfeng.cc/2023/05/14/nvme-ssd/</url>
       <content type="html"><![CDATA[<p>简单学习和整理了一下NVMe SSD基础知识，便于理解。</p>
@@ -71,6 +316,7 @@
 <h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><p>1、存储接口协议</p>
 <p><img src="http://oow6unnib.bkt.clouddn.com/storage-interface-protocal.png" alt="storage-interface-protocal"></p>
 <p>2、常用存储设备接口（设备和计算机通信）</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/disk-interface.jpeg" alt="disk-interface"></p>
 <ul>
 <li>SATA（Serial ATA串行传输ATA）接口，通常用于2.5寸和3.5寸硬盘，有时候一些M.2设备也会使用</li>
 <li>PCI Express(PCIe)接口， 用于M.2和PCIe设备</li>
@@ -3962,7 +4208,7 @@
     <entry>
       <title><![CDATA[文章导航]]></title>
       <url>http://xiaqunfeng.cc/2019/10/01/navigation/</url>
-      <content type="html"><![CDATA[<p>分布式相关：<br>&emsp;&emsp;分布式技术：<a href="http://xiaqunfeng.cc/categories/Distribute/">Distribute</a><br>&emsp;&emsp;存储：<a href="http://xiaqunfeng.cc/categories/Ceph/">Ceph</a><br>编程基础：<br>&emsp;&emsp;C++：<a href="http://xiaqunfeng.cc/categories/c++/">c++11 concurrency</a><br>&emsp;&emsp;SpringBoot2：<a href="http://xiaqunfeng.cc/categories/SpringBoot">SpringBoot2</a><br>人工智能：<br>&emsp;&emsp;机器学习：<a href="http://xiaqunfeng.cc/categories/MachineLearning/">MachineLearning</a><br>&emsp;&emsp;深度学习 ：<a href="http://xiaqunfeng.cc/categories/DeepLearning/">DeepLearning</a><br>工具：<a href="http://xiaqunfeng.cc/categories/Tools/">Tools</a> </p>
+      <content type="html"><![CDATA[<p>分布式技术：<a href="http://xiaqunfeng.cc/categories/Distribute/">Distribute</a><br>存储：<br>&emsp;&emsp;分布式存储：<a href="http://xiaqunfeng.cc/categories/Ceph/">Ceph</a><br>&emsp;&emsp;闪存：<a href="http://xiaqunfeng.cc/categories/Storage/">SSD</a><br>编程基础：<br>&emsp;&emsp;C++：<a href="http://xiaqunfeng.cc/categories/c++/">c++11 concurrency</a><br>&emsp;&emsp;SpringBoot2：<a href="http://xiaqunfeng.cc/categories/SpringBoot">SpringBoot2</a><br>人工智能：<br>&emsp;&emsp;机器学习：<a href="http://xiaqunfeng.cc/categories/MachineLearning/">MachineLearning</a><br>&emsp;&emsp;深度学习 ：<a href="http://xiaqunfeng.cc/categories/DeepLearning/">DeepLearning</a><br>工具：<a href="http://xiaqunfeng.cc/categories/Tools/">Tools</a> </p>
 <a id="more"></a>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>虽然点击“所有文章”可以根据tag筛选文章，但文章之前打的tag较多，多有不便。文章分类展示的也不是很明显，所以，这里梳理一下。</p>
 <ul>
@@ -9184,9 +9430,9 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> ceph </tag>
-            
             <tag> storage </tag>
+            
+            <tag> ceph </tag>
             
         </tags>
         
@@ -9844,9 +10090,9 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> ceph </tag>
-            
             <tag> storage </tag>
+            
+            <tag> ceph </tag>
             
         </tags>
         
@@ -11281,9 +11527,9 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
         
         <tags>
             
-            <tag> ceph </tag>
-            
             <tag> storage </tag>
+            
+            <tag> ceph </tag>
             
         </tags>
         

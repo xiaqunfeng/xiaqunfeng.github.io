@@ -4,12 +4,12 @@
 
     
   <url>
-    <loc>http://xiaqunfeng.cc/2023/05/14/nvme-ssd/</loc>
-    <lastmod>2023-05-18T09:06:08.255Z</lastmod>
+    <loc>http://xiaqunfeng.cc/2023/06/11/ssd-all-flash-intro/</loc>
+    <lastmod>2023-06-11T12:19:18.324Z</lastmod>
     <data>
         <display>
-        <title>NVMe SSD</title>
-        <pubTime>2023-05-14T14:34:13.000Z</pubTime>
+        <title>闪存-初识</title>
+        <pubTime>2023-06-11T14:34:13.000Z</pubTime>
         
         <tag>SSD</tag>
          
@@ -25,7 +25,7 @@
     
   <url>
     <loc>http://xiaqunfeng.cc/2019/10/01/navigation/</loc>
-    <lastmod>2023-05-14T00:20:18.196Z</lastmod>
+    <lastmod>2023-06-11T12:17:40.887Z</lastmod>
     <data>
         <display>
         <title>文章导航</title>
@@ -33,6 +33,66 @@
         
          
            
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2023/06/11/ssd-all-flash-feature/</loc>
+    <lastmod>2023-06-11T02:01:26.137Z</lastmod>
+    <data>
+        <display>
+        <title>闪存-特性</title>
+        <pubTime>2023-06-11T02:00:44.000Z</pubTime>
+        
+        <tag>SSD</tag>
+         
+         
+           
+             
+              <breadCrumb title="Storage" url="http://xiaqunfeng.cc/categories/Storage/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2023/06/11/ssd-all-flash-read-write/</loc>
+    <lastmod>2023-06-11T01:59:07.458Z</lastmod>
+    <data>
+        <display>
+        <title>闪存-读、写、擦除</title>
+        <pubTime>2023-06-11T01:58:23.000Z</pubTime>
+        
+        <tag>SSD</tag>
+         
+         
+           
+             
+              <breadCrumb title="Storage" url="http://xiaqunfeng.cc/categories/Storage/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2023/05/14/nvme-ssd/</loc>
+    <lastmod>2023-06-01T11:48:29.407Z</lastmod>
+    <data>
+        <display>
+        <title>NVMe SSD</title>
+        <pubTime>2023-05-14T14:34:13.000Z</pubTime>
+        
+        <tag>SSD</tag>
+         
+         
+           
+             
+              <breadCrumb title="Storage" url="http://xiaqunfeng.cc/categories/Storage/"/>
+          
         </display>
     </data>
     </url>
@@ -372,6 +432,26 @@
 
     
   <url>
+    <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-10-profile/</loc>
+    <lastmod>2020-05-25T01:47:54.000Z</lastmod>
+    <data>
+        <display>
+        <title>SpringBoot实践十：profile</title>
+        <pubTime>2020-02-05T07:22:13.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+         
+           
+             
+              <breadCrumb title="SpringBoot" url="http://xiaqunfeng.cc/categories/SpringBoot/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://xiaqunfeng.cc/2020/02/15/java-springboot-12-init-binder/</loc>
     <lastmod>2020-05-25T01:47:54.000Z</lastmod>
     <data>
@@ -420,26 +500,6 @@
         <display>
         <title>SpringBoot实践十五：elasticsearch</title>
         <pubTime>2020-02-15T08:18:29.000Z</pubTime>
-        
-        <tag>java</tag>
-         
-         
-           
-             
-              <breadCrumb title="SpringBoot" url="http://xiaqunfeng.cc/categories/SpringBoot/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-10-profile/</loc>
-    <lastmod>2020-05-25T01:47:54.000Z</lastmod>
-    <data>
-        <display>
-        <title>SpringBoot实践十：profile</title>
-        <pubTime>2020-02-05T07:22:13.000Z</pubTime>
         
         <tag>java</tag>
          
@@ -582,6 +642,26 @@
 
     
   <url>
+    <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-4-druid/</loc>
+    <lastmod>2020-05-25T01:47:54.000Z</lastmod>
+    <data>
+        <display>
+        <title>SpringBoot实践四：druid</title>
+        <pubTime>2020-02-05T04:29:13.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+         
+           
+             
+              <breadCrumb title="SpringBoot" url="http://xiaqunfeng.cc/categories/SpringBoot/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-5-swagger2/</loc>
     <lastmod>2020-05-25T01:47:54.000Z</lastmod>
     <data>
@@ -602,12 +682,32 @@
 
     
   <url>
-    <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-4-druid/</loc>
+    <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-6-pagehelper/</loc>
     <lastmod>2020-05-25T01:47:54.000Z</lastmod>
     <data>
         <display>
-        <title>SpringBoot实践四：druid</title>
-        <pubTime>2020-02-05T04:29:13.000Z</pubTime>
+        <title>SpringBoot实践六：pagehelper</title>
+        <pubTime>2020-02-05T05:14:13.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+         
+           
+             
+              <breadCrumb title="SpringBoot" url="http://xiaqunfeng.cc/categories/SpringBoot/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-9-interceptor/</loc>
+    <lastmod>2020-05-25T01:47:54.000Z</lastmod>
+    <data>
+        <display>
+        <title>SpringBoot实践九：interceptor</title>
+        <pubTime>2020-02-05T07:19:13.000Z</pubTime>
         
         <tag>java</tag>
          
@@ -642,12 +742,12 @@
 
     
   <url>
-    <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-6-pagehelper/</loc>
+    <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-8-schedule/</loc>
     <lastmod>2020-05-25T01:47:54.000Z</lastmod>
     <data>
         <display>
-        <title>SpringBoot实践六：pagehelper</title>
-        <pubTime>2020-02-05T05:14:13.000Z</pubTime>
+        <title>SpringBoot实践八：schedule</title>
+        <pubTime>2020-02-05T07:14:13.000Z</pubTime>
         
         <tag>java</tag>
          
@@ -688,46 +788,6 @@
         <display>
         <title>SpringBoot实践七：validation</title>
         <pubTime>2020-02-05T07:08:13.000Z</pubTime>
-        
-        <tag>java</tag>
-         
-         
-           
-             
-              <breadCrumb title="SpringBoot" url="http://xiaqunfeng.cc/categories/SpringBoot/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-8-schedule/</loc>
-    <lastmod>2020-05-25T01:47:54.000Z</lastmod>
-    <data>
-        <display>
-        <title>SpringBoot实践八：schedule</title>
-        <pubTime>2020-02-05T07:14:13.000Z</pubTime>
-        
-        <tag>java</tag>
-         
-         
-           
-             
-              <breadCrumb title="SpringBoot" url="http://xiaqunfeng.cc/categories/SpringBoot/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-9-interceptor/</loc>
-    <lastmod>2020-05-25T01:47:54.000Z</lastmod>
-    <data>
-        <display>
-        <title>SpringBoot实践九：interceptor</title>
-        <pubTime>2020-02-05T07:19:13.000Z</pubTime>
         
         <tag>java</tag>
          
@@ -1104,9 +1164,9 @@
         <title>XFS vs EXT4</title>
         <pubTime>2017-07-06T08:55:54.000Z</pubTime>
         
-        <tag>ceph</tag>
-         
         <tag>storage</tag>
+         
+        <tag>ceph</tag>
          
          
            
@@ -1278,9 +1338,9 @@
         <title>RocksDB相比LevelDB的新特性</title>
         <pubTime>2017-02-23T03:22:32.000Z</pubTime>
         
-        <tag>ceph</tag>
-         
         <tag>storage</tag>
+         
+        <tag>ceph</tag>
          
          
            
@@ -1474,9 +1534,9 @@
         <title>Map RBD Devices on NBD</title>
         <pubTime>2017-06-07T02:51:42.000Z</pubTime>
         
-        <tag>ceph</tag>
-         
         <tag>storage</tag>
+         
+        <tag>ceph</tag>
          
          
            
