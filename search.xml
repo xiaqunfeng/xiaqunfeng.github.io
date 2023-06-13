@@ -4,6 +4,62 @@
   
     
     <entry>
+      <title><![CDATA[闪存-读、写、擦除]]></title>
+      <url>http://xiaqunfeng.cc/2023/06/13/ssd-all-flash-read-write/</url>
+      <content type="html"><![CDATA[<p>闪存读、写、擦除的基本原理。</p>
+<a id="more"></a>
+<p>如果FG中没有电子，那么通过阈值电压可以控制电流的通断。如下图所示：</p>
+<ul>
+<li>当CG上电压Vgs大于阈值电压Vth时，没有电流，相当于开关断开，对应状态为0</li>
+<li>当CG上电压Vgs小于阈值电压Vth时，有电流，相当于开关合上，对应状态为1</li>
+</ul>
+<p><img src="http://oow6unnib.bkt.clouddn.com/control-gate-turn-on-off.png" alt="control-gate-turn-on-off"></p>
+<h2 id="读"><a href="#读" class="headerlink" title="读"></a>读</h2><p>当要读某个Page时：</p>
+<ul>
+<li>将这个Page的字线（同一个Page中所有Cell上CG端的导线）电势置为0（不加电压）</li>
+<li>其他所有Page的子线电势升到一个值，这个电压又不至于把FG中的电子吸出来。</li>
+</ul>
+<p><img src="http://oow6unnib.bkt.clouddn.com/flash-read-example.png" alt="flash-read-example"></p>
+<p>之所以抬高电势，是为了让其他Page所有的Cell的Source和Drain处于导通状态。没加电压（要读取）的那些Cell，其Source和Drain的通断，完全取决于其FG中是否存在电子。</p>
+<ul>
+<li>如果FG中没有电子，晶体管导通，读到1</li>
+<li>如果FG中有电子，晶体管不导通，读到0</li>
+</ul>
+<p>简单总结：对要读的Page加低电压使电流断开，看FG中是否有电子，有电子为0，否则为1.</p>
+<h2 id="写"><a href="#写" class="headerlink" title="写"></a>写</h2><p>在Falsh里写操作是对FG充电子，也称为program。</p>
+<p>写之前需要先进行擦除，擦除之后，数据都变成了1，所以需要对写入0的FG进行充电。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/channel-charge-in-floating.png" alt="channel-charge-in-floating"></p>
+<p>当写入某个Cell时：</p>
+<ul>
+<li>将选中Page的字线加高电压，对应位线不加电压</li>
+<li>对Page里其他Cell的位线加正常电压，保证电流导通</li>
+<li>将其他Page的字线加正常电压，保证导通。</li>
+</ul>
+<p><img src="/Users/xiaqunfeng/Downloads/picture/flash-write-example.png" alt="flash-write-example"></p>
+<p>不需要写入数据的Cell的字线和位线电压抵消，电子不动；需要写入数据（选中）的Cell，由电势差，将电子从位线吸到FG中进行充电。</p>
+<blockquote>
+<p>仅是示例，读写的基本单位都是Page。实际上无法对某个Cell进行写入，因为无法对同一个Page里的不同Cell既充电又放电。</p>
+</blockquote>
+<h2 id="擦除"><a href="#擦除" class="headerlink" title="擦除"></a>擦除</h2><p>擦除动作，就是将一大片连续的Cell全部放电。实际操作是在衬底加电压足够长时间，把电子从FG中吸出来。</p>
+<p>擦除是以Block为基本单位的，因为一个Block共用一个衬底，所以一次只能擦除一个或多个Block。擦除之后，整个block的数据都为1。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> Storage </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> SSD </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[闪存-初识]]></title>
       <url>http://xiaqunfeng.cc/2023/06/11/ssd-all-flash-intro/</url>
       <content type="html"><![CDATA[<p>简单整理闪存基本结构，便于后续理解闪存的一些特性。</p>
@@ -209,28 +265,8 @@
     <entry>
       <title><![CDATA[闪存-特性]]></title>
       <url>http://xiaqunfeng.cc/2023/06/11/ssd-all-flash-feature/</url>
-      <content type="html"><![CDATA[<a id="more"></a>
-]]></content>
-      
-        <categories>
-            
-            <category> Storage </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> SSD </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[闪存-读、写、擦除]]></title>
-      <url>http://xiaqunfeng.cc/2023/06/11/ssd-all-flash-read-write/</url>
-      <content type="html"><![CDATA[<a id="more"></a>
+      <content type="html"><![CDATA[<p>TODO</p>
+<a id="more"></a>
 ]]></content>
       
         <categories>

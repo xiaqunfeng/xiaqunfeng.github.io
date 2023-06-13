@@ -8,15 +8,23 @@
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
   <title>闪存-读、写、擦除 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="keywords" content="SSD">
+  <meta name="description" content="闪存读、写、擦除的基本原理。">
+<meta name="keywords" content="SSD">
 <meta property="og:type" content="article">
 <meta property="og:title" content="闪存-读、写、擦除">
-<meta property="og:url" content="http://xiaqunfeng.cc/2023/06/11/ssd-all-flash-read-write/index.html">
+<meta property="og:url" content="http://xiaqunfeng.cc/2023/06/13/ssd-all-flash-read-write/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
+<meta property="og:description" content="闪存读、写、擦除的基本原理。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2023-06-11T01:59:07.458Z">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/control-gate-turn-on-off.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/flash-read-example.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/channel-charge-in-floating.png">
+<meta property="og:image" content="http://xiaqunfeng.cc/Users/xiaqunfeng/Downloads/picture/flash-write-example.png">
+<meta property="og:updated_time" content="2023-06-13T11:43:55.941Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="闪存-读、写、擦除">
+<meta name="twitter:description" content="闪存读、写、擦除的基本原理。">
+<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/control-gate-turn-on-off.png">
   
     <link rel="alternative" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
   
@@ -168,15 +176,50 @@ var _hmt = _hmt || [];
   
 
         
-        <a href="/2023/06/11/ssd-all-flash-read-write/" class="archive-article-date">
-  	<time datetime="2023-06-11T01:58:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-06-11</time>
+        <a href="/2023/06/13/ssd-all-flash-read-write/" class="archive-article-date">
+  	<time datetime="2023-06-13T01:58:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-06-13</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <a id="more"></a>
+        <p>闪存读、写、擦除的基本原理。</p>
+<a id="more"></a>
+<p>如果FG中没有电子，那么通过阈值电压可以控制电流的通断。如下图所示：</p>
+<ul>
+<li>当CG上电压Vgs大于阈值电压Vth时，没有电流，相当于开关断开，对应状态为0</li>
+<li>当CG上电压Vgs小于阈值电压Vth时，有电流，相当于开关合上，对应状态为1</li>
+</ul>
+<p><img src="http://oow6unnib.bkt.clouddn.com/control-gate-turn-on-off.png" alt="control-gate-turn-on-off"></p>
+<h2 id="读"><a href="#读" class="headerlink" title="读"></a>读</h2><p>当要读某个Page时：</p>
+<ul>
+<li>将这个Page的字线（同一个Page中所有Cell上CG端的导线）电势置为0（不加电压）</li>
+<li>其他所有Page的子线电势升到一个值，这个电压又不至于把FG中的电子吸出来。</li>
+</ul>
+<p><img src="http://oow6unnib.bkt.clouddn.com/flash-read-example.png" alt="flash-read-example"></p>
+<p>之所以抬高电势，是为了让其他Page所有的Cell的Source和Drain处于导通状态。没加电压（要读取）的那些Cell，其Source和Drain的通断，完全取决于其FG中是否存在电子。</p>
+<ul>
+<li>如果FG中没有电子，晶体管导通，读到1</li>
+<li>如果FG中有电子，晶体管不导通，读到0</li>
+</ul>
+<p>简单总结：对要读的Page加低电压使电流断开，看FG中是否有电子，有电子为0，否则为1.</p>
+<h2 id="写"><a href="#写" class="headerlink" title="写"></a>写</h2><p>在Falsh里写操作是对FG充电子，也称为program。</p>
+<p>写之前需要先进行擦除，擦除之后，数据都变成了1，所以需要对写入0的FG进行充电。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/channel-charge-in-floating.png" alt="channel-charge-in-floating"></p>
+<p>当写入某个Cell时：</p>
+<ul>
+<li>将选中Page的字线加高电压，对应位线不加电压</li>
+<li>对Page里其他Cell的位线加正常电压，保证电流导通</li>
+<li>将其他Page的字线加正常电压，保证导通。</li>
+</ul>
+<p><img src="/Users/xiaqunfeng/Downloads/picture/flash-write-example.png" alt="flash-write-example"></p>
+<p>不需要写入数据的Cell的字线和位线电压抵消，电子不动；需要写入数据（选中）的Cell，由电势差，将电子从位线吸到FG中进行充电。</p>
+<blockquote>
+<p>仅是示例，读写的基本单位都是Page。实际上无法对某个Cell进行写入，因为无法对同一个Page里的不同Cell既充电又放电。</p>
+</blockquote>
+<h2 id="擦除"><a href="#擦除" class="headerlink" title="擦除"></a>擦除</h2><p>擦除动作，就是将一大片连续的Cell全部放电。实际操作是在衬底加电压足够长时间，把电子从FG中吸出来。</p>
+<p>擦除是以Block为基本单位的，因为一个Block共用一个衬底，所以一次只能擦除一个或多个Block。擦除之后，整个block的数据都为1。</p>
 
       
     
@@ -188,7 +231,7 @@ var _hmt = _hmt || [];
         
         <br>
         <strong>本文链接：</strong>
-        <a rel="license" href="http://xiaqunfeng.cc/2023/06/11/ssd-all-flash-read-write/">http://xiaqunfeng.cc/2023/06/11/ssd-all-flash-read-write/</a>
+        <a rel="license" href="http://xiaqunfeng.cc/2023/06/13/ssd-all-flash-read-write/">http://xiaqunfeng.cc/2023/06/13/ssd-all-flash-read-write/</a>
         <br>
         <strong>版权声明：</strong>
         本文采用
@@ -308,7 +351,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2023/06/11/ssd-all-flash-read-write/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2023/06/13/ssd-all-flash-read-write/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -323,18 +366,9 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2023/06/11/ssd-all-flash-feature/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          闪存-特性
-        
-      </div>
-    </a>
   
-  
-    <a href="/2023/05/14/nvme-ssd/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">NVMe SSD</div>
+    <a href="/2023/06/11/ssd-all-flash-intro/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">闪存-初识</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -361,7 +395,7 @@ var _hmt = _hmt || [];
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    目录，不存在的…
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#读"><span class="toc-number">1.</span> <span class="toc-text">读</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#写"><span class="toc-number">2.</span> <span class="toc-text">写</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#擦除"><span class="toc-number">3.</span> <span class="toc-text">擦除</span></a></li></ol>
                     </div>
                 </span>
             </div>
