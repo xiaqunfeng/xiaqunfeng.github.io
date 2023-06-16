@@ -4,6 +4,77 @@
   
     
     <entry>
+      <title><![CDATA[闪存-特性]]></title>
+      <url>http://xiaqunfeng.cc/2023/06/16/ssd-all-flash-feature/</url>
+      <content type="html"><![CDATA[<p>整理记录闪存的一些特性。</p>
+<a id="more"></a>
+<p>根据前面闪存的物理结构，以及读写擦除原理，可以整理出闪存的如下特性。</p>
+<blockquote>
+<p>这里指的NAND闪存，和NOR闪存的对比后面有空再整理。</p>
+</blockquote>
+<h2 id="先擦后写（Erase-befor-Write）"><a href="#先擦后写（Erase-befor-Write）" class="headerlink" title="先擦后写（Erase befor Write）"></a>先擦后写（Erase befor Write）</h2><p>从前面NAND Flash的读写擦除原理中 ，我们知道，NAND的访问模式是：</p>
+<ul>
+<li>读和写以Page为单位</li>
+<li>擦除以Block为单位</li>
+</ul>
+<p>Block是由连续的页组成。在Page页写入之前，必须要将Page页所在的Block块擦除。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/erase-before-write.png" alt="erase-before-write"></p>
+<p>所以，在使用NAND Flash时，鼓励用户优化负载，尤其在写入密集型应用中，以提高产品寿命。</p>
+<h2 id="读写干扰（Read-Write-Disturb）"><a href="#读写干扰（Read-Write-Disturb）" class="headerlink" title="读写干扰（Read/Write Disturb）"></a>读写干扰（Read/Write Disturb）</h2><p>NAND Flash容易发生<strong>比特位翻转</strong>，在特定读取或写入操作期间，被访问的<strong>相邻Cell</strong>由于相近Cell或Page的频繁读写活动，内容会被更改，从而导致比特翻转。</p>
+<ul>
+<li>读干扰影响的是同一个Block中除被访问Page外的其他Page。</li>
+<li>写干扰是被写Page和其他Page都会受影响。</li>
+</ul>
+<p><img src="http://oow6unnib.bkt.clouddn.com/read-write-disturb.png" alt="read-write-disturb"></p>
+<blockquote>
+<p>注：比特翻转不是永久性损伤，重新擦除后可以正常使用。</p>
+</blockquote>
+<h2 id="数据保存错误（Data-Retention-Errors）"><a href="#数据保存错误（Data-Retention-Errors）" class="headerlink" title="数据保存错误（Data Retention Errors）"></a>数据保存错误（Data Retention Errors）</h2><p>Data Retention指的是写入的数据在存储设备中保持多长时间有效。</p>
+<ul>
+<li>Data Retention时间与Cell的磨损状态有关，新的（未被编程和多车擦除的）Cell比磨损过的Cell保留数据更长时间。</li>
+<li>温度也是影响Data Retention的一个因素之一，温度越高，数据保存时间越短。</li>
+</ul>
+<p>因为存储在闪存Cell中的电荷，如果长期不使用，会发生电荷泄露。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/electrons-leakage.png" alt="electrons-leakage"></p>
+<blockquote>
+<p>注：电荷泄露也是非永久性损伤，重新擦除后可以正常使用。</p>
+</blockquote>
+<h2 id="坏块（Bad-Blocks）"><a href="#坏块（Bad-Blocks）" class="headerlink" title="坏块（Bad Blocks）"></a>坏块（Bad Blocks）</h2><p>在NAND Flash设备中，有两种类型的坏块：</p>
+<ul>
+<li>初始坏块：由于生产良品率的限制和成本压力，NAND Flash设备在出产时就带有一些坏块。</li>
+<li>累积/动态坏块：由于循环多次写入和擦除，介质中被捕获的电子会导致Cell电压水平永久性发生偏移，当电压水平偏移足够大时，读取、写入和擦除将会失败。</li>
+</ul>
+<p>所以需要坏块管理来映射初始坏块和运行期间积累的坏块，同时保证初始用户容量。</p>
+<h2 id="写次数限制（Limited-Number-of-Writes）"><a href="#写次数限制（Limited-Number-of-Writes）" class="headerlink" title="写次数限制（Limited Number of Writes）"></a>写次数限制（Limited Number of Writes）</h2><p>NAND Flash闪存具有有限次数的 Program/Erase（P/E）周期，主要是以下两个方面原因：</p>
+<ul>
+<li>隔离FG的绝缘氧化层中的电子。</li>
+<li>由于热载体注入导致氧化结构损坏。</li>
+</ul>
+<p>一旦氧化层损坏的足够大，电子在FG和substrate之间传播就会变得越来越困难。包含氧化层的擦除块无法使用保准电压正确擦除，所以需要添加到坏块池中去。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/flash-wear-out.png" alt="flash-wear-out"></p>
+<p>所以NAND Flash制造商为其闪存设备指定编程/擦除（P/E）次数来表示氧化层预期磨损。随着闪存制造工艺的不断缩小，闪存制造商面临保持相同写入/擦除次数和提高闪存ECC的挑战。所以需要闪存管理技术来克服和管理闪存磨损的限制，比如磨损均衡（Wear Leveling）、纠错（Error Correction）和坏块管理（Bad Block Management）。</p>
+<blockquote>
+<p>TODO：后面一篇将学习一下闪存管理技术。</p>
+</blockquote>
+<p>参考资料：《Flash101 and Flash Management》</p>
+]]></content>
+      
+        <categories>
+            
+            <category> Storage </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> SSD </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[闪存-读、写、擦除]]></title>
       <url>http://xiaqunfeng.cc/2023/06/13/ssd-all-flash-read-write/</url>
       <content type="html"><![CDATA[<p>闪存读、写、擦除的基本原理。</p>
@@ -42,6 +113,7 @@
 </blockquote>
 <h2 id="擦除"><a href="#擦除" class="headerlink" title="擦除"></a>擦除</h2><p>擦除动作，就是将一大片连续的Cell全部放电。实际操作是在衬底加电压足够长时间，把电子从FG中吸出来。</p>
 <p>擦除是以Block为基本单位的，因为一个Block共用一个衬底，所以一次只能擦除一个或多个Block。擦除之后，整个block的数据都为1。</p>
+<p>参考资料：《introduction to NAND flash memory》</p>
 ]]></content>
       
         <categories>
@@ -245,28 +317,6 @@
 <li><a href="https://www.red-gate.com/simple-talk/databases/sql-server/database-administration-sql-server/storage-101-understanding-the-nand-flash-solid-state-drive/" target="_blank" rel="noopener">Storage 101: Understanding the NAND Flash Solid State Drive</a></li>
 <li>《深入浅出SSD》</li>
 </ul>
-]]></content>
-      
-        <categories>
-            
-            <category> Storage </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> SSD </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[闪存-特性]]></title>
-      <url>http://xiaqunfeng.cc/2023/06/11/ssd-all-flash-feature/</url>
-      <content type="html"><![CDATA[<p>整理记录闪存的一些特性。</p>
-<a id="more"></a>
 ]]></content>
       
         <categories>
