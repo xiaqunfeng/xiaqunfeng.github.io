@@ -29,7 +29,7 @@
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/2dnand-vs-3dnand.png">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/flash-inner-organ-structure.png">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/flash-chip-logic.png">
-<meta property="og:updated_time" content="2023-06-11T12:19:18.324Z">
+<meta property="og:updated_time" content="2023-06-19T12:30:27.076Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="闪存-初识">
 <meta name="twitter:description" content="简单整理闪存基本结构，便于后续理解闪存的一些特性。">
@@ -333,7 +333,7 @@ var _hmt = _hmt || [];
 <tbody>
 <tr>
 <td>一个闪存芯片（Chip/Device）</td>
-<td>多个卷（LUN/DIE）</td>
+<td>多个卷（LUN）/ 晶粒（DIE）</td>
 </tr>
 <tr>
 <td>一个卷（LUN/DIE）：<br>卷是接收和执行闪存命令的基本单元</td>
@@ -370,6 +370,9 @@ var _hmt = _hmt || [];
 <li>每2048个Block组成一个Plane——1GB</li>
 <li>一整片Flash芯片由两个plane组成——2GB</li>
 </ul>
+<blockquote>
+<p>注：Die 就是芯片未封装前的晶粒，每一个Die就是一个独立的功能芯片，它无数个晶体管电路组成，但最终将被作为一个单位而被封装起来，便成为我们常见的闪存颗粒了。</p>
+</blockquote>
 <p><strong>参考资料：</strong></p>
 <ul>
 <li><a href="https://www.techtarget.com/searchstorage/definition/floating-gate" target="_blank" rel="noopener">floating gate transistor(FGT)</a></li>
@@ -720,11 +723,11 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
+                <a href="javascript:void(0)" class="js-tag color5">ceph</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">ceph</a>
+                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -744,11 +747,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">shell</a>
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">java</a>
+                <a href="javascript:void(0)" class="js-tag color1">shell</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -764,15 +767,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">wiki</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">c++11</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">os</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -784,19 +791,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">os</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
+                <a href="javascript:void(0)" class="js-tag color3">mq</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">mq</a>
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
               </li>
              
               <li class="article-tag-list-item">

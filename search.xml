@@ -4,6 +4,108 @@
   
     
     <entry>
+      <title><![CDATA[闪存-数据完整性]]></title>
+      <url>http://xiaqunfeng.cc/2023/06/22/ssd-all-flash-data-intergrity/</url>
+      <content type="html"><![CDATA[<p>学习并整理闪存的数据完整性知识点。</p>
+<a id="more"></a>
+<p>前一篇介绍了闪存的管理技术，包括磨损均衡、异常管理，以及错误检测和修复。磨损均衡和异常处理尽可能保证闪存有更大的使用寿命，ECC保证出了较少的错误数据依然可以恢复。</p>
+<p>这一篇学习一下除了其他保证数据完整性的技术手段。主要有四点：</p>
+<ul>
+<li>重读（Read Retry）</li>
+<li>数据巡检 / 扫描重写技术（Read Scrub）</li>
+<li>数据随机化</li>
+<li>RAIN（Redundant Arrays of Independent NAND）数据恢复</li>
+</ul>
+<h2 id="重读"><a href="#重读" class="headerlink" title="重读"></a>重读</h2><p>当flash每种状态的电压分布发生平移后，如果还采用之前的参考电压去读取的话，就可能会出现读取数据失败的情况。</p>
+<p>所以需要使用重读技术，不断改变参考电压，来尝试找到可以读出数据的电压电，从而读到正确数据。（理论上来说，只要不同状态的电压分布没有发生重叠，就可以通过重读恢复数据）。</p>
+<p>以MLC的重读为例，在本例中，MLC里四个状态分别对应的阈值电压为：</p>
+<ul>
+<li>11: 0~2.2v</li>
+<li>01: 2.2~2.5v</li>
+<li>00: 2.5~2.8v</li>
+<li>10: 大于2.8v</li>
+</ul>
+<p>1、4个Cell组成的初始数据：10 11 11 10</p>
+<p><img src="/Users/xiaqunfeng/Downloads/picture/read-retry-1.png" alt="read-retry-1"></p>
+<p>2、Cell1和Cell4的电压分布发生平移后，如果还按照之前的阈值电压去读，那么读到的数据为：00 11 11 00</p>
+<p><img src="/Users/xiaqunfeng/Downloads/picture/read-retry-2.png" alt="read-retry-2"></p>
+<p>3、调整10状态位的电压阈值：2.8v -&gt; 2.72v，重新读数据：00 11 11 10，此时依然有一个Cell读错误</p>
+<p><img src="/Users/xiaqunfeng/Downloads/picture/read-retry-3.png" alt="read-retry-3"></p>
+<p>4、继续调整10状态位的阈值电压：2.72v -&gt; 2.68v，此时读取到正确的数据</p>
+<p><img src="/Users/xiaqunfeng/Downloads/picture/read-retry-4.png" alt="read-retry-4"></p>
+<h2 id="扫描重写技术"><a href="#扫描重写技术" class="headerlink" title="扫描重写技术"></a>扫描重写技术</h2><p>闪存的读取校验（read scrub）技术是一种用于检测和修复闪存中存储的数据错误的技术。它的主要原理是通过定期（通常在硬盘不忙的时候）读取存储在闪存中的数据，并与校验和或纠错码进行比较，以确定是否存在数据错误。</p>
+<ul>
+<li>如果发现错误，系统会尝试使用冗余的数据或纠错码来恢复正确的数据。</li>
+<li>如果发现某个闪存页翻转比特数量超过一定阈值，就重写数据到新的地方。</li>
+</ul>
+<p>这样做的好处是避免数据放太久，导致比特翻转数量超过ECC算法的纠错能力，从而能减少ECC不可纠错误。</p>
+<p>特别是 Data Retention 的问题，随着数据存放时间的推移，长期不使用的Cell会发生电荷泄露，从而导致读数据出错，而这种错误很难主动发现。</p>
+<h2 id="数据随机化"><a href="#数据随机化" class="headerlink" title="数据随机化"></a>数据随机化</h2><p>数据随机化技术指的是在写数据之前要进行随机化编码，主要有两个原因：</p>
+<ul>
+<li>让0和1的分布充分隔离：这样在不同的WL（字线）之间编码时1和0相对均衡，不会导致全是1编码，BL（位线）上的的 Cell 之间有电子游走，导致 bit 的错误翻转。</li>
+<li>降低相邻Cell之间的干扰：相邻Cell将影响到该Cell的阈值电压。</li>
+</ul>
+<p><img src="/Users/xiaqunfeng/Downloads/picture/data-randomize.png" alt="data-randomize"></p>
+<p>数据随机化流程如上图所示，主要目的就是为了降低错误率。</p>
+<h2 id="RAIN"><a href="#RAIN" class="headerlink" title="RAIN"></a>RAIN</h2><h3 id="1、ECC"><a href="#1、ECC" class="headerlink" title="1、ECC"></a>1、ECC</h3><p>ECC的纠错能力是有限的，超过纠错能力范围的数据，就会出现UNC（Uncorrectable），如下图所示：</p>
+<p><img src="/Users/xiaqunfeng/Downloads/picture/ecc-ability.png" alt="ecc-ability"></p>
+<p>当主控内部的ECC模块对数据进行纠正后依然失败，则表示纠错失败，这个时候就需要其他技术来保证数据的完整性了。</p>
+<h3 id="2、RAID技术"><a href="#2、RAID技术" class="headerlink" title="2、RAID技术"></a>2、RAID技术</h3><p>在磁盘阵列中，可以采用RAID（Redundant Arrays of Independent Disks）技术来保证数据的完整性。磁盘RAID一般采用RAID5或RAID6。RAID5可以恢复单个ECC不可纠正的数据，RAID6可以恢复两个ECC不可纠正的数据。当然，由于采用了冗余纠错技术，需要额外的空间来存储冗余数据（校验数据）。RAID基本性能、可用性、开销对比如下图所示：</p>
+<p><img src="/Users/xiaqunfeng/Downloads/picture/raid-contrast.png" alt="raid-contrast"></p>
+<p>SSD内部本质上也是一个闪存阵列，所以可以采用类似的技术。但是，由于固态硬盘的特性，内部的RAID和传统的磁盘阵列不太一样。</p>
+<p>对于传统的RAID5来说，数据按照条带来写。如下图示例，一个磁盘组有4块盘，校验块Parity（红色所示）在磁盘之间轮转，校验块表示系统恢复任何实际存储信息所需要的数据。修改任何数据块，都需要重新生成校验数据，并更新校验数据块。</p>
+<p><img src="/Users/xiaqunfeng/Downloads/picture/raid5-hdds.png" alt="raid5-hdds"></p>
+<p>对于固态硬盘来说，不可以直接这么做，因为固态硬盘是不能重写的，每次新写入的数据都会写到新的Page中。</p>
+<blockquote>
+<p>Q: 为什么不可以先擦除再写？</p>
+<p>A: 擦除过程中数据如果数据丢失，或者有其他坏块，那么这个条带就废了，数据彻底无法恢复。</p>
+<p>Q: 某个Die上的Block倍垃圾回收了怎么办？ </p>
+<p>A: 如果发生，那么RAID条带失效。垃圾回收是RAIN里需要重点考虑的点，要保证整个RAIN条带同时被垃圾回收。</p>
+</blockquote>
+<h3 id="3、RAIN设计"><a href="#3、RAIN设计" class="headerlink" title="3、RAIN设计"></a>3、RAIN设计</h3><p>所以，固态硬盘的RAIN在设计上是由不同 Die 上的 Block 组成的阵列，同时被写、擦除和垃圾回收。</p>
+<h4 id="3-1-对容量的影响"><a href="#3-1-对容量的影响" class="headerlink" title="3.1 对容量的影响"></a>3.1 对容量的影响</h4><p>实施像 RAIN 这样的保护方案最终将影响用户可用的 NAND 容量。就像在 HDD 环境中一样，是一个标准做法。对于数据保护带来的收益来说，这种消耗 SSD 空间的方案经权衡后是可接受的。下图展示了Micron的一款M500芯片引入RAIN后用户可使用容量情况：</p>
+<p><img src="/Users/xiaqunfeng/Downloads/picture/micron-m500-rain.png" alt="micron-m500-rain"></p>
+<h4 id="3-2-条带"><a href="#3-2-条带" class="headerlink" title="3.2 条带"></a>3.2 条带</h4><p>在 HDD 阵列中最常见的描述是奇偶校验生成和奇偶校验放置机制（例如 RAID 5 或 RAID 10）。RAIN 相关的常见描述略有不同，最常见的是描述条带级别或条带长度，用来表示有多少用户数据元素与单个奇偶校验元素相关联。通常称为“N to 1”，其中 N 是用户数据元素的数量。</p>
+<p>如下图所示，一个 SSD 关联了7个用户数据元素和一个奇偶校验元素，该 SSD 将被描述为 7:1 RAIN条带（stripe）。</p>
+<p><img src="/Users/xiaqunfeng/Downloads/picture/RAIN-stripes-7to1.png" alt="RAIN-stripes-7to1"></p>
+<h4 id="3-3-RAIN结构设计"><a href="#3-3-RAIN结构设计" class="headerlink" title="3.3 RAIN结构设计"></a>3.3 RAIN结构设计</h4><p>这种RAIN的特定实现是 SSD 设计的关键，同时针对闪存特性、预期使用模型、耐用性要求和控制器设计等多种因素进行了优化。在上面的 7+1 RAIN方案中，每个 stripe 的元素被写到不同的 plane、die和封装，以提高驱动级性能并保护用户数据免受 page 故障直至灾难性介质故障的影响。内部存储示意图如下所示：</p>
+<p><img src="/Users/xiaqunfeng/Downloads/picture/ssd-raid-storage-with-parity.png" alt="ssd-raid-storage-with-parity"></p>
+<ul>
+<li>Parity generator：使用奇偶校验RAIN解决方案跨SSD磁盘或芯片存储，控制器需要Parity generator的协助。</li>
+<li>Flash Controller：生成的奇偶校验通过Flash Controller分布在SSD驱动和芯片上。Flash Controller是固态闪存的一部分（固态闪存是用于与主机通信的内存设备），并管理闪存文件系统目录。</li>
+</ul>
+<p>奇偶校验分布：如图所示，数据（D1/D2/D3/D4）和校验数据（P0）均匀分布在所有设备上，构成一个stripe条带</p>
+<p><img src="/Users/xiaqunfeng/Downloads/picture/ssd-raid5-org.png" alt="ssd-raid5-org"></p>
+<p>如果数据页D1到D4倍更新，不同于磁盘的RAID（旧条带重写），RAIN使用读修改写的方式，读取现有数据，重新计算新的奇偶校验，以便新的奇偶校验和数据可以写入相同芯片，如下图所示：</p>
+<p><img src="/Users/xiaqunfeng/Downloads/picture/ssd-raid-write.png" alt="ssd-raid-write"></p>
+<blockquote>
+<p>注：目前</p>
+</blockquote>
+<p>参考资料：</p>
+<ul>
+<li><a href="https://www.tomshardware.com/reviews/crucial-m550-ssd-review,3772-3.html" target="_blank" rel="noopener">Micron M500</a></li>
+<li><a href="https://storageswiss.com/2013/06/25/how-to-make-reliable-ssds-reliable-nand-flash/" target="_blank" rel="noopener">How to Make Reliable SSDs – Reliable NAND Flash</a></li>
+<li>《High Performance SSD-Based RAID Storage》</li>
+<li><a href="https://storageioblog.com/raid-extend-life-nand-flash-ssd/" target="_blank" rel="noopener">raid extend life nand flash ssd</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Storage </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> SSD </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[闪存-管理技术]]></title>
       <url>http://xiaqunfeng.cc/2023/06/18/ssd-all-flash-management/</url>
       <content type="html"><![CDATA[<p>学习并整理闪存的管理技术。</p>
@@ -66,7 +168,7 @@
 </tbody>
 </table>
 <p>可以看到，相比之下，LDPC算法在实现上更复杂，但是其可以提供的纠错能力是产品寿命和可靠性的两倍。</p>
-<p>由算法确定可以检测和纠正的最大错误数量。无论在NAND闪存控制器的ECC引擎中使用的什么算法，其错误检测和纠正的方法都是相同的，方法如下：</p>
+<p>由算法确定可以检测和纠正的最大错误数量。无论在NAND闪存控制器的ECC（Error Correction Codes）引擎中使用的什么算法，其错误检测和纠正的方法都是相同的，方法如下：</p>
 <p>1、每次将数据page写入闪存时，数据会通过控制器的ECC引擎创建一个唯一的ECC签名。</p>
 <p>2、数据和ECC签名一起存在闪存上：数据存储在page区，ECC签名存储在备用区。</p>
 <p>3、当读回数据时，数据和ECC签名都会被读入控制器，基于读回的数据生成新的ECC签名。</p>
@@ -367,7 +469,7 @@
 <tbody>
 <tr>
 <td>一个闪存芯片（Chip/Device）</td>
-<td>多个卷（LUN/DIE）</td>
+<td>多个卷（LUN）/ 晶粒（DIE）</td>
 </tr>
 <tr>
 <td>一个卷（LUN/DIE）：<br>卷是接收和执行闪存命令的基本单元</td>
@@ -404,6 +506,9 @@
 <li>每2048个Block组成一个Plane——1GB</li>
 <li>一整片Flash芯片由两个plane组成——2GB</li>
 </ul>
+<blockquote>
+<p>注：Die 就是芯片未封装前的晶粒，每一个Die就是一个独立的功能芯片，它无数个晶体管电路组成，但最终将被作为一个单位而被封装起来，便成为我们常见的闪存颗粒了。</p>
+</blockquote>
 <p><strong>参考资料：</strong></p>
 <ul>
 <li><a href="https://www.techtarget.com/searchstorage/definition/floating-gate" target="_blank" rel="noopener">floating gate transistor(FGT)</a></li>

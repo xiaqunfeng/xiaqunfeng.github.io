@@ -19,7 +19,7 @@
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/bathtub-reliability-curve.png">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/emmc-voltage-threshold-behavior.png">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/ecc-signatures-for-4kb-page.png">
-<meta property="og:updated_time" content="2023-06-19T01:14:38.492Z">
+<meta property="og:updated_time" content="2023-06-19T12:37:25.301Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="闪存-管理技术">
 <meta name="twitter:description" content="学习并整理闪存的管理技术。">
@@ -243,7 +243,7 @@ var _hmt = _hmt || [];
 </tbody>
 </table>
 <p>可以看到，相比之下，LDPC算法在实现上更复杂，但是其可以提供的纠错能力是产品寿命和可靠性的两倍。</p>
-<p>由算法确定可以检测和纠正的最大错误数量。无论在NAND闪存控制器的ECC引擎中使用的什么算法，其错误检测和纠正的方法都是相同的，方法如下：</p>
+<p>由算法确定可以检测和纠正的最大错误数量。无论在NAND闪存控制器的ECC（Error Correction Codes）引擎中使用的什么算法，其错误检测和纠正的方法都是相同的，方法如下：</p>
 <p>1、每次将数据page写入闪存时，数据会通过控制器的ECC引擎创建一个唯一的ECC签名。</p>
 <p>2、数据和ECC签名一起存在闪存上：数据存储在page区，ECC签名存储在备用区。</p>
 <p>3、当读回数据时，数据和ECC签名都会被读入控制器，基于读回的数据生成新的ECC签名。</p>
@@ -401,6 +401,15 @@ var _hmt = _hmt || [];
 
   
 <nav id="article-nav">
+  
+    <a href="/2023/06/22/ssd-all-flash-data-intergrity/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          闪存-数据完整性
+        
+      </div>
+    </a>
   
   
     <a href="/2023/06/16/ssd-all-flash-feature/" id="article-nav-older" class="article-nav-link-wrap">
@@ -591,11 +600,11 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
+                <a href="javascript:void(0)" class="js-tag color5">ceph</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">ceph</a>
+                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -615,11 +624,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">shell</a>
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">java</a>
+                <a href="javascript:void(0)" class="js-tag color1">shell</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -635,15 +644,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">wiki</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">c++11</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">os</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -655,19 +668,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">os</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
+                <a href="javascript:void(0)" class="js-tag color3">mq</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">mq</a>
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
               </li>
              
               <li class="article-tag-list-item">
