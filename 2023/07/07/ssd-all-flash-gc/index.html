@@ -6,18 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
-  <title>Archives: 2019/10 | 夏天的风的博客</title>
+  <title>闪存-垃圾回收和Trim | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="关注深度学习、分布式存储、云计算">
-<meta property="og:type" content="website">
-<meta property="og:title" content="夏天的风的博客">
-<meta property="og:url" content="http://xiaqunfeng.cc/archives/2019/10/index.html">
+  <meta name="description" content="学习一下闪存FTL里提到的垃圾回收技术，以及Trim命令。">
+<meta name="keywords" content="SSD">
+<meta property="og:type" content="article">
+<meta property="og:title" content="闪存-垃圾回收和Trim">
+<meta property="og:url" content="http://xiaqunfeng.cc/2023/07/07/ssd-all-flash-gc/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="关注深度学习、分布式存储、云计算">
+<meta property="og:description" content="学习一下闪存FTL里提到的垃圾回收技术，以及Trim命令。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/garbage-collection-process.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/trim-process.png">
+<meta property="og:updated_time" content="2023-07-07T03:45:45.213Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="夏天的风的博客">
-<meta name="twitter:description" content="关注深度学习、分布式存储、云计算">
+<meta name="twitter:title" content="闪存-垃圾回收和Trim">
+<meta name="twitter:description" content="学习一下闪存FTL里提到的垃圾回收技术，以及Trim命令。">
+<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/garbage-collection-process.png">
   
     <link rel="alternative" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
   
@@ -157,86 +162,326 @@ var _hmt = _hmt || [];
           </div>
           <div id="js-content" class="content-ll">
             
-  
-  
+<article id="post-ssd-all-flash-gc" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/10/01/hexo-update/" class="archive-article-date">
-  	<time datetime="2019-10-01T05:11:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-01</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/10/01/hexo-update/">hexo博客更新</a>
+    <h1 class="article-title" itemprop="name">
+      闪存-垃圾回收和Trim
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2023/07/07/ssd-all-flash-gc/" class="archive-article-date">
+  	<time datetime="2023-07-07T03:27:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-07-07</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>学习一下闪存FTL里提到的垃圾回收技术，以及Trim命令。</p>
+<a id="more"></a>
+<h2 id="什么是垃圾回收"><a href="#什么是垃圾回收" class="headerlink" title="什么是垃圾回收"></a>什么是垃圾回收</h2><p>GC是（Garbage Collection，垃圾回收）的缩写。</p>
+<p>在前面的《闪存——读、写、擦除》中有介绍，SSD数据的写入以页面(page)为单位，擦除数据以区块(block)为单位。因此，要擦除无效的数据，SSD需要把一个block内有效的数据先复制到新block的page中，这样原区块中的无效数据才能够以block为单位进行擦除。block的数据被完整擦除后即形成一个新的空白区块(free block)，后续才能够写入新的数据。</p>
+<p>对SSD而言，GC就是指的就是将原本block中有效的数据合并到另一个空闲的block中，并将原移出数据的block进行擦除的过程，目的就是清理出更多free block以维持SSD的写入效能。</p>
+<h2 id="如何实现"><a href="#如何实现" class="headerlink" title="如何实现"></a>如何实现</h2><h3 id="垃圾回收示例"><a href="#垃圾回收示例" class="headerlink" title="垃圾回收示例"></a>垃圾回收示例</h3><p><img src="http://oow6unnib.bkt.clouddn.com/garbage-collection-process.png" alt="garbage-collection-process"></p>
+<p>如上图所示，将整个过程分成三部分：</p>
+<p><strong>1、垃圾产生</strong></p>
+<ul>
+<li>在Block-X中，5个page分别写入了A-E，其余page是空的；Block-Y是空的</li>
+<li>继续在Block-X中写入F-K，共6个page，此时还剩5个空的page</li>
+<li>修改A-E这5个page，生成新的A’-E’，写入剩下的5个空的page中，原来的A-E所在的5个page被标记为garbage</li>
+</ul>
+<blockquote>
+<p>这A-E这5个数据页在free前是无法继续写入数据的，此时，垃圾产生了</p>
+</blockquote>
+<p><strong>2、有效数据搬移</strong></p>
+<ul>
+<li>将Block-X中所有正常状态的的page（F-K和A’-E’这11个page）里的数据拷贝到到Block-Y中。拷贝后，原来F-K和A’-E’所在位置的数据也被标记为garbage</li>
+</ul>
+<p><strong>3、垃圾回收</strong></p>
+<ul>
+<li>对Block-X执行擦除操作，操作后，Block-X变成了free block，可继续写入数据，从而完成垃圾回收</li>
+</ul>
+<blockquote>
+<p><strong>注意点：</strong></p>
+<ul>
+<li>在实际中，不会等block中所有page都写满后才开始做GC，而是在block写满之前就会触发。</li>
+<li>示例中是顺序写入，实际上更多的是随机写，垃圾数据分散在多个block中，而不是一个或某几个block。</li>
+</ul>
+</blockquote>
+<h3 id="Block选择"><a href="#Block选择" class="headerlink" title="Block选择"></a>Block选择</h3><p><strong>1、有效数据最少</strong></p>
+<p>有多种选择策略，最常用的是Gready算法，该算法挑选有效数据<strong>最小</strong>的block来进行回收，这样可以少搬移数据，腾更多空间多，有效减少写放大。</p>
+<p><strong>2、擦写次数最小</strong></p>
+<p>除了基于block有效数据量以外，还有基于擦写次数的策略，该策略考虑到block的磨损均衡。但该策略选到的block可能有效数据较多，会增加写放大。</p>
+<p><strong>总结：</strong></p>
+<p>通常在实践中会结合有效数据量和擦写次数这两个维度，设定一个权重来选择目标block。</p>
+<blockquote>
+<p>固件在写用户数据时，会对block数据量进行记录，有效数据做加法，无效数据做减法。因为记录表的存在，在做GC时就比较容易找到目标block。同时，会维护一个block上数据是否有效的bitmap，从而可以对有效数据实现快速读取。</p>
+</blockquote>
+<h2 id="垃圾回收时机"><a href="#垃圾回收时机" class="headerlink" title="垃圾回收时机"></a>垃圾回收时机</h2><p>常见的两种垃圾回收时机：</p>
+<p><strong>1、Foreground GC</strong></p>
+<p>SSD可用block小于指定阈值时，被动做GC。</p>
+<p>缺点：会降低用户写入性能。</p>
+<p><strong>2、Background GC</strong></p>
+<p>SSD空闲时，后台主动去做GC。</p>
+<p>缺点：增加功耗。</p>
+<h2 id="Trim"><a href="#Trim" class="headerlink" title="Trim"></a>Trim</h2><p>OS（操作系统）只能识别SSD映射表中的LBA（逻辑块地址），所以从LBA请求数据，而存储系统从PBA（物理块地址）返回数据。</p>
+<p>在没有Trim之前，SSD无法知道哪些被删除的数据page是无效的，必须等下次OS在相同的位置写数据时做检查才会发现，在这之前做GC时，仍会将这些page当做有效数据进行搬移，对这些无效数据的搬移无疑会影响GC性能，同时增加写放大，增加对闪存的磨损。</p>
+<p>微软提出的Trim命令是为了减少NAND不必要的磨损。在删除文件时，Trim命令会让OS立即通知SSD，将数据标记为无效数据。这样做最大的好处就是帮助SSD实时跟踪OS执行的操作，从而减少对NAND flash的冗余访问。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/trim-process.png" alt="trim-process"></p>
+<p>Trim过程如上图所示：</p>
+<ul>
+<li>用户删除两个page，此时在逻辑表中，已经标记为删除，但是在SSD中，这两个page仍然是Filed状态</li>
+<li>OS下发Trim命令，告诉SSD这两个page包含无效数据，此时SSD将这两个page置为invalid状态</li>
+</ul>
+<p>总结下来，Trim有如下三个优点：</p>
+<p><strong>1、降低写放大</strong></p>
+<p>尽早通知那些包含无效数据的无效page，有助于减少数据重写。当有更多free空间可以提供出来用于写入时，可以有效减少写入任务（降低搬移）。</p>
+<p><strong>2、提高吞吐量</strong></p>
+<p>使用Trim命令，GC期间移动的数据减少，驱动运行的速度就会更快。SSD写入闪存的速度是吞吐量的瓶颈所在。</p>
+<p><strong>3、提高耐用性</strong></p>
+<p>通过不重写无效数据，驱动器向NAND闪存写入更少的数据。</p>
+<blockquote>
+<p>注意点：</p>
+<ul>
+<li>Trim命令不会触发GC。</li>
+<li>Trim是ATA接口下的命令，SCSI里同功能命令叫Unmap，NVMe里叫Deallocate。</li>
+</ul>
+</blockquote>
+<p>垃圾回收就先学习到这里，下一篇将学习一下磨损均衡相关内容。</p>
+<p>以上。</p>
+<p><strong>查阅资料：</strong></p>
+<ul>
+<li><a href="https://www.crucial.com/articles/about-ssd/what-is-trim" target="_blank" rel="noopener">What is trim and active garbage collection?</a></li>
+<li><a href="https://www.simms.co.uk/Uploads/Resources/125/cf12520f-dcd0-477d-b6e1-2f7506983497.pdf" target="_blank" rel="noopener">Garbage Collection &amp; Trim for SSDs</a></li>
+<li><a href="https://www.techtarget.com/searchstorage/definition/solid-state-storage-SSS-garbage-collection" target="_blank" rel="noopener">solid-state storage garbage collection</a></li>
+<li><a href="https://phisonblog.com/ssd-garbage-collection/" target="_blank" rel="noopener">SSD Garbage Collection</a></li>
+</ul>
+
+      
+    
+    
+      <div class="declare">
+        <strong>本文作者：</strong>
+        
+          夏天的风
+        
+        <br>
+        <strong>本文链接：</strong>
+        <a rel="license" href="http://xiaqunfeng.cc/2023/07/07/ssd-all-flash-gc/">http://xiaqunfeng.cc/2023/07/07/ssd-all-flash-gc/</a>
+        <br>
+        <strong>版权声明：</strong>
+        本文采用
+        <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+        进行许可。<strong>转载请务必注明出处！谢谢！</strong>
+        
+          <br>
+          <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="http://oow6unnib.bkt.clouddn.com/cc4_0_BY_NC_ND.png"/></a>
+        
+      </div>
+    
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>O(∩_∩)O谢谢!<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/alipay.jpg">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/weixin.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">hexo</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">SSD</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Storage//" class="article-tag-list-link color3">Storage</a>
+        		</li>
+      		
+		</ul>
+	</div>
 
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2023/07/07/ssd-all-flash-gc/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/10/01/navigation/" class="archive-article-date">
-  	<time datetime="2019-10-01T04:59:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-01</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2023/07/02/ssd-all-flash-FTL/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">闪存-FTL</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/10/01/navigation/">文章导航</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是垃圾回收"><span class="toc-number">1.</span> <span class="toc-text">什么是垃圾回收</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何实现"><span class="toc-number">2.</span> <span class="toc-text">如何实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#垃圾回收示例"><span class="toc-number">2.1.</span> <span class="toc-text">垃圾回收示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Block选择"><span class="toc-number">2.2.</span> <span class="toc-text">Block选择</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#垃圾回收时机"><span class="toc-number">3.</span> <span class="toc-text">垃圾回收时机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Trim"><span class="toc-number">4.</span> <span class="toc-text">Trim</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+        
+    </div>
+</aside>
+
+
+
   
   
-    </div></section>
   
 
-    
+  
+
+  
+
+  
+
+  
+    <section id="comments" style="margin:10px;padding:10px;background:#fff;">
+      <div id="vcomment" class="comment"></div> 
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+    window.onload = function() {
+        new Valine({
+            el: '.comment',
+            notify: notify,
+            verify: verify,
+            app_id: "2AgYNp3s7S4ddNLjt7diG8gj-9Nh9j0Va",
+            app_key: "6WNBmQrMcjfQG4XYo8VA54hb",
+            placeholder: "无需输入昵称、邮箱和网址信息即可快速评论。（建议输入昵称和邮箱，方便沟通）",
+            avatar:"mp",
+            avatar_cdn:'{{ theme.valine.avatar_cdn }}',
+        });
+    }
+</script>
+
+    </section>
+  
+
 
 
           </div>
@@ -264,8 +509,8 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

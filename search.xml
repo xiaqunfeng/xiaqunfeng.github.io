@@ -4,6 +4,105 @@
   
     
     <entry>
+      <title><![CDATA[闪存-垃圾回收和Trim]]></title>
+      <url>http://xiaqunfeng.cc/2023/07/07/ssd-all-flash-gc/</url>
+      <content type="html"><![CDATA[<p>学习一下闪存FTL里提到的垃圾回收技术，以及Trim命令。</p>
+<a id="more"></a>
+<h2 id="什么是垃圾回收"><a href="#什么是垃圾回收" class="headerlink" title="什么是垃圾回收"></a>什么是垃圾回收</h2><p>GC是（Garbage Collection，垃圾回收）的缩写。</p>
+<p>在前面的《闪存——读、写、擦除》中有介绍，SSD数据的写入以页面(page)为单位，擦除数据以区块(block)为单位。因此，要擦除无效的数据，SSD需要把一个block内有效的数据先复制到新block的page中，这样原区块中的无效数据才能够以block为单位进行擦除。block的数据被完整擦除后即形成一个新的空白区块(free block)，后续才能够写入新的数据。</p>
+<p>对SSD而言，GC就是指的就是将原本block中有效的数据合并到另一个空闲的block中，并将原移出数据的block进行擦除的过程，目的就是清理出更多free block以维持SSD的写入效能。</p>
+<h2 id="如何实现"><a href="#如何实现" class="headerlink" title="如何实现"></a>如何实现</h2><h3 id="垃圾回收示例"><a href="#垃圾回收示例" class="headerlink" title="垃圾回收示例"></a>垃圾回收示例</h3><p><img src="http://oow6unnib.bkt.clouddn.com/garbage-collection-process.png" alt="garbage-collection-process"></p>
+<p>如上图所示，将整个过程分成三部分：</p>
+<p><strong>1、垃圾产生</strong></p>
+<ul>
+<li>在Block-X中，5个page分别写入了A-E，其余page是空的；Block-Y是空的</li>
+<li>继续在Block-X中写入F-K，共6个page，此时还剩5个空的page</li>
+<li>修改A-E这5个page，生成新的A’-E’，写入剩下的5个空的page中，原来的A-E所在的5个page被标记为garbage</li>
+</ul>
+<blockquote>
+<p>这A-E这5个数据页在free前是无法继续写入数据的，此时，垃圾产生了</p>
+</blockquote>
+<p><strong>2、有效数据搬移</strong></p>
+<ul>
+<li>将Block-X中所有正常状态的的page（F-K和A’-E’这11个page）里的数据拷贝到到Block-Y中。拷贝后，原来F-K和A’-E’所在位置的数据也被标记为garbage</li>
+</ul>
+<p><strong>3、垃圾回收</strong></p>
+<ul>
+<li>对Block-X执行擦除操作，操作后，Block-X变成了free block，可继续写入数据，从而完成垃圾回收</li>
+</ul>
+<blockquote>
+<p><strong>注意点：</strong></p>
+<ul>
+<li>在实际中，不会等block中所有page都写满后才开始做GC，而是在block写满之前就会触发。</li>
+<li>示例中是顺序写入，实际上更多的是随机写，垃圾数据分散在多个block中，而不是一个或某几个block。</li>
+</ul>
+</blockquote>
+<h3 id="Block选择"><a href="#Block选择" class="headerlink" title="Block选择"></a>Block选择</h3><p><strong>1、有效数据最少</strong></p>
+<p>有多种选择策略，最常用的是Gready算法，该算法挑选有效数据<strong>最小</strong>的block来进行回收，这样可以少搬移数据，腾更多空间多，有效减少写放大。</p>
+<p><strong>2、擦写次数最小</strong></p>
+<p>除了基于block有效数据量以外，还有基于擦写次数的策略，该策略考虑到block的磨损均衡。但该策略选到的block可能有效数据较多，会增加写放大。</p>
+<p><strong>总结：</strong></p>
+<p>通常在实践中会结合有效数据量和擦写次数这两个维度，设定一个权重来选择目标block。</p>
+<blockquote>
+<p>固件在写用户数据时，会对block数据量进行记录，有效数据做加法，无效数据做减法。因为记录表的存在，在做GC时就比较容易找到目标block。同时，会维护一个block上数据是否有效的bitmap，从而可以对有效数据实现快速读取。</p>
+</blockquote>
+<h2 id="垃圾回收时机"><a href="#垃圾回收时机" class="headerlink" title="垃圾回收时机"></a>垃圾回收时机</h2><p>常见的两种垃圾回收时机：</p>
+<p><strong>1、Foreground GC</strong></p>
+<p>SSD可用block小于指定阈值时，被动做GC。</p>
+<p>缺点：会降低用户写入性能。</p>
+<p><strong>2、Background GC</strong></p>
+<p>SSD空闲时，后台主动去做GC。</p>
+<p>缺点：增加功耗。</p>
+<h2 id="Trim"><a href="#Trim" class="headerlink" title="Trim"></a>Trim</h2><p>OS（操作系统）只能识别SSD映射表中的LBA（逻辑块地址），所以从LBA请求数据，而存储系统从PBA（物理块地址）返回数据。</p>
+<p>在没有Trim之前，SSD无法知道哪些被删除的数据page是无效的，必须等下次OS在相同的位置写数据时做检查才会发现，在这之前做GC时，仍会将这些page当做有效数据进行搬移，对这些无效数据的搬移无疑会影响GC性能，同时增加写放大，增加对闪存的磨损。</p>
+<p>微软提出的Trim命令是为了减少NAND不必要的磨损。在删除文件时，Trim命令会让OS立即通知SSD，将数据标记为无效数据。这样做最大的好处就是帮助SSD实时跟踪OS执行的操作，从而减少对NAND flash的冗余访问。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/trim-process.png" alt="trim-process"></p>
+<p>Trim过程如上图所示：</p>
+<ul>
+<li>用户删除两个page，此时在逻辑表中，已经标记为删除，但是在SSD中，这两个page仍然是Filed状态</li>
+<li>OS下发Trim命令，告诉SSD这两个page包含无效数据，此时SSD将这两个page置为invalid状态</li>
+</ul>
+<p>总结下来，Trim有如下三个优点：</p>
+<p><strong>1、降低写放大</strong></p>
+<p>尽早通知那些包含无效数据的无效page，有助于减少数据重写。当有更多free空间可以提供出来用于写入时，可以有效减少写入任务（降低搬移）。</p>
+<p><strong>2、提高吞吐量</strong></p>
+<p>使用Trim命令，GC期间移动的数据减少，驱动运行的速度就会更快。SSD写入闪存的速度是吞吐量的瓶颈所在。</p>
+<p><strong>3、提高耐用性</strong></p>
+<p>通过不重写无效数据，驱动器向NAND闪存写入更少的数据。</p>
+<blockquote>
+<p>注意点：</p>
+<ul>
+<li>Trim命令不会触发GC。</li>
+<li>Trim是ATA接口下的命令，SCSI里同功能命令叫Unmap，NVMe里叫Deallocate。</li>
+</ul>
+</blockquote>
+<p>垃圾回收就先学习到这里，下一篇将学习一下磨损均衡相关内容。</p>
+<p>以上。</p>
+<p><strong>查阅资料：</strong></p>
+<ul>
+<li><a href="https://www.crucial.com/articles/about-ssd/what-is-trim" target="_blank" rel="noopener">What is trim and active garbage collection?</a></li>
+<li><a href="https://www.simms.co.uk/Uploads/Resources/125/cf12520f-dcd0-477d-b6e1-2f7506983497.pdf" target="_blank" rel="noopener">Garbage Collection &amp; Trim for SSDs</a></li>
+<li><a href="https://www.techtarget.com/searchstorage/definition/solid-state-storage-SSS-garbage-collection" target="_blank" rel="noopener">solid-state storage garbage collection</a></li>
+<li><a href="https://phisonblog.com/ssd-garbage-collection/" target="_blank" rel="noopener">SSD Garbage Collection</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Storage </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> SSD </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[闪存-FTL]]></title>
       <url>http://xiaqunfeng.cc/2023/07/02/ssd-all-flash-FTL/</url>
       <content type="html"><![CDATA[<p>学习下闪存的FTL（Flash Translation Layer）技术，主要包含：是什么，有哪些功能，及优缺点三个方面。</p>
