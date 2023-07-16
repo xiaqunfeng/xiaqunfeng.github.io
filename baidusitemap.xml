@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://xiaqunfeng.cc/2023/07/12/ssd-all-flash-wear-leveling/</loc>
+    <lastmod>2023-07-16T10:29:55.336Z</lastmod>
+    <data>
+        <display>
+        <title>闪存-磨损均衡</title>
+        <pubTime>2023-07-12T03:56:38.000Z</pubTime>
+        
+        <tag>SSD</tag>
+         
+         
+           
+             
+              <breadCrumb title="Storage" url="http://xiaqunfeng.cc/categories/Storage/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://xiaqunfeng.cc/2023/07/07/ssd-all-flash-gc/</loc>
     <lastmod>2023-07-07T03:45:45.213Z</lastmod>
     <data>
@@ -492,6 +512,26 @@
 
     
   <url>
+    <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-11-model-attribute/</loc>
+    <lastmod>2020-05-25T01:47:54.000Z</lastmod>
+    <data>
+        <display>
+        <title>SpringBoot实践十一：model attribute</title>
+        <pubTime>2020-02-05T07:26:13.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+         
+           
+             
+              <breadCrumb title="SpringBoot" url="http://xiaqunfeng.cc/categories/SpringBoot/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-10-profile/</loc>
     <lastmod>2020-05-25T01:47:54.000Z</lastmod>
     <data>
@@ -520,48 +560,6 @@
         <pubTime>2020-02-15T07:44:50.000Z</pubTime>
         
         <tag>java</tag>
-         
-         
-           
-             
-              <breadCrumb title="SpringBoot" url="http://xiaqunfeng.cc/categories/SpringBoot/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-11-model-attribute/</loc>
-    <lastmod>2020-05-25T01:47:54.000Z</lastmod>
-    <data>
-        <display>
-        <title>SpringBoot实践十一：model attribute</title>
-        <pubTime>2020-02-05T07:26:13.000Z</pubTime>
-        
-        <tag>java</tag>
-         
-         
-           
-             
-              <breadCrumb title="SpringBoot" url="http://xiaqunfeng.cc/categories/SpringBoot/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2020/02/15/java-springboot-14-redis-cache/</loc>
-    <lastmod>2020-05-25T01:47:54.000Z</lastmod>
-    <data>
-        <display>
-        <title>SpringBoot实践十四：redis缓存mysql</title>
-        <pubTime>2020-02-15T08:13:29.000Z</pubTime>
-        
-        <tag>java</tag>
-         
-        <tag>redis</tag>
          
          
            
@@ -616,12 +614,12 @@
 
     
   <url>
-    <loc>http://xiaqunfeng.cc/2020/02/15/java-springboot-17-rabbitmq-fanout/</loc>
+    <loc>http://xiaqunfeng.cc/2020/02/15/java-springboot-16-rabbitmq/</loc>
     <lastmod>2020-05-25T01:47:54.000Z</lastmod>
     <data>
         <display>
-        <title>SpringBoot实践十七：redis fanout</title>
-        <pubTime>2020-02-15T08:25:29.000Z</pubTime>
+        <title>SpringBoot实践十六：RabbitMq</title>
+        <pubTime>2020-02-15T08:21:29.000Z</pubTime>
         
         <tag>java</tag>
          
@@ -638,12 +636,12 @@
 
     
   <url>
-    <loc>http://xiaqunfeng.cc/2020/02/15/java-springboot-16-rabbitmq/</loc>
+    <loc>http://xiaqunfeng.cc/2020/02/15/java-springboot-17-rabbitmq-fanout/</loc>
     <lastmod>2020-05-25T01:47:54.000Z</lastmod>
     <data>
         <display>
-        <title>SpringBoot实践十六：RabbitMq</title>
-        <pubTime>2020-02-15T08:21:29.000Z</pubTime>
+        <title>SpringBoot实践十七：redis fanout</title>
+        <pubTime>2020-02-15T08:25:29.000Z</pubTime>
         
         <tag>java</tag>
          
@@ -670,6 +668,48 @@
         <tag>java</tag>
          
         <tag>mq</tag>
+         
+         
+           
+             
+              <breadCrumb title="SpringBoot" url="http://xiaqunfeng.cc/categories/SpringBoot/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2020/02/15/java-springboot-19-thymeleaf/</loc>
+    <lastmod>2020-05-25T01:47:54.000Z</lastmod>
+    <data>
+        <display>
+        <title>SpringBoot实践十九：thymeleaf</title>
+        <pubTime>2020-02-15T08:30:29.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+         
+           
+             
+              <breadCrumb title="SpringBoot" url="http://xiaqunfeng.cc/categories/SpringBoot/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2020/02/15/java-springboot-14-redis-cache/</loc>
+    <lastmod>2020-05-25T01:47:54.000Z</lastmod>
+    <data>
+        <display>
+        <title>SpringBoot实践十四：redis缓存mysql</title>
+        <pubTime>2020-02-15T08:13:29.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+        <tag>redis</tag>
          
          
            
@@ -722,72 +762,12 @@
 
     
   <url>
-    <loc>http://xiaqunfeng.cc/2020/02/15/java-springboot-19-thymeleaf/</loc>
-    <lastmod>2020-05-25T01:47:54.000Z</lastmod>
-    <data>
-        <display>
-        <title>SpringBoot实践十九：thymeleaf</title>
-        <pubTime>2020-02-15T08:30:29.000Z</pubTime>
-        
-        <tag>java</tag>
-         
-         
-           
-             
-              <breadCrumb title="SpringBoot" url="http://xiaqunfeng.cc/categories/SpringBoot/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-5-swagger2/</loc>
     <lastmod>2020-05-25T01:47:54.000Z</lastmod>
     <data>
         <display>
         <title>SpringBoot实践五：swagger2</title>
         <pubTime>2020-02-05T05:04:13.000Z</pubTime>
-        
-        <tag>java</tag>
-         
-         
-           
-             
-              <breadCrumb title="SpringBoot" url="http://xiaqunfeng.cc/categories/SpringBoot/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-8-schedule/</loc>
-    <lastmod>2020-05-25T01:47:54.000Z</lastmod>
-    <data>
-        <display>
-        <title>SpringBoot实践八：schedule</title>
-        <pubTime>2020-02-05T07:14:13.000Z</pubTime>
-        
-        <tag>java</tag>
-         
-         
-           
-             
-              <breadCrumb title="SpringBoot" url="http://xiaqunfeng.cc/categories/SpringBoot/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-9-interceptor/</loc>
-    <lastmod>2020-05-25T01:47:54.000Z</lastmod>
-    <data>
-        <display>
-        <title>SpringBoot实践九：interceptor</title>
-        <pubTime>2020-02-05T07:19:13.000Z</pubTime>
         
         <tag>java</tag>
          
@@ -822,32 +802,12 @@
 
     
   <url>
-    <loc>http://xiaqunfeng.cc/2020/02/15/java-springboot-21-security/</loc>
+    <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-8-schedule/</loc>
     <lastmod>2020-05-25T01:47:54.000Z</lastmod>
     <data>
         <display>
-        <title>SpringBoot实践二十一：security</title>
-        <pubTime>2020-02-15T08:37:29.000Z</pubTime>
-        
-        <tag>java</tag>
-         
-         
-           
-             
-              <breadCrumb title="SpringBoot" url="http://xiaqunfeng.cc/categories/SpringBoot/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-7-validation/</loc>
-    <lastmod>2020-05-25T01:47:54.000Z</lastmod>
-    <data>
-        <display>
-        <title>SpringBoot实践七：validation</title>
-        <pubTime>2020-02-05T07:08:13.000Z</pubTime>
+        <title>SpringBoot实践八：schedule</title>
+        <pubTime>2020-02-05T07:14:13.000Z</pubTime>
         
         <tag>java</tag>
          
@@ -868,6 +828,66 @@
         <display>
         <title>SpringBoot实践二十二：jwt</title>
         <pubTime>2020-02-15T08:40:29.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+         
+           
+             
+              <breadCrumb title="SpringBoot" url="http://xiaqunfeng.cc/categories/SpringBoot/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2020/02/15/java-springboot-21-security/</loc>
+    <lastmod>2020-05-25T01:47:54.000Z</lastmod>
+    <data>
+        <display>
+        <title>SpringBoot实践二十一：security</title>
+        <pubTime>2020-02-15T08:37:29.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+         
+           
+             
+              <breadCrumb title="SpringBoot" url="http://xiaqunfeng.cc/categories/SpringBoot/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-9-interceptor/</loc>
+    <lastmod>2020-05-25T01:47:54.000Z</lastmod>
+    <data>
+        <display>
+        <title>SpringBoot实践九：interceptor</title>
+        <pubTime>2020-02-05T07:19:13.000Z</pubTime>
+        
+        <tag>java</tag>
+         
+         
+           
+             
+              <breadCrumb title="SpringBoot" url="http://xiaqunfeng.cc/categories/SpringBoot/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://xiaqunfeng.cc/2020/02/05/java-springboot-7-validation/</loc>
+    <lastmod>2020-05-25T01:47:54.000Z</lastmod>
+    <data>
+        <display>
+        <title>SpringBoot实践七：validation</title>
+        <pubTime>2020-02-05T07:08:13.000Z</pubTime>
         
         <tag>java</tag>
          

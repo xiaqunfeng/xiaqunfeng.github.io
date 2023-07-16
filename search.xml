@@ -4,6 +4,79 @@
   
     
     <entry>
+      <title><![CDATA[闪存-磨损均衡]]></title>
+      <url>http://xiaqunfeng.cc/2023/07/12/ssd-all-flash-wear-leveling/</url>
+      <content type="html"><![CDATA[<p>学习一下磨损均衡技术，包括实现原理和动态、静态、全局三种实现方式。</p>
+<a id="more"></a>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>前面在《闪存——FTL》和《闪存——特性》中提到过，闪存是有寿命的，即被编程和擦写的次数限制。闪存的寿命根据其类型不同也不一样，通常来说，SLC的寿命是100,000次，最可靠和最持久，MLC 10,000次，评级仅次于SLC，TLC/QLC耐用性更低，仅供消费者使用，不适合企业和工业应用的需要。随着工艺的提高闪存寿命却越来越短，所以就需要磨损均衡算法，来最大限度地使用闪存。</p>
+<p>一些基本概念：</p>
+<ul>
+<li>磨损均衡：英文称作Wear Leveling，简称为WL</li>
+<li>P/E周期：一次对盘完整的写入或擦除叫做一个Program/Erase Cycle，简称P/E</li>
+<li>hot数据：被频繁修改</li>
+<li>cold数据：很少修改的数据</li>
+</ul>
+<h2 id="什么是磨损均衡"><a href="#什么是磨损均衡" class="headerlink" title="什么是磨损均衡"></a>什么是磨损均衡</h2><p>WL允许闪存设备在所有block之间均衡分布 P/E 周期，这样可以防止过度使用的block过早磨损，让所有block都可以得到最大程度的利用。WL可以延长存储设备的使用寿命，从而可以实现更高的可靠性和更长的产品使用寿命。</p>
+<p>磨损均衡算法使用前后对比如下图所示：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/comparison-with-wear-leveling.png" alt="comparison-with-wear-leveling"></p>
+<ul>
+<li>左边没有使用WL算法，第一排的四个block被反复program和erase，所以比其他block早很多就达到其寿命次数了，从而降低了整个存储容量。</li>
+<li>右边使用了WL算法后，各block被program和erase的次数相对均衡，所以在承受和左边同样的读写擦除次数后，各block依然保持一个健康的状态在运行。</li>
+</ul>
+<p>WL在FTL中实现，因为FTL提供了从LBA到PBA的映射关系，其位置如下图所示：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/wear-leveling-position.png" alt="wear-leveling-position"></p>
+<h2 id="闪存块管理"><a href="#闪存块管理" class="headerlink" title="闪存块管理"></a>闪存块管理</h2><p>NAND闪存设备可以分为三个部分：</p>
+<ul>
+<li>Data block：用于逻辑容量</li>
+<li>Free block：用于磨损均衡和坏块池管理</li>
+<li>System block：用于映射表、缓冲块等</li>
+</ul>
+<p><img src="http://oow6unnib.bkt.clouddn.com/flash-block-management.png" alt="flash-block-management"></p>
+<h2 id="怎样实现磨损均衡"><a href="#怎样实现磨损均衡" class="headerlink" title="怎样实现磨损均衡"></a>怎样实现磨损均衡</h2><p>目前有三种实现方式：</p>
+<h3 id="1、Dynamic"><a href="#1、Dynamic" class="headerlink" title="1、Dynamic"></a>1、Dynamic</h3><p>仅考虑可用空间，并对该空间内具有最低擦写次数的block执行写操作。</p>
+<p>缺点是仅限于热（hot）数据，或经常修改的区域。所以很少访问的冷（cold）数据不包括在可用空间池中，从而限制了进行磨损均衡的block数量。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/dynamic-wl.png" alt="dynamic-wl"></p>
+<h3 id="2、Static"><a href="#2、Static" class="headerlink" title="2、Static"></a>2、Static</h3><p>磨损均衡包括已写入数据的block和空的block。算法会将数据从写入/擦除次数较低的block移动到其他block中，这样可以将低擦写次数的block释放出来，添加到可用可用空间池中，以便后续使用。但仅覆盖单个闪存芯片单元（single flash die）。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/static-wl.png" alt="static-wl"></p>
+<h3 id="3、Global"><a href="#3、Global" class="headerlink" title="3、Global"></a>3、Global</h3><p>全局磨损均衡部署了比前面两种方式更强大的控制器，与static磨损均衡不同，其覆盖范围扩展到整个闪存设备。在整个设备的活动过程中，确保对设备中具有较低写入/擦除次数的block执行写入操作。</p>
+<p>总结如下图所示：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/wear-leveling-method.png" alt="wear-leveling-method"></p>
+<h2 id="Dynamic-VS-Static"><a href="#Dynamic-VS-Static" class="headerlink" title="Dynamic VS Static"></a>Dynamic VS Static</h2><p>闪存的特性是块擦页写，当需要覆盖写的时候，新的数据写到free page中，旧的数据被标记为invalid，等待垃圾回收擦除。如下图所示，对LBA#6多次修改，之前block中的其他page都被标记为invalid，通过GC将LBA#6移动到新block中，从而将旧block擦除。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/write-gc.png" alt="write-gc"></p>
+<ul>
+<li>对于dynamic磨损均衡，缺点就是如果数据很久没有被修改，其所占用的block P/E次数很少，但又不能拿来做磨损均衡，所以使用寿命延长有限，通常用于消费级产品。</li>
+<li>而Static方式可以用应用企业级产品，对闪存使用寿命有较大延长。</li>
+</ul>
+<p>在做static磨损均衡时，通常使用GC机制来实现，在挑选block时，选择冷数据所在的block，并对有效数据进行移动。</p>
+<p>由于实现机制的问题，static磨损均衡可能会导致cold数据、hot数据和GC数据混合在同一个block上，这种场景下cold数据可能经常被搬移，从而引入额外写操作，增加写放大。</p>
+<p>对于上述这种情况，业界通常的解决办法是将cold数据单独block存放，在做GC时不会挑选该block进行搬移操作，只有下一次需要做static磨损均衡时，才会将其进行搬移。</p>
+<p><strong>查阅资料：</strong></p>
+<ul>
+<li><a href="https://www.transcend-info.com/Embedded/Essay-22" target="_blank" rel="noopener">Wear Leveling</a></li>
+<li><a href="https://www.micron.com/-/media/client/global/documents/products/technical-note/nand-flash/tn2942_nand_wear_leveling.pdf" target="_blank" rel="noopener">Wear-Leveling Techiques in NAND Flash Devices</a></li>
+<li><a href="https://www.atpinc.com/blog/how-SSD-wear-leveling-works" target="_blank" rel="noopener">How Wear Leveling Increases SSD Lifetime</a></li>
+<li><a href="https://www.silicon-power.com/web/jp/wearleveling" target="_blank" rel="noopener">COMPREHENSIVE WEAR LEVELING MECHANISMS FOR SP INDUSTRIAL SD AND microSD CARDS</a></li>
+</ul>
+<p>补充一个解释非常清晰的视频：</p>
+<p><a href="https://www.youtube.com/watch?v=2nyNCblXIl8" target="_blank" rel="noopener">Wear Leveling | How Does Static &amp; Dynamic Wear Leveling Impact NAND Flash Life Expectancy</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> Storage </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> SSD </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[闪存-垃圾回收和Trim]]></title>
       <url>http://xiaqunfeng.cc/2023/07/07/ssd-all-flash-gc/</url>
       <content type="html"><![CDATA[<p>学习一下闪存FTL里提到的垃圾回收技术，以及Trim命令。</p>
