@@ -5,7 +5,7 @@
     
     <entry>
       <title><![CDATA[闪存-磨损均衡]]></title>
-      <url>http://xiaqunfeng.cc/2023/07/12/ssd-all-flash-wear-leveling/</url>
+      <url>http://xiaqunfeng.cc/2023/07/16/ssd-all-flash-wear-leveling/</url>
       <content type="html"><![CDATA[<p>学习一下磨损均衡技术，包括实现原理和动态、静态、全局三种实现方式。</p>
 <a id="more"></a>
 <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>前面在《闪存——FTL》和《闪存——特性》中提到过，闪存是有寿命的，即被编程和擦写的次数限制。闪存的寿命根据其类型不同也不一样，通常来说，SLC的寿命是100,000次，最可靠和最持久，MLC 10,000次，评级仅次于SLC，TLC/QLC耐用性更低，仅供消费者使用，不适合企业和工业应用的需要。随着工艺的提高闪存寿命却越来越短，所以就需要磨损均衡算法，来最大限度地使用闪存。</p>
