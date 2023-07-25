@@ -4,6 +4,92 @@
   
     
     <entry>
+      <title><![CDATA[闪存-坏块管理]]></title>
+      <url>http://xiaqunfeng.cc/2023/07/25/ssd-all-flash-BBM/</url>
+      <content type="html"><![CDATA[<p>前面学习了FTL中的垃圾回收和磨损均衡，本篇继续学习FTL中的技术之一：坏块管理。</p>
+<a id="more"></a>
+<p>坏块管理，英文全拼 Bad Block Management，简称BBM。</p>
+<h2 id="关于坏块（Bad-Block）"><a href="#关于坏块（Bad-Block）" class="headerlink" title="关于坏块（Bad Block）"></a>关于坏块（Bad Block）</h2><h3 id="坏块来源"><a href="#坏块来源" class="headerlink" title="坏块来源"></a>坏块来源</h3><p>坏块是指包含一个或多个无效bit位的块，其可靠性得不到保证。在 <a href="http://xiaqunfeng.cc/2023/06/16/ssd-all-flash-feature/">《闪存-特性》</a> 中有说到，主要有两种类型的坏块：</p>
+<ul>
+<li>一种是在设备出厂时存在的初始坏块（Factory Original Bad Block）；</li>
+<li>一种是在设备使用寿命内产生的累积/动态坏块（Later Bad Block）。</li>
+</ul>
+<h3 id="坏块判断"><a href="#坏块判断" class="headerlink" title="坏块判断"></a>坏块判断</h3><p>1、出厂坏块：扫描厂商指定地址所对应的byte是否有0xFF标志，若没有0xFF则为坏块。</p>
+<p>以Micron NAND为例：</p>
+<ul>
+<li>对于单级单元（SLC）小页面（528字节/256字页）设备，任何第一个页面的备用区域中的第六字节（x8设备）/第一个字（x16设备）不是FFh的块都是坏块。</li>
+<li>对于SLC大页面（2112字节/1056字页）设备，任何第一个页面的备用区域中的第一个和第六字节（x8设备）/第一个字（x16设备）不是FFh的块都是坏块。</li>
+<li>对于SLC超大页面（4224字节页）设备，任何第一个页面的备用区域中的第一个和第六字节不是FFh的块都是坏块。</li>
+<li>对于多级单元（MLC）设备，任何最后一页的备用区域中的第一个字节不是FFh的块都是坏块。</li>
+</ul>
+<p>2、新增坏块，有如下三种场景：</p>
+<ul>
+<li>执行擦除指令时出错；</li>
+<li>执行写命令时出错；</li>
+<li>执行读取命令时出错UECC（Uncorrectable Error Correction Code，数据错误的bit超过ECC纠错能力，没有办法通过ECC纠错恢复）。</li>
+</ul>
+<h3 id="坏块对性能的影响"><a href="#坏块对性能的影响" class="headerlink" title="坏块对性能的影响"></a>坏块对性能的影响</h3><p>坏块不会影响有效块的性能，因为它通过选择晶体管与位线（bit line）和公共源线（comm source line）隔离，也就是说与位线无关，因此其他块的可擦除速度不受影响。</p>
+<p>然而，如果SSD中添加了足够多的新坏块，SSD中可用块的数量会减少，从而增加了垃圾回收的次数。同时，OP（Over Provision）容量减少，严重影响了垃圾回收的效率。当坏块增加到一定程度时，SSD的性能会下降。尤其是由于垃圾回收导致SSD性能下降。</p>
+<p>对于管理NAND闪存设备中的错误位（error bits），需要通过坏块管理、块替换（Block Replacement）和错误校正码（ECC）软件技术进行处理。</p>
+<h2 id="坏块管理（BBM）"><a href="#坏块管理（BBM）" class="headerlink" title="坏块管理（BBM）"></a>坏块管理（BBM）</h2><p>对于没有专用闪存文件系统的控制器，坏块可以由SSD控制器固件来管理，或者对于有专用闪存文件系统的情况，坏块可以由专用闪存文件系统或驱动程序来管理。 </p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/ssd-bbm-management.png" alt="ssd-bbm-management"></p>
+<p>BBM在软件链路中的位置如下图所示：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/BBM-position.png" alt="BBM-position"></p>
+<h3 id="坏块表"><a href="#坏块表" class="headerlink" title="坏块表"></a>坏块表</h3><p>NAND闪存设备在出厂时，所有位于有效块内的位置都会被擦除，坏块信息会在出货前写入SA区域，读取闪存内的SA区域后，会创建坏块表。坏块表保存在一个好的块中，这样在重新启动NAND闪存内存时，坏块表就会被加载到RAM中。</p>
+<p>根据出厂坏块标记建立坏块表流程图如下所示，逐个检查block第一个页的对应字节是否是FFh，如果不是，则更新坏块表，等所有block都访问完毕后，流程结束（错误勘误：图片最下一个框框是END不是START）：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/bbm-flow-chart.png" alt="bbm-flow-chart"></p>
+<p>注意点：坏块信息必须在进行任何擦除操作之前读取，因为坏块信息是可擦除的，一旦擦除就无法恢复。所以不要擦除原始的坏块信息。</p>
+<h3 id="替换策略"><a href="#替换策略" class="headerlink" title="替换策略"></a>替换策略</h3><p>坏块表中包含的块是无法寻址的。因此，如果闪存转换层（FTL）寻址到坏块之一，坏块管理软件会将块标记为坏块，并使用如下来两种方法来分配新块：</p>
+<p><strong>1、略过策略（Skip Block）</strong></p>
+<p>根据创建的坏块表，当目标地址对应于坏块地址时，数据会存储在下一个好的块中，从而跳过坏块。同时还将好的块和坏块对应关系信息存储在NAND闪存设备中。</p>
+<p><strong>2、替换策略（Reserved Block）</strong></p>
+<p>该方法中，不会跳过坏块，而是通过将FTL（闪存转换层）重定向到已知的空闲好块来替换坏块。为此，坏块管理软件在NAND闪存中创建了两个区域：<strong>用户可寻址块区域</strong>和<strong>保留块区域</strong>，如下图所示：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/reserved-block-method.png" alt="reserved-block-method"></p>
+<p>FTL可以使用用户可寻址块区域来存储数据，而保留块区域仅用于坏块替换和保存坏块表，该表还记录重新映射的已开发坏块。</p>
+<p>为了定义这两个区域，需要确定保留区域的起始地址和大小。大小可以由用户给定，也可以由坏块管理软件强制规定（对于Micron NAND闪存设备，设备寿命内可能变坏的坏块数量最多占总数的<strong>2％</strong>，因此通常预留相同数量的块）。</p>
+<p>每次FTL写入逻辑扇区时，它会计算要写入的物理块的地址。然后，在FTL开始写入之前，坏块管理软件会检查该块是否为坏块。如果是坏块，它会返回被重新映射的扇区对应的好块地址。如果该块在NAND闪存的使用寿命内变坏，坏块管理软件会重新映射坏块并将其包含的数据复制到将替换它的块中。</p>
+<p>对于FTL来说，坏块管理是完全透明的，好像数据被写入同一地址一样。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/bbm-strategy.png" alt="bbm-strategy"></p>
+<p><strong>优缺点：</strong></p>
+<ul>
+<li>Skip策略在N个Die并行时，并行度为1~N，而Reserved策略并行度一直是N，所以Reserved性能表现更优。</li>
+<li>Reserved策略有木桶效应，如果某个Die质量较差，那么SSD可用的闪存块性能受限于最坏的Die。</li>
+</ul>
+<h2 id="替换策略的实际应用"><a href="#替换策略的实际应用" class="headerlink" title="替换策略的实际应用"></a>替换策略的实际应用</h2><p>实际上，在实际产品设计中，很少见到将2%的坏块保留为坏块替换区域。通常，OP（Over Provision）区域中的空闲块用于替换在使用过程中添加的坏块。</p>
+<p>以垃圾回收为例：</p>
+<ul>
+<li>首先擦除坏块。如果擦除状态寄存器无法擦除块，则坏块管理机制将该块的地址更新到新坏块列表中。</li>
+<li>然后，将坏块中的有效数据页写入OP区域的空闲块中，更新坏块管理表，并在下次写入数据时跳过坏块，选择下一个可用块。</li>
+</ul>
+<p>不同厂商设置OP的大小不同，根据不同的应用场景和可靠性要求，OP的大小会有所不同。OP的大小与稳定性之间存在权衡关系：</p>
+<ul>
+<li>OP越大，在写入和垃圾回收的过程中可用空间越大，性能越稳定，性能曲线更平滑。</li>
+<li>相反，OP越小，性能稳定性越差。</li>
+</ul>
+<p>当然，较大的OP意味着更多的空间可供用户使用，而更多的空间意味着更低的成本。</p>
+<p>一般来说，<strong>OP</strong>可以设置为5% - 50%，其中<strong>7%的OP是常见的比例</strong>。不同于厂商建议的2%固定坏块，7%的OP并非在某些块中固定分配，而是<strong>在所有块中动态分配</strong>，这更有利于均衡磨损策略。</p>
+<p><strong>查阅资料：</strong></p>
+<p><a href="https://www.diskmfr.com/ssd-bad-block-management-and-its-impact-on-ssds/" target="_blank" rel="noopener">SSD bad block management and its impact on SSDs</a></p>
+<p><a href="https://industrial.adata.com/cn/technology/Bad-Block-Management" target="_blank" rel="noopener">坏块管理</a></p>
+<p>Micron: Bad Block Management in NAND Flash Memory</p>
+]]></content>
+      
+        <categories>
+            
+            <category> Storage </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> SSD </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[闪存-磨损均衡]]></title>
       <url>http://xiaqunfeng.cc/2023/07/16/ssd-all-flash-wear-leveling/</url>
       <content type="html"><![CDATA[<p>学习一下磨损均衡技术，包括实现原理和动态、静态、全局三种实现方式。</p>
@@ -4802,7 +4888,7 @@ pdf" target="_blank" rel="noopener">A space-efficient flash translation layer fo
     <entry>
       <title><![CDATA[文章导航]]></title>
       <url>http://xiaqunfeng.cc/2019/10/01/navigation/</url>
-      <content type="html"><![CDATA[<p>分布式技术：<a href="http://xiaqunfeng.cc/categories/Distribute/">Distribute</a><br>存储：<br>&emsp;&emsp;分布式存储：<a href="http://xiaqunfeng.cc/categories/Ceph/">Ceph</a><br>&emsp;&emsp;闪存：<a href="http://xiaqunfeng.cc/categories/Storage/">SSD</a><br>编程基础：<br>&emsp;&emsp;C++：<a href="http://xiaqunfeng.cc/categories/c++/">c++11 concurrency</a><br>&emsp;&emsp;SpringBoot2：<a href="http://xiaqunfeng.cc/categories/SpringBoot">SpringBoot2</a><br>人工智能：<br>&emsp;&emsp;机器学习：<a href="http://xiaqunfeng.cc/categories/MachineLearning/">MachineLearning</a><br>&emsp;&emsp;深度学习 ：<a href="http://xiaqunfeng.cc/categories/DeepLearning/">DeepLearning</a><br>工具：<a href="http://xiaqunfeng.cc/categories/Tools/">Tools</a> </p>
+      <content type="html"><![CDATA[<p>分布式技术：<a href="http://xiaqunfeng.cc/categories/Distribute/">Distribute</a><br>存储：<br>&emsp;&emsp;分布式存储：<a href="http://xiaqunfeng.cc/categories/Ceph/">Ceph</a><br>&emsp;&emsp;闪存：<a href="http://xiaqunfeng.cc/categories/Storage/">SSD</a><br>编程基础：<br>&emsp;&emsp;C++：<a href="http://xiaqunfeng.cc/categories/c/">c++11 concurrency</a><br>&emsp;&emsp;SpringBoot2：<a href="http://xiaqunfeng.cc/categories/SpringBoot">SpringBoot2</a><br>人工智能：<br>&emsp;&emsp;机器学习：<a href="http://xiaqunfeng.cc/categories/MachineLearning/">MachineLearning</a><br>&emsp;&emsp;深度学习 ：<a href="http://xiaqunfeng.cc/categories/DeepLearning/">DeepLearning</a><br>工具：<a href="http://xiaqunfeng.cc/categories/Tools/">Tools</a> </p>
 <a id="more"></a>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>虽然点击“所有文章”可以根据tag筛选文章，但文章之前打的tag较多，多有不便。文章分类展示的也不是很明显，所以，这里梳理一下。</p>
 <ul>

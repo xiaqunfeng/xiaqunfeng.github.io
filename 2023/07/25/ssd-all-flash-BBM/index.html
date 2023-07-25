@@ -6,25 +6,26 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
-  <title>SpringBoot实践七：validation | 夏天的风的博客</title>
+  <title>闪存-坏块管理 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="SpringBoot实践第七篇，validation输入数据校验。">
-<meta name="keywords" content="java">
+  <meta name="description" content="前面学习了FTL中的垃圾回收和磨损均衡，本篇继续学习FTL中的技术之一：坏块管理。">
+<meta name="keywords" content="SSD">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SpringBoot实践七：validation">
-<meta property="og:url" content="http://xiaqunfeng.cc/2020/02/05/java-springboot-7-validation/index.html">
+<meta property="og:title" content="闪存-坏块管理">
+<meta property="og:url" content="http://xiaqunfeng.cc/2023/07/25/ssd-all-flash-BBM/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="SpringBoot实践第七篇，validation输入数据校验。">
+<meta property="og:description" content="前面学习了FTL中的垃圾回收和磨损均衡，本篇继续学习FTL中的技术之一：坏块管理。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/validation-1.png-xtdf">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/validation-2.png-xtdf">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/validation-3.png-xtdf">
-<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/validation-4.png-xtdf">
-<meta property="og:updated_time" content="2020-05-25T01:47:54.000Z">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/ssd-bbm-management.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/BBM-position.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/bbm-flow-chart.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/reserved-block-method.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/bbm-strategy.png">
+<meta property="og:updated_time" content="2023-07-25T12:16:42.438Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SpringBoot实践七：validation">
-<meta name="twitter:description" content="SpringBoot实践第七篇，validation输入数据校验。">
-<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/validation-1.png-xtdf">
+<meta name="twitter:title" content="闪存-坏块管理">
+<meta name="twitter:description" content="前面学习了FTL中的垃圾回收和磨损均衡，本篇继续学习FTL中的技术之一：坏块管理。">
+<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/ssd-bbm-management.png">
   
     <link rel="alternative" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
   
@@ -164,189 +165,92 @@ var _hmt = _hmt || [];
           </div>
           <div id="js-content" class="content-ll">
             
-<article id="post-java-springboot-7-validation" class="article article-type-post " itemscope itemprop="blogPost">
+<article id="post-ssd-all-flash-BBM" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      SpringBoot实践七：validation
+      闪存-坏块管理
     </h1>
   
 
         
-        <a href="/2020/02/05/java-springboot-7-validation/" class="archive-article-date">
-  	<time datetime="2020-02-05T07:08:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-02-05</time>
+        <a href="/2023/07/25/ssd-all-flash-BBM/" class="archive-article-date">
+  	<time datetime="2023-07-25T04:17:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-07-25</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>SpringBoot实践第七篇，validation输入数据校验。</p>
+        <p>前面学习了FTL中的垃圾回收和磨损均衡，本篇继续学习FTL中的技术之一：坏块管理。</p>
 <a id="more"></a>
-<h2 id="输入数据校验"><a href="#输入数据校验" class="headerlink" title="输入数据校验"></a>输入数据校验</h2><p>在项目的过程中，对于参数的校验是必须的，输入的数据很有可能是不安全或不正确的，所以在被处理前需要做校验。</p>
-<p>数据校验有两种：</p>
+<p>坏块管理，英文全拼 Bad Block Management，简称BBM。</p>
+<h2 id="关于坏块（Bad-Block）"><a href="#关于坏块（Bad-Block）" class="headerlink" title="关于坏块（Bad Block）"></a>关于坏块（Bad Block）</h2><h3 id="坏块来源"><a href="#坏块来源" class="headerlink" title="坏块来源"></a>坏块来源</h3><p>坏块是指包含一个或多个无效bit位的块，其可靠性得不到保证。在 <a href="http://xiaqunfeng.cc/2023/06/16/ssd-all-flash-feature/">《闪存-特性》</a> 中有说到，主要有两种类型的坏块：</p>
 <ul>
-<li>一种是通过代码逻辑，写一个validation的函数，来对前端传输过来的数据进行判断。</li>
-<li>另一种就是通过注解进行校验，这里学习一下这种。</li>
+<li>一种是在设备出厂时存在的初始坏块（Factory Original Bad Block）；</li>
+<li>一种是在设备使用寿命内产生的累积/动态坏块（Later Bad Block）。</li>
 </ul>
-<p>如果参数比较少的话我们可以直接通过代码进行校验，但是数据较大时再用这个方法就比较笨重，推荐使用validation进行校验，调用的<code>javax.validation</code>。</p>
-<h2 id="JSR-303-注释介绍"><a href="#JSR-303-注释介绍" class="headerlink" title="JSR-303 注释介绍"></a>JSR-303 注释介绍</h2><p><code>javax.validation</code>包下的注解如下：（包含了<code>hibernate-validator</code>验证包中的常用注解）</p>
-<table>
-<thead>
-<tr>
-<th>注解</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>@Null</code></td>
-<td>限制必须为 null</td>
-</tr>
-<tr>
-<td><code>@NotNull</code></td>
-<td>限制不能为 null</td>
-</tr>
-<tr>
-<td><code>@NotEmpty</code></td>
-<td>限制不能为 null 且不能为空；可以作用于字符串，其长度不能为 0；可作用于 Array、Collection、Map，其大小不能为 0</td>
-</tr>
-<tr>
-<td><code>@NotBlank</code></td>
-<td>限制不能为null，且去除首位空格后长度不能为0。只应用于字符串</td>
-</tr>
-<tr>
-<td><code>@Pattern(value)</code></td>
-<td>限制必须符合指定的正则表达式</td>
-</tr>
-<tr>
-<td><code>@Size(max,min)</code></td>
-<td>限制长度必须在 min 到 max 之间（可用于字符串、Array、集合等）</td>
-</tr>
-<tr>
-<td><code>@Email</code></td>
-<td>限制必须为Email邮箱格式，也可以通过正则表达式和flag指定自定义的email格式</td>
-</tr>
-<tr>
-<td><code>@Max(value)</code></td>
-<td>限制必须为一个不大于指定值的数字</td>
-</tr>
-<tr>
-<td><code>@Min(value)</code></td>
-<td>限制必须为一个不小于指定值的数字</td>
-</tr>
-<tr>
-<td><code>@Positive</code></td>
-<td>限制必须为正数</td>
-</tr>
-<tr>
-<td><code>@PositiveOrZero</code></td>
-<td>限制必须为正数或0</td>
-</tr>
-<tr>
-<td><code>@Negative</code></td>
-<td>限制必须为负数</td>
-</tr>
-<tr>
-<td><code>@NegativeOrZero</code></td>
-<td>限制必须为负数或0</td>
-</tr>
-<tr>
-<td><code>@DecimalMax(value)</code></td>
-<td>限制必须为一个不大于指定值的数字</td>
-</tr>
-<tr>
-<td><code>@DecimalMin(value)</code></td>
-<td>限制必须为一个不小于指定值的数字</td>
-</tr>
-<tr>
-<td><code>@AssertFalse</code></td>
-<td>限制必须为false （很少用）</td>
-</tr>
-<tr>
-<td><code>@AssertTrue</code></td>
-<td>限制必须为true （很少用）</td>
-</tr>
-<tr>
-<td><code>@Past</code></td>
-<td>限制必须是一个过去的日期</td>
-</tr>
-<tr>
-<td><code>@Future</code></td>
-<td>限制必须是一个将来的日期</td>
-</tr>
-<tr>
-<td><code>@Digits(integer,fraction)</code></td>
-<td>限制必须为一个小数，且整数部分的位数不能超过 integer，小数部分的位数不能超过 fraction （很少用）</td>
-</tr>
-</tbody>
-</table>
-<h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><h3 id="DTO"><a href="#DTO" class="headerlink" title="DTO"></a>DTO</h3><p>创建用户注册类，用户注册时，要求输入手机号、密码、昵称，传给该类。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">package com.example.demo.model.dto;</span><br><span class="line"></span><br><span class="line">import lombok.Data;</span><br><span class="line">import org.slf4j.Logger;</span><br><span class="line">import org.slf4j.LoggerFactory;</span><br><span class="line"></span><br><span class="line">import javax.validation.constraints.NotNull;</span><br><span class="line">import javax.validation.constraints.Pattern;</span><br><span class="line">import javax.validation.constraints.Size;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @ProjectName: XqfSpringBoot</span><br><span class="line"> * @Package: com.example.demo.model.dto</span><br><span class="line"> * @ClassName: RegisterRequestDTO</span><br><span class="line"> * @Description: 注册请求的数据类</span><br><span class="line"> * @Author: Qunfeng Xia</span><br><span class="line"> * @CreateTime: 2019-11-08 November</span><br><span class="line"> */</span><br><span class="line">@Data</span><br><span class="line">public class RegisterRequestDTO &#123;</span><br><span class="line">    private static Logger logger = LoggerFactory.getLogger(RegisterRequestDTO.class);</span><br><span class="line"></span><br><span class="line">    @NotNull(message = &quot;手机号，必填&quot;)</span><br><span class="line">    @Pattern(regexp = &quot;^[1]([3][0-9]&#123;1&#125;|59|58|88|89)[0-9]&#123;8&#125;$&quot;, message = &quot;请输入11位手机号&quot;)</span><br><span class="line">    private String mobile;</span><br><span class="line"></span><br><span class="line">    @NotNull(message = &quot;昵称，必填&quot;)</span><br><span class="line">    @Size(min = 2, max = 6, message = &quot;昵称2~6个字符&quot;)</span><br><span class="line">    private String nickname;</span><br><span class="line"></span><br><span class="line">    @NotNull(message = &quot;密码，必填&quot;)</span><br><span class="line">    @Size(min = 3, max = 10, message = &quot;密码3~10位&quot;)</span><br><span class="line">    private String password;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="坏块判断"><a href="#坏块判断" class="headerlink" title="坏块判断"></a>坏块判断</h3><p>1、出厂坏块：扫描厂商指定地址所对应的byte是否有0xFF标志，若没有0xFF则为坏块。</p>
+<p>以Micron NAND为例：</p>
 <ul>
-<li>@NotNull 表示必填</li>
-<li>@Size 字符串长度必须符合指定范围</li>
-<li>@Pattern 输入字符串必须匹配正则表达式</li>
+<li>对于单级单元（SLC）小页面（528字节/256字页）设备，任何第一个页面的备用区域中的第六字节（x8设备）/第一个字（x16设备）不是FFh的块都是坏块。</li>
+<li>对于SLC大页面（2112字节/1056字页）设备，任何第一个页面的备用区域中的第一个和第六字节（x8设备）/第一个字（x16设备）不是FFh的块都是坏块。</li>
+<li>对于SLC超大页面（4224字节页）设备，任何第一个页面的备用区域中的第一个和第六字节不是FFh的块都是坏块。</li>
+<li>对于多级单元（MLC）设备，任何最后一页的备用区域中的第一个字节不是FFh的块都是坏块。</li>
 </ul>
-<h3 id="controller"><a href="#controller" class="headerlink" title="controller"></a>controller</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">package com.example.demo.controller;</span><br><span class="line"></span><br><span class="line">import com.example.demo.core.ret.RetResponse;</span><br><span class="line">import com.example.demo.core.ret.RetResult;</span><br><span class="line">import com.example.demo.model.dto.RegisterRequestDTO;</span><br><span class="line">import org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line">import org.springframework.web.bind.annotation.RestController;</span><br><span class="line"></span><br><span class="line">import javax.validation.Valid;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @ProjectName: XqfSpringBoot</span><br><span class="line"> * @Package: com.example.demo.controller</span><br><span class="line"> * @ClassName: AuthController</span><br><span class="line"> * @Description: 校验</span><br><span class="line"> * @Author: Qunfeng Xia</span><br><span class="line"> * @CreateTime: 2019-11-08 November</span><br><span class="line"> */</span><br><span class="line">@RestController</span><br><span class="line">public class AuthController &#123;</span><br><span class="line">    @RequestMapping(&quot;/valid&quot;)</span><br><span class="line">    public RetResult&lt;RegisterRequestDTO&gt; register(@Valid RegisterRequestDTO requestDTO) &#123;</span><br><span class="line">        return RetResponse.makeOKRsp(requestDTO);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在参数前面加上 @Valid 注解即可。</p>
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>1、输入手机号不对</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/validation-1.png-xtdf" alt="1"></p>
-<p>结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;timestamp&quot;: 1573284851013,</span><br><span class="line">    &quot;status&quot;: 400,</span><br><span class="line">    &quot;error&quot;: &quot;Bad Request&quot;,</span><br><span class="line">    &quot;errors&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;codes&quot;: [</span><br><span class="line">                &quot;Pattern.registerRequestDTO.mobile&quot;,</span><br><span class="line">                &quot;Pattern.mobile&quot;,</span><br><span class="line">                &quot;Pattern.java.lang.String&quot;,</span><br><span class="line">                &quot;Pattern&quot;</span><br><span class="line">            ],</span><br><span class="line">            &quot;arguments&quot;: [</span><br><span class="line">                &#123;</span><br><span class="line">                    &quot;codes&quot;: [</span><br><span class="line">                        &quot;registerRequestDTO.mobile&quot;,</span><br><span class="line">                        &quot;mobile&quot;</span><br><span class="line">                    ],</span><br><span class="line">                    &quot;arguments&quot;: null,</span><br><span class="line">                    &quot;defaultMessage&quot;: &quot;mobile&quot;,</span><br><span class="line">                    &quot;code&quot;: &quot;mobile&quot;</span><br><span class="line">                &#125;,</span><br><span class="line">                [],</span><br><span class="line">                &#123;</span><br><span class="line">                    &quot;defaultMessage&quot;: &quot;^[1]([3][0-9]&#123;1&#125;|59|58|88|89)[0-9]&#123;8&#125;$&quot;,</span><br><span class="line">                    &quot;arguments&quot;: null,</span><br><span class="line">                    &quot;codes&quot;: [</span><br><span class="line">                        &quot;^[1]([3][0-9]&#123;1&#125;|59|58|88|89)[0-9]&#123;8&#125;$&quot;</span><br><span class="line">                    ]</span><br><span class="line">                &#125;</span><br><span class="line">            ],</span><br><span class="line">            &quot;defaultMessage&quot;: &quot;请输入11位手机号&quot;,</span><br><span class="line">            &quot;objectName&quot;: &quot;registerRequestDTO&quot;,</span><br><span class="line">            &quot;field&quot;: &quot;mobile&quot;,</span><br><span class="line">            &quot;rejectedValue&quot;: &quot;123&quot;,</span><br><span class="line">            &quot;bindingFailure&quot;: false,</span><br><span class="line">            &quot;code&quot;: &quot;Pattern&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;message&quot;: &quot;Validation failed for object=&apos;registerRequestDTO&apos;. Error count: 1&quot;,</span><br><span class="line">    &quot;path&quot;: &quot;/valid&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>2、正确输入</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/validation-2.png-xtdf" alt="2"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;code&quot;: 200,</span><br><span class="line">    &quot;msg&quot;: &quot;success&quot;,</span><br><span class="line">    &quot;data&quot;: &#123;</span><br><span class="line">        &quot;mobile&quot;: &quot;13500001111&quot;,</span><br><span class="line">        &quot;nickname&quot;: &quot;夏天的风&quot;,</span><br><span class="line">        &quot;password&quot;: &quot;123456&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>3、只输入一位密码</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/validation-3.png-xtdf" alt="3"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;timestamp&quot;: 1573285145289,</span><br><span class="line">    &quot;status&quot;: 400,</span><br><span class="line">    &quot;error&quot;: &quot;Bad Request&quot;,</span><br><span class="line">    &quot;errors&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;codes&quot;: [</span><br><span class="line">                &quot;Size.registerRequestDTO.password&quot;,</span><br><span class="line">                &quot;Size.password&quot;,</span><br><span class="line">                &quot;Size.java.lang.String&quot;,</span><br><span class="line">                &quot;Size&quot;</span><br><span class="line">            ],</span><br><span class="line">            &quot;arguments&quot;: [</span><br><span class="line">                &#123;</span><br><span class="line">                    &quot;codes&quot;: [</span><br><span class="line">                        &quot;registerRequestDTO.password&quot;,</span><br><span class="line">                        &quot;password&quot;</span><br><span class="line">                    ],</span><br><span class="line">                    &quot;arguments&quot;: null,</span><br><span class="line">                    &quot;defaultMessage&quot;: &quot;password&quot;,</span><br><span class="line">                    &quot;code&quot;: &quot;password&quot;</span><br><span class="line">                &#125;,</span><br><span class="line">                10,</span><br><span class="line">                3</span><br><span class="line">            ],</span><br><span class="line">            &quot;defaultMessage&quot;: &quot;密码3~10位&quot;,</span><br><span class="line">            &quot;objectName&quot;: &quot;registerRequestDTO&quot;,</span><br><span class="line">            &quot;field&quot;: &quot;password&quot;,</span><br><span class="line">            &quot;rejectedValue&quot;: &quot;0&quot;,</span><br><span class="line">            &quot;bindingFailure&quot;: false,</span><br><span class="line">            &quot;code&quot;: &quot;Size&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;message&quot;: &quot;Validation failed for object=&apos;registerRequestDTO&apos;. Error count: 1&quot;,</span><br><span class="line">    &quot;path&quot;: &quot;/valid&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Validated和-Valid"><a href="#Validated和-Valid" class="headerlink" title="@Validated和@Valid"></a>@Validated和@Valid</h2><p>Spring Validation验证框架对参数的验证机制提供了@Validated（Spring’s JSR-303 规范，是标准 JSR-303 的一个变种），javax提供了@Valid（标准JSR-303规范），配合 BindingResult 可以直接提供参数验证结果。</p>
-<p>在检验 Controller 的入参是否符合规范时，使用 @Validated 或者 @Valid 在基本验证功能上没有太多区别。但是在分组、注解地方、嵌套验证等功能上两个有所不同：</p>
-<ol>
-<li>分组</li>
-</ol>
+<p>2、新增坏块，有如下三种场景：</p>
 <ul>
-<li>@Validated：提供了一个分组功能，可以在入参验证时，根据不同的分组采用不同的验证机制。</li>
-<li>@Valid：作为标准JSR-303规范，还没有吸收分组的功能。</li>
+<li>执行擦除指令时出错；</li>
+<li>执行写命令时出错；</li>
+<li>执行读取命令时出错UECC（Uncorrectable Error Correction Code，数据错误的bit超过ECC纠错能力，没有办法通过ECC纠错恢复）。</li>
 </ul>
-<ol>
-<li>注解地方</li>
-</ol>
+<h3 id="坏块对性能的影响"><a href="#坏块对性能的影响" class="headerlink" title="坏块对性能的影响"></a>坏块对性能的影响</h3><p>坏块不会影响有效块的性能，因为它通过选择晶体管与位线（bit line）和公共源线（comm source line）隔离，也就是说与位线无关，因此其他块的可擦除速度不受影响。</p>
+<p>然而，如果SSD中添加了足够多的新坏块，SSD中可用块的数量会减少，从而增加了垃圾回收的次数。同时，OP（Over Provision）容量减少，严重影响了垃圾回收的效率。当坏块增加到一定程度时，SSD的性能会下降。尤其是由于垃圾回收导致SSD性能下降。</p>
+<p>对于管理NAND闪存设备中的错误位（error bits），需要通过坏块管理、块替换（Block Replacement）和错误校正码（ECC）软件技术进行处理。</p>
+<h2 id="坏块管理（BBM）"><a href="#坏块管理（BBM）" class="headerlink" title="坏块管理（BBM）"></a>坏块管理（BBM）</h2><p>对于没有专用闪存文件系统的控制器，坏块可以由SSD控制器固件来管理，或者对于有专用闪存文件系统的情况，坏块可以由专用闪存文件系统或驱动程序来管理。 </p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/ssd-bbm-management.png" alt="ssd-bbm-management"></p>
+<p>BBM在软件链路中的位置如下图所示：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/BBM-position.png" alt="BBM-position"></p>
+<h3 id="坏块表"><a href="#坏块表" class="headerlink" title="坏块表"></a>坏块表</h3><p>NAND闪存设备在出厂时，所有位于有效块内的位置都会被擦除，坏块信息会在出货前写入SA区域，读取闪存内的SA区域后，会创建坏块表。坏块表保存在一个好的块中，这样在重新启动NAND闪存内存时，坏块表就会被加载到RAM中。</p>
+<p>根据出厂坏块标记建立坏块表流程图如下所示，逐个检查block第一个页的对应字节是否是FFh，如果不是，则更新坏块表，等所有block都访问完毕后，流程结束（错误勘误：图片最下一个框框是END不是START）：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/bbm-flow-chart.png" alt="bbm-flow-chart"></p>
+<p>注意点：坏块信息必须在进行任何擦除操作之前读取，因为坏块信息是可擦除的，一旦擦除就无法恢复。所以不要擦除原始的坏块信息。</p>
+<h3 id="替换策略"><a href="#替换策略" class="headerlink" title="替换策略"></a>替换策略</h3><p>坏块表中包含的块是无法寻址的。因此，如果闪存转换层（FTL）寻址到坏块之一，坏块管理软件会将块标记为坏块，并使用如下来两种方法来分配新块：</p>
+<p><strong>1、略过策略（Skip Block）</strong></p>
+<p>根据创建的坏块表，当目标地址对应于坏块地址时，数据会存储在下一个好的块中，从而跳过坏块。同时还将好的块和坏块对应关系信息存储在NAND闪存设备中。</p>
+<p><strong>2、替换策略（Reserved Block）</strong></p>
+<p>该方法中，不会跳过坏块，而是通过将FTL（闪存转换层）重定向到已知的空闲好块来替换坏块。为此，坏块管理软件在NAND闪存中创建了两个区域：<strong>用户可寻址块区域</strong>和<strong>保留块区域</strong>，如下图所示：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/reserved-block-method.png" alt="reserved-block-method"></p>
+<p>FTL可以使用用户可寻址块区域来存储数据，而保留块区域仅用于坏块替换和保存坏块表，该表还记录重新映射的已开发坏块。</p>
+<p>为了定义这两个区域，需要确定保留区域的起始地址和大小。大小可以由用户给定，也可以由坏块管理软件强制规定（对于Micron NAND闪存设备，设备寿命内可能变坏的坏块数量最多占总数的<strong>2％</strong>，因此通常预留相同数量的块）。</p>
+<p>每次FTL写入逻辑扇区时，它会计算要写入的物理块的地址。然后，在FTL开始写入之前，坏块管理软件会检查该块是否为坏块。如果是坏块，它会返回被重新映射的扇区对应的好块地址。如果该块在NAND闪存的使用寿命内变坏，坏块管理软件会重新映射坏块并将其包含的数据复制到将替换它的块中。</p>
+<p>对于FTL来说，坏块管理是完全透明的，好像数据被写入同一地址一样。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/bbm-strategy.png" alt="bbm-strategy"></p>
+<p><strong>优缺点：</strong></p>
 <ul>
-<li>@Validated：可以用在类型、方法和方法参数上。但是不能用在成员属性（字段）上</li>
-<li>@Valid：可以用在方法、构造函数、方法参数和成员属性（字段）上</li>
+<li>Skip策略在N个Die并行时，并行度为1~N，而Reserved策略并行度一直是N，所以Reserved性能表现更优。</li>
+<li>Reserved策略有木桶效应，如果某个Die质量较差，那么SSD可用的闪存块性能受限于最坏的Die。</li>
 </ul>
-<p>两者是否能用于成员属性（字段）上直接影响能否提供嵌套验证的功能。</p>
-<p>3、嵌套验证</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public class Item &#123;</span><br><span class="line">    @NotNull(message = &quot;id不能为空&quot;)</span><br><span class="line">    @Min(value = 1, message = &quot;id必须为正整数&quot;)</span><br><span class="line">    private Long id;</span><br><span class="line"></span><br><span class="line">    @Valid // 嵌套验证必须用@Valid</span><br><span class="line">    @NotNull(message = &quot;props不能为空&quot;)</span><br><span class="line">    @Size(min = 1, message = &quot;props至少要有一个自定义属性&quot;)</span><br><span class="line">    private List&lt;Prop&gt; props;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如上，Item 结构里还嵌套有 props结构，如果不加 @Valid，就不会对props结构的成员进行嵌套验证。嵌套验证区别如下：</p>
+<h2 id="替换策略的实际应用"><a href="#替换策略的实际应用" class="headerlink" title="替换策略的实际应用"></a>替换策略的实际应用</h2><p>实际上，在实际产品设计中，很少见到将2%的坏块保留为坏块替换区域。通常，OP（Over Provision）区域中的空闲块用于替换在使用过程中添加的坏块。</p>
+<p>以垃圾回收为例：</p>
 <ul>
-<li>@Validated： 用在方法入参上无法单独提供嵌套验证功能。不能用在成员属性（字段）上，也无法提示框架进行嵌套验证。能配合嵌套验证注解@Valid进行嵌套验证。</li>
-<li>@Valid： 用在方法入参上无法单独提供嵌套验证功能。能够用在成员属性（字段）上，提示验证框架进行嵌套验证。能配合嵌套验证注解@Valid进行嵌套验证。</li>
+<li>首先擦除坏块。如果擦除状态寄存器无法擦除块，则坏块管理机制将该块的地址更新到新坏块列表中。</li>
+<li>然后，将坏块中的有效数据页写入OP区域的空闲块中，更新坏块管理表，并在下次写入数据时跳过坏块，选择下一个可用块。</li>
 </ul>
-<h2 id="嵌套验证测试"><a href="#嵌套验证测试" class="headerlink" title="嵌套验证测试"></a>嵌套验证测试</h2><h3 id="DTO-1"><a href="#DTO-1" class="headerlink" title="DTO"></a>DTO</h3><p>定义一个嵌套结构：</p>
-<p>1、客户资料：CustomerDTO</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">package com.example.demo.model.dto;</span><br><span class="line"></span><br><span class="line">import lombok.Data;</span><br><span class="line"></span><br><span class="line">import javax.validation.Valid;</span><br><span class="line">import javax.validation.constraints.NotNull;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @ProjectName: XqfSpringBoot</span><br><span class="line"> * @Package: com.example.demo.model.dto</span><br><span class="line"> * @ClassName: CustomerDTO</span><br><span class="line"> * @Description: 客户资料</span><br><span class="line"> * @Author: Qunfeng Xia</span><br><span class="line"> * @CreateTime: 2019-11-09 November</span><br><span class="line"> */</span><br><span class="line">@Data</span><br><span class="line">public class CustomerDTO &#123;</span><br><span class="line">    @NotNull(message = &quot;客户id&quot;)</span><br><span class="line">    private Integer id;</span><br><span class="line"></span><br><span class="line">    @NotNull(message = &quot;客户地址&quot;)</span><br><span class="line">    private String location;</span><br><span class="line"></span><br><span class="line">    //@Valid</span><br><span class="line">    @NotNull(message = &quot;客户详细信息&quot;)</span><br><span class="line">    private PeopleDetailDTO detailDTO;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不同厂商设置OP的大小不同，根据不同的应用场景和可靠性要求，OP的大小会有所不同。OP的大小与稳定性之间存在权衡关系：</p>
 <ul>
-<li>第一次测试不加 @Valid</li>
-<li>第二次测试加 @Valid</li>
+<li>OP越大，在写入和垃圾回收的过程中可用空间越大，性能越稳定，性能曲线更平滑。</li>
+<li>相反，OP越小，性能稳定性越差。</li>
 </ul>
-<p>2、每个人的详细信息：PeopleDetailDTO</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">package com.example.demo.model.dto;</span><br><span class="line"></span><br><span class="line">import lombok.Data;</span><br><span class="line"></span><br><span class="line">import javax.validation.constraints.Email;</span><br><span class="line">import javax.validation.constraints.NotNull;</span><br><span class="line">import javax.validation.constraints.Positive;</span><br><span class="line">import javax.validation.constraints.Size;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @ProjectName: XqfSpringBoot</span><br><span class="line"> * @Package: com.example.demo.model.dto</span><br><span class="line"> * @ClassName: PeopleDetailDTO</span><br><span class="line"> * @Description: 人的详细信息</span><br><span class="line"> * @Author: Qunfeng Xia</span><br><span class="line"> * @CreateTime: 2019-11-09 November</span><br><span class="line"> */</span><br><span class="line">@Data</span><br><span class="line">public class PeopleDetailDTO &#123;</span><br><span class="line">    @NotNull(message = &quot;姓名&quot;)</span><br><span class="line">    @Size(min = 2, max = 4, message = &quot;请输入2~4位姓名&quot;)</span><br><span class="line">    private String name;</span><br><span class="line"></span><br><span class="line">    @NotNull(message = &quot;性别&quot;)</span><br><span class="line">    private String sex;</span><br><span class="line"></span><br><span class="line">    @NotNull(message = &quot;年龄&quot;)</span><br><span class="line">    @Positive</span><br><span class="line">    private Integer age;</span><br><span class="line"></span><br><span class="line">    @Email(message = &quot;email地址&quot;)</span><br><span class="line">    private String email;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="Controller"><a href="#Controller" class="headerlink" title="Controller"></a>Controller</h3><p>在之前 AuthController 类里添加如下接口：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@RequestMapping(&quot;/nest&quot;)</span><br><span class="line">public RetResult&lt;CustomerDTO&gt; test(@Validated @RequestBody CustomerDTO requestDTO) &#123;</span><br><span class="line">    return RetResponse.makeOKRsp(requestDTO);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="测试-1"><a href="#测试-1" class="headerlink" title="测试"></a>测试</h3><p>测试数据</p>
-<p><img src="http://oow6unnib.bkt.clouddn.com/validation-4.png-xtdf" alt="4"></p>
-<p>这里把 name 设为 null。</p>
-<p>1、不加 @Valid 结果</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;code&quot;: 200,</span><br><span class="line">    &quot;msg&quot;: &quot;success&quot;,</span><br><span class="line">    &quot;data&quot;: &#123;</span><br><span class="line">        &quot;id&quot;: 12121,</span><br><span class="line">        &quot;location&quot;: &quot;上海&quot;,</span><br><span class="line">        &quot;detailDTO&quot;: &#123;</span><br><span class="line">            &quot;name&quot;: null,</span><br><span class="line">            &quot;sex&quot;: &quot;男&quot;,</span><br><span class="line">            &quot;age&quot;: 18,</span><br><span class="line">            &quot;email&quot;: &quot;abc123@126.com&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>成功，没报错。</p>
-<p>2、加 @Valid 结果</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;timestamp&quot;: 1573292805153,</span><br><span class="line">    &quot;status&quot;: 400,</span><br><span class="line">    &quot;error&quot;: &quot;Bad Request&quot;,</span><br><span class="line">    &quot;errors&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;codes&quot;: [</span><br><span class="line">                &quot;NotNull.customerDTO.detailDTO.name&quot;,</span><br><span class="line">                &quot;NotNull.detailDTO.name&quot;,</span><br><span class="line">                &quot;NotNull.name&quot;,</span><br><span class="line">                &quot;NotNull.java.lang.String&quot;,</span><br><span class="line">                &quot;NotNull&quot;</span><br><span class="line">            ],</span><br><span class="line">            &quot;arguments&quot;: [</span><br><span class="line">                &#123;</span><br><span class="line">                    &quot;codes&quot;: [</span><br><span class="line">                        &quot;customerDTO.detailDTO.name&quot;,</span><br><span class="line">                        &quot;detailDTO.name&quot;</span><br><span class="line">                    ],</span><br><span class="line">                    &quot;arguments&quot;: null,</span><br><span class="line">                    &quot;defaultMessage&quot;: &quot;detailDTO.name&quot;,</span><br><span class="line">                    &quot;code&quot;: &quot;detailDTO.name&quot;</span><br><span class="line">                &#125;</span><br><span class="line">            ],</span><br><span class="line">            &quot;defaultMessage&quot;: &quot;姓名&quot;,</span><br><span class="line">            &quot;objectName&quot;: &quot;customerDTO&quot;,</span><br><span class="line">            &quot;field&quot;: &quot;detailDTO.name&quot;,</span><br><span class="line">            &quot;rejectedValue&quot;: null,</span><br><span class="line">            &quot;bindingFailure&quot;: false,</span><br><span class="line">            &quot;code&quot;: &quot;NotNull&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;message&quot;: &quot;Validation failed for object=&apos;customerDTO&apos;. Error count: 1&quot;,</span><br><span class="line">    &quot;path&quot;: &quot;/nest&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>报了 detailDTO.name 为 null 的错。</p>
+<p>当然，较大的OP意味着更多的空间可供用户使用，而更多的空间意味着更低的成本。</p>
+<p>一般来说，<strong>OP</strong>可以设置为5% - 50%，其中<strong>7%的OP是常见的比例</strong>。不同于厂商建议的2%固定坏块，7%的OP并非在某些块中固定分配，而是<strong>在所有块中动态分配</strong>，这更有利于均衡磨损策略。</p>
+<p><strong>查阅资料：</strong></p>
+<p><a href="https://www.diskmfr.com/ssd-bad-block-management-and-its-impact-on-ssds/" target="_blank" rel="noopener">SSD bad block management and its impact on SSDs</a></p>
+<p><a href="https://industrial.adata.com/cn/technology/Bad-Block-Management" target="_blank" rel="noopener">坏块管理</a></p>
+<p>Micron: Bad Block Management in NAND Flash Memory</p>
 
       
     
@@ -358,7 +262,7 @@ var _hmt = _hmt || [];
         
         <br>
         <strong>本文链接：</strong>
-        <a rel="license" href="http://xiaqunfeng.cc/2020/02/05/java-springboot-7-validation/">http://xiaqunfeng.cc/2020/02/05/java-springboot-7-validation/</a>
+        <a rel="license" href="http://xiaqunfeng.cc/2023/07/25/ssd-all-flash-BBM/">http://xiaqunfeng.cc/2023/07/25/ssd-all-flash-BBM/</a>
         <br>
         <strong>版权声明：</strong>
         本文采用
@@ -411,7 +315,7 @@ var _hmt = _hmt || [];
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">SSD</a>
         		</li>
       		
 		</ul>
@@ -423,7 +327,7 @@ var _hmt = _hmt || [];
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/SpringBoot//" class="article-tag-list-link color1">SpringBoot</a>
+        			<a href="/categories/Storage//" class="article-tag-list-link color3">Storage</a>
         		</li>
       		
 		</ul>
@@ -478,7 +382,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2020/02/05/java-springboot-7-validation/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2023/07/25/ssd-all-flash-BBM/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -493,18 +397,9 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2020/02/05/java-springboot-8-schedule/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          SpringBoot实践八：schedule
-        
-      </div>
-    </a>
   
-  
-    <a href="/2020/02/05/java-springboot-6-pagehelper/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">SpringBoot实践六：pagehelper</div>
+    <a href="/2023/07/16/ssd-all-flash-wear-leveling/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">闪存-磨损均衡</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -531,7 +426,7 @@ var _hmt = _hmt || [];
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#输入数据校验"><span class="toc-number">1.</span> <span class="toc-text">输入数据校验</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JSR-303-注释介绍"><span class="toc-number">2.</span> <span class="toc-text">JSR-303 注释介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#项目结构"><span class="toc-number">3.</span> <span class="toc-text">项目结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DTO"><span class="toc-number">3.1.</span> <span class="toc-text">DTO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#controller"><span class="toc-number">3.2.</span> <span class="toc-text">controller</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#测试"><span class="toc-number">4.</span> <span class="toc-text">测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Validated和-Valid"><span class="toc-number">5.</span> <span class="toc-text">@Validated和@Valid</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#嵌套验证测试"><span class="toc-number">6.</span> <span class="toc-text">嵌套验证测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DTO-1"><span class="toc-number">6.1.</span> <span class="toc-text">DTO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Controller"><span class="toc-number">6.2.</span> <span class="toc-text">Controller</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#测试-1"><span class="toc-number">6.3.</span> <span class="toc-text">测试</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#关于坏块（Bad-Block）"><span class="toc-number">1.</span> <span class="toc-text">关于坏块（Bad Block）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#坏块来源"><span class="toc-number">1.1.</span> <span class="toc-text">坏块来源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#坏块判断"><span class="toc-number">1.2.</span> <span class="toc-text">坏块判断</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#坏块对性能的影响"><span class="toc-number">1.3.</span> <span class="toc-text">坏块对性能的影响</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#坏块管理（BBM）"><span class="toc-number">2.</span> <span class="toc-text">坏块管理（BBM）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#坏块表"><span class="toc-number">2.1.</span> <span class="toc-text">坏块表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#替换策略"><span class="toc-number">2.2.</span> <span class="toc-text">替换策略</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#替换策略的实际应用"><span class="toc-number">3.</span> <span class="toc-text">替换策略的实际应用</span></a></li></ol>
                     </div>
                 </span>
             </div>
