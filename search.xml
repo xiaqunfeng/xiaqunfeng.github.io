@@ -4,6 +4,89 @@
   
     
     <entry>
+      <title><![CDATA[闪存-写放大]]></title>
+      <url>http://xiaqunfeng.cc/2023/08/18/ssd-all-flash-write-amplification/</url>
+      <content type="html"><![CDATA[<p>前面学习了闪存的诸多特性，里面也提到了写放大的概念，本篇就来回顾总结一下写放大。</p>
+<a id="more"></a>
+<h2 id="什么是写放大"><a href="#什么是写放大" class="headerlink" title="什么是写放大"></a>什么是写放大</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>写放大，Write Amplification Factor，缩写WAF。WAF是一个数值，表示NAND实际写入数据量与host写入量的比值，用来衡量SSD中写入放大程度。</p>
+<p>当基于NAND闪存的SSD写入的数据多于主机提交的数据时，就会发生写放大。比如，主机写入2GB数据，SSD实际写入了4GB数据，此时WAF就为2。公式如下图所示：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/write_amplification_factor_equation-h.png" alt="write_amplification_factor_equation-h"></p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>因为SSD和传统机械硬盘不同，不能覆盖写。写入过程分为擦除和写入两步，而SSD的特点是块（block）擦页（page）写，正是因为写入和擦除单位大小不匹配，导致了写放大。</p>
+<p>因为SSD的寿命取决于擦除次数，所以写放大会影响到SSD的使用寿命。所以较高的WAF会对存储性能和耐用性产生负面影响，最理想的情况是WAF=1。然而，随着时间的推移以及存储数据量的增加，WAF也会随之增加。NAND不同类型对应擦除次数补充说明，如下图所示：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/storage-writes_per_nand.png" alt="storage-writes_per_nand"></p>
+<h2 id="哪些因素会引起写放大"><a href="#哪些因素会引起写放大" class="headerlink" title="哪些因素会引起写放大"></a>哪些因素会引起写放大</h2><h3 id="1、垃圾回收"><a href="#1、垃圾回收" class="headerlink" title="1、垃圾回收"></a>1、垃圾回收</h3><p>因为要做搬移动作，会增加写放大，更详细的详见：<a href="http://xiaqunfeng.cc/2023/07/07/ssd-all-flash-gc/">闪存-垃圾回收和Trim</a>。</p>
+<p>虽然增加了写入放大，但是速度有提升。</p>
+<h3 id="2、磨损均衡"><a href="#2、磨损均衡" class="headerlink" title="2、磨损均衡"></a>2、磨损均衡</h3><p>磨损均衡同样要做搬移动作，所以也会增加写放大，详见：<a href="http://xiaqunfeng.cc/2023/07/16/ssd-all-flash-wear-leveling/">闪存-磨损均衡</a>。</p>
+<h3 id="3、读干扰和数据保存错误"><a href="#3、读干扰和数据保存错误" class="headerlink" title="3、读干扰和数据保存错误"></a>3、读干扰和数据保存错误</h3><p>会造成NAND非永久性损伤，重新擦除后可以正常使用，但是在擦除前需要搬移数据，所以同样会增加写放大，详见：<a href="http://xiaqunfeng.cc/2023/06/16/ssd-all-flash-feature/">闪存-特性</a>。</p>
+<h3 id="4、随机写"><a href="#4、随机写" class="headerlink" title="4、随机写"></a>4、随机写</h3><p>因为随机写会写入很多非连续的 LBA，会提升写放大。</p>
+<h2 id="怎样优化写放大问题"><a href="#怎样优化写放大问题" class="headerlink" title="怎样优化写放大问题"></a>怎样优化写放大问题</h2><h3 id="基于闪存本身"><a href="#基于闪存本身" class="headerlink" title="基于闪存本身"></a>基于闪存本身</h3><p>1、增加OP空间</p>
+<p>预留空间可以减少写入放大，预留空间越大，写放大越低。因为OP越大，每个闪存块有效数据越少，垃圾越多，所以需要重写的数据更少，写放大就越低。</p>
+<p>2、开启 TRIM 指令</p>
+<p>让SSD在进行内部垃圾回收的时候避免搬移已经被OS删除的数据，减少无用数据的搬移，从而降低些放大。</p>
+<p>3、ECC</p>
+<p>ECC对少量比特的失败会自动纠错，从而避免数据搬移，降低写放大。</p>
+<p>4、连续写</p>
+<p>连续写是解决磁盘IO问题的通用方法。同时减少随机写的次数，降低由随机写引起的写放大问题。同时通过块对齐进一步减少写放大。</p>
+<p>5、写压缩</p>
+<p>对写入的数据进行压缩，依赖主控芯片的压缩算法，降低实际写入的数据量，从而降低些放大。在读取数据时，解压后返回。</p>
+<h3 id="基于NVMe协议"><a href="#基于NVMe协议" class="headerlink" title="基于NVMe协议"></a>基于NVMe协议</h3><p>1、使用 multi-stream 方案</p>
+<p>从NVMe协议Spec 1.3开始新增的特性，<strong>Multi-stream write(多流写)技术</strong>可以使SSD根据主机端提供的Stream ID，将具有相同或相似生命周期的数据写入到相同的擦除单元中去，大大提高了GC时的效率，减少了写放大，使得SSD的性能和寿命都有了较大的提升。</p>
+<p>2、使用 NVM set是和Endurance Group</p>
+<ul>
+<li>在NVMe协议Spec 1.4中新增NVM sets和Endurance Group，不同的NVM Sets使用的不同的NAND物理资源，而且相互独立。</li>
+<li>每个NVM set又可以有多个namespace用户空间，不同的NVM sets读写之间不受干扰，可以有更好的IO稳定性。</li>
+<li>同时，多个NVM sets可以组成一个Endurance Group，不同的业务压力模型写入不同的Endurance Group，整体降低数据的搬迁，降低写放大。</li>
+</ul>
+<h3 id="ZNS和FPD"><a href="#ZNS和FPD" class="headerlink" title="ZNS和FPD"></a>ZNS和FPD</h3><p>使用 SSD 的应用程序可以分为处理短生命周期数据或长生命周期数据，以及是读密集型还是写密集型。当多个应用程序使用同一个SSD时，这些I/O模式会混合在一起。如果闪存控制器知道正在写入的是什么类型的数据，它就可以更好地管理写入操作，以最大程度地提高SSD的耐用性。</p>
+<p>业界对此有两种尝试方案：</p>
+<ul>
+<li>分区命名空间（Zoned Name Space，ZNS），它适用于顺序写入数据，包括折叠式媒体磁盘驱动器和固态硬盘。</li>
+<li>灵活数据定位（Flexible Data Placement，FDP）则没有顺序写入限制，适用于NVMe设备，主要指SSD。</li>
+</ul>
+<p><img src="http://oow6unnib.bkt.clouddn.com/Gonzales-ZNS-and-FDP-2-technologies-slide.jpg" alt="Gonzales-ZNS-and-FDP-2-technologies-slide"></p>
+<p>ZNS 需要在 SSD 硬件和软件供应商以及用户生态系统中投入更多的工程工作，而 FDP 需要较少的面向应用的生态系统的工程支持。ZNS 最适合围绕完全顺序写入设计的应用程序，而 FDP 更适合开始在其软件生态系统中部署数据放置的用户。</p>
+<h4 id="ZNS（Zoned-Name-Space）"><a href="#ZNS（Zoned-Name-Space）" class="headerlink" title="ZNS（Zoned Name Space）"></a>ZNS（Zoned Name Space）</h4><p>分区SSD将其容量分为不同的命名空间区域或分区，用于存储具有不同IO类型和特征的数据，例如读密集型、写密集型、混合型、JPEG图像、视频等。数据只能以追加方式写入分区中的现有数据，以顺序写入的方式进行。</p>
+<p>通常，小的写入操作会被分区管理软件聚合在一起（批处理），形成一个4KB的块，并在单次操作中写入驱动器。</p>
+<p>必须擦除分区才能重写其中的单元。这意味着在同一块中删除小数据项时，不会干扰不变的数据块，二者在不同的分区，对于不变数据分区，无需对这些块应用垃圾回收，有助于实现更好的闪存管理和耐用性。</p>
+<p>主机应用程序需要告诉SSD哪些分区用于存放数据，也就是需要向控制器提供分区信息。</p>
+<p>总结来说，ZNS就是把namespace空间划分多个zone空间，zone空间内部执行顺序读写。这样做的优势：</p>
+<ul>
+<li>降低SSD内部的写放大，提升SSD的寿命</li>
+<li>降低OP空间，host可以获得更大的使用空间</li>
+<li>降低SSD内部DRAM的容量，降低整体的SSD成本</li>
+<li>降低SSD读写延迟</li>
+<li>ZNS写入了标准NVME协议，更易于打造软件生态，利于普及</li>
+</ul>
+<h4 id="FPD（Flexible-Data-Placement）"><a href="#FPD（Flexible-Data-Placement）" class="headerlink" title="FPD（Flexible Data Placement）"></a>FPD（Flexible Data Placement）</h4><p>NVM Express组织正在努力将灵活数据定位（FDP）添加到NVMe命令集中。这一举措得到了Meta的开放计算项目（Open Compute Project）和谷歌的支持，因为拥有数千个SSD的超大规模数据中心希望这些SSD在使用寿命较长且年龄增长时仍能保持反应灵敏度。</p>
+<p>与ZNS类似，主机系统会告诉SSD数据应该放置在哪里。</p>
+<p>实际应用中，如下图所示，应用程序的数据被写入到SSD的应用程序专用区域，即所谓的回收单元或块/块。在没有灵活数据定位（FDP）的情况下，来自多个应用程序的数据被写入所有块中。当一个应用程序删除其数据时，所有块都必须进行垃圾回收，以回收已删除的空间。本例中导致的写放大因子（WAF）约为3。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/Samsung-FDP-slide.jpg" alt="Samsung-FDP-slide"></p>
+<p>使用了灵活数据定位（FDP），只有一个块会被擦除，WAF更接近于1。这减少了垃圾收集的数量，延长了驱动器的耐久性，并有助于最大限度地提高其响应性。</p>
+<p><strong>查阅资料：</strong></p>
+<ul>
+<li><a href="https://www.tuxera.com/blog/what-is-write-amplification-why-is-it-bad-what-causes-it/" target="_blank" rel="noopener">What is write amplification, why is it bad, and what causes it?</a></li>
+<li><a href="https://www.techtarget.com/searchstorage/definition/write-amplification-factor-WAF" target="_blank" rel="noopener">write amplification factor (WAF)</a></li>
+<li><a href="https://blocksandfiles.com/2023/08/14/using-ssd-data-placement-to-lessen-write-amplification/" target="_blank" rel="noopener">Using SSD data placement to lessen SSD write amplification</a></li>
+<li><a href="https://www.163.com/dy/article/HKKVBGDD0511L4FD.html" target="_blank" rel="noopener">SSD写放大的优化策略</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Storage </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> SSD </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[闪存-坏块管理]]></title>
       <url>http://xiaqunfeng.cc/2023/07/25/ssd-all-flash-BBM/</url>
       <content type="html"><![CDATA[<p>前面学习了FTL中的垃圾回收和磨损均衡，本篇继续学习FTL中的技术之一：坏块管理。</p>
