@@ -19,8 +19,9 @@
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/write_amplification_factor_equation-h.png">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/storage-writes_per_nand.png">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/Gonzales-ZNS-and-FDP-2-technologies-slide.jpg">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/Zoned-SSD-scheme.jpg">
 <meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/Samsung-FDP-slide.jpg">
-<meta property="og:updated_time" content="2023-08-18T13:46:34.697Z">
+<meta property="og:updated_time" content="2023-08-18T14:00:27.159Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="闪存-写放大">
 <meta name="twitter:description" content="前面学习了闪存的诸多特性，里面也提到了写放大的概念，本篇就来回顾总结一下写放大。">
@@ -227,6 +228,7 @@ var _hmt = _hmt || [];
 <p>通常，小的写入操作会被分区管理软件聚合在一起（批处理），形成一个4KB的块，并在单次操作中写入驱动器。</p>
 <p>必须擦除分区才能重写其中的单元。这意味着在同一块中删除小数据项时，不会干扰不变的数据块，二者在不同的分区，对于不变数据分区，无需对这些块应用垃圾回收，有助于实现更好的闪存管理和耐用性。</p>
 <p>主机应用程序需要告诉SSD哪些分区用于存放数据，也就是需要向控制器提供分区信息。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/Zoned-SSD-scheme.jpg" alt="Zoned-SSD-scheme"></p>
 <p>总结来说，ZNS就是把namespace空间划分多个zone空间，zone空间内部执行顺序读写。这样做的优势：</p>
 <ul>
 <li>降低SSD内部的写放大，提升SSD的寿命</li>
