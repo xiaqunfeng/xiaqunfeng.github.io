@@ -1212,6 +1212,108 @@ pdf" target="_blank" rel="noopener">A space-efficient flash translation layer fo
     </entry>
     
     <entry>
+      <title><![CDATA[【转】存储基础知识]]></title>
+      <url>http://xiaqunfeng.cc/2023/06/01/storage-basic/</url>
+      <content type="html"><![CDATA[<p>有一个介绍存储的基础知识的PPT，整理的挺全面的，转载过来，后续可以温习一下。</p>
+<a id="more"></a>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195603468.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195614701.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195622291.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195634361.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195650211.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195656312.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195701419.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195710472.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195714284.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195718584.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195723403.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195728090.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195733606.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195744642.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195749248.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195756054.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195804145.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195809640.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195815041.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195819874.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195824292.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195829404.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195835539.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195839984.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195844537.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195848841.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195852302.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195856570.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195901062.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195905275.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195910296.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195914252.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195918824.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195922997.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195929015.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195935162.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195939495.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195944455.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195949022.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195959639.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200003293.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200006973.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200011756.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200015663.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200018528.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200022116.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200025609.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/v2-8991e3787fa6b257427df6ed597584b4_1440w.webp" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200029339-20230919200223268.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200112033-20230919200229667.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200234015.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200238417.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200242338.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200245791.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200250184.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200255289.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200259943.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200303292.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200307659.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200611509.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200618013.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200623734.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200628982.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200634135.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200638515.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200642976.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200653671.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200657849.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200705163.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200710634.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200714916.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200719463.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200724607.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200729316.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200734645.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200737886.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200743166.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200748710.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200752391.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200757363.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200802080.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200805535.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200810038.png" alt="img"></p>
+<blockquote>
+<p>原文链接：<a href="http://www.xzclass.com/?p=1528" target="_blank" rel="noopener">85页PPT，彻底看懂计算机存储技术！</a></p>
+</blockquote>
+]]></content>
+      
+        <categories>
+            
+            <category> Storage </category>
+            
+        </categories>
+        
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[NVMe SSD]]></title>
       <url>http://xiaqunfeng.cc/2023/05/14/nvme-ssd/</url>
       <content type="html"><![CDATA[<p>简单学习和整理了一下NVMe SSD基础知识，便于理解。</p>

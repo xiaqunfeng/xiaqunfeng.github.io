@@ -6,22 +6,103 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
-  <title>常用git命令清单 | 夏天的风的博客</title>
+  <title>【转】存储基础知识 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="转载的文章，里面git命令应有尽有，包含所有常用命令，mark之。">
-<meta name="keywords" content="git">
+  <meta name="description" content="有一个介绍存储的基础知识的PPT，整理的挺全面的，转载过来，后续可以温习一下。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="常用git命令清单">
-<meta property="og:url" content="http://xiaqunfeng.cc/2017/03/24/git-common-list/index.html">
+<meta property="og:title" content="【转】存储基础知识">
+<meta property="og:url" content="http://xiaqunfeng.cc/2023/06/01/storage-basic/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="转载的文章，里面git命令应有尽有，包含所有常用命令，mark之。">
+<meta property="og:description" content="有一个介绍存储的基础知识的PPT，整理的挺全面的，转载过来，后续可以温习一下。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://www.ruanyifeng.com/blogimg/asset/2015/bg2015120901.png">
-<meta property="og:updated_time" content="2019-10-06T09:00:45.000Z">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195603468.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195614701.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195622291.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195634361.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195650211.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195656312.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195701419.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195710472.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195714284.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195718584.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195723403.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195728090.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195733606.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195744642.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195749248.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195756054.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195804145.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195809640.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195815041.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195819874.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195824292.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195829404.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195835539.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195839984.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195844537.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195848841.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195852302.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195856570.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195901062.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195905275.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195910296.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195914252.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195918824.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195922997.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195929015.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195935162.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195939495.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195944455.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195949022.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195959639.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200003293.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200006973.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200011756.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200015663.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200018528.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200022116.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200025609.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/v2-8991e3787fa6b257427df6ed597584b4_1440w.webp">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200029339-20230919200223268.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200112033-20230919200229667.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200234015.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200238417.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200242338.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200245791.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200250184.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200255289.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200259943.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200303292.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200307659.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200611509.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200618013.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200623734.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200628982.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200634135.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200638515.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200642976.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200653671.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200657849.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200705163.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200710634.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200714916.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200719463.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200724607.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200729316.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200734645.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200737886.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200743166.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200748710.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200752391.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200757363.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200802080.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200805535.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919200810038.png">
+<meta property="og:updated_time" content="2023-09-19T12:13:54.228Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="常用git命令清单">
-<meta name="twitter:description" content="转载的文章，里面git命令应有尽有，包含所有常用命令，mark之。">
-<meta name="twitter:image" content="http://www.ruanyifeng.com/blogimg/asset/2015/bg2015120901.png">
+<meta name="twitter:title" content="【转】存储基础知识">
+<meta name="twitter:description" content="有一个介绍存储的基础知识的PPT，整理的挺全面的，转载过来，后续可以温习一下。">
+<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/640-20230919195603468.png">
   
     <link rel="alternative" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
   
@@ -161,77 +242,136 @@ var _hmt = _hmt || [];
           </div>
           <div id="js-content" class="content-ll">
             
-<article id="post-git-common-list" class="article article-type-post " itemscope itemprop="blogPost">
+<article id="post-storage-basic" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      常用git命令清单
+      【转】存储基础知识
     </h1>
   
 
         
-        <a href="/2017/03/24/git-common-list/" class="archive-article-date">
-  	<time datetime="2017-03-24T10:37:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-24</time>
+        <a href="/2023/06/01/storage-basic/" class="archive-article-date">
+  	<time datetime="2023-06-01T11:37:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-06-01</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>转载的文章，里面git命令应有尽有，包含所有常用命令，mark之。<br><a id="more"></a></p>
-<p>一般来说，日常使用只要记住下图6个命令，就可以了。但是熟练使用，恐怕要记住60～100个命令。</p>
-<p><img src="http://www.ruanyifeng.com/blogimg/asset/2015/bg2015120901.png" alt="img"></p>
-<p>下面是我整理的常用 Git 命令清单。几个专用名词的译名如下。</p>
+        <p>有一个介绍存储的基础知识的PPT，整理的挺全面的，转载过来，后续可以温习一下。</p>
+<a id="more"></a>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195603468.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195614701.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195622291.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195634361.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195650211.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195656312.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195701419.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195710472.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195714284.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195718584.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195723403.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195728090.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195733606.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195744642.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195749248.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195756054.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195804145.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195809640.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195815041.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195819874.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195824292.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195829404.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195835539.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195839984.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195844537.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195848841.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195852302.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195856570.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195901062.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195905275.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195910296.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195914252.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195918824.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195922997.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195929015.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195935162.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195939495.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195944455.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195949022.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919195959639.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200003293.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200006973.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200011756.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200015663.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200018528.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200022116.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200025609.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/v2-8991e3787fa6b257427df6ed597584b4_1440w.webp" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200029339-20230919200223268.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200112033-20230919200229667.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200234015.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200238417.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200242338.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200245791.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200250184.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200255289.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200259943.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200303292.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200307659.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200611509.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200618013.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200623734.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200628982.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200634135.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200638515.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200642976.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200653671.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200657849.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200705163.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200710634.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200714916.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200719463.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200724607.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200729316.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200734645.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200737886.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200743166.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200748710.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200752391.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200757363.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200802080.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200805535.png" alt="img"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/640-20230919200810038.png" alt="img"></p>
 <blockquote>
-<ul>
-<li>Workspace：工作区</li>
-<li>Index / Stage：暂存区</li>
-<li>Repository：仓库区（或本地仓库）</li>
-<li>Remote：远程仓库</li>
-</ul>
+<p>原文链接：<a href="http://www.xzclass.com/?p=1528" target="_blank" rel="noopener">85页PPT，彻底看懂计算机存储技术！</a></p>
 </blockquote>
-<h2 id="一、新建代码库"><a href="#一、新建代码库" class="headerlink" title="一、新建代码库"></a>一、新建代码库</h2><blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt; # 在当前目录新建一个Git代码库</span><br><span class="line">&gt; $ git init</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 新建一个目录，将其初始化为Git代码库</span><br><span class="line">&gt; $ git init [project-name]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 下载一个项目和它的整个代码历史</span><br><span class="line">&gt; $ git clone [url]</span><br><span class="line">&gt;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<h2 id="二、配置"><a href="#二、配置" class="headerlink" title="二、配置"></a>二、配置</h2><p>Git的设置文件为<code>.gitconfig</code>，它可以在用户主目录下（全局配置），也可以在项目目录下（项目配置）。</p>
-<blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt; # 显示当前的Git配置</span><br><span class="line">&gt; $ git config --list</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 编辑Git配置文件</span><br><span class="line">&gt; $ git config -e [--global]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 设置提交代码时的用户信息</span><br><span class="line">&gt; $ git config [--global] user.name &quot;[name]&quot;</span><br><span class="line">&gt; $ git config [--global] user.email &quot;[email address]&quot;</span><br><span class="line">&gt;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<h2 id="三、增加-删除文件"><a href="#三、增加-删除文件" class="headerlink" title="三、增加/删除文件"></a>三、增加/删除文件</h2><blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&gt; # 添加指定文件到暂存区</span><br><span class="line">&gt; $ git add [file1] [file2] ...</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 添加指定目录到暂存区，包括子目录</span><br><span class="line">&gt; $ git add [dir]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 添加当前目录的所有文件到暂存区</span><br><span class="line">&gt; $ git add .</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 添加每个变化前，都会要求确认</span><br><span class="line">&gt; # 对于同一个文件的多处变化，可以实现分次提交</span><br><span class="line">&gt; $ git add -p</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 删除工作区文件，并且将这次删除放入暂存区</span><br><span class="line">&gt; $ git rm [file1] [file2] ...</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 停止追踪指定文件，但该文件会保留在工作区</span><br><span class="line">&gt; $ git rm --cached [file]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 改名文件，并且将这个改名放入暂存区</span><br><span class="line">&gt; $ git mv [file-original] [file-renamed]</span><br><span class="line">&gt;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<h2 id="四、代码提交"><a href="#四、代码提交" class="headerlink" title="四、代码提交"></a>四、代码提交</h2><blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&gt; # 提交暂存区到仓库区</span><br><span class="line">&gt; $ git commit -m [message]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 提交暂存区的指定文件到仓库区</span><br><span class="line">&gt; $ git commit [file1] [file2] ... -m [message]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 提交工作区自上次commit之后的变化，直接到仓库区</span><br><span class="line">&gt; $ git commit -a</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 提交时显示所有diff信息</span><br><span class="line">&gt; $ git commit -v</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 使用一次新的commit，替代上一次提交</span><br><span class="line">&gt; # 如果代码没有任何新变化，则用来改写上一次commit的提交信息</span><br><span class="line">&gt; $ git commit --amend -m [message]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 重做上一次commit，并包括指定文件的新变化</span><br><span class="line">&gt; $ git commit --amend [file1] [file2] ...</span><br><span class="line">&gt;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<h2 id="五、分支"><a href="#五、分支" class="headerlink" title="五、分支"></a>五、分支</h2><blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">&gt; # 列出所有本地分支</span><br><span class="line">&gt; $ git branch</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 列出所有远程分支</span><br><span class="line">&gt; $ git branch -r</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 列出所有本地分支和远程分支</span><br><span class="line">&gt; $ git branch -a</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 新建一个分支，但依然停留在当前分支</span><br><span class="line">&gt; $ git branch [branch-name]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 新建一个分支，并切换到该分支</span><br><span class="line">&gt; $ git checkout -b [branch]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 新建一个分支，指向指定commit</span><br><span class="line">&gt; $ git branch [branch] [commit]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 新建一个分支，与指定的远程分支建立追踪关系</span><br><span class="line">&gt; $ git branch --track [branch] [remote-branch]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 切换到指定分支，并更新工作区</span><br><span class="line">&gt; $ git checkout [branch-name]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 切换到上一个分支</span><br><span class="line">&gt; $ git checkout -</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 建立追踪关系，在现有分支与指定的远程分支之间</span><br><span class="line">&gt; $ git branch --set-upstream [branch] [remote-branch]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 合并指定分支到当前分支</span><br><span class="line">&gt; $ git merge [branch]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 选择一个commit，合并进当前分支</span><br><span class="line">&gt; $ git cherry-pick [commit]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 删除分支</span><br><span class="line">&gt; $ git branch -d [branch-name]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 删除远程分支</span><br><span class="line">&gt; $ git push origin --delete [branch-name]</span><br><span class="line">&gt; $ git branch -dr [remote/branch]</span><br><span class="line">&gt;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<h2 id="六、标签"><a href="#六、标签" class="headerlink" title="六、标签"></a>六、标签</h2><blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&gt; # 列出所有tag</span><br><span class="line">&gt; $ git tag</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 新建一个tag在当前commit</span><br><span class="line">&gt; $ git tag [tag]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 新建一个tag在指定commit</span><br><span class="line">&gt; $ git tag [tag] [commit]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 删除本地tag</span><br><span class="line">&gt; $ git tag -d [tag]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 删除远程tag</span><br><span class="line">&gt; $ git push origin :refs/tags/[tagName]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 查看tag信息</span><br><span class="line">&gt; $ git show [tag]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 提交指定tag</span><br><span class="line">&gt; $ git push [remote] [tag]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 提交所有tag</span><br><span class="line">&gt; $ git push [remote] --tags</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 新建一个分支，指向某个tag</span><br><span class="line">&gt; $ git checkout -b [branch] [tag]</span><br><span class="line">&gt;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<h2 id="七、查看信息"><a href="#七、查看信息" class="headerlink" title="七、查看信息"></a>七、查看信息</h2><blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">&gt; # 显示有变更的文件</span><br><span class="line">&gt; $ git status</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示当前分支的版本历史</span><br><span class="line">&gt; $ git log</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示commit历史，以及每次commit发生变更的文件</span><br><span class="line">&gt; $ git log --stat</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 搜索提交历史，根据关键词</span><br><span class="line">&gt; $ git log -S [keyword]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示某个commit之后的所有变动，每个commit占据一行</span><br><span class="line">&gt; $ git log [tag] HEAD --pretty=format:%s</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示某个commit之后的所有变动，其&quot;提交说明&quot;必须符合搜索条件</span><br><span class="line">&gt; $ git log [tag] HEAD --grep feature</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示某个文件的版本历史，包括文件改名</span><br><span class="line">&gt; $ git log --follow [file]</span><br><span class="line">&gt; $ git whatchanged [file]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示指定文件相关的每一次diff</span><br><span class="line">&gt; $ git log -p [file]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示过去5次提交</span><br><span class="line">&gt; $ git log -5 --pretty --oneline</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示所有提交过的用户，按提交次数排序</span><br><span class="line">&gt; $ git shortlog -sn</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示指定文件是什么人在什么时间修改过</span><br><span class="line">&gt; $ git blame [file]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示暂存区和工作区的差异</span><br><span class="line">&gt; $ git diff</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示暂存区和上一个commit的差异</span><br><span class="line">&gt; $ git diff --cached [file]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示工作区与当前分支最新commit之间的差异</span><br><span class="line">&gt; $ git diff HEAD</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示两次提交之间的差异</span><br><span class="line">&gt; $ git diff [first-branch]...[second-branch]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示今天你写了多少行代码</span><br><span class="line">&gt; $ git diff --shortstat &quot;@&#123;0 day ago&#125;&quot;</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示某次提交的元数据和内容变化</span><br><span class="line">&gt; $ git show [commit]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示某次提交发生变化的文件</span><br><span class="line">&gt; $ git show --name-only [commit]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示某次提交时，某个文件的内容</span><br><span class="line">&gt; $ git show [commit]:[filename]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示当前分支的最近几次提交</span><br><span class="line">&gt; $ git reflog</span><br><span class="line">&gt;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<h2 id="八、远程同步"><a href="#八、远程同步" class="headerlink" title="八、远程同步"></a>八、远程同步</h2><blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&gt; # 下载远程仓库的所有变动</span><br><span class="line">&gt; $ git fetch [remote]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示所有远程仓库</span><br><span class="line">&gt; $ git remote -v</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 显示某个远程仓库的信息</span><br><span class="line">&gt; $ git remote show [remote]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 增加一个新的远程仓库，并命名</span><br><span class="line">&gt; $ git remote add [shortname] [url]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 取回远程仓库的变化，并与本地分支合并</span><br><span class="line">&gt; $ git pull [remote] [branch]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 上传本地指定分支到远程仓库</span><br><span class="line">&gt; $ git push [remote] [branch]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 强行推送当前分支到远程仓库，即使有冲突</span><br><span class="line">&gt; $ git push [remote] --force</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 推送所有分支到远程仓库</span><br><span class="line">&gt; $ git push [remote] --all</span><br><span class="line">&gt;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<h2 id="九、保持fork分支更新"><a href="#九、保持fork分支更新" class="headerlink" title="九、保持fork分支更新"></a>九、保持fork分支更新</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">1. Clone your fork</span><br><span class="line">git clone git@github.com:YOUR-USERNAME/YOUR-FORKED-REPO.git</span><br><span class="line"></span><br><span class="line">2. Add remote from original repository in your forked repository</span><br><span class="line">cd into/cloned/fork-repo</span><br><span class="line">git remote add upstream git://github.com/ORIGINAL-DEV-USERNAME/REPO-YOU-FORKED-FROM.git</span><br><span class="line">git fetch upstream</span><br><span class="line"></span><br><span class="line">3. Updating your fork from original repo to keep up with their changes</span><br><span class="line">git pull upstream master</span><br></pre></td></tr></table></figure>
-<h2 id="十、撤销"><a href="#十、撤销" class="headerlink" title="十、撤销"></a>十、撤销</h2><blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&gt; # 恢复暂存区的指定文件到工作区</span><br><span class="line">&gt; $ git checkout [file]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 恢复某个commit的指定文件到暂存区和工作区</span><br><span class="line">&gt; $ git checkout [commit] [file]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 恢复暂存区的所有文件到工作区</span><br><span class="line">&gt; $ git checkout .</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 重置暂存区的指定文件，与上一次commit保持一致，但工作区不变</span><br><span class="line">&gt; $ git reset [file]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 重置暂存区与工作区，与上一次commit保持一致</span><br><span class="line">&gt; $ git reset --hard</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 重置当前分支的指针为指定commit，同时重置暂存区，但工作区不变</span><br><span class="line">&gt; $ git reset [commit]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 重置当前分支的HEAD为指定commit，同时重置暂存区和工作区，与指定commit一致</span><br><span class="line">&gt; $ git reset --hard [commit]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 重置当前HEAD为指定commit，但保持暂存区和工作区不变</span><br><span class="line">&gt; $ git reset --keep [commit]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 新建一个commit，用来撤销指定commit</span><br><span class="line">&gt; # 后者的所有变化都将被前者抵消，并且应用到当前分支</span><br><span class="line">&gt; $ git revert [commit]</span><br><span class="line">&gt;</span><br><span class="line">&gt; # 暂时将未提交的变化移除，稍后再移入</span><br><span class="line">&gt; $ git stash</span><br><span class="line">&gt; $ git stash pop</span><br><span class="line">&gt;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<h2 id="十一、其他"><a href="#十一、其他" class="headerlink" title="十一、其他"></a>十一、其他</h2><blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; # 生成一个可供发布的压缩包</span><br><span class="line">&gt; $ git archive</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<p>（完）</p>
-<p>原文链接：<a href="http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html" target="_blank" rel="noopener">常用 Git 命令清单</a></p>
 
       
     
     
-      <div class="declare" hidden="hidden"></div>
+      <div class="declare">
+        <strong>本文作者：</strong>
+        
+          夏天的风
+        
+        <br>
+        <strong>本文链接：</strong>
+        <a rel="license" href="http://xiaqunfeng.cc/2023/06/01/storage-basic/">http://xiaqunfeng.cc/2023/06/01/storage-basic/</a>
+        <br>
+        <strong>版权声明：</strong>
+        本文采用
+        <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+        进行许可。<strong>转载请务必注明出处！谢谢！</strong>
+        
+          <br>
+          <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="http://oow6unnib.bkt.clouddn.com/cc4_0_BY_NC_ND.png"/></a>
+        
+      </div>
     
       
         <div class="page-reward">
@@ -269,24 +409,13 @@ var _hmt = _hmt || [];
     <div class="article-info article-info-index">
       
       
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">git</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
       
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Tools//" class="article-tag-list-link color1">Tools</a>
+        			<a href="/categories/Storage//" class="article-tag-list-link color3">Storage</a>
         		</li>
       		
 		</ul>
@@ -341,7 +470,7 @@ var _hmt = _hmt || [];
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2017/03/24/git-common-list/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2023/06/01/storage-basic/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -356,18 +485,18 @@ var _hmt = _hmt || [];
   
 <nav id="article-nav">
   
-    <a href="/2017/05/02/ceph-VSM/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2023/06/11/ssd-all-flash-intro/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          VSM部署
+          闪存-初识
         
       </div>
     </a>
   
   
-    <a href="/2017/03/24/socket/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">理解socket编程</div>
+    <a href="/2023/05/14/nvme-ssd/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">NVMe SSD</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -394,7 +523,7 @@ var _hmt = _hmt || [];
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、新建代码库"><span class="toc-number">1.</span> <span class="toc-text">一、新建代码库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、配置"><span class="toc-number">2.</span> <span class="toc-text">二、配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、增加-删除文件"><span class="toc-number">3.</span> <span class="toc-text">三、增加/删除文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、代码提交"><span class="toc-number">4.</span> <span class="toc-text">四、代码提交</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五、分支"><span class="toc-number">5.</span> <span class="toc-text">五、分支</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#六、标签"><span class="toc-number">6.</span> <span class="toc-text">六、标签</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#七、查看信息"><span class="toc-number">7.</span> <span class="toc-text">七、查看信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#八、远程同步"><span class="toc-number">8.</span> <span class="toc-text">八、远程同步</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#九、保持fork分支更新"><span class="toc-number">9.</span> <span class="toc-text">九、保持fork分支更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#十、撤销"><span class="toc-number">10.</span> <span class="toc-text">十、撤销</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#十一、其他"><span class="toc-number">11.</span> <span class="toc-text">十一、其他</span></a></li></ol>
+                    目录，不存在的…
                     </div>
                 </span>
             </div>
