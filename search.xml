@@ -1410,6 +1410,135 @@ pdf" target="_blank" rel="noopener">A space-efficient flash translation layer fo
     </entry>
     
     <entry>
+      <title><![CDATA[LSM树]]></title>
+      <url>http://xiaqunfeng.cc/2022/10/01/lsm/</url>
+      <content type="html"><![CDATA[<p>LSM结构在存储中频繁用到，之前使用的pkv里也有LSM的思想在里面，这里抽空整理一下LSM树结构，包括基本结构、读写流程、写放大和compact等等。</p>
+<a id="more"></a>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>当今数据库的存储介质大多为磁盘或SSD，长期以来主流使用B+树这种索引结构来实现快速数据查找。</p>
+<ul>
+<li>当数据量不太大时，B+树读写性能表现非常好。</li>
+<li>但是在海量数据情况下，B+树越来越高，由于B+树更新和删除数据时需要沿着B+树逐层进行页分裂和页合并，严重影响数据写入性能。</li>
+</ul>
+<p>为了应对这种情况，google在论文<code>《Bigtable: A Distributed Storage System for Structured Data》</code>（论文地址：<a href="https://www.cs.umb.edu/~poneil/lsmtree.pdf" target="_blank" rel="noopener">LSM Tree</a>）中介绍了一种新的数据组织结构<code>LSM Tree(Log-Structured Merge Tree)</code>，随后便开源了基于<code>LSM Tree</code>实现的数据库<code>LevelDB</code>。</p>
+<p>当前，比较流行的NoSQL数据库，如Cassandra、RocksDB、HBase、LevelDB等，newSQL数据库，如TiDB，均是使用<code>LSM Tree</code>来组织磁盘数据的。甚至像SQLite这种传统的关系型数据库和MongoDB这种传统的文档型数据库都提供了基于<code>LSM Tree</code>的存储引擎作为可选的存储引擎。</p>
+<p>所以，本篇整理一下LSM树的相关知识点，便于理解的更深入，主要有以下几个方面：基础结构、读写流程、目前在levelDB中的使用。</p>
+<h2 id="关于LSM-Tree"><a href="#关于LSM-Tree" class="headerlink" title="关于LSM Tree"></a>关于LSM Tree</h2><p>LSM Tree，全称 Log Structured Merged Tree，实际上LSM树并没有严格的树状结构，是一个分层、有序、针对块存储设备（机械硬盘和SSD）特点而设计的数据存储结构。其设计思想是使用顺序写代替随机写来提高写性能，与此同时会略微降低读性能。</p>
+<p>LSM的核心理论基础是磁盘的顺序写速度比随机写速度快非常多，即使是SSD，由于块擦除和垃圾回收的影响，顺序写速度还是比随机写速度快很多。</p>
+<h2 id="基础结构"><a href="#基础结构" class="headerlink" title="基础结构"></a>基础结构</h2><p>有两张比较经典的架构图，表达的思想是一致的，都借鉴过来放到本文中，如下所示：</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/lsm-tree-structure.webp" alt="lsm-tree-structure"></p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/lsm-tree-structure-1.png" alt="lsm-tree-structure-1"></p>
+<blockquote>
+<p>注：在上面的架构图中，<code>WAL(Write Ahead Log)</code>并不是LSM Tree数据结构的一部分，但实际上在数据库上不可或缺。<code>WAL</code>的结构和作用跟其他数据库一样，是一个只能在尾部以<code>Append Only</code>方式追加记录的日志结构文件，它用来当系统崩溃重启时重放操作，使<code>MemTable</code>和<code>Immutable MemTable</code>中未持久化到磁盘中的数据不会丢失。</p>
+</blockquote>
+<p>从图中可以看到，<code>LSM Tree</code>的数据由两部分组成：</p>
+<ul>
+<li>内存部分：由一个<code>MemTable</code>和一个或多个<code>Immutable MemTable</code>组成。</li>
+<li>持久到磁盘中的部分 ：由分布在多个level的<code>SSTable</code>组成。level级数越小（<code>level 0</code>）表示处于该level的<code>SSTable</code>越新，level级数越大（<code>level 1...level N</code>）表示处于该level的<code>SSTable</code>越老，最大级数（<code>level N</code>）大小由系统设定。</li>
+</ul>
+<p><code>MemTable</code>往往是一个跳表（<code>Skip List</code>）组织的有序数据结构（当然，也可以是有序数组或红黑树等二叉搜索树），跳表既支持高效的动态插入数据，对数据进行排序，也支持高效的对数据进行精确查找和范围查找。</p>
+<p><code>SSTable</code>一般由一组数据block和一组元数据block组成。元数据block存储了<code>SSTable</code>数据block的描述信息，如索引、BloomFilter、压缩、统计等信息。因为<code>SSTable</code>是不可更改的，且是有序的，索引往往采用二分法数组结构就可以了。为了节省存储空间和提升数据块block的读写效率，可以对数据block进行压缩。</p>
+<p>在论文中，针对LSM Tree的结构表述如下：</p>
+<p>内存中的结构被称为C0 tree，具体可以是任何方便健值查找的数据结构，比如红黑树、map之类，甚至可以是跳表。另外一个存储结构常驻在硬盘中，称为C1 tree，具体结构类似B树。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/lsm-stree-1.png" alt="lsm-stree-1"></p>
+<p>在LSM树中，最低一级即最小的C0树位于<strong>内存</strong>，而更高级的C1、C2…树都位于<strong>磁盘</strong>里。数据会先写入内存中的C0树，当它的大小达到一定阈值之后，C0树中的全部或部分数据就会刷入磁盘中的C1树，如下图所示。在实际应用中，为防止内存因断电等原因丢失数据，写入内存的数据同时会顺序在磁盘上写日志，类似于预写日志(WAL)，这就是LSM这个词中Log一词的来历。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/lsm-tree-2.png" alt="lsm-tree-2"></p>
+<p><strong>MemoryTable</strong>和<strong>SSTable</strong>的概念是在 Bittable 论文中提出的，在levelDB中对这两种结构进行了描述：</p>
+<ul>
+<li>MemoryTable，即对应LSM树论文中的C0 Tree，在LevelDB中被分为了可以随时修改(插入/删除)的<strong>MemTable</strong>，以及不可变的<strong>Immutable MemTable。</strong>当MemTable数据写满之后(通常是看占用内存超过一定Quota之后)，将MemTable固化成SSTable格式并常驻内存中。</li>
+<li>SSTable，即对应LSM论文中的C1, C2, …, Ck Tree。LevelDB中每个SSTable大小基本固定(2M)，SSTable中的数据按照Key进行排序，每一层的SSTable都是按照Key全局有序的。当内存中的Immutable MemTable太多系统需要释放内存时，此时会将Immutable MemTable的数据写入到第一层的SSTable磁盘并与第一层的已有SSTable进行合并，从而保证C1层的所有SSTable是全局有序的。磁盘上的每一层的SSTable达到一定Size之后都会与下一层的SSTable进行合并。</li>
+</ul>
+<h2 id="写流程"><a href="#写流程" class="headerlink" title="写流程"></a>写流程</h2><p><img src="http://oow6unnib.bkt.clouddn.com/lsm-tree-write-flow.png" alt="lsm-tree-write-flow"></p>
+<p>主要包括两个步骤：</p>
+<ul>
+<li>先写预写日志（WAL），防止掉电丢失</li>
+<li>再写<code>Memtable</code>。至此，就给上层返回写入成功。</li>
+</ul>
+<p>当 Active MemTable 写满后会被转换为不可修改的 Immutable MemTable，并创建一个新的空 Active MemTable。后台线程会将 Immutable MemTable 写入到磁盘中形成一个新的 SSTable 文件，并随后销毁 Immutable MemTable。</p>
+<p>SkipList 是最流行的 Memtable 实现方式，Hbase 和 RocksDB 均默认使用 SkipList 作为 MemTable。SSTable (Sorted String Table) 是 ，它是一个有序的键值对文件。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/lsm-tree-sstable.png" alt="lsm-tree-sstable"></p>
+<p>LSM 不会修改已存在的 SSTable, LSM 在修改数据时会直接在 MemTable 中写入新版本的数据，并等待 MemTable 落盘形成新的 SSTable。因此，虽然在同一个 SSTable 中 key 不会重复，但是不同的 SSTable 中仍会存在相同的 Key。</p>
+<h2 id="读流程"><a href="#读流程" class="headerlink" title="读流程"></a>读流程</h2><p><img src="http://oow6unnib.bkt.clouddn.com/lsm-tree-read-flow.png" alt="lsm-tree-read-flow"></p>
+<p>主要分两步：</p>
+<ul>
+<li>内存中查找：先在内存<code>MemTable</code>中查找，然后在内存中的<code>Immutable MemTable</code>中查找</li>
+<li>磁盘中查找：在<code>level 0 SSTable</code>中查找，最后在<code>level N SSTable</code>中查找。</li>
+</ul>
+<p>因为最新的数据总是先写入 MemTable，所以在读取数据时首先要读取 MemTable 然后从新到旧搜索 SSTable，找到的第一个版本就是该 Key 的最新版本。</p>
+<p>根据局部性原理，刚写入的数据很有可能被马上读取。因此， MemTable 在充当写缓存之外也是一个有效的读缓存。</p>
+<h2 id="读-写-空间放大"><a href="#读-写-空间放大" class="headerlink" title="读/写/空间放大"></a>读/写/空间放大</h2><p>在LSM中，有几个放大的概念：</p>
+<ul>
+<li>读放大：读取数据时实际读取的数据量大于真正的数据量。例如 LSM 读取数据时需要扫描多个 SSTable.</li>
+<li>写放大：写入数据时实际写入的数据量大于真正的数据量。例如在 LSM 树中写入时可能触发Compact操作，导致实际写入的数据量远大于该key的数据量。</li>
+<li>空间放大：数据实际占用的磁盘空间比数据的真正大小更多。例如上文提到的 SSTable 中存储的旧版数据都是无效的。</li>
+</ul>
+<p>从读的步骤中，可以看到，为了查找到目标数据，我们需要读取并查找不包含目标数据的SSTable，如果目标数据在最底层level N的SSTable中，我们需要读取和查找所有的SSTable。<code>LSM Tree</code>把这种读取和查找了无关SSTable的现象叫做读放大(<code>read amplification</code>)。</p>
+<p>Bigtable论文中提到了几种减少读放大的方式：</p>
+<p>1、Compression压缩</p>
+<p>对数据block进行压缩，通过增加占用CPU压缩和解压缩资源来降低数据block磁盘空间占用和读写时间。</p>
+<p>2、BlooFilter布隆过滤器</p>
+<p>为了提高读取效率 SSTable 通常配有 BloomFilter 和索引来快速判断其中是否包含某个 Key 以及快速定位它的位置，而不用读取数据block内容。</p>
+<p>3、Cache缓存</p>
+<p>因为SSTable是不可变的，非常适合缓存到内存中，这样热点数据不用访问磁盘。</p>
+<p>为了提高读取效率，RocksDB 中内置了块缓存(Block Cache)将频繁访问磁盘块缓存在内存中。而 LevelDB 内置了 Block Cache 和 Table Cache 来缓存热点 Block 和 SSTable。</p>
+<p>4、Compaction合并</p>
+<p>将多个SSTable合并为一个SSTable，删除旧数据或物理删除已经被删除的数据，降低空间放大。同时减少SSTable数量，降低读放大。</p>
+<h2 id="Compact"><a href="#Compact" class="headerlink" title="Compact"></a>Compact</h2><p>目前主流的LSM树实现，其Compaction分为两类：Minor Compaction和Major Compaction。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/lsm-tree-compact.png" alt="lsm-tree-compact"></p>
+<p><strong>1、Minor Compaction</strong></p>
+<p>Minor Compaction顾名思义，即代价较小的Compaction，很多实现里，这步操作主要就是将内存中的Immutable MemTable作为SSTable写入到磁盘。<strong>实际并不做磁盘上的SSTable之间的合并</strong>。因此在这种实现下，磁盘上的第一层SSTable，即C1层的SSTable之间，互相是可能会有数据重叠的。读取查询的时候需要将C1层的所有SSTable都读取才能进行正确查询。</p>
+<p><strong>2、Major Compaction</strong></p>
+<p>Major Compaction的触发策略可能有多种，如某一层的数据达到一定的阈值，也可能是用户手动触发等。因为Major Compaction代价比较大，不同的实现里都有不同的触发策略。其主要的作用即是在和层之间进行Merge Sort，将两层的数据归并到，去除删除或者旧版本的数据，保证同一层的数据之间是完全有序的。</p>
+<p>即选择一个 SSTable 与下一层中<strong>所有和它有交集的 SSTable</strong>合并，并将合并后的 SSTable 放在下一层。请注意与所有有交集的 SSTable 合并保证了 compact 之后层内仍然是有序且无冗余的。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/lsm-tree-compact-level.png" alt="lsm-tree-compact-level"></p>
+<p>SSTable合并其实就是在空间放大、写放大、读放大几个相互制约的因素间寻求平衡，不同的应用场景需要重点优化解决某个问题，从而形成了几种典型的SSTable合并策略：</p>
+<h3 id="leveled-compaction"><a href="#leveled-compaction" class="headerlink" title="leveled compaction"></a>leveled compaction</h3><p><code>leveled compaction</code>为每层level的SSTable数据总大小设置一个阈值，level数越大，阈值设置的也越大，比如level0阈值为10MB、level1阈值设置为100MB、level2阈值设置为1000MB。当某level层的数据总量大小超过设置的阈值时，则选取一个SSTable合并入高一级level层的一个或多个SSTable中。高level层涉及的SSTable的选择处决于数据的分布，以合并后高level层中的所有SSTable数据是整体有序的为准（<code>one sorted run</code>），也就是说数据在同一层中不存在重叠的现象。</p>
+<p><strong>优点：</strong></p>
+<p><code>leveled compaction</code>因为会将SSTable合并入多个SSTable中，能保证同一层的SSTable中数据不会重叠，所以是一种最小化空间放大的策略。</p>
+<p><strong>缺点：</strong></p>
+<p>但是，合并时需要读取多个SSTable，然后写入多个更新后的SSTable，导致更大的写放大和读放大。</p>
+<p>但是在数据查找过程中，由于减少了需要查找SSTable的数量，降低了数据查找时的读放大，提升了数据查找的性能。</p>
+<p><strong>适用场景：</strong></p>
+<p>所以，leveled compaction适合比较关注数据查询速度和控制磁盘空间占用的场景。</p>
+<h3 id="tiered-compaction"><a href="#tiered-compaction" class="headerlink" title="tiered compaction"></a>tiered compaction</h3><p>tiered compaction当某level层的SSTable数量达到设定的阈值时，则将该层的多个SSTable合并为一个新的SSTable，并放入高一层level中。</p>
+<p><strong>优点：</strong></p>
+<p>tiered compaction比较偏重于控制写放大，在一定程度的前提下降低空间放大和提升数据查询性能。</p>
+<p><strong>缺点：</strong></p>
+<p>但是在同一层的SSTable中还是存在数据重叠，数据查询性能不如leveled compaction。尤其是随着level数越来越大，单个SSTable数据量也越来越大，合并触发条件也越来越难，这些巨型SSTable中的重叠数据和被删除的数据占用的空间也就越来越难被释放掉。</p>
+<p><strong>使用场景：</strong></p>
+<p>tiered compaction比较适合数据修改频率不高，且最近写入的数据查询频率比较高的场景。</p>
+<h3 id="Level-vs-tiered"><a href="#Level-vs-tiered" class="headerlink" title="Level vs tiered"></a>Level vs tiered</h3><p><img src="http://oow6unnib.bkt.clouddn.com/lsm-tree-level-vs-tiered-compaction.png" alt="lsm-tree-level-vs-tiered-compaction"></p>
+<p>如上图所示</p>
+<ul>
+<li>tiering compaction里，每个sstable是有序的，但是在L2这种，两个sstable是有重叠的。比如查找5，5在两个range&lt;2,8&gt;,&lt;1,7&gt;里面都符合条件，没法一下用一次二分查找确定在哪个sstable。</li>
+<li>leveling compaction 刚好相反，level 1的数据和本身level2的会再compaction，数据是没有重叠的。</li>
+</ul>
+<h3 id="leveled-tiered-mixed-compaction"><a href="#leveled-tiered-mixed-compaction" class="headerlink" title="leveled-tiered mixed compaction"></a>leveled-tiered mixed compaction</h3><p>结合<code>leveled compaction</code>和<code>tiered compaction</code>的优势，在部分level之间采用tiered compaction，在另一部分level之间采用leveled compaction。</p>
+<p>RocksDB的<code>leveled Compaction</code>采用的是<code>leveled-tiered mixed compaction</code>策略。数据从<code>Immutable MemTable</code> flush到level 0时采用的是<code>tiered compaction</code>，也就是说level0中是存在重叠数据的。level0到levelN之间采用<code>leveld compaction</code>策略。</p>
+<p><strong>参考资料：</strong></p>
+<p><a href="https://skyzh.github.io/mini-lsm/00-overview.html" target="_blank" rel="noopener">LSM in a week</a></p>
+<p><a href="https://blog.devgenius.io/understanding-lsm-log-structured-merge-trees-4bf77777fef4" target="_blank" rel="noopener">Understanding LSM Tree</a></p>
+<p><a href="https://medium.com/@dwivedi.ankit21/lsm-trees-the-go-to-data-structure-for-databases-search-engines-and-more-c3a48fa469d2" target="_blank" rel="noopener">LSM Trees: the Go-To Data Structure for Databases, Search Engines, and More</a></p>
+<p><a href="https://www.jianshu.com/p/b43b856e09bb" target="_blank" rel="noopener">LSM Tree原理详解</a></p>
+<p><a href="https://www.cnblogs.com/finley/p/13900987.html" target="_blank" rel="noopener">LSM Tree详解</a></p>
+<p><a href="https://open.oceanbase.com/blog/1793245952" target="_blank" rel="noopener">数据库存储与索引技术（二） 分布式数据库基石——LSM树</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> Storage </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> data structure </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[bazel宏和规则]]></title>
       <url>http://xiaqunfeng.cc/2022/07/05/bazel-rule/</url>
       <content type="html"><![CDATA[<p>学习一些bazel的扩展性用法</p>
