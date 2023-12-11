@@ -1410,6 +1410,95 @@ pdf" target="_blank" rel="noopener">A space-efficient flash translation layer fo
     </entry>
     
     <entry>
+      <title><![CDATA[跳表]]></title>
+      <url>http://xiaqunfeng.cc/2022/10/03/skiplist/</url>
+      <content type="html"><![CDATA[<p>LSM树里的memtable在绝大部分场景下使用的结构是skiplist，所以这里整理一下skipist相关的知识。</p>
+<a id="more"></a>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>跳表是一种数据结构。它允许快速查询一个有序连续元素的数据链表。跳跃列表的平均查找和插入时间复杂度都是O(log n)，优于普通队列的O(n)。</p>
+<p>论文地址：<a href="http://www.cl.cam.ac.uk/teaching/0506/Algorithms/skiplists.pdf" target="_blank" rel="noopener">《Skip lists: a probabilistic alternative to balanced trees》</a></p>
+<p>论文中对跳表的介绍如下：</p>
+<ul>
+<li>Skip lists are a data structure that can be used in place of balanced trees.</li>
+<li>Skip lists use probabilistic balancing rather than strictly enforced balancing and as a result the algorithms for insertion and deletion in skip lists are much simpler and significantly faster than equivalent algorithms for balanced trees.</li>
+</ul>
+<p>也就是说，跳表是概率平衡，不是严格的平衡，和平衡树相比，有相似的渐进期望时间边界，但是它更简单，更快，使用更少的空间，可以在很多场合替代平衡树。</p>
+<ul>
+<li>经常使用的平衡数据结构有：B树，红黑树，AVL树，Splay Tree, Treep等，但是实现细节过于复杂。</li>
+<li>跳表的原理和实现都很简单，只需要熟悉链表操作，就可以实现 SkipList。目前Redis和levelDB都使用到了跳表结构</li>
+</ul>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p><img src="http://oow6unnib.bkt.clouddn.com/skiplist.png" alt="skiplist"></p>
+<p>从上图可以看到，跳表主要由以下部分组成：</p>
+<ul>
+<li>表头（head）：负责维护跳跃表的节点指针。</li>
+<li>跳跃表节点：保存着元素值，以及多个层。</li>
+<li>层：保存着指向其他元素的指针。高层的指针越过的元素数量大于等于低层的指针，为了提高查找的效率，程序总是从高层先开始访问，然后随着元素值范围的缩小，慢慢降低层次。</li>
+<li>表尾：全部由 <code>NULL</code> 组成，表示跳跃表的末尾。</li>
+</ul>
+<p>每一个结点不单单只包含指向下一个结点的指针，可能包含很多个指向后续结点的指针，这样就可以跳过一些不必要的结点，从而加快查找、删除等操作。简单来说，跳表是一个可以实现二分查找的有序链表。</p>
+<blockquote>
+<p>对于一个链表内每一个结点包含多少个指向后续元素的指针，是通过一个随机函数生成器得到的，从而构成了一个跳跃表。</p>
+</blockquote>
+<h3 id="结构定义"><a href="#结构定义" class="headerlink" title="结构定义"></a>结构定义</h3><p>根据原理，描述一下skiplist的结构定义：</p>
+<ol>
+<li>由多层结构组成;</li>
+<li>每一层都是一个有序的链表;</li>
+<li>最底层(Level 1)的链表包含所有元素;</li>
+<li>如果一个元素出现在 Level i 的链表中，则它在 Level i 之下的链表也都会出现;</li>
+<li>每个节点包含两个指针，一个指向同一链表中的下一个元素，一个指向下面一层的元素。</li>
+</ol>
+<h2 id="跳表操作"><a href="#跳表操作" class="headerlink" title="跳表操作"></a>跳表操作</h2><p><img src="http://oow6unnib.bkt.clouddn.com/skiplist-0.jpeg" alt="skiplist-0"></p>
+<h3 id="1、查找"><a href="#1、查找" class="headerlink" title="1、查找"></a>1、查找</h3><p>从高层向低层查找，一层一层遍历，最后下沉到原始链表。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/skiplist-1.jpeg" alt="skiplist-1"></p>
+<p>时间复杂度 =  索引的高度 * 每层索引遍历元素的个数</p>
+<p>如果每两个结点会抽出一个结点作为上一级索引的结点，原始的链表有n个元素。</p>
+<p>那么高度是log2n，每层对最多遍历3个节点。所以，总的时间复杂度是 O(3*log2n)，也就是O(logn)。</p>
+<p>空间复杂度为O(n)。但是，索引结点往往只需要存储 key 和几个指针，并不需要存储完整的对象，所以当对象比索引结点大很多时，索引占用的额外空间就可以忽略。</p>
+<h3 id="2、插入"><a href="#2、插入" class="headerlink" title="2、插入"></a>2、插入</h3><p>插入时，通过随机算法产生元素所占有的层数K。</p>
+<p>如果层数小于链表的层数：在 Level 1 … Level K 各个层的链表都插入元素</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/skiplist-2.jpeg" alt="skiplist-2"></p>
+<p>如果层数大于链表的层数：添加新的层</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/skiplist-3.jpeg" alt="skiplist-3"></p>
+<p>元素插入单链表的时间复杂度是O(1)，索引的高度最多为 logn，当插入一个元素 x 时，最坏的情况就是元素 x 需要插入到每层索引中，所以插入数据到各层索引中，最坏时间复杂度是 O(logn)。</p>
+<h3 id="3、删除"><a href="#3、删除" class="headerlink" title="3、删除"></a>3、删除</h3><p>在各个层中找到包含 x 的节点，使用标准的 delete from list 方法删除该节点。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/skiplist-4.jpeg" alt="skiplist-4"></p>
+<p>单链表删除元素的时间复杂度为 O(1)，索引层数为 logn 表示最多需要删除 logn 个元素，所以删除元素的总时间包含 <em>查找元素的时间</em> 加 <em>删除 logn个元素的时间</em> 为 O(logn) + O(logn) = 2 O(logn)，忽略常数部分，删除元素的时间复杂度为 O(logn)。</p>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>在前面简介中就说到过，跳表在开源项目中主要在redis和levelDB中使用，以及基于levelDB优化后的rocksDB等。</p>
+<h3 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h3><p>目前在 Redis 的唯一作用，就是作为有序集类型（zset）的底层数据结构（之一，另一个构成有序集的结构是字典）。zset支持如下操作：</p>
+<ol>
+<li>插入一个元素</li>
+<li>删除一个元素</li>
+<li>查找一个元素</li>
+<li>有序输出所有元素</li>
+<li>按照范围区间查找元素</li>
+</ol>
+<p>前四个操作红黑树也可以完成，且时间复杂度跟跳表一样。</p>
+<p>第五个区间查找，红黑树的效率没有跳表高。跳表可以做到 O(logn) 的时间复杂度（定位区间的起点，然后在原始链表中顺序往后遍历即可，非常高效）。</p>
+<h3 id="levelDB"><a href="#levelDB" class="headerlink" title="levelDB"></a>levelDB</h3><p>levelDB中的应用后续单独一篇来整理和学习。</p>
+<p><strong>参考资料：</strong></p>
+<ul>
+<li><a href="https://blog.csdn.net/caoshangpa/article/details/78862339" target="_blank" rel="noopener">LevelDB源码分析之五：skiplist</a></li>
+<li><a href="https://www.cnblogs.com/Laymen/p/14084664.html" target="_blank" rel="noopener">跳表原理篇</a></li>
+<li><a href="https://www.jianshu.com/p/9d8296562806" target="_blank" rel="noopener">Skip List–跳表</a></li>
+<li><a href="https://redisbook.readthedocs.io/en/latest/internal-datastruct/skiplist.html" target="_blank" rel="noopener">跳跃表</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Storage </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> data structure </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[LSM树]]></title>
       <url>http://xiaqunfeng.cc/2022/10/01/lsm/</url>
       <content type="html"><![CDATA[<p>LSM结构在存储中频繁用到，之前使用的pkv里也有LSM的思想在里面，这里抽空整理一下LSM树结构，包括基本结构、读写流程、写放大和compact等等。</p>

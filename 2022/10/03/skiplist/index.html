@@ -6,18 +6,27 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://xiaqunfeng.cc">
-  <title>Archives | 夏天的风的博客</title>
+  <title>跳表 | 夏天的风的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="关注深度学习、分布式存储、云计算">
-<meta property="og:type" content="website">
-<meta property="og:title" content="夏天的风的博客">
-<meta property="og:url" content="http://xiaqunfeng.cc/archives/page/13/index.html">
+  <meta name="description" content="LSM树里的memtable在绝大部分场景下使用的结构是skiplist，所以这里整理一下skipist相关的知识。">
+<meta name="keywords" content="data structure">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跳表">
+<meta property="og:url" content="http://xiaqunfeng.cc/2022/10/03/skiplist/index.html">
 <meta property="og:site_name" content="夏天的风的博客">
-<meta property="og:description" content="关注深度学习、分布式存储、云计算">
+<meta property="og:description" content="LSM树里的memtable在绝大部分场景下使用的结构是skiplist，所以这里整理一下skipist相关的知识。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/skiplist.png">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/skiplist-0.jpeg">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/skiplist-1.jpeg">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/skiplist-2.jpeg">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/skiplist-3.jpeg">
+<meta property="og:image" content="http://oow6unnib.bkt.clouddn.com/skiplist-4.jpeg">
+<meta property="og:updated_time" content="2023-12-11T09:49:01.969Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="夏天的风的博客">
-<meta name="twitter:description" content="关注深度学习、分布式存储、云计算">
+<meta name="twitter:title" content="跳表">
+<meta name="twitter:description" content="LSM树里的memtable在绝大部分场景下使用的结构是skiplist，所以这里整理一下skipist相关的知识。">
+<meta name="twitter:image" content="http://oow6unnib.bkt.clouddn.com/skiplist.png">
   
     <link rel="alternative" href="/atom.xml" title="夏天的风的博客" type="application/atom+xml">
   
@@ -157,486 +166,325 @@ var _hmt = _hmt || [];
           </div>
           <div id="js-content" class="content-ll">
             
-  
-  
+<article id="post-skiplist" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      跳表
+    </h1>
+  
+
+        
+        <a href="/2022/10/03/skiplist/" class="archive-article-date">
+  	<time datetime="2022-10-03T06:01:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-10-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>LSM树里的memtable在绝大部分场景下使用的结构是skiplist，所以这里整理一下skipist相关的知识。</p>
+<a id="more"></a>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>跳表是一种数据结构。它允许快速查询一个有序连续元素的数据链表。跳跃列表的平均查找和插入时间复杂度都是O(log n)，优于普通队列的O(n)。</p>
+<p>论文地址：<a href="http://www.cl.cam.ac.uk/teaching/0506/Algorithms/skiplists.pdf" target="_blank" rel="noopener">《Skip lists: a probabilistic alternative to balanced trees》</a></p>
+<p>论文中对跳表的介绍如下：</p>
+<ul>
+<li>Skip lists are a data structure that can be used in place of balanced trees.</li>
+<li>Skip lists use probabilistic balancing rather than strictly enforced balancing and as a result the algorithms for insertion and deletion in skip lists are much simpler and significantly faster than equivalent algorithms for balanced trees.</li>
+</ul>
+<p>也就是说，跳表是概率平衡，不是严格的平衡，和平衡树相比，有相似的渐进期望时间边界，但是它更简单，更快，使用更少的空间，可以在很多场合替代平衡树。</p>
+<ul>
+<li>经常使用的平衡数据结构有：B树，红黑树，AVL树，Splay Tree, Treep等，但是实现细节过于复杂。</li>
+<li>跳表的原理和实现都很简单，只需要熟悉链表操作，就可以实现 SkipList。目前Redis和levelDB都使用到了跳表结构</li>
+</ul>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p><img src="http://oow6unnib.bkt.clouddn.com/skiplist.png" alt="skiplist"></p>
+<p>从上图可以看到，跳表主要由以下部分组成：</p>
+<ul>
+<li>表头（head）：负责维护跳跃表的节点指针。</li>
+<li>跳跃表节点：保存着元素值，以及多个层。</li>
+<li>层：保存着指向其他元素的指针。高层的指针越过的元素数量大于等于低层的指针，为了提高查找的效率，程序总是从高层先开始访问，然后随着元素值范围的缩小，慢慢降低层次。</li>
+<li>表尾：全部由 <code>NULL</code> 组成，表示跳跃表的末尾。</li>
+</ul>
+<p>每一个结点不单单只包含指向下一个结点的指针，可能包含很多个指向后续结点的指针，这样就可以跳过一些不必要的结点，从而加快查找、删除等操作。简单来说，跳表是一个可以实现二分查找的有序链表。</p>
+<blockquote>
+<p>对于一个链表内每一个结点包含多少个指向后续元素的指针，是通过一个随机函数生成器得到的，从而构成了一个跳跃表。</p>
+</blockquote>
+<h3 id="结构定义"><a href="#结构定义" class="headerlink" title="结构定义"></a>结构定义</h3><p>根据原理，描述一下skiplist的结构定义：</p>
+<ol>
+<li>由多层结构组成;</li>
+<li>每一层都是一个有序的链表;</li>
+<li>最底层(Level 1)的链表包含所有元素;</li>
+<li>如果一个元素出现在 Level i 的链表中，则它在 Level i 之下的链表也都会出现;</li>
+<li>每个节点包含两个指针，一个指向同一链表中的下一个元素，一个指向下面一层的元素。</li>
+</ol>
+<h2 id="跳表操作"><a href="#跳表操作" class="headerlink" title="跳表操作"></a>跳表操作</h2><p><img src="http://oow6unnib.bkt.clouddn.com/skiplist-0.jpeg" alt="skiplist-0"></p>
+<h3 id="1、查找"><a href="#1、查找" class="headerlink" title="1、查找"></a>1、查找</h3><p>从高层向低层查找，一层一层遍历，最后下沉到原始链表。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/skiplist-1.jpeg" alt="skiplist-1"></p>
+<p>时间复杂度 =  索引的高度 * 每层索引遍历元素的个数</p>
+<p>如果每两个结点会抽出一个结点作为上一级索引的结点，原始的链表有n个元素。</p>
+<p>那么高度是log2n，每层对最多遍历3个节点。所以，总的时间复杂度是 O(3*log2n)，也就是O(logn)。</p>
+<p>空间复杂度为O(n)。但是，索引结点往往只需要存储 key 和几个指针，并不需要存储完整的对象，所以当对象比索引结点大很多时，索引占用的额外空间就可以忽略。</p>
+<h3 id="2、插入"><a href="#2、插入" class="headerlink" title="2、插入"></a>2、插入</h3><p>插入时，通过随机算法产生元素所占有的层数K。</p>
+<p>如果层数小于链表的层数：在 Level 1 … Level K 各个层的链表都插入元素</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/skiplist-2.jpeg" alt="skiplist-2"></p>
+<p>如果层数大于链表的层数：添加新的层</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/skiplist-3.jpeg" alt="skiplist-3"></p>
+<p>元素插入单链表的时间复杂度是O(1)，索引的高度最多为 logn，当插入一个元素 x 时，最坏的情况就是元素 x 需要插入到每层索引中，所以插入数据到各层索引中，最坏时间复杂度是 O(logn)。</p>
+<h3 id="3、删除"><a href="#3、删除" class="headerlink" title="3、删除"></a>3、删除</h3><p>在各个层中找到包含 x 的节点，使用标准的 delete from list 方法删除该节点。</p>
+<p><img src="http://oow6unnib.bkt.clouddn.com/skiplist-4.jpeg" alt="skiplist-4"></p>
+<p>单链表删除元素的时间复杂度为 O(1)，索引层数为 logn 表示最多需要删除 logn 个元素，所以删除元素的总时间包含 <em>查找元素的时间</em> 加 <em>删除 logn个元素的时间</em> 为 O(logn) + O(logn) = 2 O(logn)，忽略常数部分，删除元素的时间复杂度为 O(logn)。</p>
+<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><p>在前面简介中就说到过，跳表在开源项目中主要在redis和levelDB中使用，以及基于levelDB优化后的rocksDB等。</p>
+<h3 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h3><p>目前在 Redis 的唯一作用，就是作为有序集类型（zset）的底层数据结构（之一，另一个构成有序集的结构是字典）。zset支持如下操作：</p>
+<ol>
+<li>插入一个元素</li>
+<li>删除一个元素</li>
+<li>查找一个元素</li>
+<li>有序输出所有元素</li>
+<li>按照范围区间查找元素</li>
+</ol>
+<p>前四个操作红黑树也可以完成，且时间复杂度跟跳表一样。</p>
+<p>第五个区间查找，红黑树的效率没有跳表高。跳表可以做到 O(logn) 的时间复杂度（定位区间的起点，然后在原始链表中顺序往后遍历即可，非常高效）。</p>
+<h3 id="levelDB"><a href="#levelDB" class="headerlink" title="levelDB"></a>levelDB</h3><p>levelDB中的应用后续单独一篇来整理和学习。</p>
+<p><strong>参考资料：</strong></p>
+<ul>
+<li><a href="https://blog.csdn.net/caoshangpa/article/details/78862339" target="_blank" rel="noopener">LevelDB源码分析之五：skiplist</a></li>
+<li><a href="https://www.cnblogs.com/Laymen/p/14084664.html" target="_blank" rel="noopener">跳表原理篇</a></li>
+<li><a href="https://www.jianshu.com/p/9d8296562806" target="_blank" rel="noopener">Skip List–跳表</a></li>
+<li><a href="https://redisbook.readthedocs.io/en/latest/internal-datastruct/skiplist.html" target="_blank" rel="noopener">跳跃表</a></li>
+</ul>
+
+      
+    
+    
+      <div class="declare">
+        <strong>本文作者：</strong>
+        
+          夏天的风
+        
+        <br>
+        <strong>本文链接：</strong>
+        <a rel="license" href="http://xiaqunfeng.cc/2022/10/03/skiplist/">http://xiaqunfeng.cc/2022/10/03/skiplist/</a>
+        <br>
+        <strong>版权声明：</strong>
+        本文采用
+        <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+        进行许可。<strong>转载请务必注明出处！谢谢！</strong>
+        
+          <br>
+          <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="http://oow6unnib.bkt.clouddn.com/cc4_0_BY_NC_ND.png"/></a>
+        
+      </div>
     
       
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>O(∩_∩)O谢谢!<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/alipay.jpg">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/img/weixin.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/06/23/wget-download-http-dir/" class="archive-article-date">
-  	<time datetime="2017-06-23T10:21:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/06/23/wget-download-http-dir/">wget批量下载http目录及文件</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">tool</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">data structure</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Tools//" class="article-tag-list-link color1">Tools</a>
+        			<a href="/categories/Storage//" class="article-tag-list-link color3">Storage</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://xiaqunfeng.cc/2022/10/03/skiplist/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/06/16/cloud-public-private/" class="archive-article-date">
-  	<time datetime="2017-06-16T06:38:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-16</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2023/05/14/nvme-ssd/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          NVMe SSD
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/10/01/lsm/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">LSM树</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/06/16/cloud-public-private/">公有云和私有云的区别</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#原理"><span class="toc-number">2.</span> <span class="toc-text">原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#示例"><span class="toc-number">2.1.</span> <span class="toc-text">示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#结构定义"><span class="toc-number">2.2.</span> <span class="toc-text">结构定义</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#跳表操作"><span class="toc-number">3.</span> <span class="toc-text">跳表操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、查找"><span class="toc-number">3.1.</span> <span class="toc-text">1、查找</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、插入"><span class="toc-number">3.2.</span> <span class="toc-text">2、插入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、删除"><span class="toc-number">3.3.</span> <span class="toc-text">3、删除</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#应用"><span class="toc-number">4.</span> <span class="toc-text">应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#redis"><span class="toc-number">4.1.</span> <span class="toc-text">redis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#levelDB"><span class="toc-number">4.2.</span> <span class="toc-text">levelDB</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/06/16/centos-7-handle-ceph-process/" class="archive-article-date">
-  	<time datetime="2017-06-16T02:57:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-16</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/06/16/centos-7-handle-ceph-process/">centos 7下操纵ceph进程</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">ceph</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Ceph//" class="article-tag-list-link color5">Ceph</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/06/15/vim-move-cursor/" class="archive-article-date">
-  	<time datetime="2017-06-15T11:17:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/06/15/vim-move-cursor/">vim移动光标</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">tool</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Tools//" class="article-tag-list-link color1">Tools</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/06/07/Map-RBD-Devices-on-NBD/" class="archive-article-date">
-  	<time datetime="2017-06-07T02:51:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-07</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/06/07/Map-RBD-Devices-on-NBD/">Map RBD Devices on NBD</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">ceph</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">storage</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Ceph//" class="article-tag-list-link color5">Ceph</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/06/06/ceph-rbd-map-failed/" class="archive-article-date">
-  	<time datetime="2017-06-06T03:29:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-06</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/06/06/ceph-rbd-map-failed/">ceph rbd map failed</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">ceph</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Ceph//" class="article-tag-list-link color5">Ceph</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/05/26/ceph-mon-clock-deviation/" class="archive-article-date">
-  	<time datetime="2017-05-26T01:47:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/05/26/ceph-mon-clock-deviation/">ceph mon时钟偏移问题</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">ceph</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Ceph//" class="article-tag-list-link color5">Ceph</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/05/26/GPG-key-retrieval-failure/" class="archive-article-date">
-  	<time datetime="2017-05-26T01:13:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/05/26/GPG-key-retrieval-failure/">GPG key retrieval failure</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">linux</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/05/25/mac-vim-markdown-preview/" class="archive-article-date">
-  	<time datetime="2017-05-25T02:11:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-25</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/05/25/mac-vim-markdown-preview/">mac上实现vim的markdown预览</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">tool</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Tools//" class="article-tag-list-link color1">Tools</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/05/23/ceph-log-migration/" class="archive-article-date">
-  	<time datetime="2017-05-23T09:20:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/05/23/ceph-log-migration/">ceph日志迁移</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">ceph</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Ceph//" class="article-tag-list-link color5">Ceph</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/page/12/">&laquo; Prev</a><a class="page-number" href="/archives/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/11/">11</a><a class="page-number" href="/archives/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/archives/page/14/">14</a><a class="page-number" href="/archives/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/17/">17</a><a class="extend next" rel="next" href="/archives/page/14/">Next &raquo;</a>
-    </nav>
   
+
+  
+
+  
+
+  
+    <section id="comments" style="margin:10px;padding:10px;background:#fff;">
+      <div id="vcomment" class="comment"></div> 
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+   var notify = 'false' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+    window.onload = function() {
+        new Valine({
+            el: '.comment',
+            notify: notify,
+            verify: verify,
+            app_id: "2AgYNp3s7S4ddNLjt7diG8gj-9Nh9j0Va",
+            app_key: "6WNBmQrMcjfQG4XYo8VA54hb",
+            placeholder: "无需输入昵称、邮箱和网址信息即可快速评论。（建议输入昵称和邮箱，方便沟通）",
+            avatar:"mp",
+            avatar_cdn:'{{ theme.valine.avatar_cdn }}',
+        });
+    }
+</script>
+
+    </section>
+  
+
 
 
           </div>
@@ -664,8 +512,8 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
